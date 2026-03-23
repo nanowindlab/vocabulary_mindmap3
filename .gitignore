@@ -1,0 +1,25 @@
+# macOS
+.DS_Store
+__pycache__/
+*.pyc
+
+# 원천 다운로드본 제외
+vocab_dictionary/dict_download_json/
+vocab_dictionary/dict_download_json.zip
+
+# API 원시 XML dump 제외
+vocab_dictionary/output/api_xml_live/
+
+# output 하위 기본 제외
+vocab_dictionary/output/**/*.json
+vocab_dictionary/output/**/*.sqlite
+vocab_dictionary/output/**/*.zip
+
+# 배포용 압축본만 포함
+!vocab_dictionary/output/unified_live/*.json.gz
+
+# 소형 메타/리포트는 포함
+!vocab_dictionary/output/unified_live/kcenter_link_integrity.json
+!vocab_dictionary/output/unified_live/kcenter_merge_report.json
+!vocab_dictionary/output/unified_live/kcenter_review_queue.json
+!vocab_dictionary/output/unified_live/dangling_code_fetch_report.json

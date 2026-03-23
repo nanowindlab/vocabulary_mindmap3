@@ -1,0 +1,8544 @@
+{
+  "schema_version": "v2.3",
+  "generated_at": "2026-03-23T08:13:17.457456+00:00",
+  "summary": {
+    "unmatched_api_subwords": 0,
+    "dangling_related_terms": 811,
+    "dangling_related_forms": 1085
+  },
+  "policy": {
+    "unmatched_api_subwords": "Keep visible as subwords but disable deep link unless a target_code is resolved.",
+    "dangling_related_terms": "Treat as non-clickable relation chips or unresolved references, not hard navigation targets.",
+    "dangling_related_forms": "Treat as unresolved related forms; display text but guard navigation.",
+    "unresolved_zero_code": "Source provided target_code=0, so this relation should be handled as text-only and not as a resolvable internal link."
+  },
+  "dangling_link_type_counts": {
+    "related_terms": {
+      "None": 779,
+      "C": 32
+    },
+    "related_forms": {
+      "None": 1085
+    }
+  },
+  "link_status_counts": {
+    "related_terms": {
+      "resolved_internal": 30467,
+      "unresolved_zero_code": 779,
+      "unresolved_no_target_code": 2352,
+      "unresolved_missing_entry": 32
+    },
+    "related_forms": {
+      "resolved_internal": 30419,
+      "unresolved_no_target_code": 3478,
+      "unresolved_zero_code": 1084,
+      "unresolved_missing_entry": 1
+    }
+  },
+  "unmatched_api_subwords": [],
+  "dangling_related_terms_sample": [
+    {
+      "entry_id": "14005",
+      "entry_word": "닷새",
+      "sense_id": "14005#sense-001",
+      "relation_type": "유의어",
+      "word": "닷샛날",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14005",
+      "entry_word": "닷새",
+      "sense_id": "14005#sense-002",
+      "relation_type": "유의어",
+      "word": "초닷샛날",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14459",
+      "entry_word": "법원",
+      "sense_id": "14459#sense-001",
+      "relation_type": "유의어",
+      "word": "재판소",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14548",
+      "entry_word": "가뿐하다",
+      "sense_id": "14548#sense-001",
+      "relation_type": "여린말",
+      "word": "가분하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14548",
+      "entry_word": "가뿐하다",
+      "sense_id": "14548#sense-002",
+      "relation_type": "여린말",
+      "word": "가분하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14548",
+      "entry_word": "가뿐하다",
+      "sense_id": "14548#sense-003",
+      "relation_type": "여린말",
+      "word": "가분하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14548",
+      "entry_word": "가뿐하다",
+      "sense_id": "14548#sense-004",
+      "relation_type": "여린말",
+      "word": "가분하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14553",
+      "entry_word": "가뿐히",
+      "sense_id": "14553#sense-001",
+      "relation_type": "여린말",
+      "word": "가분히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14553",
+      "entry_word": "가뿐히",
+      "sense_id": "14553#sense-002",
+      "relation_type": "여린말",
+      "word": "가분히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14553",
+      "entry_word": "가뿐히",
+      "sense_id": "14553#sense-003",
+      "relation_type": "여린말",
+      "word": "가분히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14553",
+      "entry_word": "가뿐히",
+      "sense_id": "14553#sense-004",
+      "relation_type": "여린말",
+      "word": "가분히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14633",
+      "entry_word": "가속하다",
+      "sense_id": "14633#sense-001",
+      "relation_type": "유의어",
+      "word": "증속하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14665",
+      "entry_word": "가슴앓이",
+      "sense_id": "14665#sense-002",
+      "relation_type": "유의어",
+      "word": "가슴쓰림",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14752",
+      "entry_word": "갈색",
+      "sense_id": "14752#sense-001",
+      "relation_type": "유의어",
+      "word": "갈색빛",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14806",
+      "entry_word": "동서",
+      "sense_id": "14806#sense-001",
+      "relation_type": "유의어",
+      "word": "동서쪽",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14838",
+      "entry_word": "가득가득",
+      "sense_id": "14838#sense-001",
+      "relation_type": "유의어",
+      "word": "가득가득히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14838",
+      "entry_word": "가득가득",
+      "sense_id": "14838#sense-001",
+      "relation_type": "큰말",
+      "word": "그득그득",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14838",
+      "entry_word": "가득가득",
+      "sense_id": "14838#sense-001",
+      "relation_type": "센말",
+      "word": "가뜩가뜩",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14838",
+      "entry_word": "가득가득",
+      "sense_id": "14838#sense-002",
+      "relation_type": "유의어",
+      "word": "가득가득히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14838",
+      "entry_word": "가득가득",
+      "sense_id": "14838#sense-002",
+      "relation_type": "큰말",
+      "word": "그득그득",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14838",
+      "entry_word": "가득가득",
+      "sense_id": "14838#sense-002",
+      "relation_type": "센말",
+      "word": "가뜩가뜩",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14838",
+      "entry_word": "가득가득",
+      "sense_id": "14838#sense-003",
+      "relation_type": "유의어",
+      "word": "가득가득히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14838",
+      "entry_word": "가득가득",
+      "sense_id": "14838#sense-003",
+      "relation_type": "큰말",
+      "word": "그득그득",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14838",
+      "entry_word": "가득가득",
+      "sense_id": "14838#sense-003",
+      "relation_type": "센말",
+      "word": "가뜩가뜩",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14838",
+      "entry_word": "가득가득",
+      "sense_id": "14838#sense-004",
+      "relation_type": "유의어",
+      "word": "가득가득히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14838",
+      "entry_word": "가득가득",
+      "sense_id": "14838#sense-004",
+      "relation_type": "큰말",
+      "word": "그득그득",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14838",
+      "entry_word": "가득가득",
+      "sense_id": "14838#sense-004",
+      "relation_type": "센말",
+      "word": "가뜩가뜩",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14841",
+      "entry_word": "가뜩",
+      "sense_id": "14841#sense-001",
+      "relation_type": "유의어",
+      "word": "가뜩이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14905",
+      "entry_word": "가무칙칙하다",
+      "sense_id": "14905#sense-001",
+      "relation_type": "큰말",
+      "word": "거무칙칙하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14915",
+      "entry_word": "가물가물",
+      "sense_id": "14915#sense-001",
+      "relation_type": "큰말",
+      "word": "거물거물",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14915",
+      "entry_word": "가물가물",
+      "sense_id": "14915#sense-002",
+      "relation_type": "큰말",
+      "word": "거물거물",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14915",
+      "entry_word": "가물가물",
+      "sense_id": "14915#sense-003",
+      "relation_type": "큰말",
+      "word": "거물거물",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14953",
+      "entry_word": "두려움",
+      "sense_id": "14953#sense-001",
+      "relation_type": "준말",
+      "word": "두렴",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14966",
+      "entry_word": "가치 판단",
+      "sense_id": "14966#sense-001",
+      "relation_type": "참고어",
+      "word": "사실 판단",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14967",
+      "entry_word": "가법",
+      "sense_id": "14967#sense-001",
+      "relation_type": "유의어",
+      "word": "가규",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15032",
+      "entry_word": "가겟집",
+      "sense_id": "15032#sense-001",
+      "relation_type": "참고어",
+      "word": "영업집",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15037",
+      "entry_word": "가부좌",
+      "sense_id": "15037#sense-001",
+      "relation_type": "유의어",
+      "word": "결가부좌",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15097",
+      "entry_word": "언덕",
+      "sense_id": "15097#sense-001",
+      "relation_type": "유의어",
+      "word": "구릉",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15242",
+      "entry_word": "감감무소식",
+      "sense_id": "15242#sense-001",
+      "relation_type": "센말",
+      "word": "깜깜무소식",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15416",
+      "entry_word": "물가",
+      "sense_id": "15416#sense-001",
+      "relation_type": "참고어",
+      "word": "가격",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15456",
+      "entry_word": "간밤",
+      "sense_id": "15456#sense-001",
+      "relation_type": "유의어",
+      "word": "지난밤",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15463",
+      "entry_word": "간병인",
+      "sense_id": "15463#sense-001",
+      "relation_type": "유의어",
+      "word": "간호인",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15469",
+      "entry_word": "밤색",
+      "sense_id": "15469#sense-001",
+      "relation_type": "유의어",
+      "word": "밤빛",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15905",
+      "entry_word": "사춘기",
+      "sense_id": "15905#sense-001",
+      "relation_type": "참고어",
+      "word": "청춘기",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15948",
+      "entry_word": "게으르다",
+      "sense_id": "15948#sense-001",
+      "relation_type": "준말",
+      "word": "게르다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "16134",
+      "entry_word": "모레",
+      "sense_id": "16134#sense-001",
+      "relation_type": "유의어",
+      "word": "내일모레",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "16222",
+      "entry_word": "상대적",
+      "sense_id": "16222#sense-001",
+      "relation_type": "참고어",
+      "word": "절대적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "16284",
+      "entry_word": "가업",
+      "sense_id": "16284#sense-001",
+      "relation_type": "유의어",
+      "word": "세업",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "16314",
+      "entry_word": "고혈압",
+      "sense_id": "16314#sense-001",
+      "relation_type": "유의어",
+      "word": "고혈압증",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "16315",
+      "entry_word": "나흘",
+      "sense_id": "16315#sense-001",
+      "relation_type": "유의어",
+      "word": "나흗날",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "16482",
+      "entry_word": "상인",
+      "sense_id": "16482#sense-001",
+      "relation_type": "유의어",
+      "word": "장수",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17186",
+      "entry_word": "않다",
+      "sense_id": "17186#sense-001",
+      "relation_type": "본말",
+      "word": "아니하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17573",
+      "entry_word": "끼니때",
+      "sense_id": "17573#sense-001",
+      "relation_type": "유의어",
+      "word": "밥시간",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17576",
+      "entry_word": "끽소리",
+      "sense_id": "17576#sense-001",
+      "relation_type": "작은말",
+      "word": "깩소리",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17735",
+      "entry_word": "계수나무",
+      "sense_id": "17735#sense-001",
+      "relation_type": "유의어",
+      "word": "계수",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17742",
+      "entry_word": "계승자",
+      "sense_id": "17742#sense-001",
+      "relation_type": "유의어",
+      "word": "계승인",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17918",
+      "entry_word": "나무배",
+      "sense_id": "17918#sense-001",
+      "relation_type": "유의어",
+      "word": "목조선",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17958",
+      "entry_word": "고소설",
+      "sense_id": "17958#sense-001",
+      "relation_type": "유의어",
+      "word": "고전 소설",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18272",
+      "entry_word": "과일나무",
+      "sense_id": "18272#sense-001",
+      "relation_type": "유의어",
+      "word": "과실나무",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18273",
+      "entry_word": "기숙사",
+      "sense_id": "18273#sense-001",
+      "relation_type": "유의어",
+      "word": "생활관",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18296",
+      "entry_word": "난봉꾼",
+      "sense_id": "18296#sense-001",
+      "relation_type": "유의어",
+      "word": "난봉쟁이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18372",
+      "entry_word": "고철",
+      "sense_id": "18372#sense-001",
+      "relation_type": "유의어",
+      "word": "헌쇠",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18377",
+      "entry_word": "고품위",
+      "sense_id": "18377#sense-001",
+      "relation_type": "유의어",
+      "word": "고품",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18413",
+      "entry_word": "담색",
+      "sense_id": "18413#sense-001",
+      "relation_type": "반대말",
+      "word": "농색",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18442",
+      "entry_word": "고문",
+      "sense_id": "18442#sense-001",
+      "relation_type": "참고어",
+      "word": "현대문",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18518",
+      "entry_word": "개인플레이",
+      "sense_id": "18518#sense-001",
+      "relation_type": "유의어",
+      "word": "단독플레이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18518",
+      "entry_word": "개인플레이",
+      "sense_id": "18518#sense-002",
+      "relation_type": "유의어",
+      "word": "단독플레이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18521",
+      "entry_word": "개인 회사",
+      "sense_id": "18521#sense-001",
+      "relation_type": "유의어",
+      "word": "비법인 회사",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18639",
+      "entry_word": "개차반",
+      "sense_id": "18639#sense-001",
+      "relation_type": "유의어",
+      "word": "개차반이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18647",
+      "entry_word": "개찰원",
+      "sense_id": "18647#sense-001",
+      "relation_type": "유의어",
+      "word": "개찰계",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18651",
+      "entry_word": "곱창",
+      "sense_id": "18651#sense-001",
+      "relation_type": "유의어",
+      "word": "소창",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18651",
+      "entry_word": "곱창",
+      "sense_id": "18651#sense-001",
+      "relation_type": "참고어",
+      "word": "대창",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18697",
+      "entry_word": "공간성",
+      "sense_id": "18697#sense-001",
+      "relation_type": "참고어",
+      "word": "시간성",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18715",
+      "entry_word": "개탄",
+      "sense_id": "18715#sense-001",
+      "relation_type": "유의어",
+      "word": "개한",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18777",
+      "entry_word": "고액",
+      "sense_id": "18777#sense-001",
+      "relation_type": "반대말",
+      "word": "저액",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18785",
+      "entry_word": "고열",
+      "sense_id": "18785#sense-001",
+      "relation_type": "반대말",
+      "word": "저열",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18801",
+      "entry_word": "고용원",
+      "sense_id": "18801#sense-002",
+      "relation_type": "유의어",
+      "word": "고용직공무원",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18836",
+      "entry_word": "고음",
+      "sense_id": "18836#sense-001",
+      "relation_type": "유의어",
+      "word": "높은음",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18838",
+      "entry_word": "과부",
+      "sense_id": "18838#sense-001",
+      "relation_type": "유의어",
+      "word": "과붓집, 과수",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18838",
+      "entry_word": "과부",
+      "sense_id": "18838#sense-001",
+      "relation_type": "높임말",
+      "word": "과부댁, 과수댁",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18971",
+      "entry_word": "감량",
+      "sense_id": "18971#sense-001",
+      "relation_type": "반대말",
+      "word": "증량",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "19171",
+      "entry_word": "강박",
+      "sense_id": "19171#sense-001",
+      "relation_type": "유의어",
+      "word": "겁박",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "19176",
+      "entry_word": "강박하다",
+      "sense_id": "19176#sense-001",
+      "relation_type": "유의어",
+      "word": "겁박하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "19223",
+      "entry_word": "고물상",
+      "sense_id": "19223#sense-002",
+      "relation_type": "유의어",
+      "word": "고물가게",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "19634",
+      "entry_word": "강산",
+      "sense_id": "19634#sense-001",
+      "relation_type": "참고어",
+      "word": "약산",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "19949",
+      "entry_word": "고리대금업",
+      "sense_id": "19949#sense-001",
+      "relation_type": "유의어",
+      "word": "고리대업",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20029",
+      "entry_word": "달구지",
+      "sense_id": "20029#sense-001",
+      "relation_type": "유의어",
+      "word": "우마차",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20036",
+      "entry_word": "달변",
+      "sense_id": "20036#sense-002",
+      "relation_type": "유의어",
+      "word": "달변가",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20093",
+      "entry_word": "고무보트",
+      "sense_id": "20093#sense-001",
+      "relation_type": "유의어",
+      "word": "고무배",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20452",
+      "entry_word": "거인",
+      "sense_id": "20452#sense-001",
+      "relation_type": "유의어",
+      "word": "대인",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "21242",
+      "entry_word": "갸름하다",
+      "sense_id": "21242#sense-001",
+      "relation_type": "큰말",
+      "word": "개름하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "21927",
+      "entry_word": "영계",
+      "sense_id": "21927#sense-001",
+      "relation_type": "유의어",
+      "word": "약병아리",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "21927",
+      "entry_word": "영계",
+      "sense_id": "21927#sense-001",
+      "relation_type": "참고어",
+      "word": "노계",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22424",
+      "entry_word": "객",
+      "sense_id": "22424#sense-001",
+      "relation_type": "높임말",
+      "word": "객인",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22432",
+      "entry_word": "객관성",
+      "sense_id": "22432#sense-001",
+      "relation_type": "유의어",
+      "word": "보편타당성",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22434",
+      "entry_word": "객관식",
+      "sense_id": "22434#sense-001",
+      "relation_type": "유의어",
+      "word": "선택형",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22444",
+      "entry_word": "관념성",
+      "sense_id": "22444#sense-001",
+      "relation_type": "참고어",
+      "word": "실재성",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22448",
+      "entry_word": "객관화",
+      "sense_id": "22448#sense-001",
+      "relation_type": "참고어",
+      "word": "주관화",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22565",
+      "entry_word": "계좌",
+      "sense_id": "22565#sense-001",
+      "relation_type": "유의어",
+      "word": "예금 계좌",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22623",
+      "entry_word": "공급지",
+      "sense_id": "22623#sense-001",
+      "relation_type": "참고어",
+      "word": "수요지",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22626",
+      "entry_word": "계집종",
+      "sense_id": "22626#sense-001",
+      "relation_type": "유의어",
+      "word": "여종",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22626",
+      "entry_word": "계집종",
+      "sense_id": "22626#sense-001",
+      "relation_type": "반대말",
+      "word": "사내종",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22764",
+      "entry_word": "여체",
+      "sense_id": "22764#sense-001",
+      "relation_type": "반대말",
+      "word": "남체",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22765",
+      "entry_word": "갖신",
+      "sense_id": "22765#sense-001",
+      "relation_type": "유의어",
+      "word": "가죽신",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22827",
+      "entry_word": "개고기",
+      "sense_id": "22827#sense-001",
+      "relation_type": "유의어",
+      "word": "구육",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23351",
+      "entry_word": "고동색",
+      "sense_id": "23351#sense-001",
+      "relation_type": "유의어",
+      "word": "고동빛",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23385",
+      "entry_word": "고딕",
+      "sense_id": "23385#sense-002",
+      "relation_type": "유의어",
+      "word": "고딕 건축",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23385",
+      "entry_word": "고딕",
+      "sense_id": "23385#sense-002",
+      "relation_type": "유의어",
+      "word": "고딕식",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23484",
+      "entry_word": "갹출",
+      "sense_id": "23484#sense-001",
+      "relation_type": "유의어",
+      "word": "갹금",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23484",
+      "entry_word": "갹출",
+      "sense_id": "23484#sense-001",
+      "relation_type": "유의어",
+      "word": "거출",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23591",
+      "entry_word": "공중목욕탕",
+      "sense_id": "23591#sense-001",
+      "relation_type": "유의어",
+      "word": "공중탕",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23648",
+      "entry_word": "기본요금",
+      "sense_id": "23648#sense-001",
+      "relation_type": "유의어",
+      "word": "기본료",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23736",
+      "entry_word": "기압",
+      "sense_id": "23736#sense-001",
+      "relation_type": "유의어",
+      "word": "대기압",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23784",
+      "entry_word": "공익사업",
+      "sense_id": "23784#sense-001",
+      "relation_type": "참고어",
+      "word": "영리사업",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23913",
+      "entry_word": "개혁되다",
+      "sense_id": "23913#sense-001",
+      "relation_type": "유의어",
+      "word": "개변되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23918",
+      "entry_word": "개혁자",
+      "sense_id": "23918#sense-001",
+      "relation_type": "유의어",
+      "word": "개혁가",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24079",
+      "entry_word": "의사",
+      "sense_id": "24079#sense-001",
+      "relation_type": "유의어",
+      "word": "의지",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24157",
+      "entry_word": "노루잠",
+      "sense_id": "24157#sense-001",
+      "relation_type": "유의어",
+      "word": "괭이잠",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24370",
+      "entry_word": "놋숟가락",
+      "sense_id": "24370#sense-001",
+      "relation_type": "유의어",
+      "word": "놋수저",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24370",
+      "entry_word": "놋숟가락",
+      "sense_id": "24370#sense-001",
+      "relation_type": "준말",
+      "word": "놋숟갈",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24621",
+      "entry_word": "개혁하다",
+      "sense_id": "24621#sense-001",
+      "relation_type": "유의어",
+      "word": "개변하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24785",
+      "entry_word": "자연적",
+      "sense_id": "24785#sense-001",
+      "relation_type": "유의어",
+      "word": "천연적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25222",
+      "entry_word": "건조 주의보",
+      "sense_id": "25222#sense-001",
+      "relation_type": "유의어",
+      "word": "가뭄 주의보",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25335",
+      "entry_word": "건평",
+      "sense_id": "25335#sense-001",
+      "relation_type": "참고어",
+      "word": "지평",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25335",
+      "entry_word": "건평",
+      "sense_id": "25335#sense-001",
+      "relation_type": "유의어",
+      "word": "건축 면적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25347",
+      "entry_word": "청춘",
+      "sense_id": "25347#sense-001",
+      "relation_type": "유의어",
+      "word": "청춘기",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25650",
+      "entry_word": "계란말이",
+      "sense_id": "25650#sense-001",
+      "relation_type": "유의어",
+      "word": "달걀말이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25722",
+      "entry_word": "가을걷이",
+      "sense_id": "25722#sense-001",
+      "relation_type": "준말",
+      "word": "갈걷이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25741",
+      "entry_word": "계몽주의",
+      "sense_id": "25741#sense-001",
+      "relation_type": "유의어",
+      "word": "계몽사상",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25748",
+      "entry_word": "납빛",
+      "sense_id": "25748#sense-001",
+      "relation_type": "유의어",
+      "word": "연색",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26143",
+      "entry_word": "중세",
+      "sense_id": "26143#sense-001",
+      "relation_type": "유의어",
+      "word": "중세기",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26349",
+      "entry_word": "거꾸러뜨리다",
+      "sense_id": "26349#sense-001",
+      "relation_type": "작은말",
+      "word": "가꾸러뜨리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26349",
+      "entry_word": "거꾸러뜨리다",
+      "sense_id": "26349#sense-001",
+      "relation_type": "센말",
+      "word": "꺼꾸러뜨리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26349",
+      "entry_word": "거꾸러뜨리다",
+      "sense_id": "26349#sense-002",
+      "relation_type": "작은말",
+      "word": "가꾸러뜨리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26349",
+      "entry_word": "거꾸러뜨리다",
+      "sense_id": "26349#sense-002",
+      "relation_type": "센말",
+      "word": "꺼꾸러뜨리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26349",
+      "entry_word": "거꾸러뜨리다",
+      "sense_id": "26349#sense-003",
+      "relation_type": "작은말",
+      "word": "가꾸러뜨리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26349",
+      "entry_word": "거꾸러뜨리다",
+      "sense_id": "26349#sense-003",
+      "relation_type": "센말",
+      "word": "꺼꾸러뜨리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26356",
+      "entry_word": "거꾸러지다",
+      "sense_id": "26356#sense-001",
+      "relation_type": "작은말",
+      "word": "가꾸러지다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26356",
+      "entry_word": "거꾸러지다",
+      "sense_id": "26356#sense-002",
+      "relation_type": "작은말",
+      "word": "가꾸러지다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26356",
+      "entry_word": "거꾸러지다",
+      "sense_id": "26356#sense-003",
+      "relation_type": "작은말",
+      "word": "가꾸러지다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26391",
+      "entry_word": "김장거리",
+      "sense_id": "26391#sense-001",
+      "relation_type": "유의어",
+      "word": "김장감",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26655",
+      "entry_word": "개심",
+      "sense_id": "26655#sense-001",
+      "relation_type": "유의어",
+      "word": "개과",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26798",
+      "entry_word": "거름종이",
+      "sense_id": "26798#sense-001",
+      "relation_type": "유의어",
+      "word": "여과지",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26849",
+      "entry_word": "빨간색",
+      "sense_id": "26849#sense-001",
+      "relation_type": "유의어",
+      "word": "빨간빛",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26880",
+      "entry_word": "어정쩡",
+      "sense_id": "26880#sense-001",
+      "relation_type": "유의어",
+      "word": "어정쩡히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26880",
+      "entry_word": "어정쩡",
+      "sense_id": "26880#sense-002",
+      "relation_type": "유의어",
+      "word": "어정쩡히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26880",
+      "entry_word": "어정쩡",
+      "sense_id": "26880#sense-003",
+      "relation_type": "유의어",
+      "word": "어정쩡히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26947",
+      "entry_word": "게슴츠레",
+      "sense_id": "26947#sense-001",
+      "relation_type": "유의어",
+      "word": "거슴츠레",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "27588",
+      "entry_word": "곡창",
+      "sense_id": "27588#sense-002",
+      "relation_type": "유의어",
+      "word": "곡향",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "27618",
+      "entry_word": "얼굴값",
+      "sense_id": "27618#sense-001",
+      "relation_type": "유의어",
+      "word": "인물값",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "27690",
+      "entry_word": "곤핍하다",
+      "sense_id": "27690#sense-001",
+      "relation_type": "유의어",
+      "word": "곤비하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "27696",
+      "entry_word": "곤히",
+      "sense_id": "27696#sense-001",
+      "relation_type": "유의어",
+      "word": "고단히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "27780",
+      "entry_word": "분",
+      "sense_id": "27780#sense-001",
+      "relation_type": "참고어",
+      "word": "-분",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "28096",
+      "entry_word": "가누다",
+      "sense_id": "28096#sense-001",
+      "relation_type": "큰말",
+      "word": "거누다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "28096",
+      "entry_word": "가누다",
+      "sense_id": "28096#sense-002",
+      "relation_type": "큰말",
+      "word": "거누다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "28096",
+      "entry_word": "가누다",
+      "sense_id": "28096#sense-003",
+      "relation_type": "큰말",
+      "word": "거누다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "28434",
+      "entry_word": "게으름",
+      "sense_id": "28434#sense-001",
+      "relation_type": "작은말",
+      "word": "개으름",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "28434",
+      "entry_word": "게으름",
+      "sense_id": "28434#sense-001",
+      "relation_type": "준말",
+      "word": "게름",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "28478",
+      "entry_word": "겨울새",
+      "sense_id": "28478#sense-001",
+      "relation_type": "참고어",
+      "word": "여름새",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "29684",
+      "entry_word": "견문",
+      "sense_id": "29684#sense-001",
+      "relation_type": "유의어",
+      "word": "문견",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30091",
+      "entry_word": "검푸르다",
+      "sense_id": "30091#sense-001",
+      "relation_type": "작은말",
+      "word": "감파르다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30117",
+      "entry_word": "청바지",
+      "sense_id": "30117#sense-001",
+      "relation_type": "유의어",
+      "word": "블루진",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30195",
+      "entry_word": "어머",
+      "sense_id": "30195#sense-001",
+      "relation_type": "작은말",
+      "word": "어마",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30421",
+      "entry_word": "겸상",
+      "sense_id": "30421#sense-001",
+      "relation_type": "참고어",
+      "word": "각상",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30451",
+      "entry_word": "겹겹이",
+      "sense_id": "30451#sense-001",
+      "relation_type": "참고어",
+      "word": "누누이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30557",
+      "entry_word": "경사도",
+      "sense_id": "30557#sense-001",
+      "relation_type": "유의어",
+      "word": "경도",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30557",
+      "entry_word": "경사도",
+      "sense_id": "30557#sense-001",
+      "relation_type": "참고어",
+      "word": "기울기",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30558",
+      "entry_word": "경사면",
+      "sense_id": "30558#sense-001",
+      "relation_type": "유의어",
+      "word": "비탈면",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30565",
+      "entry_word": "경상비",
+      "sense_id": "30565#sense-001",
+      "relation_type": "유의어",
+      "word": "경상 지출",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30565",
+      "entry_word": "경상비",
+      "sense_id": "30565#sense-001",
+      "relation_type": "참고어",
+      "word": "임시비",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30600",
+      "entry_word": "경제 지표",
+      "sense_id": "30600#sense-001",
+      "relation_type": "참고어",
+      "word": "경제 지수",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30625",
+      "entry_word": "경제 협력",
+      "sense_id": "30625#sense-001",
+      "relation_type": "유의어",
+      "word": "경제 원조",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30718",
+      "entry_word": "광명하다",
+      "sense_id": "30718#sense-001",
+      "relation_type": "반대말",
+      "word": "암흑하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30718",
+      "entry_word": "광명하다",
+      "sense_id": "30718#sense-002",
+      "relation_type": "유의어",
+      "word": "암흑하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30740",
+      "entry_word": "경서",
+      "sense_id": "30740#sense-001",
+      "relation_type": "유의어",
+      "word": "경",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30747",
+      "entry_word": "경승",
+      "sense_id": "30747#sense-001",
+      "relation_type": "유의어",
+      "word": "승경",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30775",
+      "entry_word": "경어법",
+      "sense_id": "30775#sense-001",
+      "relation_type": "유의어",
+      "word": "대우법",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30775",
+      "entry_word": "경어법",
+      "sense_id": "30775#sense-001",
+      "relation_type": "유의어",
+      "word": "존대법",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30790",
+      "entry_word": "경영학",
+      "sense_id": "30790#sense-001",
+      "relation_type": "유의어",
+      "word": "경영 경제학",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30819",
+      "entry_word": "광 통신",
+      "sense_id": "30819#sense-001",
+      "relation_type": "유의어",
+      "word": "광섬유 통신망",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30967",
+      "entry_word": "광복군",
+      "sense_id": "30967#sense-001",
+      "relation_type": "유의어",
+      "word": "한국광복군",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30970",
+      "entry_word": "광부",
+      "sense_id": "30970#sense-001",
+      "relation_type": "유의어",
+      "word": "갱부",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30970",
+      "entry_word": "광부",
+      "sense_id": "30970#sense-001",
+      "relation_type": "참고어",
+      "word": "탄부",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "31262",
+      "entry_word": "그즈음",
+      "sense_id": "31262#sense-001",
+      "relation_type": "준말",
+      "word": "그즘",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "31340",
+      "entry_word": "겉모습",
+      "sense_id": "31340#sense-001",
+      "relation_type": "유의어",
+      "word": "외용",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "31348",
+      "entry_word": "겉장",
+      "sense_id": "31348#sense-001",
+      "relation_type": "반대말",
+      "word": "속장",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "31357",
+      "entry_word": "게걸스럽다",
+      "sense_id": "31357#sense-001",
+      "relation_type": "유의어",
+      "word": "걸신스럽다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "31757",
+      "entry_word": "정신과",
+      "sense_id": "31757#sense-001",
+      "relation_type": "유의어",
+      "word": "신경 정신과",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32204",
+      "entry_word": "가을",
+      "sense_id": "32204#sense-001",
+      "relation_type": "준말",
+      "word": "갈",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32394",
+      "entry_word": "경마",
+      "sense_id": "32394#sense-003",
+      "relation_type": "유의어",
+      "word": "경주마",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32441",
+      "entry_word": "교안",
+      "sense_id": "32441#sense-001",
+      "relation_type": "유의어",
+      "word": "학습 지도안",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32552",
+      "entry_word": "깔끔하다",
+      "sense_id": "32552#sense-001",
+      "relation_type": "큰말",
+      "word": "끌끔하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32552",
+      "entry_word": "깔끔하다",
+      "sense_id": "32552#sense-002",
+      "relation_type": "큰말",
+      "word": "끌끔하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "33029",
+      "entry_word": "격변",
+      "sense_id": "33029#sense-001",
+      "relation_type": "유의어",
+      "word": "극변",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "33039",
+      "entry_word": "격식체",
+      "sense_id": "33039#sense-001",
+      "relation_type": "반대말",
+      "word": "비격식체",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "33704",
+      "entry_word": "굵다랗다",
+      "sense_id": "33704#sense-002",
+      "relation_type": "반대말",
+      "word": "잗다랗다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "34859",
+      "entry_word": "관상수",
+      "sense_id": "34859#sense-001",
+      "relation_type": "유의어",
+      "word": "관상목",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "34893",
+      "entry_word": "귀티",
+      "sense_id": "34893#sense-001",
+      "relation_type": "반대말",
+      "word": "천티",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "34893",
+      "entry_word": "귀티",
+      "sense_id": "34893#sense-001",
+      "relation_type": "참고어",
+      "word": "귀태",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "34986",
+      "entry_word": "귀히",
+      "sense_id": "34986#sense-001",
+      "relation_type": "반대말",
+      "word": "천히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "35131",
+      "entry_word": "교자상",
+      "sense_id": "35131#sense-001",
+      "relation_type": "유의어",
+      "word": "교자",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "35587",
+      "entry_word": "군사 독재",
+      "sense_id": "35587#sense-001",
+      "relation_type": "유의어",
+      "word": "군부 독재",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "35596",
+      "entry_word": "군사 분계선",
+      "sense_id": "35596#sense-001",
+      "relation_type": "유의어",
+      "word": "군사 경계선",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "35616",
+      "entry_word": "간계",
+      "sense_id": "35616#sense-001",
+      "relation_type": "유의어",
+      "word": "간책",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36162",
+      "entry_word": "굽이굽이",
+      "sense_id": "36162#sense-001",
+      "relation_type": "작은말",
+      "word": "곱이곱이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36247",
+      "entry_word": "그놈",
+      "sense_id": "36247#sense-001",
+      "relation_type": "반대말",
+      "word": "그년",
+      "target_code": "89802",
+      "link_type": "C"
+    },
+    {
+      "entry_id": "36247",
+      "entry_word": "그놈",
+      "sense_id": "36247#sense-001",
+      "relation_type": "작은말",
+      "word": "고놈",
+      "target_code": "89080",
+      "link_type": "C"
+    },
+    {
+      "entry_id": "36247",
+      "entry_word": "그놈",
+      "sense_id": "36247#sense-002",
+      "relation_type": "반대말",
+      "word": "그년",
+      "target_code": "89802",
+      "link_type": "C"
+    },
+    {
+      "entry_id": "36247",
+      "entry_word": "그놈",
+      "sense_id": "36247#sense-003",
+      "relation_type": "반대말",
+      "word": "그년",
+      "target_code": "89802",
+      "link_type": "C"
+    },
+    {
+      "entry_id": "36247",
+      "entry_word": "그놈",
+      "sense_id": "36247#sense-003",
+      "relation_type": "작은말",
+      "word": "고놈",
+      "target_code": "89080",
+      "link_type": "C"
+    },
+    {
+      "entry_id": "36247",
+      "entry_word": "그놈",
+      "sense_id": "36247#sense-004",
+      "relation_type": "작은말",
+      "word": "고놈",
+      "target_code": "89080",
+      "link_type": "C"
+    },
+    {
+      "entry_id": "36247",
+      "entry_word": "그놈",
+      "sense_id": "36247#sense-005",
+      "relation_type": "작은말",
+      "word": "고놈",
+      "target_code": "89080",
+      "link_type": "C"
+    },
+    {
+      "entry_id": "36279",
+      "entry_word": "그러저러하다",
+      "sense_id": "36279#sense-001",
+      "relation_type": "작은말",
+      "word": "고러조러하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36535",
+      "entry_word": "금광",
+      "sense_id": "36535#sense-002",
+      "relation_type": "유의어",
+      "word": "금광석",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36735",
+      "entry_word": "구태여",
+      "sense_id": "36735#sense-001",
+      "relation_type": "준말",
+      "word": "구태",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "37157",
+      "entry_word": "극작가",
+      "sense_id": "37157#sense-001",
+      "relation_type": "참고어",
+      "word": "희곡 작가",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "37313",
+      "entry_word": "권두",
+      "sense_id": "37313#sense-001",
+      "relation_type": "참고어",
+      "word": "권말",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "37329",
+      "entry_word": "권외",
+      "sense_id": "37329#sense-001",
+      "relation_type": "반대말",
+      "word": "권내",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "37996",
+      "entry_word": "납",
+      "sense_id": "37996#sense-002",
+      "relation_type": "유의어",
+      "word": "땜납",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38271",
+      "entry_word": "귀빈",
+      "sense_id": "38271#sense-001",
+      "relation_type": "유의어",
+      "word": "귀객",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38365",
+      "entry_word": "까마득하다",
+      "sense_id": "38365#sense-001",
+      "relation_type": "여린말",
+      "word": "가마득하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38365",
+      "entry_word": "까마득하다",
+      "sense_id": "38365#sense-002",
+      "relation_type": "여린말",
+      "word": "가마득하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38365",
+      "entry_word": "까마득하다",
+      "sense_id": "38365#sense-003",
+      "relation_type": "여린말",
+      "word": "가마득하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38365",
+      "entry_word": "까마득하다",
+      "sense_id": "38365#sense-004",
+      "relation_type": "여린말",
+      "word": "가마득하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38577",
+      "entry_word": "국세청",
+      "sense_id": "38577#sense-001",
+      "relation_type": "참고어",
+      "word": "관세청",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38615",
+      "entry_word": "국제기구",
+      "sense_id": "38615#sense-001",
+      "relation_type": "유의어",
+      "word": "국제기관",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38615",
+      "entry_word": "국제기구",
+      "sense_id": "38615#sense-001",
+      "relation_type": "참고어",
+      "word": "국제단체",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38623",
+      "entry_word": "국제 우편",
+      "sense_id": "38623#sense-001",
+      "relation_type": "참고어",
+      "word": "국내 우편",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38642",
+      "entry_word": "까마득히",
+      "sense_id": "38642#sense-001",
+      "relation_type": "여린말",
+      "word": "가마득히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38642",
+      "entry_word": "까마득히",
+      "sense_id": "38642#sense-002",
+      "relation_type": "여린말",
+      "word": "가마득히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38642",
+      "entry_word": "까마득히",
+      "sense_id": "38642#sense-003",
+      "relation_type": "여린말",
+      "word": "가마득히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38642",
+      "entry_word": "까마득히",
+      "sense_id": "38642#sense-004",
+      "relation_type": "여린말",
+      "word": "가마득히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38746",
+      "entry_word": "기고가",
+      "sense_id": "38746#sense-001",
+      "relation_type": "참고어",
+      "word": "투고자",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "39435",
+      "entry_word": "깽",
+      "sense_id": "39435#sense-001",
+      "relation_type": "큰말",
+      "word": "낑",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "39435",
+      "entry_word": "깽",
+      "sense_id": "39435#sense-001",
+      "relation_type": "센말",
+      "word": "캥",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40073",
+      "entry_word": "기부금",
+      "sense_id": "40073#sense-001",
+      "relation_type": "유의어",
+      "word": "기금",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40515",
+      "entry_word": "다리미판",
+      "sense_id": "40515#sense-001",
+      "relation_type": "준말",
+      "word": "다림판",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40820",
+      "entry_word": "날도둑",
+      "sense_id": "40820#sense-001",
+      "relation_type": "유의어",
+      "word": "날도적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40844",
+      "entry_word": "논밭",
+      "sense_id": "40844#sense-001",
+      "relation_type": "유의어",
+      "word": "전답",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41210",
+      "entry_word": "관제탑",
+      "sense_id": "41210#sense-001",
+      "relation_type": "유의어",
+      "word": "항공관제탑",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41217",
+      "entry_word": "금제",
+      "sense_id": "41217#sense-001",
+      "relation_type": "유의어",
+      "word": "금제품",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41535",
+      "entry_word": "눅눅하다",
+      "sense_id": "41535#sense-001",
+      "relation_type": "작은말",
+      "word": "녹녹하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41535",
+      "entry_word": "눅눅하다",
+      "sense_id": "41535#sense-002",
+      "relation_type": "작은말",
+      "word": "녹녹하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41547",
+      "entry_word": "눈구멍",
+      "sense_id": "41547#sense-001",
+      "relation_type": "유의어",
+      "word": "안공",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41605",
+      "entry_word": "꺼칠하다",
+      "sense_id": "41605#sense-001",
+      "relation_type": "여린말",
+      "word": "거칠하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "42808",
+      "entry_word": "넌더리",
+      "sense_id": "42808#sense-001",
+      "relation_type": "준말",
+      "word": "넌덜",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "42810",
+      "entry_word": "넌지시",
+      "sense_id": "42810#sense-001",
+      "relation_type": "준말",
+      "word": "넌짓",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "43895",
+      "entry_word": "길목",
+      "sense_id": "43895#sense-001",
+      "relation_type": "유의어",
+      "word": "길머리",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "44505",
+      "entry_word": "대나무",
+      "sense_id": "44505#sense-001",
+      "relation_type": "유의어",
+      "word": "대",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "45103",
+      "entry_word": "고전미",
+      "sense_id": "45103#sense-001",
+      "relation_type": "참고어",
+      "word": "현대미",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "45609",
+      "entry_word": "누르다",
+      "sense_id": "45609#sense-001",
+      "relation_type": "참고어",
+      "word": "노르다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47153",
+      "entry_word": "동맥 경화증",
+      "sense_id": "47153#sense-001",
+      "relation_type": "유의어",
+      "word": "동맥 경화",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47164",
+      "entry_word": "동문",
+      "sense_id": "47164#sense-001",
+      "relation_type": "유의어",
+      "word": "동학",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47221",
+      "entry_word": "동성",
+      "sense_id": "47221#sense-001",
+      "relation_type": "참고어",
+      "word": "이성",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47246",
+      "entry_word": "대형차",
+      "sense_id": "47246#sense-001",
+      "relation_type": "유의어",
+      "word": "대형 자동차",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47279",
+      "entry_word": "대흉년",
+      "sense_id": "47279#sense-001",
+      "relation_type": "유의어",
+      "word": "대흉",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47289",
+      "entry_word": "댕강",
+      "sense_id": "47289#sense-001",
+      "relation_type": "큰말",
+      "word": "뎅겅",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47382",
+      "entry_word": "더러움",
+      "sense_id": "47382#sense-001",
+      "relation_type": "준말",
+      "word": "더럼",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47387",
+      "entry_word": "더벅머리",
+      "sense_id": "47387#sense-001",
+      "relation_type": "작은말",
+      "word": "다박머리",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47387",
+      "entry_word": "더벅머리",
+      "sense_id": "47387#sense-001",
+      "relation_type": "센말",
+      "word": "터벅머리",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47486",
+      "entry_word": "데이터베이스",
+      "sense_id": "47486#sense-001",
+      "relation_type": "유의어",
+      "word": "디비",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47572",
+      "entry_word": "도살장",
+      "sense_id": "47572#sense-001",
+      "relation_type": "유의어",
+      "word": "도축장",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48147",
+      "entry_word": "동학",
+      "sense_id": "48147#sense-001",
+      "relation_type": "유의어",
+      "word": "동학교",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48157",
+      "entry_word": "동형",
+      "sense_id": "48157#sense-001",
+      "relation_type": "반대말",
+      "word": "이형",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48194",
+      "entry_word": "되새기다",
+      "sense_id": "48194#sense-003",
+      "relation_type": "유의어",
+      "word": "되새김하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48257",
+      "entry_word": "두견새",
+      "sense_id": "48257#sense-001",
+      "relation_type": "유의어",
+      "word": "두견",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48263",
+      "entry_word": "돌림자",
+      "sense_id": "48263#sense-001",
+      "relation_type": "유의어",
+      "word": "항렬자",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48462",
+      "entry_word": "대도",
+      "sense_id": "48462#sense-001",
+      "relation_type": "유의어",
+      "word": "대적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48560",
+      "entry_word": "독초",
+      "sense_id": "48560#sense-001",
+      "relation_type": "유의어",
+      "word": "독풀",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48695",
+      "entry_word": "덜렁이",
+      "sense_id": "48695#sense-001",
+      "relation_type": "유의어",
+      "word": "덜렁쇠",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48874",
+      "entry_word": "독방",
+      "sense_id": "48874#sense-001",
+      "relation_type": "유의어",
+      "word": "독실",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "49011",
+      "entry_word": "동구권",
+      "sense_id": "49011#sense-001",
+      "relation_type": "참고어",
+      "word": "서구권",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "49105",
+      "entry_word": "등심",
+      "sense_id": "49105#sense-001",
+      "relation_type": "유의어",
+      "word": "등심살",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "49229",
+      "entry_word": "세트",
+      "sense_id": "49229#sense-002",
+      "relation_type": "여린말",
+      "word": "무대 장치",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "49487",
+      "entry_word": "당선자",
+      "sense_id": "49487#sense-001",
+      "relation_type": "유의어",
+      "word": "당선인",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "49487",
+      "entry_word": "당선자",
+      "sense_id": "49487#sense-002",
+      "relation_type": "유의어",
+      "word": "당선인",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "49498",
+      "entry_word": "당원",
+      "sense_id": "49498#sense-001",
+      "relation_type": "유의어",
+      "word": "정당원",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "49652",
+      "entry_word": "들쥐",
+      "sense_id": "49652#sense-001",
+      "relation_type": "유의어",
+      "word": "멧밭쥐",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "49652",
+      "entry_word": "들쥐",
+      "sense_id": "49652#sense-001",
+      "relation_type": "참고어",
+      "word": "산쥐",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50288",
+      "entry_word": "덥석덥석",
+      "sense_id": "50288#sense-001",
+      "relation_type": "센말",
+      "word": "텁석텁석",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50527",
+      "entry_word": "득실",
+      "sense_id": "50527#sense-002",
+      "relation_type": "참고어",
+      "word": "이해",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50544",
+      "entry_word": "딱딱",
+      "sense_id": "50544#sense-001",
+      "relation_type": "큰말",
+      "word": "떡떡",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50544",
+      "entry_word": "딱딱",
+      "sense_id": "50544#sense-002",
+      "relation_type": "큰말",
+      "word": "떡떡",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50544",
+      "entry_word": "딱딱",
+      "sense_id": "50544#sense-003",
+      "relation_type": "큰말",
+      "word": "떡떡",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50544",
+      "entry_word": "딱딱",
+      "sense_id": "50544#sense-004",
+      "relation_type": "큰말",
+      "word": "떡떡",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50544",
+      "entry_word": "딱딱",
+      "sense_id": "50544#sense-005",
+      "relation_type": "큰말",
+      "word": "떡떡",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50551",
+      "entry_word": "든든하다",
+      "sense_id": "50551#sense-001",
+      "relation_type": "센말",
+      "word": "뜬뜬하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50551",
+      "entry_word": "든든하다",
+      "sense_id": "50551#sense-002",
+      "relation_type": "센말",
+      "word": "뜬뜬하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50551",
+      "entry_word": "든든하다",
+      "sense_id": "50551#sense-003",
+      "relation_type": "센말",
+      "word": "뜬뜬하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50551",
+      "entry_word": "든든하다",
+      "sense_id": "50551#sense-004",
+      "relation_type": "센말",
+      "word": "뜬뜬하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50551",
+      "entry_word": "든든하다",
+      "sense_id": "50551#sense-005",
+      "relation_type": "센말",
+      "word": "뜬뜬하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "51000",
+      "entry_word": "득득",
+      "sense_id": "51000#sense-001",
+      "relation_type": "작은말",
+      "word": "닥닥",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "53091",
+      "entry_word": "똘똘하다",
+      "sense_id": "53091#sense-001",
+      "relation_type": "여린말",
+      "word": "돌돌하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "53931",
+      "entry_word": "디딤돌",
+      "sense_id": "53931#sense-002",
+      "relation_type": "유의어",
+      "word": "섬돌",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55045",
+      "entry_word": "무자격자",
+      "sense_id": "55045#sense-001",
+      "relation_type": "반대말",
+      "word": "유자격자",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55058",
+      "entry_word": "무정부주의",
+      "sense_id": "55058#sense-001",
+      "relation_type": "유의어",
+      "word": "아나키즘",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55160",
+      "entry_word": "무직자",
+      "sense_id": "55160#sense-001",
+      "relation_type": "유의어",
+      "word": "무직업자",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55160",
+      "entry_word": "무직자",
+      "sense_id": "55160#sense-001",
+      "relation_type": "반대말",
+      "word": "유직자",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55428",
+      "entry_word": "머",
+      "sense_id": "55428#sense-001",
+      "relation_type": "참고어",
+      "word": "뭐",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55428",
+      "entry_word": "머",
+      "sense_id": "55428#sense-002",
+      "relation_type": "참고어",
+      "word": "뭐",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55428",
+      "entry_word": "머",
+      "sense_id": "55428#sense-003",
+      "relation_type": "참고어",
+      "word": "뭐",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55428",
+      "entry_word": "머",
+      "sense_id": "55428#sense-004",
+      "relation_type": "참고어",
+      "word": "뭐",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55428",
+      "entry_word": "머",
+      "sense_id": "55428#sense-005",
+      "relation_type": "참고어",
+      "word": "뭐",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55729",
+      "entry_word": "매직펜",
+      "sense_id": "55729#sense-001",
+      "relation_type": "유의어",
+      "word": "매직",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55995",
+      "entry_word": "모델",
+      "sense_id": "55995#sense-003",
+      "relation_type": "유의어",
+      "word": "패션모델",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56059",
+      "entry_word": "문",
+      "sense_id": "56059#sense-001",
+      "relation_type": "참고어",
+      "word": "무",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56084",
+      "entry_word": "간데없다",
+      "sense_id": "56084#sense-001",
+      "relation_type": "유의어",
+      "word": "간곳없다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56177",
+      "entry_word": "물걸레",
+      "sense_id": "56177#sense-001",
+      "relation_type": "참고어",
+      "word": "마른걸레",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56263",
+      "entry_word": "미역",
+      "sense_id": "56263#sense-001",
+      "relation_type": "준말",
+      "word": "멱",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56354",
+      "entry_word": "바깥양반",
+      "sense_id": "56354#sense-001",
+      "relation_type": "높임말",
+      "word": "바깥어른",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56491",
+      "entry_word": "민얼굴",
+      "sense_id": "56491#sense-001",
+      "relation_type": "유의어",
+      "word": "민낯",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56580",
+      "entry_word": "발그스름하다",
+      "sense_id": "56580#sense-001",
+      "relation_type": "유의어",
+      "word": "발그스레하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56580",
+      "entry_word": "발그스름하다",
+      "sense_id": "56580#sense-001",
+      "relation_type": "큰말",
+      "word": "벌그스름하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56580",
+      "entry_word": "발그스름하다",
+      "sense_id": "56580#sense-001",
+      "relation_type": "센말",
+      "word": "빨그스름하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56596",
+      "entry_word": "발기다",
+      "sense_id": "56596#sense-001",
+      "relation_type": "큰말",
+      "word": "벌기다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56633",
+      "entry_word": "미장이",
+      "sense_id": "56633#sense-001",
+      "relation_type": "유의어",
+      "word": "미장공",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56654",
+      "entry_word": "밀짚모자",
+      "sense_id": "56654#sense-001",
+      "relation_type": "유의어",
+      "word": "밀짚모",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56672",
+      "entry_word": "밉상",
+      "sense_id": "56672#sense-001",
+      "relation_type": "반대말",
+      "word": "곱상",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56810",
+      "entry_word": "발명가",
+      "sense_id": "56810#sense-001",
+      "relation_type": "유의어",
+      "word": "발명자",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56874",
+      "entry_word": "발송자",
+      "sense_id": "56874#sense-001",
+      "relation_type": "유의어",
+      "word": "발송인",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56886",
+      "entry_word": "반라",
+      "sense_id": "56886#sense-001",
+      "relation_type": "유의어",
+      "word": "반나체",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56918",
+      "entry_word": "문전성시",
+      "sense_id": "56918#sense-001",
+      "relation_type": "유의어",
+      "word": "문전약시",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57023",
+      "entry_word": "발칵",
+      "sense_id": "57023#sense-001",
+      "relation_type": "여린말",
+      "word": "발깍",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57023",
+      "entry_word": "발칵",
+      "sense_id": "57023#sense-002",
+      "relation_type": "여린말",
+      "word": "발깍",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57023",
+      "entry_word": "발칵",
+      "sense_id": "57023#sense-003",
+      "relation_type": "여린말",
+      "word": "발깍",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57324",
+      "entry_word": "대못",
+      "sense_id": "57324#sense-001",
+      "relation_type": "유의어",
+      "word": "큰못",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57369",
+      "entry_word": "민저고리",
+      "sense_id": "57369#sense-001",
+      "relation_type": "참고어",
+      "word": "회장저고리",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57383",
+      "entry_word": "민족주의",
+      "sense_id": "57383#sense-001",
+      "relation_type": "유의어",
+      "word": "내셔널리즘",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57493",
+      "entry_word": "맞닥뜨리다",
+      "sense_id": "57493#sense-001",
+      "relation_type": "유의어",
+      "word": "맞닥트리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57493",
+      "entry_word": "맞닥뜨리다",
+      "sense_id": "57493#sense-002",
+      "relation_type": "유의어",
+      "word": "맞닥트리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57651",
+      "entry_word": "밤일",
+      "sense_id": "57651#sense-001",
+      "relation_type": "유의어",
+      "word": "야간작업",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57651",
+      "entry_word": "밤일",
+      "sense_id": "57651#sense-001",
+      "relation_type": "참고어",
+      "word": "낮일",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57656",
+      "entry_word": "밤일하다",
+      "sense_id": "57656#sense-001",
+      "relation_type": "유의어",
+      "word": "야간작업하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57663",
+      "entry_word": "밤차",
+      "sense_id": "57663#sense-001",
+      "relation_type": "유의어",
+      "word": "야간열차",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57663",
+      "entry_word": "밤차",
+      "sense_id": "57663#sense-001",
+      "relation_type": "참고어",
+      "word": "낮차",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57764",
+      "entry_word": "미간",
+      "sense_id": "57764#sense-001",
+      "relation_type": "유의어",
+      "word": "양미간",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57829",
+      "entry_word": "방긋이",
+      "sense_id": "57829#sense-001",
+      "relation_type": "큰말",
+      "word": "벙긋이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57829",
+      "entry_word": "방긋이",
+      "sense_id": "57829#sense-001",
+      "relation_type": "센말",
+      "word": "방끗이, 빵긋이, 빵끗이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57863",
+      "entry_word": "방도",
+      "sense_id": "57863#sense-001",
+      "relation_type": "참고어",
+      "word": "길",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57907",
+      "entry_word": "방해되다",
+      "sense_id": "57907#sense-001",
+      "relation_type": "유의어",
+      "word": "장애되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58053",
+      "entry_word": "바싹바싹",
+      "sense_id": "58053#sense-001",
+      "relation_type": "큰말",
+      "word": "버썩버썩",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58053",
+      "entry_word": "바싹바싹",
+      "sense_id": "58053#sense-002",
+      "relation_type": "큰말",
+      "word": "버썩버썩",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58053",
+      "entry_word": "바싹바싹",
+      "sense_id": "58053#sense-003",
+      "relation_type": "큰말",
+      "word": "버썩버썩",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58053",
+      "entry_word": "바싹바싹",
+      "sense_id": "58053#sense-004",
+      "relation_type": "큰말",
+      "word": "버썩버썩",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58053",
+      "entry_word": "바싹바싹",
+      "sense_id": "58053#sense-005",
+      "relation_type": "큰말",
+      "word": "버썩버썩",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58434",
+      "entry_word": "백중날",
+      "sense_id": "58434#sense-001",
+      "relation_type": "유의어",
+      "word": "백중일",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58486",
+      "entry_word": "번드르르",
+      "sense_id": "58486#sense-001",
+      "relation_type": "작은말",
+      "word": "반드르르",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58486",
+      "entry_word": "번드르르",
+      "sense_id": "58486#sense-001",
+      "relation_type": "센말",
+      "word": "뻔드르르",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58487",
+      "entry_word": "법학자",
+      "sense_id": "58487#sense-001",
+      "relation_type": "유의어",
+      "word": "법률학자",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58503",
+      "entry_word": "벙긋",
+      "sense_id": "58503#sense-001",
+      "relation_type": "유의어",
+      "word": "벙긋이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58503",
+      "entry_word": "벙긋",
+      "sense_id": "58503#sense-001",
+      "relation_type": "작은말",
+      "word": "벙끗, 뻥긋, 뻥끗",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58513",
+      "entry_word": "벙싯",
+      "sense_id": "58513#sense-001",
+      "relation_type": "유의어",
+      "word": "벙싯이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58513",
+      "entry_word": "벙싯",
+      "sense_id": "58513#sense-001",
+      "relation_type": "작은말",
+      "word": "방싯",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58513",
+      "entry_word": "벙싯",
+      "sense_id": "58513#sense-001",
+      "relation_type": "센말",
+      "word": "뻥싯",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58513",
+      "entry_word": "벙싯",
+      "sense_id": "58513#sense-002",
+      "relation_type": "유의어",
+      "word": "벙싯이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58513",
+      "entry_word": "벙싯",
+      "sense_id": "58513#sense-002",
+      "relation_type": "작은말",
+      "word": "방싯",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58513",
+      "entry_word": "벙싯",
+      "sense_id": "58513#sense-002",
+      "relation_type": "센말",
+      "word": "뻥싯",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58564",
+      "entry_word": "베이스",
+      "sense_id": "58564#sense-001",
+      "relation_type": "유의어",
+      "word": "누",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58581",
+      "entry_word": "백태",
+      "sense_id": "58581#sense-001",
+      "relation_type": "참고어",
+      "word": "설태",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58687",
+      "entry_word": "백발백중",
+      "sense_id": "58687#sense-001",
+      "relation_type": "참고어",
+      "word": "일발필중",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58743",
+      "entry_word": "번뜩",
+      "sense_id": "58743#sense-001",
+      "relation_type": "여린말",
+      "word": "번득",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58783",
+      "entry_word": "버그러지다",
+      "sense_id": "58783#sense-001",
+      "relation_type": "작은말",
+      "word": "바그라지다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58783",
+      "entry_word": "버그러지다",
+      "sense_id": "58783#sense-001",
+      "relation_type": "센말",
+      "word": "뻐그러지다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58783",
+      "entry_word": "버그러지다",
+      "sense_id": "58783#sense-002",
+      "relation_type": "센말",
+      "word": "뻐그러지다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58882",
+      "entry_word": "병창",
+      "sense_id": "58882#sense-001",
+      "relation_type": "참고어",
+      "word": "산조",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58998",
+      "entry_word": "벌쭉",
+      "sense_id": "58998#sense-001",
+      "relation_type": "유의어",
+      "word": "벌쭉이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58998",
+      "entry_word": "벌쭉",
+      "sense_id": "58998#sense-001",
+      "relation_type": "작은말",
+      "word": "발쪽",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58998",
+      "entry_word": "벌쭉",
+      "sense_id": "58998#sense-001",
+      "relation_type": "센말",
+      "word": "뻘쭉",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58998",
+      "entry_word": "벌쭉",
+      "sense_id": "58998#sense-002",
+      "relation_type": "유의어",
+      "word": "벌쭉이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58998",
+      "entry_word": "벌쭉",
+      "sense_id": "58998#sense-002",
+      "relation_type": "작은말",
+      "word": "발쪽",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58998",
+      "entry_word": "벌쭉",
+      "sense_id": "58998#sense-002",
+      "relation_type": "센말",
+      "word": "뻘쭉",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58998",
+      "entry_word": "벌쭉",
+      "sense_id": "58998#sense-003",
+      "relation_type": "유의어",
+      "word": "벌쭉이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58998",
+      "entry_word": "벌쭉",
+      "sense_id": "58998#sense-003",
+      "relation_type": "작은말",
+      "word": "발쪽",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58998",
+      "entry_word": "벌쭉",
+      "sense_id": "58998#sense-003",
+      "relation_type": "센말",
+      "word": "뻘쭉",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59023",
+      "entry_word": "벌컥벌컥",
+      "sense_id": "59023#sense-001",
+      "relation_type": "여린말",
+      "word": "벌꺽벌꺽",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59023",
+      "entry_word": "벌컥벌컥",
+      "sense_id": "59023#sense-002",
+      "relation_type": "여린말",
+      "word": "벌꺽벌꺽",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59023",
+      "entry_word": "벌컥벌컥",
+      "sense_id": "59023#sense-003",
+      "relation_type": "여린말",
+      "word": "벌꺽벌꺽",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59098",
+      "entry_word": "벌레",
+      "sense_id": "59098#sense-001",
+      "relation_type": "유의어",
+      "word": "버러지",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59114",
+      "entry_word": "벌떡벌떡",
+      "sense_id": "59114#sense-001",
+      "relation_type": "작은말",
+      "word": "발딱발딱",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59114",
+      "entry_word": "벌떡벌떡",
+      "sense_id": "59114#sense-001",
+      "relation_type": "센말",
+      "word": "뻘떡뻘떡",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59114",
+      "entry_word": "벌떡벌떡",
+      "sense_id": "59114#sense-002",
+      "relation_type": "작은말",
+      "word": "발딱발딱",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59114",
+      "entry_word": "벌떡벌떡",
+      "sense_id": "59114#sense-002",
+      "relation_type": "센말",
+      "word": "뻘떡뻘떡",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59114",
+      "entry_word": "벌떡벌떡",
+      "sense_id": "59114#sense-003",
+      "relation_type": "작은말",
+      "word": "발딱발딱",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59114",
+      "entry_word": "벌떡벌떡",
+      "sense_id": "59114#sense-003",
+      "relation_type": "센말",
+      "word": "뻘떡뻘떡",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59114",
+      "entry_word": "벌떡벌떡",
+      "sense_id": "59114#sense-004",
+      "relation_type": "작은말",
+      "word": "발딱발딱",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59114",
+      "entry_word": "벌떡벌떡",
+      "sense_id": "59114#sense-004",
+      "relation_type": "센말",
+      "word": "뻘떡뻘떡",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59114",
+      "entry_word": "벌떡벌떡",
+      "sense_id": "59114#sense-005",
+      "relation_type": "작은말",
+      "word": "발딱발딱",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59114",
+      "entry_word": "벌떡벌떡",
+      "sense_id": "59114#sense-005",
+      "relation_type": "센말",
+      "word": "뻘떡뻘떡",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59140",
+      "entry_word": "배상",
+      "sense_id": "59140#sense-001",
+      "relation_type": "참고어",
+      "word": "올림",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59175",
+      "entry_word": "배수",
+      "sense_id": "59175#sense-002",
+      "relation_type": "참고어",
+      "word": "약수",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59370",
+      "entry_word": "보결",
+      "sense_id": "59370#sense-001",
+      "relation_type": "유의어",
+      "word": "보궐",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59572",
+      "entry_word": "복수",
+      "sense_id": "59572#sense-001",
+      "relation_type": "반대말",
+      "word": "단수",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59579",
+      "entry_word": "복식",
+      "sense_id": "59579#sense-001",
+      "relation_type": "유의어",
+      "word": "복식 경기",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59579",
+      "entry_word": "복식",
+      "sense_id": "59579#sense-001",
+      "relation_type": "참고어",
+      "word": "단식",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59608",
+      "entry_word": "볼때기",
+      "sense_id": "59608#sense-001",
+      "relation_type": "유의어",
+      "word": "볼따구니",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59711",
+      "entry_word": "부인",
+      "sense_id": "59711#sense-001",
+      "relation_type": "반대말",
+      "word": "시인",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59784",
+      "entry_word": "본부인",
+      "sense_id": "59784#sense-001",
+      "relation_type": "참고어",
+      "word": "본남편",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60315",
+      "entry_word": "빙글빙글",
+      "sense_id": "60315#sense-001",
+      "relation_type": "참고어",
+      "word": "삥글삥글",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60326",
+      "entry_word": "빨강",
+      "sense_id": "60326#sense-001",
+      "relation_type": "큰말",
+      "word": "뻘겅",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60379",
+      "entry_word": "빨랑빨랑",
+      "sense_id": "60379#sense-001",
+      "relation_type": "여린말",
+      "word": "발랑발랑",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60404",
+      "entry_word": "비계",
+      "sense_id": "60404#sense-001",
+      "relation_type": "유의어",
+      "word": "비곗살",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60505",
+      "entry_word": "빤히",
+      "sense_id": "60505#sense-001",
+      "relation_type": "여린말",
+      "word": "반히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60505",
+      "entry_word": "빤히",
+      "sense_id": "60505#sense-002",
+      "relation_type": "여린말",
+      "word": "반히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60505",
+      "entry_word": "빤히",
+      "sense_id": "60505#sense-003",
+      "relation_type": "여린말",
+      "word": "반히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60528",
+      "entry_word": "불규칙 용언",
+      "sense_id": "60528#sense-001",
+      "relation_type": "참고어",
+      "word": "규칙 용언",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60728",
+      "entry_word": "비주류",
+      "sense_id": "60728#sense-001",
+      "relation_type": "참고어",
+      "word": "주류",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60741",
+      "entry_word": "비린내",
+      "sense_id": "60741#sense-001",
+      "relation_type": "참고어",
+      "word": "풋내",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60777",
+      "entry_word": "비쭉",
+      "sense_id": "60777#sense-001",
+      "relation_type": "유의어",
+      "word": "비쭉이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60777",
+      "entry_word": "비쭉",
+      "sense_id": "60777#sense-001",
+      "relation_type": "여린말",
+      "word": "비죽",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60777",
+      "entry_word": "비쭉",
+      "sense_id": "60777#sense-002",
+      "relation_type": "유의어",
+      "word": "비쭉이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60777",
+      "entry_word": "비쭉",
+      "sense_id": "60777#sense-002",
+      "relation_type": "여린말",
+      "word": "비죽",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60810",
+      "entry_word": "비취",
+      "sense_id": "60810#sense-001",
+      "relation_type": "유의어",
+      "word": "비취옥",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60820",
+      "entry_word": "불순분자",
+      "sense_id": "60820#sense-001",
+      "relation_type": "참고어",
+      "word": "불량분자",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60929",
+      "entry_word": "분열증",
+      "sense_id": "60929#sense-001",
+      "relation_type": "유의어",
+      "word": "정신 분열병",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61101",
+      "entry_word": "삐죽하다",
+      "sense_id": "61101#sense-001",
+      "relation_type": "여린말",
+      "word": "비죽하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61101",
+      "entry_word": "삐죽하다",
+      "sense_id": "61101#sense-001",
+      "relation_type": "본말",
+      "word": "삐주룩하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61103",
+      "entry_word": "삐쭉",
+      "sense_id": "61103#sense-001",
+      "relation_type": "유의어",
+      "word": "삐쭉이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61103",
+      "entry_word": "삐쭉",
+      "sense_id": "61103#sense-001",
+      "relation_type": "여린말",
+      "word": "비죽",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61103",
+      "entry_word": "삐쭉",
+      "sense_id": "61103#sense-001",
+      "relation_type": "본말",
+      "word": "삐쭈룩",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61111",
+      "entry_word": "빼꼼히",
+      "sense_id": "61111#sense-001",
+      "relation_type": "유의어",
+      "word": "빼꼼",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61124",
+      "entry_word": "사각사각",
+      "sense_id": "61124#sense-002",
+      "relation_type": "참고어",
+      "word": "싸각싸각",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61124",
+      "entry_word": "사각사각",
+      "sense_id": "61124#sense-003",
+      "relation_type": "참고어",
+      "word": "싸각싸각",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61124",
+      "entry_word": "사각사각",
+      "sense_id": "61124#sense-003",
+      "relation_type": "본말",
+      "word": "사그락사그락",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61124",
+      "entry_word": "사각사각",
+      "sense_id": "61124#sense-004",
+      "relation_type": "참고어",
+      "word": "싸각싸각",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61124",
+      "entry_word": "사각사각",
+      "sense_id": "61124#sense-005",
+      "relation_type": "참고어",
+      "word": "싸각싸각",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61124",
+      "entry_word": "사각사각",
+      "sense_id": "61124#sense-005",
+      "relation_type": "본말",
+      "word": "사그락사그락",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61149",
+      "entry_word": "사사건건",
+      "sense_id": "61149#sense-001",
+      "relation_type": "유의어",
+      "word": "사사건건이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61277",
+      "entry_word": "뻘뻘",
+      "sense_id": "61277#sense-001",
+      "relation_type": "여린말",
+      "word": "벌벌",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61466",
+      "entry_word": "살인마",
+      "sense_id": "61466#sense-001",
+      "relation_type": "유의어",
+      "word": "살인귀",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61484",
+      "entry_word": "빼빼",
+      "sense_id": "61484#sense-001",
+      "relation_type": "참고어",
+      "word": "삐삐",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61488",
+      "entry_word": "빽",
+      "sense_id": "61488#sense-001",
+      "relation_type": "참고어",
+      "word": "삑",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61527",
+      "entry_word": "삐끗",
+      "sense_id": "61527#sense-001",
+      "relation_type": "여린말",
+      "word": "비끗",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61527",
+      "entry_word": "삐끗",
+      "sense_id": "61527#sense-002",
+      "relation_type": "여린말",
+      "word": "비끗",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61527",
+      "entry_word": "삐끗",
+      "sense_id": "61527#sense-003",
+      "relation_type": "여린말",
+      "word": "비끗",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61550",
+      "entry_word": "빈곤",
+      "sense_id": "61550#sense-001",
+      "relation_type": "유의어",
+      "word": "빈궁",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61562",
+      "entry_word": "사학자",
+      "sense_id": "61562#sense-001",
+      "relation_type": "유의어",
+      "word": "사학가",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61624",
+      "entry_word": "살포시",
+      "sense_id": "61624#sense-001",
+      "relation_type": "유의어",
+      "word": "보시시",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61642",
+      "entry_word": "사용자",
+      "sense_id": "61642#sense-001",
+      "relation_type": "유의어",
+      "word": "사용인",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61661",
+      "entry_word": "살랑",
+      "sense_id": "61661#sense-001",
+      "relation_type": "큰말",
+      "word": "설렁",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61700",
+      "entry_word": "상등품",
+      "sense_id": "61700#sense-001",
+      "relation_type": "반대말",
+      "word": "하등품",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61704",
+      "entry_word": "상류 사회",
+      "sense_id": "61704#sense-001",
+      "relation_type": "유의어",
+      "word": "상층 사회",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61704",
+      "entry_word": "상류 사회",
+      "sense_id": "61704#sense-001",
+      "relation_type": "참고어",
+      "word": "중류 사회, 하류 사회",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61738",
+      "entry_word": "상상외",
+      "sense_id": "61738#sense-001",
+      "relation_type": "참고어",
+      "word": "예상외",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61739",
+      "entry_word": "상상화",
+      "sense_id": "61739#sense-001",
+      "relation_type": "참고어",
+      "word": "사생화",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61783",
+      "entry_word": "삐",
+      "sense_id": "61783#sense-001",
+      "relation_type": "참고어",
+      "word": "빼",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61783",
+      "entry_word": "삐",
+      "sense_id": "61783#sense-002",
+      "relation_type": "여린말",
+      "word": "빼",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61785",
+      "entry_word": "뿌지직",
+      "sense_id": "61785#sense-001",
+      "relation_type": "여린말",
+      "word": "부지직",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61785",
+      "entry_word": "뿌지직",
+      "sense_id": "61785#sense-001",
+      "relation_type": "준말",
+      "word": "뿌직",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61785",
+      "entry_word": "뿌지직",
+      "sense_id": "61785#sense-002",
+      "relation_type": "여린말",
+      "word": "부지직",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61785",
+      "entry_word": "뿌지직",
+      "sense_id": "61785#sense-002",
+      "relation_type": "준말",
+      "word": "뿌직",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61785",
+      "entry_word": "뿌지직",
+      "sense_id": "61785#sense-003",
+      "relation_type": "여린말",
+      "word": "부지직",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61785",
+      "entry_word": "뿌지직",
+      "sense_id": "61785#sense-003",
+      "relation_type": "준말",
+      "word": "뿌직",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61873",
+      "entry_word": "산호색",
+      "sense_id": "61873#sense-001",
+      "relation_type": "유의어",
+      "word": "산홋빛",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61926",
+      "entry_word": "사립 학교",
+      "sense_id": "61926#sense-001",
+      "relation_type": "유의어",
+      "word": "사학",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61926",
+      "entry_word": "사립 학교",
+      "sense_id": "61926#sense-001",
+      "relation_type": "참고어",
+      "word": "국립 학교",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61961",
+      "entry_word": "뽀드득뽀드득",
+      "sense_id": "61961#sense-001",
+      "relation_type": "여린말",
+      "word": "보드득보드득",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61961",
+      "entry_word": "뽀드득뽀드득",
+      "sense_id": "61961#sense-001",
+      "relation_type": "준말",
+      "word": "뽀득뽀득",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61961",
+      "entry_word": "뽀드득뽀드득",
+      "sense_id": "61961#sense-002",
+      "relation_type": "여린말",
+      "word": "보드득보드득",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61961",
+      "entry_word": "뽀드득뽀드득",
+      "sense_id": "61961#sense-002",
+      "relation_type": "준말",
+      "word": "뽀득뽀득",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61989",
+      "entry_word": "뽀로통하다",
+      "sense_id": "61989#sense-001",
+      "relation_type": "여린말",
+      "word": "보로통하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61989",
+      "entry_word": "뽀로통하다",
+      "sense_id": "61989#sense-002",
+      "relation_type": "여린말",
+      "word": "보로통하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61991",
+      "entry_word": "뾰로통하다",
+      "sense_id": "61991#sense-001",
+      "relation_type": "큰말",
+      "word": "쀼루퉁하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62001",
+      "entry_word": "뾰족뾰족",
+      "sense_id": "62001#sense-001",
+      "relation_type": "유의어",
+      "word": "뾰족뾰족이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62001",
+      "entry_word": "뾰족뾰족",
+      "sense_id": "62001#sense-001",
+      "relation_type": "큰말",
+      "word": "쀼죽쀼죽",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62001",
+      "entry_word": "뾰족뾰족",
+      "sense_id": "62001#sense-001",
+      "relation_type": "센말",
+      "word": "뾰쪽뾰쪽",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62001",
+      "entry_word": "뾰족뾰족",
+      "sense_id": "62001#sense-001",
+      "relation_type": "본말",
+      "word": "뾰조록뾰조록",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62006",
+      "entry_word": "뾰족하다",
+      "sense_id": "62006#sense-001",
+      "relation_type": "본말",
+      "word": "뾰조록하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62040",
+      "entry_word": "사극",
+      "sense_id": "62040#sense-001",
+      "relation_type": "유의어",
+      "word": "역사극",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62060",
+      "entry_word": "뽕",
+      "sense_id": "62060#sense-001",
+      "relation_type": "여린말",
+      "word": "봉",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62060",
+      "entry_word": "뽕",
+      "sense_id": "62060#sense-002",
+      "relation_type": "여린말",
+      "word": "봉",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62144",
+      "entry_word": "사흘",
+      "sense_id": "62144#sense-002",
+      "relation_type": "유의어",
+      "word": "초사흗날",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62144",
+      "entry_word": "사흘",
+      "sense_id": "62144#sense-002",
+      "relation_type": "유의어",
+      "word": "사흗날",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62169",
+      "entry_word": "사근사근하다",
+      "sense_id": "62169#sense-001",
+      "relation_type": "참고어",
+      "word": "서근서근하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62223",
+      "entry_word": "상기",
+      "sense_id": "62223#sense-001",
+      "relation_type": "반대말",
+      "word": "하기",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62253",
+      "entry_word": "가로",
+      "sense_id": "62253#sense-001",
+      "relation_type": "유의어",
+      "word": "횡",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62520",
+      "entry_word": "주인",
+      "sense_id": "62520#sense-002",
+      "relation_type": "준말",
+      "word": "쥔",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62520",
+      "entry_word": "주인",
+      "sense_id": "62520#sense-002",
+      "relation_type": "높임말",
+      "word": "주인어른",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62520",
+      "entry_word": "주인",
+      "sense_id": "62520#sense-003",
+      "relation_type": "준말",
+      "word": "쥔",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62520",
+      "entry_word": "주인",
+      "sense_id": "62520#sense-004",
+      "relation_type": "준말",
+      "word": "쥔",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62520",
+      "entry_word": "주인",
+      "sense_id": "62520#sense-005",
+      "relation_type": "준말",
+      "word": "쥔",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62520",
+      "entry_word": "주인",
+      "sense_id": "62520#sense-005",
+      "relation_type": "높임말",
+      "word": "주인님, 주인어른",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62571",
+      "entry_word": "생긋이",
+      "sense_id": "62571#sense-001",
+      "relation_type": "큰말",
+      "word": "싱긋이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62571",
+      "entry_word": "생긋이",
+      "sense_id": "62571#sense-001",
+      "relation_type": "센말",
+      "word": "생끗이, 쌩긋이, 쌩끗이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62930",
+      "entry_word": "새끼발가락",
+      "sense_id": "62930#sense-001",
+      "relation_type": "유의어",
+      "word": "새끼발",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "62932",
+      "entry_word": "새끼손가락",
+      "sense_id": "62932#sense-001",
+      "relation_type": "유의어",
+      "word": "새끼손",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "63454",
+      "entry_word": "소르르",
+      "sense_id": "63454#sense-001",
+      "relation_type": "큰말",
+      "word": "수르르",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "63454",
+      "entry_word": "소르르",
+      "sense_id": "63454#sense-002",
+      "relation_type": "큰말",
+      "word": "수르르",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "63454",
+      "entry_word": "소르르",
+      "sense_id": "63454#sense-003",
+      "relation_type": "큰말",
+      "word": "수르르",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "63454",
+      "entry_word": "소르르",
+      "sense_id": "63454#sense-004",
+      "relation_type": "큰말",
+      "word": "수르르",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "63505",
+      "entry_word": "소꿉",
+      "sense_id": "63505#sense-002",
+      "relation_type": "유의어",
+      "word": "소꿉질",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "63722",
+      "entry_word": "방열하다",
+      "sense_id": "63722#sense-001",
+      "relation_type": "반대말",
+      "word": "흡열하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "63804",
+      "entry_word": "가이드",
+      "sense_id": "63804#sense-002",
+      "relation_type": "유의어",
+      "word": "가이드북",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "63833",
+      "entry_word": "소지",
+      "sense_id": "63833#sense-001",
+      "relation_type": "유의어",
+      "word": "새끼손",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "63868",
+      "entry_word": "송화",
+      "sense_id": "63868#sense-002",
+      "relation_type": "유의어",
+      "word": "송홧가루",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "64177",
+      "entry_word": "수녀",
+      "sense_id": "64177#sense-001",
+      "relation_type": "참고어",
+      "word": "수사",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "64298",
+      "entry_word": "소갈머리",
+      "sense_id": "64298#sense-001",
+      "relation_type": "유의어",
+      "word": "소갈딱지",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "64298",
+      "entry_word": "소갈머리",
+      "sense_id": "64298#sense-002",
+      "relation_type": "유의어",
+      "word": "소갈딱지",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "64378",
+      "entry_word": "세로줄",
+      "sense_id": "64378#sense-001",
+      "relation_type": "유의어",
+      "word": "세로선",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "64508",
+      "entry_word": "껑충하다",
+      "sense_id": "64508#sense-001",
+      "relation_type": "작은말",
+      "word": "깡총하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "64508",
+      "entry_word": "껑충하다",
+      "sense_id": "64508#sense-002",
+      "relation_type": "작은말",
+      "word": "깡총하다",
+      "target_code": "0",
+      "link_type": null
+    }
+  ],
+  "dangling_related_forms_sample": [
+    {
+      "entry_id": "14095",
+      "entry_word": "영웅",
+      "type": "파생어",
+      "word": "영웅적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14142",
+      "entry_word": "오락",
+      "type": "파생어",
+      "word": "오락하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14145",
+      "entry_word": "예산",
+      "type": "파생어",
+      "word": "예산하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14160",
+      "entry_word": "간증",
+      "type": "파생어",
+      "word": "간증되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14160",
+      "entry_word": "간증",
+      "type": "파생어",
+      "word": "간증하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14183",
+      "entry_word": "꼼짝",
+      "type": "파생어",
+      "word": "꼼짝거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14183",
+      "entry_word": "꼼짝",
+      "type": "파생어",
+      "word": "꼼작대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14183",
+      "entry_word": "꼼짝",
+      "type": "파생어",
+      "word": "꼼짝이다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14196",
+      "entry_word": "가지치기",
+      "type": "파생어",
+      "word": "가지치기되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14225",
+      "entry_word": "가출옥",
+      "type": "파생어",
+      "word": "가출옥되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14225",
+      "entry_word": "가출옥",
+      "type": "파생어",
+      "word": "가출옥하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14234",
+      "entry_word": "감산",
+      "type": "파생어",
+      "word": "감산하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14240",
+      "entry_word": "가판",
+      "type": "파생어",
+      "word": "가판되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14240",
+      "entry_word": "가판",
+      "type": "파생어",
+      "word": "가판하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14241",
+      "entry_word": "감상",
+      "type": "파생어",
+      "word": "감상하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14242",
+      "entry_word": "가판",
+      "type": "파생어",
+      "word": "가판되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14242",
+      "entry_word": "가판",
+      "type": "파생어",
+      "word": "가판하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14290",
+      "entry_word": "각고",
+      "type": "파생어",
+      "word": "각고하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14604",
+      "entry_word": "가설",
+      "type": "파생어",
+      "word": "가설적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14665",
+      "entry_word": "가슴앓이",
+      "type": "파생어",
+      "word": "가슴앓이하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14797",
+      "entry_word": "감시",
+      "type": "파생어",
+      "word": "감시되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14838",
+      "entry_word": "가득가득",
+      "type": "파생어",
+      "word": "가득가득하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14887",
+      "entry_word": "가면",
+      "type": "파생어",
+      "word": "가면적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14890",
+      "entry_word": "가감",
+      "type": "파생어",
+      "word": "가감되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "14936",
+      "entry_word": "가뭇가뭇하다",
+      "type": "☞(가 보라)",
+      "word": "가뭇가뭇",
+      "target_code": "92567",
+      "link_type": null
+    },
+    {
+      "entry_id": "14944",
+      "entry_word": "가량",
+      "type": "파생어",
+      "word": "가량하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15001",
+      "entry_word": "가로눕다",
+      "type": "파생어",
+      "word": "가로누이다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15001",
+      "entry_word": "가로눕다",
+      "type": "파생어",
+      "word": "가로눕히다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15037",
+      "entry_word": "가부좌",
+      "type": "파생어",
+      "word": "가부좌하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15046",
+      "entry_word": "가로채다",
+      "type": "파생어",
+      "word": "가로채이다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15053",
+      "entry_word": "갉다",
+      "type": "파생어",
+      "word": "갉히다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15085",
+      "entry_word": "감염",
+      "type": "파생어",
+      "word": "감염하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15138",
+      "entry_word": "각축",
+      "type": "파생어",
+      "word": "각축하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15148",
+      "entry_word": "감옥살이",
+      "type": "파생어",
+      "word": "감옥살이하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15198",
+      "entry_word": "감자",
+      "type": "파생어",
+      "word": "감자하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15232",
+      "entry_word": "감정",
+      "type": "파생어",
+      "word": "감정적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15299",
+      "entry_word": "가만",
+      "type": "파생어",
+      "word": "가만하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15303",
+      "entry_word": "몸짓",
+      "type": "파생어",
+      "word": "몸짓하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15315",
+      "entry_word": "무",
+      "type": "파생어",
+      "word": "무하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15382",
+      "entry_word": "가매장",
+      "type": "파생어",
+      "word": "가매장되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15382",
+      "entry_word": "가매장",
+      "type": "파생어",
+      "word": "가매장하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15396",
+      "entry_word": "개굴개굴",
+      "type": "파생어",
+      "word": "개굴개굴하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15462",
+      "entry_word": "발전",
+      "type": "파생어",
+      "word": "발전하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15507",
+      "entry_word": "간사",
+      "type": "파생어",
+      "word": "간사히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15511",
+      "entry_word": "간사스럽다",
+      "type": "파생어",
+      "word": "간사스레",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15772",
+      "entry_word": "민속",
+      "type": "파생어",
+      "word": "민속적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15777",
+      "entry_word": "민주주의",
+      "type": "파생어",
+      "word": "민주주의적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15901",
+      "entry_word": "배",
+      "type": "파생어",
+      "word": "배하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "15994",
+      "entry_word": "비추다",
+      "type": "파생어",
+      "word": "비추이다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "16336",
+      "entry_word": "가정",
+      "type": "파생어",
+      "word": "가정적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "16391",
+      "entry_word": "가난",
+      "type": "파생어",
+      "word": "가난히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "16556",
+      "entry_word": "날카롭다",
+      "type": "파생어",
+      "word": "날카로이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17236",
+      "entry_word": "검사",
+      "type": "파생어",
+      "word": "검사되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17409",
+      "entry_word": "야만",
+      "type": "파생어",
+      "word": "야만적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17411",
+      "entry_word": "야반도주",
+      "type": "파생어",
+      "word": "야반도주하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17419",
+      "entry_word": "야영",
+      "type": "파생어",
+      "word": "야영하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17456",
+      "entry_word": "양자택일",
+      "type": "파생어",
+      "word": "양자택일하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17469",
+      "entry_word": "양성",
+      "type": "파생어",
+      "word": "양성적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17484",
+      "entry_word": "양잠",
+      "type": "파생어",
+      "word": "양잠하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17506",
+      "entry_word": "강매",
+      "type": "파생어",
+      "word": "강매되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17563",
+      "entry_word": "끝내기",
+      "type": "파생어",
+      "word": "끝내기하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17755",
+      "entry_word": "계약",
+      "type": "파생어",
+      "word": "계약되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17778",
+      "entry_word": "계열",
+      "type": "파생어",
+      "word": "계열적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "17875",
+      "entry_word": "와",
+      "type": "파생어",
+      "word": "와하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18195",
+      "entry_word": "낙제",
+      "type": "파생어",
+      "word": "낙제되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18378",
+      "entry_word": "고투",
+      "type": "파생어",
+      "word": "고투하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18387",
+      "entry_word": "고풍",
+      "type": "파생어",
+      "word": "고풍적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18498",
+      "entry_word": "난행",
+      "type": "파생어",
+      "word": "난행하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18602",
+      "entry_word": "개조",
+      "type": "파생어",
+      "word": "개조적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18613",
+      "entry_word": "곱셈",
+      "type": "파생어",
+      "word": "곱셈하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18716",
+      "entry_word": "개탄스럽다",
+      "type": "파생어",
+      "word": "개탄스레",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "18800",
+      "entry_word": "고용살이",
+      "type": "파생어",
+      "word": "고용살이하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "19663",
+      "entry_word": "강탈",
+      "type": "파생어",
+      "word": "강탈되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "19663",
+      "entry_word": "강탈",
+      "type": "파생어",
+      "word": "강탈적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "19672",
+      "entry_word": "강판",
+      "type": "파생어",
+      "word": "강판하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "19822",
+      "entry_word": "과소",
+      "type": "파생어",
+      "word": "과소하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "19822",
+      "entry_word": "과소",
+      "type": "파생어",
+      "word": "과소히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "19826",
+      "entry_word": "과소",
+      "type": "파생어",
+      "word": "과소하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "19826",
+      "entry_word": "과소",
+      "type": "파생어",
+      "word": "과소히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "19891",
+      "entry_word": "고려장",
+      "type": "파생어",
+      "word": "고려장하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "19936",
+      "entry_word": "단열",
+      "type": "파생어",
+      "word": "단열하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "19985",
+      "entry_word": "단편",
+      "type": "파생어",
+      "word": "단편적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20019",
+      "entry_word": "달거리",
+      "type": "파생어",
+      "word": "달거리하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20344",
+      "entry_word": "내핍",
+      "type": "파생어",
+      "word": "내핍하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20452",
+      "entry_word": "거인",
+      "type": "파생어",
+      "word": "거인적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20480",
+      "entry_word": "냉장",
+      "type": "파생어",
+      "word": "냉장하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20573",
+      "entry_word": "강신",
+      "type": "파생어",
+      "word": "강신하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20626",
+      "entry_word": "연동",
+      "type": "파생어",
+      "word": "연동하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20748",
+      "entry_word": "연예",
+      "type": "파생어",
+      "word": "연예하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20823",
+      "entry_word": "연차",
+      "type": "파생어",
+      "word": "연차적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20829",
+      "entry_word": "열",
+      "type": "파생어",
+      "word": "열하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20964",
+      "entry_word": "강독",
+      "type": "파생어",
+      "word": "강독하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20971",
+      "entry_word": "강론",
+      "type": "파생어",
+      "word": "강론되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "20983",
+      "entry_word": "강설",
+      "type": "파생어",
+      "word": "강설하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "21084",
+      "entry_word": "갱생",
+      "type": "파생어",
+      "word": "갱생되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "21115",
+      "entry_word": "강압",
+      "type": "파생어",
+      "word": "강압되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "21740",
+      "entry_word": "강짜",
+      "type": "파생어",
+      "word": "강짜하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "21775",
+      "entry_word": "열중",
+      "type": "파생어",
+      "word": "열중되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "21785",
+      "entry_word": "열처리",
+      "type": "파생어",
+      "word": "열처리하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "21874",
+      "entry_word": "오염",
+      "type": "파생어",
+      "word": "오염하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "21987",
+      "entry_word": "영접",
+      "type": "파생어",
+      "word": "영접하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22437",
+      "entry_word": "관념론",
+      "type": "파생어",
+      "word": "관념론적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22461",
+      "entry_word": "감청",
+      "type": "파생어",
+      "word": "감청하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22512",
+      "entry_word": "고불고불",
+      "type": "파생어",
+      "word": "고불고불하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22629",
+      "entry_word": "고생",
+      "type": "파생어",
+      "word": "고생되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22635",
+      "entry_word": "계책",
+      "type": "파생어",
+      "word": "계책하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22673",
+      "entry_word": "공놀이",
+      "type": "파생어",
+      "word": "공놀이하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22703",
+      "entry_word": "공동",
+      "type": "파생어",
+      "word": "공동하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22708",
+      "entry_word": "강하",
+      "type": "파생어",
+      "word": "강하되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22787",
+      "entry_word": "여흥",
+      "type": "파생어",
+      "word": "여흥하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22795",
+      "entry_word": "역공",
+      "type": "파생어",
+      "word": "역공하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "22849",
+      "entry_word": "역성",
+      "type": "파생어",
+      "word": "역성하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23303",
+      "entry_word": "공방",
+      "type": "파생어",
+      "word": "공방하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23429",
+      "entry_word": "고래잡이",
+      "type": "파생어",
+      "word": "고래잡이하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23462",
+      "entry_word": "거치",
+      "type": "파생어",
+      "word": "거치하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23489",
+      "entry_word": "개변",
+      "type": "파생어",
+      "word": "개변되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23489",
+      "entry_word": "개변",
+      "type": "파생어",
+      "word": "개변하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23535",
+      "entry_word": "역행",
+      "type": "파생어",
+      "word": "역행적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "23713",
+      "entry_word": "개항",
+      "type": "파생어",
+      "word": "개항되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24060",
+      "entry_word": "교육자",
+      "type": "파생어",
+      "word": "교육자적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24075",
+      "entry_word": "의문",
+      "type": "파생어",
+      "word": "의문하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24249",
+      "entry_word": "눈대중",
+      "type": "파생어",
+      "word": "눈대중하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24294",
+      "entry_word": "눈요기",
+      "type": "파생어",
+      "word": "눈요기하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24406",
+      "entry_word": "다각화",
+      "type": "파생어",
+      "word": "다각화되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24406",
+      "entry_word": "다각화",
+      "type": "파생어",
+      "word": "다각화하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24419",
+      "entry_word": "농락",
+      "type": "파생어",
+      "word": "농락되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24447",
+      "entry_word": "다독",
+      "type": "파생어",
+      "word": "다독하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24476",
+      "entry_word": "누계",
+      "type": "파생어",
+      "word": "누계되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24476",
+      "entry_word": "누계",
+      "type": "파생어",
+      "word": "누계하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24512",
+      "entry_word": "구성",
+      "type": "파생어",
+      "word": "구성적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24778",
+      "entry_word": "자살",
+      "type": "파생어",
+      "word": "자살적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24801",
+      "entry_word": "장례",
+      "type": "파생어",
+      "word": "장례하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24901",
+      "entry_word": "창작",
+      "type": "파생어",
+      "word": "창작적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24966",
+      "entry_word": "재채기",
+      "type": "파생어",
+      "word": "재채기하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24978",
+      "entry_word": "재판",
+      "type": "파생어",
+      "word": "재판되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "24979",
+      "entry_word": "이중",
+      "type": "파생어",
+      "word": "이중적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25007",
+      "entry_word": "인공",
+      "type": "파생어",
+      "word": "인공적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25204",
+      "entry_word": "검소",
+      "type": "파생어",
+      "word": "검소히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25212",
+      "entry_word": "건전",
+      "type": "파생어",
+      "word": "건전히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25557",
+      "entry_word": "걸식",
+      "type": "파생어",
+      "word": "걸식하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25599",
+      "entry_word": "과묵",
+      "type": "파생어",
+      "word": "과묵히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25646",
+      "entry_word": "경향",
+      "type": "파생어",
+      "word": "경향적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25919",
+      "entry_word": "경주",
+      "type": "파생어",
+      "word": "경주하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "25943",
+      "entry_word": "주문",
+      "type": "파생어",
+      "word": "주문되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26295",
+      "entry_word": "낯가림",
+      "type": "파생어",
+      "word": "낯가림하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26624",
+      "entry_word": "욕",
+      "type": "파생어",
+      "word": "욕되이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26655",
+      "entry_word": "개심",
+      "type": "파생어",
+      "word": "개심하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26794",
+      "entry_word": "거름",
+      "type": "파생어",
+      "word": "거름하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26854",
+      "entry_word": "소풍",
+      "type": "파생어",
+      "word": "소풍하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "26919",
+      "entry_word": "어학",
+      "type": "파생어",
+      "word": "어학적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "27336",
+      "entry_word": "거수경례",
+      "type": "파생어",
+      "word": "거수경례하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "27664",
+      "entry_word": "곤드레",
+      "type": "파생어",
+      "word": "곤드레하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "27667",
+      "entry_word": "곤드레만드레",
+      "type": "파생어",
+      "word": "곤드레만드레하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "27686",
+      "entry_word": "곤지곤지",
+      "type": "파생어",
+      "word": "곤지곤지하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "28037",
+      "entry_word": "가교",
+      "type": "파생어",
+      "word": "가교하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "28079",
+      "entry_word": "고급화",
+      "type": "파생어",
+      "word": "고급화되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "28079",
+      "entry_word": "고급화",
+      "type": "파생어",
+      "word": "고급화하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "28358",
+      "entry_word": "다툼",
+      "type": "파생어",
+      "word": "다툼하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "28465",
+      "entry_word": "겨룸",
+      "type": "파생어",
+      "word": "겨룸하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "28580",
+      "entry_word": "논쟁",
+      "type": "파생어",
+      "word": "논쟁되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "28580",
+      "entry_word": "논쟁",
+      "type": "파생어",
+      "word": "논쟁적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "28583",
+      "entry_word": "농사일",
+      "type": "파생어",
+      "word": "농사일하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "28629",
+      "entry_word": "교과서",
+      "type": "파생어",
+      "word": "교과서적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "29684",
+      "entry_word": "견문",
+      "type": "파생어",
+      "word": "견문하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "29813",
+      "entry_word": "경박",
+      "type": "파생어",
+      "word": "경박히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30089",
+      "entry_word": "검표",
+      "type": "파생어",
+      "word": "검표되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30240",
+      "entry_word": "견책",
+      "type": "파생어",
+      "word": "견책되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30253",
+      "entry_word": "경조",
+      "type": "파생어",
+      "word": "경조하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30270",
+      "entry_word": "결단",
+      "type": "파생어",
+      "word": "결단적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30322",
+      "entry_word": "관례",
+      "type": "파생어",
+      "word": "관례적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30348",
+      "entry_word": "관료주의",
+      "type": "파생어",
+      "word": "관료주의적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30409",
+      "entry_word": "경이롭다",
+      "type": "파생어",
+      "word": "경이로이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30456",
+      "entry_word": "겹사돈",
+      "type": "파생어",
+      "word": "겹사돈하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30563",
+      "entry_word": "경상",
+      "type": "파생어",
+      "word": "경상하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30566",
+      "entry_word": "경색",
+      "type": "파생어",
+      "word": "경색하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30760",
+      "entry_word": "극성",
+      "type": "파생어",
+      "word": "극성히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30826",
+      "entry_word": "광휘",
+      "type": "파생어",
+      "word": "광휘하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30827",
+      "entry_word": "광휘롭다",
+      "type": "파생어",
+      "word": "광휘로이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "30853",
+      "entry_word": "괴리",
+      "type": "파생어",
+      "word": "괴리하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "31327",
+      "entry_word": "겁탈",
+      "type": "파생어",
+      "word": "겁탈되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "31357",
+      "entry_word": "게걸스럽다",
+      "type": "파생어",
+      "word": "게걸스레",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "31397",
+      "entry_word": "교사",
+      "type": "파생어",
+      "word": "교사하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "31399",
+      "entry_word": "교살",
+      "type": "파생어",
+      "word": "교살되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "31399",
+      "entry_word": "교살",
+      "type": "파생어",
+      "word": "교살하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "31462",
+      "entry_word": "결선",
+      "type": "파생어",
+      "word": "결선하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "31684",
+      "entry_word": "교수",
+      "type": "파생어",
+      "word": "교수하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "31758",
+      "entry_word": "감수",
+      "type": "파생어",
+      "word": "감수되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32131",
+      "entry_word": "결정",
+      "type": "파생어",
+      "word": "결정되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32131",
+      "entry_word": "결정",
+      "type": "파생어",
+      "word": "결정하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32144",
+      "entry_word": "결초보은",
+      "type": "파생어",
+      "word": "결초보은하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32223",
+      "entry_word": "극우",
+      "type": "파생어",
+      "word": "극우적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32385",
+      "entry_word": "경로",
+      "type": "파생어",
+      "word": "경로하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32392",
+      "entry_word": "경륜",
+      "type": "파생어",
+      "word": "경륜하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32394",
+      "entry_word": "경마",
+      "type": "파생어",
+      "word": "경마하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32398",
+      "entry_word": "경매",
+      "type": "파생어",
+      "word": "경매되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32398",
+      "entry_word": "경매",
+      "type": "파생어",
+      "word": "경매하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32505",
+      "entry_word": "글공부",
+      "type": "파생어",
+      "word": "글공부하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32533",
+      "entry_word": "기혼",
+      "type": "파생어",
+      "word": "기혼하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32578",
+      "entry_word": "극좌",
+      "type": "파생어",
+      "word": "극좌적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32788",
+      "entry_word": "노트",
+      "type": "파생어",
+      "word": "노트하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "32960",
+      "entry_word": "근조",
+      "type": "파생어",
+      "word": "근조하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "33008",
+      "entry_word": "근간",
+      "type": "파생어",
+      "word": "근간적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "33017",
+      "entry_word": "격론",
+      "type": "파생어",
+      "word": "격론하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "33040",
+      "entry_word": "격식화",
+      "type": "파생어",
+      "word": "격식화되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "33040",
+      "entry_word": "격식화",
+      "type": "파생어",
+      "word": "격식화하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "33452",
+      "entry_word": "글짓기",
+      "type": "파생어",
+      "word": "글짓기하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "33475",
+      "entry_word": "굴지",
+      "type": "파생어",
+      "word": "굴지하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "33506",
+      "entry_word": "근친상간",
+      "type": "파생어",
+      "word": "근친상간하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "34855",
+      "entry_word": "관상",
+      "type": "파생어",
+      "word": "관상하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "34919",
+      "entry_word": "구구",
+      "type": "파생어",
+      "word": "구구거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "34919",
+      "entry_word": "구구",
+      "type": "파생어",
+      "word": "구구대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "35139",
+      "entry_word": "교접",
+      "type": "파생어",
+      "word": "교접되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "35185",
+      "entry_word": "교조주의",
+      "type": "파생어",
+      "word": "교조주의적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "35624",
+      "entry_word": "간교",
+      "type": "파생어",
+      "word": "간교히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "35647",
+      "entry_word": "간담",
+      "type": "파생어",
+      "word": "간담하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "35759",
+      "entry_word": "구인",
+      "type": "파생어",
+      "word": "구인하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36522",
+      "entry_word": "금단",
+      "type": "파생어",
+      "word": "금단하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36556",
+      "entry_word": "구상",
+      "type": "파생어",
+      "word": "구상적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36599",
+      "entry_word": "꿀꺽",
+      "type": "파생어",
+      "word": "꿀꺽거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36599",
+      "entry_word": "꿀꺽",
+      "type": "파생어",
+      "word": "꿀꺽대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36599",
+      "entry_word": "꿀꺽",
+      "type": "파생어",
+      "word": "꿀꺽이다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36599",
+      "entry_word": "꿀꺽",
+      "type": "파생어",
+      "word": "꿀꺽하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36621",
+      "entry_word": "꿀꺼덕",
+      "type": "파생어",
+      "word": "꿀꺼덕거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36621",
+      "entry_word": "꿀꺼덕",
+      "type": "파생어",
+      "word": "꿀꺼덕대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36621",
+      "entry_word": "꿀꺼덕",
+      "type": "파생어",
+      "word": "꿀꺼덕하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36642",
+      "entry_word": "끌끌",
+      "type": "파생어",
+      "word": "끌끌거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36642",
+      "entry_word": "끌끌",
+      "type": "파생어",
+      "word": "끌끌대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "36748",
+      "entry_word": "국보",
+      "type": "파생어",
+      "word": "국보적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "37282",
+      "entry_word": "군집",
+      "type": "파생어",
+      "word": "군집하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "37296",
+      "entry_word": "궁핍",
+      "type": "파생어",
+      "word": "궁핍히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "37416",
+      "entry_word": "굴곡",
+      "type": "파생어",
+      "word": "굴곡하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "37533",
+      "entry_word": "굴뚝같다",
+      "type": "파생어",
+      "word": "굴뚝같이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "37631",
+      "entry_word": "교활",
+      "type": "파생어",
+      "word": "교활히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "37825",
+      "entry_word": "기념비",
+      "type": "파생어",
+      "word": "기념비적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "37904",
+      "entry_word": "꿈쩍",
+      "type": "파생어",
+      "word": "꿈쩍거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "37904",
+      "entry_word": "꿈쩍",
+      "type": "파생어",
+      "word": "꿈쩍대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "37904",
+      "entry_word": "꿈쩍",
+      "type": "파생어",
+      "word": "꿈쩍이다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38009",
+      "entry_word": "납땜",
+      "type": "파생어",
+      "word": "납땜하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38011",
+      "entry_word": "납량",
+      "type": "파생어",
+      "word": "납량하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38174",
+      "entry_word": "꼼짝달싹",
+      "type": "파생어",
+      "word": "꼼짝달싹하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38177",
+      "entry_word": "남짓",
+      "type": "파생어",
+      "word": "남짓이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38185",
+      "entry_word": "꼴딱",
+      "type": "파생어",
+      "word": "꼴딱거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38185",
+      "entry_word": "꼴딱",
+      "type": "파생어",
+      "word": "꼴딱대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38185",
+      "entry_word": "꼴딱",
+      "type": "파생어",
+      "word": "꼴딱이다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38185",
+      "entry_word": "꼴딱",
+      "type": "파생어",
+      "word": "꼴딱하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38211",
+      "entry_word": "꼼틀꼼틀",
+      "type": "파생어",
+      "word": "꼼틀꼼틀하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38374",
+      "entry_word": "끔찍스럽다",
+      "type": "파생어",
+      "word": "끔찍스레",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38420",
+      "entry_word": "깍둑깍둑",
+      "type": "파생어",
+      "word": "깍둑깍둑하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38448",
+      "entry_word": "끼룩끼룩",
+      "type": "파생어",
+      "word": "끼룩끼룩하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38458",
+      "entry_word": "끼익",
+      "type": "파생어",
+      "word": "끼익하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38488",
+      "entry_word": "기한",
+      "type": "파생어",
+      "word": "기한하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38504",
+      "entry_word": "납세",
+      "type": "파생어",
+      "word": "납세하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38630",
+      "entry_word": "납작",
+      "type": "파생어",
+      "word": "납작거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38630",
+      "entry_word": "납작",
+      "type": "파생어",
+      "word": "납작대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38630",
+      "entry_word": "납작",
+      "type": "파생어",
+      "word": "납작하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "38848",
+      "entry_word": "나물",
+      "type": "파생어",
+      "word": "나물하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "39353",
+      "entry_word": "나눗셈",
+      "type": "파생어",
+      "word": "나눗셈하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "39541",
+      "entry_word": "꺽꺽",
+      "type": "파생어",
+      "word": "꺽꺽거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "39541",
+      "entry_word": "꺽꺽",
+      "type": "파생어",
+      "word": "꺽꺽대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "39541",
+      "entry_word": "꺽꺽",
+      "type": "파생어",
+      "word": "꺽꺽하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40019",
+      "entry_word": "급진주의",
+      "type": "파생어",
+      "word": "급진주의적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40027",
+      "entry_word": "급행",
+      "type": "파생어",
+      "word": "급행하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40113",
+      "entry_word": "꾀꼴꾀꼴",
+      "type": "파생어",
+      "word": "꾀꼴꾀꼴하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40166",
+      "entry_word": "기간",
+      "type": "파생어",
+      "word": "기간적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40178",
+      "entry_word": "꾸벅",
+      "type": "파생어",
+      "word": "꾸벅거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40178",
+      "entry_word": "꾸벅",
+      "type": "파생어",
+      "word": "꾸벅대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40208",
+      "entry_word": "냉전",
+      "type": "파생어",
+      "word": "냉전적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40239",
+      "entry_word": "꾸역꾸역",
+      "type": "파생어",
+      "word": "꾸역꾸역하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40241",
+      "entry_word": "꾀병",
+      "type": "파생어",
+      "word": "꾀병하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40485",
+      "entry_word": "늘씬",
+      "type": "파생어",
+      "word": "늘씬하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40540",
+      "entry_word": "다방면",
+      "type": "파생어",
+      "word": "다방면적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40557",
+      "entry_word": "다운",
+      "type": "파생어",
+      "word": "다운하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40568",
+      "entry_word": "다신교",
+      "type": "파생어",
+      "word": "다신교적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40572",
+      "entry_word": "다이빙",
+      "type": "파생어",
+      "word": "다이빙하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40582",
+      "entry_word": "다작",
+      "type": "파생어",
+      "word": "다작하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40610",
+      "entry_word": "꼬꼬댁",
+      "type": "파생어",
+      "word": "꼬꼬댁거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40610",
+      "entry_word": "꼬꼬댁",
+      "type": "파생어",
+      "word": "꼬꼬댁대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40610",
+      "entry_word": "꼬꼬댁",
+      "type": "파생어",
+      "word": "꼬꼬댁하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40613",
+      "entry_word": "내사",
+      "type": "파생어",
+      "word": "내사되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40654",
+      "entry_word": "꼬박",
+      "type": "파생어",
+      "word": "꼬박거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40654",
+      "entry_word": "꼬박",
+      "type": "파생어",
+      "word": "꼬박대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40654",
+      "entry_word": "꼬박",
+      "type": "파생어",
+      "word": "꼬박이다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40654",
+      "entry_word": "꼬박",
+      "type": "파생어",
+      "word": "꼬박하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40663",
+      "entry_word": "꼬빡",
+      "type": "파생어",
+      "word": "꼬빡거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40663",
+      "entry_word": "꼬빡",
+      "type": "파생어",
+      "word": "꼬빡대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40663",
+      "entry_word": "꼬빡",
+      "type": "파생어",
+      "word": "꼬빡이다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40663",
+      "entry_word": "꼬빡",
+      "type": "파생어",
+      "word": "꼬빡하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "40815",
+      "entry_word": "논증",
+      "type": "파생어",
+      "word": "논증적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41003",
+      "entry_word": "관용",
+      "type": "파생어",
+      "word": "관용되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41003",
+      "entry_word": "관용",
+      "type": "파생어",
+      "word": "관용하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41135",
+      "entry_word": "내치",
+      "type": "파생어",
+      "word": "내치하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41147",
+      "entry_word": "내통",
+      "type": "파생어",
+      "word": "내통되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41301",
+      "entry_word": "급상승",
+      "type": "파생어",
+      "word": "급상승되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41321",
+      "entry_word": "급서",
+      "type": "파생어",
+      "word": "급서하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41323",
+      "entry_word": "급거",
+      "type": "파생어",
+      "word": "급거하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41444",
+      "entry_word": "급여",
+      "type": "파생어",
+      "word": "급여되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41444",
+      "entry_word": "급여",
+      "type": "파생어",
+      "word": "급여하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41622",
+      "entry_word": "눈어림",
+      "type": "파생어",
+      "word": "눈어림하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "41937",
+      "entry_word": "닥지닥지",
+      "type": "파생어",
+      "word": "닥지닥지하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "42420",
+      "entry_word": "단일화",
+      "type": "파생어",
+      "word": "단일화되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "42879",
+      "entry_word": "노예",
+      "type": "파생어",
+      "word": "노예적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "43792",
+      "entry_word": "농경",
+      "type": "파생어",
+      "word": "농경하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "44130",
+      "entry_word": "달맞이",
+      "type": "파생어",
+      "word": "달맞이하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "44195",
+      "entry_word": "담뿍",
+      "type": "파생어",
+      "word": "담뿍하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "44490",
+      "entry_word": "대굴대굴",
+      "type": "파생어",
+      "word": "대굴대굴하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "45003",
+      "entry_word": "설문",
+      "type": "파생어",
+      "word": "설문하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "45650",
+      "entry_word": "누에치기",
+      "type": "파생어",
+      "word": "누에치기하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "46858",
+      "entry_word": "대타",
+      "type": "파생어",
+      "word": "대타하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47040",
+      "entry_word": "대자대비",
+      "type": "파생어",
+      "word": "대자대비하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47383",
+      "entry_word": "더럭",
+      "type": "파생어",
+      "word": "더럭하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47390",
+      "entry_word": "더부살이",
+      "type": "파생어",
+      "word": "더부살이하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47414",
+      "entry_word": "덕성스럽다",
+      "type": "파생어",
+      "word": "덕성스레",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47416",
+      "entry_word": "덕스럽다",
+      "type": "파생어",
+      "word": "덕스레",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47457",
+      "entry_word": "데굴데굴",
+      "type": "파생어",
+      "word": "데굴데굴하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47525",
+      "entry_word": "도굴",
+      "type": "파생어",
+      "word": "도굴되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47525",
+      "entry_word": "도굴",
+      "type": "파생어",
+      "word": "도굴하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47769",
+      "entry_word": "도급",
+      "type": "파생어",
+      "word": "도급하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47784",
+      "entry_word": "도끼질",
+      "type": "파생어",
+      "word": "도끼질하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47896",
+      "entry_word": "도루",
+      "type": "파생어",
+      "word": "도루하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "47918",
+      "entry_word": "도리도리",
+      "type": "파생어",
+      "word": "도리도리하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48074",
+      "entry_word": "도야",
+      "type": "파생어",
+      "word": "도야되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48144",
+      "entry_word": "동학",
+      "type": "파생어",
+      "word": "동학하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48284",
+      "entry_word": "돌변",
+      "type": "파생어",
+      "word": "돌변적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48333",
+      "entry_word": "돌잡이",
+      "type": "파생어",
+      "word": "돌잡이하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48685",
+      "entry_word": "동지",
+      "type": "파생어",
+      "word": "동지적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48703",
+      "entry_word": "덜컥",
+      "type": "파생어",
+      "word": "덜컥하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48716",
+      "entry_word": "덜컹",
+      "type": "파생어",
+      "word": "덜컹하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48884",
+      "entry_word": "독살",
+      "type": "파생어",
+      "word": "독살되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48884",
+      "entry_word": "독살",
+      "type": "파생어",
+      "word": "독살하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48912",
+      "entry_word": "독설",
+      "type": "파생어",
+      "word": "독설하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "48914",
+      "entry_word": "독수공방",
+      "type": "파생어",
+      "word": "독수공방하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "49093",
+      "entry_word": "환경",
+      "type": "파생어",
+      "word": "환경적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "49231",
+      "entry_word": "소규모",
+      "type": "파생어",
+      "word": "소규모적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "49245",
+      "entry_word": "소용없다",
+      "type": "파생어",
+      "word": "소용없이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "49674",
+      "entry_word": "따르릉",
+      "type": "파생어",
+      "word": "따르릉거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "49674",
+      "entry_word": "따르릉",
+      "type": "파생어",
+      "word": "따르릉대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "49696",
+      "entry_word": "딴말",
+      "type": "파생어",
+      "word": "딴말하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50027",
+      "entry_word": "막일",
+      "type": "파생어",
+      "word": "막일하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50070",
+      "entry_word": "등본",
+      "type": "파생어",
+      "word": "등본하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50358",
+      "entry_word": "만병통치",
+      "type": "파생어",
+      "word": "만병통치하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50436",
+      "entry_word": "둥실둥실",
+      "type": "파생어",
+      "word": "둥실둥실하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50499",
+      "entry_word": "딸각",
+      "type": "파생어",
+      "word": "딸각거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50499",
+      "entry_word": "딸각",
+      "type": "파생어",
+      "word": "딸각대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50499",
+      "entry_word": "딸각",
+      "type": "파생어",
+      "word": "딸각이다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50499",
+      "entry_word": "딸각",
+      "type": "파생어",
+      "word": "딸각하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50503",
+      "entry_word": "딸꾹딸꾹",
+      "type": "파생어",
+      "word": "딸꾹딸꾹하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50531",
+      "entry_word": "따르르",
+      "type": "파생어",
+      "word": "따르르하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50532",
+      "entry_word": "득의",
+      "type": "파생어",
+      "word": "득의하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50918",
+      "entry_word": "뒷조사",
+      "type": "파생어",
+      "word": "뒷조사하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50927",
+      "entry_word": "뒹굴뒹굴",
+      "type": "파생어",
+      "word": "뒹굴뒹굴하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50931",
+      "entry_word": "드난살이",
+      "type": "파생어",
+      "word": "드난살이하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50966",
+      "entry_word": "드르렁",
+      "type": "파생어",
+      "word": "드르렁거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50966",
+      "entry_word": "드르렁",
+      "type": "파생어",
+      "word": "드르렁대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50968",
+      "entry_word": "드르렁드르렁",
+      "type": "파생어",
+      "word": "드르렁드르렁하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50970",
+      "entry_word": "드르르",
+      "type": "파생어",
+      "word": "드르르하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50974",
+      "entry_word": "드르릉",
+      "type": "파생어",
+      "word": "드르릉거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50974",
+      "entry_word": "드르릉",
+      "type": "파생어",
+      "word": "드르릉대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "50983",
+      "entry_word": "드문드문",
+      "type": "파생어",
+      "word": "드문드문하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "51615",
+      "entry_word": "망나니짓",
+      "type": "파생어",
+      "word": "망나니짓하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "51618",
+      "entry_word": "망동",
+      "type": "파생어",
+      "word": "망동하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "51649",
+      "entry_word": "망상",
+      "type": "파생어",
+      "word": "망상적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "51649",
+      "entry_word": "망상",
+      "type": "파생어",
+      "word": "망상하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "51650",
+      "entry_word": "망신",
+      "type": "파생어",
+      "word": "망신하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "51652",
+      "entry_word": "망신스럽다",
+      "type": "파생어",
+      "word": "망신스레",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "51665",
+      "entry_word": "망울망울",
+      "type": "파생어",
+      "word": "망울망울하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "52130",
+      "entry_word": "또록또록",
+      "type": "파생어",
+      "word": "또록또록하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "52145",
+      "entry_word": "똑딱",
+      "type": "파생어",
+      "word": "똑딱거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "52145",
+      "entry_word": "똑딱",
+      "type": "파생어",
+      "word": "똑딱대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "52145",
+      "entry_word": "똑딱",
+      "type": "파생어",
+      "word": "똑딱이다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "52145",
+      "entry_word": "똑딱",
+      "type": "파생어",
+      "word": "똑딱하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "52976",
+      "entry_word": "만전",
+      "type": "파생어",
+      "word": "만전하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "53011",
+      "entry_word": "만평",
+      "type": "파생어",
+      "word": "만평하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "53992",
+      "entry_word": "마술",
+      "type": "파생어",
+      "word": "마술하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "54075",
+      "entry_word": "떨꺽",
+      "type": "파생어",
+      "word": "떨꺽거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "54075",
+      "entry_word": "떨꺽",
+      "type": "파생어",
+      "word": "떨꺽대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "54075",
+      "entry_word": "떨꺽",
+      "type": "파생어",
+      "word": "떨꺽이다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "54075",
+      "entry_word": "떨꺽",
+      "type": "파생어",
+      "word": "떨꺽하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "54705",
+      "entry_word": "몽둥이질",
+      "type": "파생어",
+      "word": "몽둥이질하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "54766",
+      "entry_word": "몸치장",
+      "type": "파생어",
+      "word": "몸치장하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55001",
+      "entry_word": "무염치",
+      "type": "파생어",
+      "word": "무염치하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55022",
+      "entry_word": "무위",
+      "type": "파생어",
+      "word": "무위하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55024",
+      "entry_word": "무의식",
+      "type": "파생어",
+      "word": "무의식하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55039",
+      "entry_word": "무자식",
+      "type": "파생어",
+      "word": "무자식하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55047",
+      "entry_word": "무작정",
+      "type": "파생어",
+      "word": "무작정하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55063",
+      "entry_word": "무저항",
+      "type": "파생어",
+      "word": "무저항하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55068",
+      "entry_word": "무정부",
+      "type": "파생어",
+      "word": "무정부적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55118",
+      "entry_word": "맹꽁맹꽁",
+      "type": "파생어",
+      "word": "맹꽁맹꽁하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55120",
+      "entry_word": "맹독",
+      "type": "파생어",
+      "word": "맹독하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55159",
+      "entry_word": "무직",
+      "type": "파생어",
+      "word": "무직하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55273",
+      "entry_word": "명령",
+      "type": "파생어",
+      "word": "명령적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55321",
+      "entry_word": "무명",
+      "type": "파생어",
+      "word": "무명하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55506",
+      "entry_word": "멍석말이",
+      "type": "파생어",
+      "word": "멍석말이하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55553",
+      "entry_word": "매무시",
+      "type": "파생어",
+      "word": "매무시하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55618",
+      "entry_word": "무사통과",
+      "type": "파생어",
+      "word": "무사통과되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55618",
+      "entry_word": "무사통과",
+      "type": "파생어",
+      "word": "무사통과하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55648",
+      "entry_word": "무소식",
+      "type": "파생어",
+      "word": "무소식하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55712",
+      "entry_word": "매음",
+      "type": "파생어",
+      "word": "매음하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55741",
+      "entry_word": "매춘",
+      "type": "파생어",
+      "word": "매춘하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55743",
+      "entry_word": "매출",
+      "type": "파생어",
+      "word": "매출하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55797",
+      "entry_word": "모색",
+      "type": "파생어",
+      "word": "모색되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55890",
+      "entry_word": "목제",
+      "type": "파생어",
+      "word": "목제하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "55912",
+      "entry_word": "문명",
+      "type": "파생어",
+      "word": "문명적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56072",
+      "entry_word": "묵묵부답",
+      "type": "파생어",
+      "word": "묵묵부답하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56079",
+      "entry_word": "몸단장",
+      "type": "파생어",
+      "word": "몸단장하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56126",
+      "entry_word": "물장사",
+      "type": "파생어",
+      "word": "물장사하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56274",
+      "entry_word": "미련",
+      "type": "파생어",
+      "word": "미련히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56282",
+      "entry_word": "미완",
+      "type": "파생어",
+      "word": "미완하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56305",
+      "entry_word": "미망",
+      "type": "파생어",
+      "word": "미망하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56310",
+      "entry_word": "미명",
+      "type": "파생어",
+      "word": "미명하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56463",
+      "entry_word": "미수",
+      "type": "파생어",
+      "word": "미수하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56506",
+      "entry_word": "밀입국",
+      "type": "파생어",
+      "word": "밀입국하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56523",
+      "entry_word": "바람직스럽다",
+      "type": "파생어",
+      "word": "바람직스레",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56548",
+      "entry_word": "받아쓰기",
+      "type": "파생어",
+      "word": "받아쓰기하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56606",
+      "entry_word": "발끈",
+      "type": "파생어",
+      "word": "발끈거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56606",
+      "entry_word": "발끈",
+      "type": "파생어",
+      "word": "발끈대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56620",
+      "entry_word": "발라당",
+      "type": "파생어",
+      "word": "발라당하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56631",
+      "entry_word": "미장",
+      "type": "파생어",
+      "word": "미장하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56754",
+      "entry_word": "반공",
+      "type": "파생어",
+      "word": "반공하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56779",
+      "entry_word": "반동",
+      "type": "파생어",
+      "word": "반동적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56779",
+      "entry_word": "반동",
+      "type": "파생어",
+      "word": "반동하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56816",
+      "entry_word": "발모",
+      "type": "파생어",
+      "word": "발모하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56822",
+      "entry_word": "발발",
+      "type": "파생어",
+      "word": "발발거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56822",
+      "entry_word": "발발",
+      "type": "파생어",
+      "word": "발발대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56859",
+      "entry_word": "발생",
+      "type": "파생어",
+      "word": "발생적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56894",
+      "entry_word": "대부",
+      "type": "파생어",
+      "word": "대부되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "56949",
+      "entry_word": "반려",
+      "type": "파생어",
+      "word": "반려하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57119",
+      "entry_word": "뭉실뭉실",
+      "type": "파생어",
+      "word": "뭉실뭉실하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57160",
+      "entry_word": "반어",
+      "type": "파생어",
+      "word": "반어적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57176",
+      "entry_word": "반일",
+      "type": "파생어",
+      "word": "반일하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57184",
+      "entry_word": "반작용",
+      "type": "파생어",
+      "word": "반작용하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57190",
+      "entry_word": "발악",
+      "type": "파생어",
+      "word": "발악적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57191",
+      "entry_word": "발안",
+      "type": "파생어",
+      "word": "발안하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57194",
+      "entry_word": "발아",
+      "type": "파생어",
+      "word": "발아되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57290",
+      "entry_word": "박박",
+      "type": "파생어",
+      "word": "박박거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57290",
+      "entry_word": "박박",
+      "type": "파생어",
+      "word": "박박대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57361",
+      "entry_word": "민요",
+      "type": "파생어",
+      "word": "민요적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57432",
+      "entry_word": "밀무역",
+      "type": "파생어",
+      "word": "밀무역하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57492",
+      "entry_word": "맞고소",
+      "type": "파생어",
+      "word": "맞고소하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57631",
+      "entry_word": "반타작",
+      "type": "파생어",
+      "word": "반타작하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57749",
+      "entry_word": "미구",
+      "type": "파생어",
+      "word": "미구하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57761",
+      "entry_word": "미개발",
+      "type": "파생어",
+      "word": "미개발되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57761",
+      "entry_word": "미개발",
+      "type": "파생어",
+      "word": "미개발하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57804",
+      "entry_word": "무구",
+      "type": "파생어",
+      "word": "무구히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57832",
+      "entry_word": "방긋",
+      "type": "파생어",
+      "word": "방긋대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57916",
+      "entry_word": "방화",
+      "type": "파생어",
+      "word": "방화하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "57928",
+      "entry_word": "방생",
+      "type": "파생어",
+      "word": "방생하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58008",
+      "entry_word": "뒤숭숭",
+      "type": "파생어",
+      "word": "뒤숭숭히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58041",
+      "entry_word": "바르르",
+      "type": "파생어",
+      "word": "바르르하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58043",
+      "entry_word": "바사삭",
+      "type": "파생어",
+      "word": "바사삭거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58043",
+      "entry_word": "바사삭",
+      "type": "파생어",
+      "word": "바사삭대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58043",
+      "entry_word": "바사삭",
+      "type": "파생어",
+      "word": "바사삭하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58198",
+      "entry_word": "배역",
+      "type": "파생어",
+      "word": "배역하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58243",
+      "entry_word": "변통",
+      "type": "파생어",
+      "word": "변통되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58277",
+      "entry_word": "작가",
+      "type": "파생어",
+      "word": "작가적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58295",
+      "entry_word": "배틀배틀",
+      "type": "파생어",
+      "word": "배틀배틀하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58338",
+      "entry_word": "배차",
+      "type": "파생어",
+      "word": "배차되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58338",
+      "entry_word": "배차",
+      "type": "파생어",
+      "word": "배차하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58360",
+      "entry_word": "번다스럽다",
+      "type": "파생어",
+      "word": "번다스레",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58486",
+      "entry_word": "번드르르",
+      "type": "파생어",
+      "word": "번드르르하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58529",
+      "entry_word": "벙실벙실",
+      "type": "파생어",
+      "word": "벙실벙실하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58687",
+      "entry_word": "백발백중",
+      "type": "파생어",
+      "word": "백발백중하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58769",
+      "entry_word": "뱅뱅",
+      "type": "파생어",
+      "word": "뱅뱅거리다, 뱅뱅대다, 뱅뱅하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58882",
+      "entry_word": "병창",
+      "type": "파생어",
+      "word": "병창하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58896",
+      "entry_word": "병행",
+      "type": "파생어",
+      "word": "병행적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58926",
+      "entry_word": "변주",
+      "type": "파생어",
+      "word": "변주하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58938",
+      "entry_word": "벌목",
+      "type": "파생어",
+      "word": "벌목하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58948",
+      "entry_word": "별소리",
+      "type": "파생어",
+      "word": "별소리하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "58998",
+      "entry_word": "벌쭉",
+      "type": "파생어",
+      "word": "벌쭉거리다, 벌쭉대다, 벌쭉이다, 벌쭉하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59000",
+      "entry_word": "병간호",
+      "type": "파생어",
+      "word": "병간호하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59003",
+      "entry_word": "병구완",
+      "type": "파생어",
+      "word": "병구완하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59021",
+      "entry_word": "병렬",
+      "type": "파생어",
+      "word": "병렬되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59021",
+      "entry_word": "병렬",
+      "type": "파생어",
+      "word": "병렬적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59021",
+      "entry_word": "병렬",
+      "type": "파생어",
+      "word": "병렬하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59071",
+      "entry_word": "벅벅",
+      "type": "파생어",
+      "word": "벅벅거리다, 벅벅대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59127",
+      "entry_word": "번안",
+      "type": "파생어",
+      "word": "번안되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59127",
+      "entry_word": "번안",
+      "type": "파생어",
+      "word": "번안하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59140",
+      "entry_word": "배상",
+      "type": "파생어",
+      "word": "배상하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59188",
+      "entry_word": "부릉",
+      "type": "파생어",
+      "word": "부릉거리다, 부릉대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59189",
+      "entry_word": "부릉부릉",
+      "type": "파생어",
+      "word": "부릉부릉하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59226",
+      "entry_word": "글",
+      "type": "파생어",
+      "word": "글하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59276",
+      "entry_word": "보신",
+      "type": "파생어",
+      "word": "보신하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59316",
+      "entry_word": "북북",
+      "type": "파생어",
+      "word": "북북거리다, 북북대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59362",
+      "entry_word": "부설",
+      "type": "파생어",
+      "word": "부설되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59362",
+      "entry_word": "부설",
+      "type": "파생어",
+      "word": "부설하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59370",
+      "entry_word": "보결",
+      "type": "파생어",
+      "word": "보결되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59370",
+      "entry_word": "보결",
+      "type": "파생어",
+      "word": "보결하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59419",
+      "entry_word": "부속",
+      "type": "파생어",
+      "word": "부속적, 부속하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59426",
+      "entry_word": "북향",
+      "type": "파생어",
+      "word": "북향하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59445",
+      "entry_word": "부수",
+      "type": "파생어",
+      "word": "부수하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59609",
+      "entry_word": "볼록",
+      "type": "파생어",
+      "word": "볼록거리다, 볼록대다, 볼록이다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59661",
+      "entry_word": "부르르",
+      "type": "파생어",
+      "word": "부르르하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59804",
+      "entry_word": "부정",
+      "type": "파생어",
+      "word": "부정히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "59935",
+      "entry_word": "부역",
+      "type": "파생어",
+      "word": "부역하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60026",
+      "entry_word": "부양",
+      "type": "파생어",
+      "word": "부양되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60061",
+      "entry_word": "복고주의",
+      "type": "파생어",
+      "word": "복고주의적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60071",
+      "entry_word": "부침",
+      "type": "파생어",
+      "word": "부침하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60077",
+      "entry_word": "복학",
+      "type": "파생어",
+      "word": "복학되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60097",
+      "entry_word": "괜찮다",
+      "type": "파생어",
+      "word": "괜찮이",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60299",
+      "entry_word": "불면",
+      "type": "파생어",
+      "word": "불면하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60306",
+      "entry_word": "빙그레",
+      "type": "파생어",
+      "word": "빙그레하다",
+      "target_code": "0",
+      "link_type": null
+    }
+  ],
+  "review_queue": []
+}
