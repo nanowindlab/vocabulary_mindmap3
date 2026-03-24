@@ -14,6 +14,12 @@
 - 현재 `APP_READY_FACETS.json`은 MM3 facet payload 기반으로 생성된다.
 - git/Vercel 연동에서는 `live/*.json` 대신 `public/data/internal/runtime_payloads/*.json.gz`를 추적하고, build 전에 `npm run prepare:live`로 복원한다.
 - repo root Vercel 연동에서는 `vercel.json`이 `09_app` install/build/output을 직접 지정한다.
+- packaging pipeline:
+  - `npm run package:live`
+  - `npm run prepare:live`
+  - `npm run verify:live`
+  - `npm run build`
+- `package:live`는 압축 payload와 `MANIFEST.json`까지 같이 갱신한다.
 - 현재 tree는 MM3 축 스위처 기준으로 분리된다.
   - `APP_READY_MEANING_TREE.json`
   - `APP_READY_SITUATION_TREE.json`

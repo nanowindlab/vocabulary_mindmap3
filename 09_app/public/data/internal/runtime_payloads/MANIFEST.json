@@ -1,0 +1,43 @@
+{
+  "version": "v1",
+  "generated_at": "2026-03-24T14:10:19.578Z",
+  "payload_count": 6,
+  "entries": [
+    {
+      "file": "APP_READY_SEARCH_INDEX.json",
+      "source_bytes": 131435069,
+      "compressed_bytes": 19482371,
+      "sha256_hint": "2114a369ecad19dc9e43b2e0348e2bd38655d5d2d8a9711b752ae20bf2f8c46c"
+    },
+    {
+      "file": "APP_READY_MEANING_TREE.json",
+      "source_bytes": 114668561,
+      "compressed_bytes": 16947041,
+      "sha256_hint": "1b05375d191a77d7c522a72282403ed99f0dc838a946acf72d525e816e20dd46"
+    },
+    {
+      "file": "APP_READY_SITUATION_TREE.json",
+      "source_bytes": 30260627,
+      "compressed_bytes": 4828669,
+      "sha256_hint": "5b5f4b679e39c5c0e7a42a710a173377a1ceb65e9517419ac4271a75364309d9"
+    },
+    {
+      "file": "APP_READY_UNCLASSIFIED_TREE.json",
+      "source_bytes": 19676133,
+      "compressed_bytes": 2620718,
+      "sha256_hint": "1fa333713c049d8ec89dd90eeaf664fa780e83986817c67eac9cc4c88473ebea"
+    },
+    {
+      "file": "APP_READY_DETAIL_MAP.json",
+      "source_bytes": 245842330,
+      "compressed_bytes": 34302250,
+      "sha256_hint": "b95891fbe3a035368a3aa091d95de6a518010f5ca3417953ebbbac861c4381fe"
+    },
+    {
+      "file": "APP_READY_FACETS.json",
+      "source_bytes": 4113,
+      "compressed_bytes": 817,
+      "sha256_hint": "7b2c21ead1522776414b5a256722903b465fd0c8e029005fcd865144a429da52"
+    }
+  ]
+}

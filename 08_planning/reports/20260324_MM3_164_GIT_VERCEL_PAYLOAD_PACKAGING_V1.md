@@ -2,11 +2,11 @@
 
 ## Current Revision
 
-- `R1`
+- `R2`
 
 ## Last Updated
 
-- `2026-03-24 23:05 KST`
+- `2026-03-24 23:20 KST`
 
 ## Last Updated By
 
@@ -41,9 +41,17 @@
   - `09_app/public/data/internal/runtime_payloads/`
 - restore script 추가
   - `09_app/scripts/prepare-live-payloads.mjs`
+- package script 추가
+  - `09_app/scripts/package-live-payloads.mjs`
+- verify script 추가
+  - `09_app/scripts/verify-runtime-payloads.mjs`
+- runtime payload manifest 추가
+  - `09_app/public/data/internal/runtime_payloads/MANIFEST.json`
 - app build chain 연결
   - `09_app/package.json`
+  - `package:live`
   - `prepare:live`
+  - `verify:live`
   - `prebuild`
 - repo root Vercel config 추가
   - `vercel.json`
@@ -57,9 +65,32 @@
 
 ## Verification
 
-- `npm run prepare:live` 통과
-- `npm run build` 통과
+- `npm run package:live && npm run build` 통과
+- `prepare:live -> verify:live -> build` 체인 통과
 - `live/*.json`는 git ignore 적용 확인
+
+## Deploy Pipeline
+
+### Workflow 1. Package
+
+1. `npm run package:live`
+2. `live/*.json`를 `runtime_payloads/*.json.gz`로 압축
+3. `MANIFEST.json` 갱신
+
+### Workflow 2. Restore
+
+1. `npm run prepare:live`
+2. `runtime_payloads/*.json.gz`를 `live/*.json`로 복원
+
+### Workflow 3. Verify
+
+1. `npm run verify:live`
+2. manifest / compressed payload / restored live payload 존재 확인
+
+### Workflow 4. Build
+
+1. `npm run build`
+2. Vite build
 
 ## Operational Note
 
@@ -77,3 +108,4 @@
 ## Revision History
 
 - `R1` / `2026-03-24 23:05 KST` / `Codex PM` / git push blocker 완화와 Vercel build packaging 정책을 최초 고정
+- `R2` / `2026-03-24 23:20 KST` / `Codex PM` / package/verify workflow와 manifest 기반 deploy pipeline을 추가

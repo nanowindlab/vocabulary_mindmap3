@@ -4,9 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "package:live": "node scripts/package-live-payloads.mjs",
     "prepare:live": "node scripts/prepare-live-payloads.mjs",
+    "verify:live": "node scripts/verify-runtime-payloads.mjs",
     "dev": "vite",
-    "prebuild": "npm run prepare:live",
+    "prebuild": "npm run prepare:live && npm run verify:live",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
