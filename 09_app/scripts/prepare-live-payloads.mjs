@@ -1,4 +1,4 @@
-import { createReadStream, createWriteStream, existsSync, mkdirSync } from "node:fs";
+import { createReadStream, createWriteStream, existsSync, mkdirSync, renameSync } from "node:fs";
 import { pipeline } from "node:stream/promises";
 import { createGunzip } from "node:zlib";
 import path from "node:path";
@@ -22,6 +22,7 @@ const PAYLOADS = [
 async function inflatePayload(fileName) {
   const source = path.join(compressedDir, `${fileName}.gz`);
   const target = path.join(liveDir, fileName);
+  const tempTarget = `${target}.tmp`;
 
   if (!existsSync(source)) {
     throw new Error(`Missing compressed runtime payload: ${source}`);
@@ -30,8 +31,10 @@ async function inflatePayload(fileName) {
   await pipeline(
     createReadStream(source),
     createGunzip(),
-    createWriteStream(target),
+    createWriteStream(tempTarget),
   );
+
+  renameSync(tempTarget, target);
 }
 
 async function main() {

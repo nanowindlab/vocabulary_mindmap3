@@ -2,11 +2,11 @@
 
 ## Current Revision
 
-- `R2`
+- `R3`
 
 ## Last Updated
 
-- `2026-03-24 23:20 KST`
+- `2026-03-24 23:30 KST`
 
 ## Last Updated By
 
@@ -81,11 +81,14 @@
 
 1. `npm run prepare:live`
 2. `runtime_payloads/*.json.gz`를 `live/*.json`로 복원
+3. temp file write 후 rename으로 atomic replace
 
 ### Workflow 3. Verify
 
 1. `npm run verify:live`
 2. manifest / compressed payload / restored live payload 존재 확인
+3. compressed byte/hash 일치 확인
+4. restored live byte 일치 확인
 
 ### Workflow 4. Build
 
@@ -109,3 +112,4 @@
 
 - `R1` / `2026-03-24 23:05 KST` / `Codex PM` / git push blocker 완화와 Vercel build packaging 정책을 최초 고정
 - `R2` / `2026-03-24 23:20 KST` / `Codex PM` / package/verify workflow와 manifest 기반 deploy pipeline을 추가
+- `R3` / `2026-03-24 23:30 KST` / `Codex PM` / atomic restore와 content-hash verification을 추가

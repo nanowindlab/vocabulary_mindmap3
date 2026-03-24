@@ -23,8 +23,12 @@ const PAYLOADS = [
 
 function sha256(filePath) {
   const hash = createHash("sha256");
-  hash.update(statSync(filePath).size.toString());
-  return hash.digest("hex");
+  return new Promise((resolve, reject) => {
+    const stream = createReadStream(filePath);
+    stream.on("data", (chunk) => hash.update(chunk));
+    stream.on("end", () => resolve(hash.digest("hex")));
+    stream.on("error", reject);
+  });
 }
 
 async function gzipPayload(fileName) {
@@ -48,7 +52,7 @@ async function gzipPayload(fileName) {
     file: fileName,
     source_bytes: statSync(source).size,
     compressed_bytes: statSync(target).size,
-    sha256_hint: sha256(target),
+    sha256: await sha256(target),
   };
 }
 
@@ -69,7 +73,9 @@ async function main() {
     entries,
   };
 
-  writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf-8");
+  const tempManifestPath = `${manifestPath}.tmp`;
+  writeFileSync(tempManifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf-8");
+  renameSync(tempManifestPath, manifestPath);
   console.log(`wrote ${path.basename(manifestPath)}`);
 }
 
