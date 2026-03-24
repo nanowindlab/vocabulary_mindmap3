@@ -1,43 +1,685 @@
 {
   "version": "v1",
-  "generated_at": "2026-03-24T14:14:22.192Z",
-  "payload_count": 6,
+  "generated_at": "2026-03-24T14:27:19.202Z",
+  "payload_count": 113,
   "entries": [
     {
       "file": "APP_READY_SEARCH_INDEX.json",
-      "source_bytes": 131435069,
-      "compressed_bytes": 19482371,
-      "sha256": "8d66bdd33e3de2f61372d275c886604466b89af9cda4a1df7b27828bc7570f7c"
+      "source_bytes": 131862909,
+      "compressed_bytes": 19494187,
+      "sha256": "cba73911c3da59ebdc11697f9fc3acee41fe272aea9a261aa6d2fc7ecbfae32b"
     },
     {
       "file": "APP_READY_MEANING_TREE.json",
-      "source_bytes": 114668561,
-      "compressed_bytes": 16947041,
-      "sha256": "855ac7760f81eb917bf43864651697c487cbefc42949c452c70ac7eaa1fa8c3b"
+      "source_bytes": 115023841,
+      "compressed_bytes": 16961478,
+      "sha256": "806fe9b2c357d32b6a7100d1c846f2cc88b3f72064be1b02e6e0d88df90743ec"
     },
     {
       "file": "APP_READY_SITUATION_TREE.json",
-      "source_bytes": 30260627,
-      "compressed_bytes": 4828669,
-      "sha256": "c9c4c6ad276949fa1231bd77a23a82ead818ef539d811c5305bffbe76a0b331e"
+      "source_bytes": 30351467,
+      "compressed_bytes": 4832566,
+      "sha256": "295de2694217daea2e449a5de1281a5bad5848368821b5f5141b8180b9a124be"
     },
     {
       "file": "APP_READY_UNCLASSIFIED_TREE.json",
-      "source_bytes": 19676133,
-      "compressed_bytes": 2620718,
-      "sha256": "23d5d599e5e390c3dd9312cf54532c6c233ce75a4075b868f950f2eec1c955df"
-    },
-    {
-      "file": "APP_READY_DETAIL_MAP.json",
-      "source_bytes": 245842330,
-      "compressed_bytes": 34302250,
-      "sha256": "a686d18cd28d271333537c81a92b6618c87b15b9b75472aa231dd8fc14005ce3"
+      "source_bytes": 19744181,
+      "compressed_bytes": 2622003,
+      "sha256": "ba36ba0e26ef45a162c5da195d31fef5fb36887d5c8ed4ef81409c121bdc71eb"
     },
     {
       "file": "APP_READY_FACETS.json",
       "source_bytes": 4113,
       "compressed_bytes": 817,
       "sha256": "bf5c0d6221cb6ed23e63f48d0504697b01780d8516a76ac65c87d63e7991e15c"
+    },
+    {
+      "file": "CHUNK_MANIFEST_V1.json",
+      "source_bytes": 7628,
+      "compressed_bytes": 463,
+      "sha256": "cef81f3871fa2fea2fc1d4f2c3acb059ecf077981afef7739cc30f9d2eff6e97"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0001.json",
+      "source_bytes": 2188906,
+      "compressed_bytes": 334439,
+      "sha256": "8d698824b05e285ba0f95deb99cb93bfa13e7982d1bc472c47d4f3008562531c"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0002.json",
+      "source_bytes": 2468037,
+      "compressed_bytes": 386274,
+      "sha256": "3c8f3431cc2121cfdc6858fa75047c0ea0aaba6147180531f8a8877b545a8d06"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0003.json",
+      "source_bytes": 2484574,
+      "compressed_bytes": 395315,
+      "sha256": "028ac1219f0bddadf7d247f224c57d5978cb108b4bcd5afea77e83f7e2a0c3d1"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0004.json",
+      "source_bytes": 2554391,
+      "compressed_bytes": 398008,
+      "sha256": "605b3e9a55e1927d2f82d297e2c8ec38745d8c1321d1aa11d28445d6a6257dd9"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0005.json",
+      "source_bytes": 1888548,
+      "compressed_bytes": 293623,
+      "sha256": "ccb9db5ece7cd72647334cda2ee5914737e57a004401db9603470f9da55f0f21"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0006.json",
+      "source_bytes": 1754745,
+      "compressed_bytes": 240646,
+      "sha256": "dc1ae256c8cabb972819066f0929b19feb071ff6892b564ec05e4145a5a022c9"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0007.json",
+      "source_bytes": 2251074,
+      "compressed_bytes": 348861,
+      "sha256": "d28c911c15d15d54f56cd541268b5b15473f24258a323abeb01e9b4ce97785af"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0008.json",
+      "source_bytes": 1964178,
+      "compressed_bytes": 307462,
+      "sha256": "17a1293f8d2869f6dbc2e00fae775a1c0d1a1da429325a27e444d59ad990dda9"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0009.json",
+      "source_bytes": 1988237,
+      "compressed_bytes": 314048,
+      "sha256": "37f8405b6624e02c9ff5f2948cffb45f64003b8149e8187f403d61e9e6a8a7ef"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0010.json",
+      "source_bytes": 1997162,
+      "compressed_bytes": 310435,
+      "sha256": "8384c5151b63d842dd1a75196a68d2027de0efad78dbc91e5b4526d6602ff6d9"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0011.json",
+      "source_bytes": 2021550,
+      "compressed_bytes": 310369,
+      "sha256": "57edf32dccd4f197886bf0e50493c73ca7928734e2b9d2f7d7831423672e26c3"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0012.json",
+      "source_bytes": 1946711,
+      "compressed_bytes": 293397,
+      "sha256": "4650791bb2a1927b98b8694050cd038c8c1d2ef5e52498c061ffce91bd408a05"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0013.json",
+      "source_bytes": 2358740,
+      "compressed_bytes": 353946,
+      "sha256": "f5c4930cf32c99d8bdb3b2fe82795526d3c1c53f9283ddef8b03501e96b4580f"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0014.json",
+      "source_bytes": 2335364,
+      "compressed_bytes": 356062,
+      "sha256": "ebac4ed4a7de32f5a04e1c859be29e5708788c80807c52e83a2539620b80db45"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0015.json",
+      "source_bytes": 2440335,
+      "compressed_bytes": 363704,
+      "sha256": "5c8b3762aec58bd9eb443b5765b160afcf96e323869c541939644372692d4798"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0016.json",
+      "source_bytes": 2002312,
+      "compressed_bytes": 294777,
+      "sha256": "21f9d7c8f299280b11437935f7c7437bf9e1f54af775b28c2081f980473b50a3"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0017.json",
+      "source_bytes": 2258101,
+      "compressed_bytes": 334028,
+      "sha256": "9eb796c255810814f8aea396dd041958bc21e8499146a65065a0ae843bb646c6"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0018.json",
+      "source_bytes": 2061973,
+      "compressed_bytes": 285751,
+      "sha256": "b3c41d9885c1cb1c475471ae1401596b93e91fdb7e1dfff35b0254368fc87032"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0019.json",
+      "source_bytes": 2206858,
+      "compressed_bytes": 332462,
+      "sha256": "52fc1b736da6e1173bd4cba45125a0e0b38ba1af82305d196da27fbe1f514e85"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0020.json",
+      "source_bytes": 2325702,
+      "compressed_bytes": 331236,
+      "sha256": "2865c99c2c41751e60aaf8359ad532851138096e72d8cb48be630ba7199b726c"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0021.json",
+      "source_bytes": 2112264,
+      "compressed_bytes": 320013,
+      "sha256": "1cf446b989e147a724a7c3578b421f99c6de251b4f852a1d0709eeca62bc9fa8"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0022.json",
+      "source_bytes": 2151021,
+      "compressed_bytes": 322547,
+      "sha256": "cc9885a2d28893c05cb699a6ee018f46e94a457b3560ba8801d4cb64e48d7aca"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0023.json",
+      "source_bytes": 2080182,
+      "compressed_bytes": 310097,
+      "sha256": "7a4df2a81ae583bab3549c002c549f57fedeee1375c6b3e25b092d00b12c5f7b"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0024.json",
+      "source_bytes": 2155932,
+      "compressed_bytes": 321496,
+      "sha256": "7539bfae7a7f2b2178463ca7d832d6cf42da0cb6da52718569606d11b3698c1b"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0025.json",
+      "source_bytes": 2159271,
+      "compressed_bytes": 322648,
+      "sha256": "a0b6574faea450da98de03e70e5c0d9fea2b67c47f7534be4caa0deba4eac7a8"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0026.json",
+      "source_bytes": 1951051,
+      "compressed_bytes": 297999,
+      "sha256": "c685705983bda009d1ab4a8c1ed85f09a4dde2185e70ae1bf80eb92fa99d3a36"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0027.json",
+      "source_bytes": 2130587,
+      "compressed_bytes": 315865,
+      "sha256": "22a8554a0c340d61b760ff56d685bbc595453dd82de94e0d213248f9799cd6da"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0028.json",
+      "source_bytes": 2236530,
+      "compressed_bytes": 329860,
+      "sha256": "355b330cf6bb189b0184fdd49e9ca450ed703204d7ace774d5b7528ae9b5abf5"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0029.json",
+      "source_bytes": 1993515,
+      "compressed_bytes": 300906,
+      "sha256": "3f80fb96442bfad220260c20ea8e64f84509a1bbdcc8f4c13f1aacbb87f69522"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0030.json",
+      "source_bytes": 2142002,
+      "compressed_bytes": 334716,
+      "sha256": "3c853070c117accd4d702252c1d6760080139e4f7553eb8ad71555d21a42e8d9"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0031.json",
+      "source_bytes": 2151557,
+      "compressed_bytes": 332859,
+      "sha256": "f6f9a1e11e7c34a1a6276d37a06ca85fc3b27fb327b1d4e85c46c87b51bc2a01"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0032.json",
+      "source_bytes": 1996067,
+      "compressed_bytes": 296807,
+      "sha256": "bb1eaf5b9365052178fca604199fefc42a7f4d7e616eb605d3cb59502b5eacbe"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0033.json",
+      "source_bytes": 2029085,
+      "compressed_bytes": 305177,
+      "sha256": "d0e90b26db5e4a2412cac1ebda2d782f48fb1bb0d3fbe61881c3fd9ce172482f"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0034.json",
+      "source_bytes": 2011951,
+      "compressed_bytes": 319040,
+      "sha256": "fbbad210cdf2ce9783d169feb1ec793a10d6cbfd685f3bc8cb0b3ab7973b6b78"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0035.json",
+      "source_bytes": 2001495,
+      "compressed_bytes": 290469,
+      "sha256": "04c573043c6bfe748028aa029df8e0fd9e3af76f713edcb6c7c891b697aa43d3"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0036.json",
+      "source_bytes": 2317031,
+      "compressed_bytes": 343808,
+      "sha256": "38150ce672f33bf973a43843462412902c05b8a1254c6cd57b956587500a3686"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0037.json",
+      "source_bytes": 2342321,
+      "compressed_bytes": 347815,
+      "sha256": "9f8c3cd25e39038bdd0d9b45534183d55dacf14d088dd8d8c9ade1a278bb1da3"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0038.json",
+      "source_bytes": 2108775,
+      "compressed_bytes": 344103,
+      "sha256": "a318cc70f2b2aa644ebac90fc7f422bb86c3bf298f2690c2eb75833fbb921531"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0039.json",
+      "source_bytes": 2217168,
+      "compressed_bytes": 329912,
+      "sha256": "3c54b5bd1881c5ae78dba1f53b620677afcb632269efa0382fb8c038b87d642d"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0040.json",
+      "source_bytes": 2010598,
+      "compressed_bytes": 305342,
+      "sha256": "a41fb673113fda9e4b58ae9c009ca4597d98a35ce0042124c6fd0e87c7f4b280"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0041.json",
+      "source_bytes": 2413543,
+      "compressed_bytes": 359483,
+      "sha256": "6ad563d1d996e5614350335e8da80720d654438abe5043e68a7c6f9f2bb2fb03"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0042.json",
+      "source_bytes": 2080241,
+      "compressed_bytes": 302080,
+      "sha256": "3296de502fe2b879a83af47dbb8bce8830ddd49fa6e13b449690633acc6a268a"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0043.json",
+      "source_bytes": 2556966,
+      "compressed_bytes": 391356,
+      "sha256": "cc7a02153007c49d6fdd656270b74f355875d13513144627d17fe74bdda37ed3"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0044.json",
+      "source_bytes": 2071788,
+      "compressed_bytes": 313565,
+      "sha256": "f7183a65cfeee60aea559047947d79b6541cb2fea93773d9da938b9ef57e9a25"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0045.json",
+      "source_bytes": 3158897,
+      "compressed_bytes": 499397,
+      "sha256": "edb3934769635b295b7983a12dbcdc6718d8720062fad0b2ae052caf6a456644"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0046.json",
+      "source_bytes": 2419487,
+      "compressed_bytes": 374128,
+      "sha256": "5c8c9064640f420887277bd558ea2b363c8809499dd2c0f254d8d6fe89ef5bc8"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0047.json",
+      "source_bytes": 2049209,
+      "compressed_bytes": 300741,
+      "sha256": "b842af33b4b4c3c6e6e30a0b938ad8bfb5145e896ced4c7490d485533cfa821e"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0048.json",
+      "source_bytes": 2066964,
+      "compressed_bytes": 305694,
+      "sha256": "1f4abaed2b6bc31a35330cd93c40f6f0297ed98a3054c6993a2b5434124aa05d"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0049.json",
+      "source_bytes": 2416807,
+      "compressed_bytes": 370204,
+      "sha256": "62bf8069c3d06a47f39266116127dba0b42afe286241c5cca692918da4f13d85"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0050.json",
+      "source_bytes": 2112003,
+      "compressed_bytes": 309287,
+      "sha256": "e8cbddb324c62cb1ad558a357908598708d2f0bc923b5364e2166f362304dbf3"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0051.json",
+      "source_bytes": 2283741,
+      "compressed_bytes": 354502,
+      "sha256": "c280430982f2bdc2cb590c860796ad1afadd65d884756ae723d4f9ba3802a428"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0052.json",
+      "source_bytes": 2053702,
+      "compressed_bytes": 305553,
+      "sha256": "0eb5796ba658920387037b89aec1fbb2e974e8bbedd5b5a3d0758112f6abbcc4"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0053.json",
+      "source_bytes": 2753333,
+      "compressed_bytes": 436049,
+      "sha256": "8f78e3218c75aecdce330d4a9b7eedf610967c2e32e27fc77fa95a50039c7317"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0054.json",
+      "source_bytes": 2436527,
+      "compressed_bytes": 369376,
+      "sha256": "c03fff52b5453ac0c9c7673251a1c9dc4a002890b5ede230ee723cf3ced45d43"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0055.json",
+      "source_bytes": 2335069,
+      "compressed_bytes": 348458,
+      "sha256": "c1334bedadff6f8854cb950c265d35ebd3ddb345d33ff43a151404290cbee4bb"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0056.json",
+      "source_bytes": 2201911,
+      "compressed_bytes": 349525,
+      "sha256": "1b6786da3aa6c3b545fac1a993a80d1c005ea2b62f73a8467ab7a65405e4d05d"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0057.json",
+      "source_bytes": 2142394,
+      "compressed_bytes": 348339,
+      "sha256": "dbf73ca9185413b34abebaa0fb5c478d72cf981ce0261cf190730d2f1be35b2b"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0058.json",
+      "source_bytes": 1963867,
+      "compressed_bytes": 287923,
+      "sha256": "c3cfb90ee19ab44fce16b037c7f2f3731fde06c2dfa878e0bb1a1bf6373a242d"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0059.json",
+      "source_bytes": 2333148,
+      "compressed_bytes": 349629,
+      "sha256": "6098b385dec5d54e04cacba6d5e901d325531266714d5439841914e98e043da9"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0060.json",
+      "source_bytes": 1970690,
+      "compressed_bytes": 302734,
+      "sha256": "25a49d0adfa5aa0f1a9c80dba0095ba792c7474259ffc1d075ff2879ea8c8608"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0061.json",
+      "source_bytes": 2114791,
+      "compressed_bytes": 296407,
+      "sha256": "d44b978f5e27f9457e1d8a49740edb7292f9b727518d29db81cb2b6f653a6ee4"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0062.json",
+      "source_bytes": 2438894,
+      "compressed_bytes": 369634,
+      "sha256": "31328e8dec24de7f3525caf17492ddccef73a70ae7de75d7bd485db6d447a03c"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0063.json",
+      "source_bytes": 2488023,
+      "compressed_bytes": 369549,
+      "sha256": "15ac3d2f653e21bf5de9cf4fd0324b2e246a82a1048338a97821fa7e55b8bc51"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0064.json",
+      "source_bytes": 2007481,
+      "compressed_bytes": 292117,
+      "sha256": "f2699a8391766f4a22e0e4c248499d062c4f7f1c3788a8b59b645a641a3c4d57"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0065.json",
+      "source_bytes": 2076808,
+      "compressed_bytes": 294804,
+      "sha256": "9eb47fd7fb3c014c1f2e3f60bc22fc3536178c4d65642a2518d03e7cf7a66e3c"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0066.json",
+      "source_bytes": 2394620,
+      "compressed_bytes": 350402,
+      "sha256": "76c62a10fac484ac1f0a28bfbf907f2e7d3945ae75948301a11f12b4bbe7e6c0"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0067.json",
+      "source_bytes": 2090550,
+      "compressed_bytes": 300373,
+      "sha256": "c772e31fcf59624b72e46d7982164d3915089a4c1ecccb51f930ede7156ea2fe"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0068.json",
+      "source_bytes": 2456141,
+      "compressed_bytes": 344106,
+      "sha256": "16c7e0ab7d638ba1dcc1a6136a8c0a35c269646b3b247e0bce1fb1caa933e3b5"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0069.json",
+      "source_bytes": 1972915,
+      "compressed_bytes": 261415,
+      "sha256": "22aa3d15341b60c6dec9ef08e5716d5cff7bd98f68dddcef20a3790c38b897b2"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0070.json",
+      "source_bytes": 2053291,
+      "compressed_bytes": 300064,
+      "sha256": "eca4b805d62f6ece9e09f14fa522127f8c4fe0a931a942438c2bc9b703067392"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0071.json",
+      "source_bytes": 2136344,
+      "compressed_bytes": 301505,
+      "sha256": "fb353d6cdc00eb77eee7fa95dbda003392b7db0af6a5686e1486cdb4cb825026"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0072.json",
+      "source_bytes": 2083941,
+      "compressed_bytes": 294853,
+      "sha256": "b3b2e37e33bc6896acdeec6cb29f6259dfe43163d24f3f603723cf633477a24a"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0073.json",
+      "source_bytes": 2083213,
+      "compressed_bytes": 289076,
+      "sha256": "b24fded968eb84a6b6bb2a699796b82f4d25b53aa86781144df2085ee4e3e2cc"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0074.json",
+      "source_bytes": 2075139,
+      "compressed_bytes": 300373,
+      "sha256": "a5605b4c93fab9175f9e68fa8137237cbd4869ffcef9ab9e21a7b2350eb27032"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0075.json",
+      "source_bytes": 2087834,
+      "compressed_bytes": 296325,
+      "sha256": "a6eac4556594a324641e6726ce707cbbc33f338e007610a2b8e0debf4e04dced"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0076.json",
+      "source_bytes": 1609893,
+      "compressed_bytes": 230418,
+      "sha256": "b1ca0ddf33b1b875f7efb19f795f05ec02a937f2047c35f8e81861f742c396f4"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0077.json",
+      "source_bytes": 2211834,
+      "compressed_bytes": 296845,
+      "sha256": "200d5de5d2fe793c80772f8cd8b95163a3a9710b65b589eaf6764b9b9ccde5a8"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0078.json",
+      "source_bytes": 2082152,
+      "compressed_bytes": 292082,
+      "sha256": "fb1202b2f11cc8f1f0b45962c80ab9dbb2ff672f28a7c04b7dc0d95e39f498ac"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0079.json",
+      "source_bytes": 1667606,
+      "compressed_bytes": 229218,
+      "sha256": "5fb688e8ea98af861b9200d982ff0dc05f27c2ddee3c1b17dc66707d9c77160c"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0080.json",
+      "source_bytes": 2258594,
+      "compressed_bytes": 329167,
+      "sha256": "e58368f22363f73d74c66e5cc3afa06b89e31084e170c98641ac28a2b2e686a2"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0081.json",
+      "source_bytes": 1951396,
+      "compressed_bytes": 305913,
+      "sha256": "bee66d140d46d9b355dac2b5188769e9f91e8fda544c055226fdb7974cd942a1"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0082.json",
+      "source_bytes": 2010155,
+      "compressed_bytes": 289976,
+      "sha256": "dcd02258eab8c1b17c72f53b4b078e275f07c71250f9d92eed36b233540be5e2"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0083.json",
+      "source_bytes": 2687276,
+      "compressed_bytes": 363120,
+      "sha256": "99d345b8e37d7ac2e3562c3bb6804a7312ed7057566ba493b8a5b20ba54da95d"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0084.json",
+      "source_bytes": 2217380,
+      "compressed_bytes": 309170,
+      "sha256": "3b0cfca20b03c07b26d1b700de1b7aeaf35519f3df4de6fb4b184f05550da582"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0085.json",
+      "source_bytes": 2155190,
+      "compressed_bytes": 312481,
+      "sha256": "4bd7891d6b43bbab49e56818fb41bff8612e686272998d44d11dd86ac462c0b3"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0086.json",
+      "source_bytes": 2201583,
+      "compressed_bytes": 322946,
+      "sha256": "7f868638bf61f3e88791237961c2cca1fa85de96a61989fe50703a30c1aebf54"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0087.json",
+      "source_bytes": 2033318,
+      "compressed_bytes": 307495,
+      "sha256": "83601b23848caa077bc15b056d842eea702e4b094f7d4ab0cf6c78ff906aad73"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0088.json",
+      "source_bytes": 2197165,
+      "compressed_bytes": 321014,
+      "sha256": "926408108492bd4d3207a54f17dc12ccb52b7faa62bbc64d2cc624819ddce900"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0089.json",
+      "source_bytes": 2138988,
+      "compressed_bytes": 309418,
+      "sha256": "66cf3153cdc70ce71b5436902059a9ad4b6f54388686d87dd05b2dce6fad664e"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0090.json",
+      "source_bytes": 2553766,
+      "compressed_bytes": 367457,
+      "sha256": "173fd9143d04429e6b6c408ae0695648c82658a70c1f87c724c69a155c6a6353"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0091.json",
+      "source_bytes": 2601334,
+      "compressed_bytes": 360036,
+      "sha256": "8c520e55e4712c48105830127218ea6ca5099065e6597d3830528bb9893f6043"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0092.json",
+      "source_bytes": 2392641,
+      "compressed_bytes": 335455,
+      "sha256": "7e01a8c31f1dcaa0d5f2a910f97176bcf2589b0c79d168ba2271a446896472ea"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0093.json",
+      "source_bytes": 2107209,
+      "compressed_bytes": 296706,
+      "sha256": "a71fbfc0100465c5fa8f349d281144d9e03d5418ba1ac6c1d5d6ec41a9283077"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0094.json",
+      "source_bytes": 2432036,
+      "compressed_bytes": 335866,
+      "sha256": "1130c908e99aaf69815c3aa2cfd0516dd16d3d76a3ca5e614e3cc528b2e284db"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0095.json",
+      "source_bytes": 2409989,
+      "compressed_bytes": 282967,
+      "sha256": "73c07b7b67eb2f79f82dede0b565032a0464265ab7966f03ebc02b4715c5f74c"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0096.json",
+      "source_bytes": 2336819,
+      "compressed_bytes": 304263,
+      "sha256": "50c57e38567022632fc7f21efd9daaafb45ed08d31f73ed68c91b945d6d6049d"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0097.json",
+      "source_bytes": 2392862,
+      "compressed_bytes": 302950,
+      "sha256": "3e1b7fd25e8472c46f433b2999926511a4c033d9d9ea8df4bb0f39ab38b434a6"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0098.json",
+      "source_bytes": 2853795,
+      "compressed_bytes": 363496,
+      "sha256": "df248a22a216a5dbc2ff14b93871f2fb5cfaad0d6d9b6eaa49bb1a75f452dc11"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0099.json",
+      "source_bytes": 2157836,
+      "compressed_bytes": 314616,
+      "sha256": "7eec7399624b45423b0a88a4ce8b5c1b031dbb78b268c65e94f51f34186316cd"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0100.json",
+      "source_bytes": 2413678,
+      "compressed_bytes": 326398,
+      "sha256": "b1712180b0b508ea4fac9078995a0f4a7423173b764f111531d83f2454049f72"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0101.json",
+      "source_bytes": 2391379,
+      "compressed_bytes": 317354,
+      "sha256": "d2ef8611ccaa3834c224f0c49978b8e2b1c6c1a651bb6c49d4374fe1de7129d5"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0102.json",
+      "source_bytes": 1568933,
+      "compressed_bytes": 211791,
+      "sha256": "5b1a70aafe637ec3c801319f0de56c64c92a4848b6561d0d90298f15a95743f0"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0103.json",
+      "source_bytes": 616386,
+      "compressed_bytes": 79138,
+      "sha256": "ff038860e40721ed4c2842fc87ae13afa6a9ad3559c6adb20d037fcb61306547"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0104.json",
+      "source_bytes": 926435,
+      "compressed_bytes": 134696,
+      "sha256": "740749a51f483cb609fb70d9e2bbb6ed48367fad38a82ee865eea1a9c3c0d3b4"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0105.json",
+      "source_bytes": 1638379,
+      "compressed_bytes": 284354,
+      "sha256": "6847ae40d45829eb10ffc735eaecacee21f9c44742465ee68521aa5ca588717d"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0106.json",
+      "source_bytes": 1697380,
+      "compressed_bytes": 280165,
+      "sha256": "58402da74661a0f25e102cc2620d9d7a0a7302ccb23133243cda6a86f15a11d9"
+    },
+    {
+      "file": "APP_READY_CHUNK_RICH_chunk-0107.json",
+      "source_bytes": 1662604,
+      "compressed_bytes": 279597,
+      "sha256": "e17217cae726cd7df435c4ac5e85968d91cac037e074274748fb2da01100e0f9"
     }
   ]
 }

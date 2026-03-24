@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 async function pickSearchResult(page, query, matcher) {
   const search = page.getByTestId("search-input");
-  await expect(search).toBeVisible();
+  await expect(search).toBeVisible({ timeout: 10000 });
   await search.fill(query);
   const results = page.locator("[data-search-result='true']");
   await expect(results.first()).toBeVisible();

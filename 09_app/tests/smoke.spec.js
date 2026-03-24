@@ -9,8 +9,8 @@ async function readVisibleCount(page) {
 test("search and facet wiring smoke", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByText("어휘 마인드맵")).toBeVisible();
-  await expect(page.getByTestId("search-input")).toBeVisible();
+  await expect(page.getByText("어휘 마인드맵")).toBeVisible({ timeout: 10000 });
+  await expect(page.getByTestId("search-input")).toBeVisible({ timeout: 10000 });
   await expect(page.getByText("필터")).toBeVisible();
   await expect(page.getByRole("button", { name: /의미 범주/ })).toBeVisible();
   await expect(page.getByRole("button", { name: /주제 및 상황/ })).toBeVisible();

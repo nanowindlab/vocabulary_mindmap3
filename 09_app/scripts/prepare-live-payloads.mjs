@@ -1,4 +1,5 @@
 import { createReadStream, createWriteStream, existsSync, mkdirSync, renameSync } from "node:fs";
+import { readdirSync } from "node:fs";
 import { pipeline } from "node:stream/promises";
 import { createGunzip } from "node:zlib";
 import path from "node:path";
@@ -15,8 +16,8 @@ const PAYLOADS = [
   "APP_READY_MEANING_TREE.json",
   "APP_READY_SITUATION_TREE.json",
   "APP_READY_UNCLASSIFIED_TREE.json",
-  "APP_READY_DETAIL_MAP.json",
   "APP_READY_FACETS.json",
+  "CHUNK_MANIFEST_V1.json",
 ];
 
 async function inflatePayload(fileName) {
@@ -42,6 +43,13 @@ async function main() {
   for (const fileName of PAYLOADS) {
     await inflatePayload(fileName);
     console.log(`prepared ${fileName}`);
+  }
+
+  const chunkFiles = readdirSync(compressedDir)
+    .filter((fileName) => fileName.startsWith("APP_READY_CHUNK_RICH_") && fileName.endsWith(".json.gz"));
+  for (const fileName of chunkFiles) {
+    await inflatePayload(fileName.replace(/\.gz$/, ""));
+    console.log(`prepared ${fileName.replace(/\.gz$/, "")}`);
   }
 }
 
