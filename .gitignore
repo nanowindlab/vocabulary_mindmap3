@@ -3,6 +3,16 @@
 __pycache__/
 *.pyc
 
+# frontend local/build artifacts
+09_app/node_modules/
+09_app/dist/
+09_app/test-results/
+09_app/playwright-report/
+
+# generated app runtime payloads
+09_app/public/data/live/*.json
+!09_app/public/data/live/README.md
+
 # 원천 다운로드본 제외
 vocab_dictionary/dict_download_json/
 vocab_dictionary/dict_download_json.zip

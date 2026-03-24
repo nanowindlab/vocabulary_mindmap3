@@ -1,0 +1,277 @@
+:root {
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary: #21262d;
+  --text-primary: #cdd9e5;
+  --text-secondary: #8b949e;
+  --border-color: #30363d;
+
+  --accent-blue: #58a6ff;
+  --accent-blue-dim: rgba(88, 166, 255, 0.15);
+  --accent-green: #3fb950;
+  --accent-green-dim: rgba(63, 185, 80, 0.15);
+  --accent-orange: #ffa657;
+  --accent-orange-dim: rgba(255, 166, 87, 0.15);
+  --accent-purple: #bc8cff;
+  --accent-purple-dim: rgba(188, 140, 255, 0.15);
+  --accent-red: #ff7b72;
+  --accent-red-dim: rgba(255, 123, 114, 0.15);
+
+  --font-body:
+    "Inter", "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  font-family: var(--font-body);
+}
+
+/* Animations & Transitions */
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in;
+}
+
+/* --- Frequency Band Colors --- */
+.band-1 {
+  color: #3fb950;
+  background: rgba(63, 185, 80, 0.15);
+  border: 1px solid rgba(63, 185, 80, 0.3);
+}
+.band-2 {
+  color: #58a6ff;
+  background: rgba(88, 166, 255, 0.15);
+  border: 1px solid rgba(88, 166, 255, 0.3);
+}
+.band-3 {
+  color: #bc8cff;
+  background: rgba(188, 140, 255, 0.15);
+  border: 1px solid rgba(188, 140, 255, 0.3);
+}
+.band-4 {
+  color: #ffa657;
+  background: rgba(255, 166, 87, 0.15);
+  border: 1px solid rgba(255, 166, 87, 0.3);
+}
+.band-5 {
+  color: #ff7b72;
+  background: rgba(255, 123, 114, 0.15);
+  border: 1px solid rgba(255, 123, 114, 0.3);
+}
+
+/* --- Cross Link Nodes --- */
+.has-cross-links {
+  position: relative;
+}
+.has-cross-links::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: inherit;
+  border: 1.5px dashed rgba(88, 166, 255, 0.4);
+  pointer-events: none;
+  animation: rotateGlow 8s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes rotateGlow {
+  to {
+    transform: rotate(1turn);
+  } /* Note: this might not look right on non-circle, maybe just pulse */
+}
+
+.pulse-border::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: inherit;
+  border: 1.5px dashed var(--accent-blue);
+  opacity: 0.5;
+  animation: pulse 2s infinite;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 0.2;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+}
+
+/* Legend in Sidebar */
+.band-legend {
+  padding: 16px;
+  border-top: 1px solid var(--border-color);
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.band-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.band-legend-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+/* Layout Rules */
+.app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.top-nav {
+  height: 56px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 4px;
+  margin-left: 20px;
+}
+
+.nav-tab {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.nav-tab:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.nav-tab.active {
+  background-color: var(--bg-tertiary);
+  color: var(--accent-blue);
+  font-weight: 600;
+}
+
+.app-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Base Styles */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
+
+.welcome-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  color: var(--text-secondary);
+}
+
+.spinner {
+  animation: spin 1s infinite linear;
+  margin-bottom: 12px;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Utility Card */
+.card-glass {
+  background: rgba(22, 27, 34, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}

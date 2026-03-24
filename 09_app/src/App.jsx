@@ -1,0 +1,1005 @@
+import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import {
+  Network, Loader, Book,
+  Map as MapIcon, LayoutList, X, Filter, ChevronDown,
+} from "lucide-react";
+
+import { SidebarTree } from "./components/SidebarTree";
+import { TermDetail } from "./components/TermDetail";
+import { SearchBox } from "./components/SearchBox";
+import { MindmapCanvas } from "./components/MindmapCanvas";
+import {
+  loadMeaningTree,
+  loadSituationTree,
+  loadUnclassifiedTree,
+  loadUnifiedSearchIndex,
+  loadFacetPayload,
+  loadEntryDetail,
+  loadTermDetailChunk,
+} from "./data/loaderAdapter";
+import {
+  buildHierarchyDisplay,
+  normalizeHierarchyBuckets,
+  toPosLabel,
+} from "./utils/hierarchyDisplay";
+
+import "./index.css";
+
+// ── 3-축 탭 정의 ────────────────────────────────────────────────
+const TABS = [
+  { id: "meaning", label: "의미 범주", label_en: "Meaning Categories", color: "#58a6ff" },
+  { id: "situation", label: "주제 및 상황", label_en: "Topic & Situation",  color: "#3fb950" },
+  { id: "unclassified", label: "미분류", label_en: "Unclassified",  color: "#bc8cff" },
+];
+
+// ── Band 필터 옵션 ─────────────────────────────────────────
+const BAND_OPTIONS  = [null, 1, 2, 3, 4, 5]; // null = 미산출 포함
+
+// ── 데이터 정규화 ────────────────────────────────────────────────
+function normalizeItem(item, surface, idxMap = null) {
+  const hier = item.hierarchy || {};
+  const rawPath = hier.path_ko || "";
+  const pathSegments = typeof hier.path_ko === "string"
+    ? hier.path_ko.split(" > ").map((part) => part.trim()).filter(Boolean)
+    : [];
+  const derivedRoot = hier.root || pathSegments[0] || null;
+  const derivedScene = pathSegments.length >= 3
+    ? pathSegments[1]
+    : pathSegments.length === 2
+      ? pathSegments[1]
+      : (hier.scene || derivedRoot || "일반");
+  const derivedCategory = pathSegments.length >= 3
+    ? pathSegments[pathSegments.length - 1]
+    : (hier.category || item.pos || "기타");
+  const rootId   = hier.root_id || derivedRoot || hier.scene || hier.system || null;
+  const rootLabel= hier.root_label || derivedRoot || rootId || "";
+  const rawScene = hier.root_id ? (hier.scene || derivedScene || "일반") : derivedScene;
+  const rawCategory = hier.root_id ? (hier.category || item.pos || "기타") : derivedCategory;
+  const { scene, category } = normalizeHierarchyBuckets({
+    rootId,
+    scene: rawScene,
+    category: rawCategory,
+    pos: item.pos || item.part_of_speech || "품사 없음",
+    wordGrade: item.word_grade || "없음",
+  });
+  const hierarchyForDisplay = {
+    ...hier,
+    root_id: rootId,
+    root_label: rootLabel,
+    root_en: hier.root_en || "",
+    scene,
+    category,
+    raw_path_ko: rawPath || `${rootLabel} > ${rawScene} > ${rawCategory}`,
+  };
+  const hierarchyDisplay = buildHierarchyDisplay({
+    hierarchy: hierarchyForDisplay,
+    pos: item.pos || item.part_of_speech || "품사 없음",
+    wordGrade: item.word_grade || "없음",
+  });
+
+  // 방어 로직: Null/Undefined 방지 및 배열 필터링
+  let related_vocab = Array.isArray(item.related_vocab) ? item.related_vocab.filter(Boolean) : [];
+  let refs = item.refs && typeof item.refs === "object" ? item.refs : {};
+  let cross_links = Array.isArray(refs.cross_links) ? refs.cross_links.filter(c => c && (c.target_id || c.target_term)) : [];
+
+  // 검색 인덱스(idxMap) 존재 시, 양방향으로 빌드된 데이터(연관어 등) 병합 처리
+  if (idxMap && item.id && idxMap.has(item.id)) {
+    const idxEntry = idxMap.get(item.id);
+    if (related_vocab.length === 0 && Array.isArray(idxEntry.related_vocab)) {
+      related_vocab = idxEntry.related_vocab.filter(Boolean);
+    }
+    if (cross_links.length === 0 && idxEntry.refs && Array.isArray(idxEntry.refs.cross_links)) {
+      cross_links = idxEntry.refs.cross_links.filter(c => c && (c.target_id || c.target_term));
+    }
+  }
+
+  return {
+    ...item,
+    def_ko: item.def_ko || item.def_kr || "",
+    phonetic_romanization: item.phonetic_romanization || item.roman || "",
+    surface: surface || item.surface || "mindmap_core",
+    routing: item.routing || surface || "mindmap_core",
+    related_vocab,
+    refs: {
+      ...refs,
+      cross_links,
+    },
+    hierarchy: {
+      ...hierarchyForDisplay,
+      display_root_label: hierarchyDisplay.displayRootLabel,
+      display_scene: hierarchyDisplay.displayScene,
+      display_category: hierarchyDisplay.displayCategory,
+      display_path_ko: hierarchyDisplay.displayPathKo,
+      context_kind: hierarchyDisplay.contextKind,
+      helper_title: hierarchyDisplay.helperTitle,
+      helper_description: hierarchyDisplay.helperDescription,
+      scene,
+      category,
+      path_ko: hierarchyDisplay.displayPathKo,
+    },
+  };
+}
+
+function formatTreeLabel(contextMode, nodeType, rawLabel) {
+  if (contextMode === "unclassified") {
+    if (nodeType === "root") return "분류 밖 항목";
+    if (nodeType === "scene") return rawLabel === "없음" ? "학습난이도 미기재" : `학습난이도 · ${rawLabel}`;
+    if (nodeType === "category") {
+      if (rawLabel === "품사 없음" || rawLabel === "미분류") return "품사 미기재";
+      return `품사 · ${rawLabel}`;
+    }
+  }
+
+  if (contextMode === "situation") {
+    if (nodeType === "scene" && rawLabel === "없음") return "상황 미지정";
+    if (nodeType === "category" && rawLabel === "없음") return "일반 어휘";
+  }
+
+  return rawLabel;
+}
+
+// ── 트리 빌더 ────────────────────────────────────────────────────
+function buildTreeFromList(list, surface, contextMode) {
+  const tree = {};
+  if (!Array.isArray(list)) return tree;
+  list.forEach((rawItem) => {
+    const item = normalizeItem(rawItem, surface);
+    const rootId    = item.hierarchy?.root_id;
+    const centerId  = item.hierarchy?.scene    || "일반";
+    const categoryId= item.hierarchy?.category || item.pos || "기타";
+    const rootLabel = item.hierarchy?.display_root_label || formatTreeLabel(contextMode, "root", item.hierarchy.root_label || rootId);
+    const sceneLabel = item.hierarchy?.display_scene || formatTreeLabel(contextMode, "scene", centerId);
+    const categoryLabel = item.hierarchy?.display_category || formatTreeLabel(contextMode, "category", categoryId);
+
+    if (!rootId) return;
+    if (!tree[rootId])
+      tree[rootId] = { id: rootId, type: "root", label: rootLabel, label_en: item.hierarchy.root_en, children: {} };
+    if (!tree[rootId].children[centerId])
+      tree[rootId].children[centerId] = { id: centerId, type: "scene", label: sceneLabel, children: {} };
+    if (!tree[rootId].children[centerId].children[categoryId])
+      tree[rootId].children[centerId].children[categoryId] = { id: categoryId, type: "category", label: categoryLabel, children: {} };
+    if (!item.is_center_profile)
+      tree[rootId].children[centerId].children[categoryId].children[item.id] = { id: item.id, type: "term", label: item.word, data: item };
+  });
+  return tree;
+}
+
+// ── 필터 함수 ────────────────────────────────────────────────────
+function applyFilters(list, filters) {
+  let result = list;
+  if (filters.bands.length > 0) {
+    result = result.filter((t) => {
+      const b = t.stats?.band ?? null;
+      return filters.bands.includes(b);
+    });
+  }
+  if (filters.poses && filters.poses.length > 0) {
+    result = result.filter((t) => {
+      const p = t.pos || t.part_of_speech || "미분류";
+      // 선택된 품사 배열 중 하나라도 항목의 품사 문자열에 포함되면 통과
+      return filters.poses.some((posFilter) => p.includes(posFilter));
+    });
+  }
+  if (filters.grades && filters.grades.length > 0) {
+    result = result.filter((t) => filters.grades.includes(t.word_grade || "없음"));
+  }
+  if (filters.query) {
+    const q = filters.query.toLowerCase();
+    result = result.filter((t) =>
+      t.word?.includes(filters.query) ||
+      t.def_ko?.includes(filters.query) ||
+      t.def_en?.toLowerCase().includes(q)
+    );
+  }
+  return result;
+}
+
+// ── 공통 컴포넌트: 드롭다운 필터 ──────────────────────────────────
+const DropdownFilter = ({ label, options, selectedValues, onToggle, onClear }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const hasSelection = selectedValues.length > 0;
+
+  return (
+    <div ref={ref} style={{ position: "relative" }}>
+      <button
+        data-testid={`filter-toggle-${label}`}
+        onClick={() => setIsOpen(!isOpen)}
+        style={{
+          display: "flex", alignItems: "center", gap: 6,
+          padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer",
+          background: hasSelection ? "rgba(88,166,255,0.1)" : "rgba(255,255,255,0.05)",
+          border: `1px solid ${hasSelection ? "var(--accent-blue)" : "var(--border-color)"}`,
+          color: hasSelection ? "var(--accent-blue)" : "var(--text-secondary)",
+          transition: "all 0.15s"
+        }}
+      >
+        {label}
+        {hasSelection && (
+          <span style={{ background: "var(--accent-blue)", color: "#0d1117", padding: "1px 6px", borderRadius: 10, fontSize: 10 }}>
+            {selectedValues.length}
+          </span>
+        )}
+        <ChevronDown size={14} style={{ transform: isOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
+      </button>
+
+      {isOpen && (
+        <div style={{
+          position: "absolute", top: "100%", left: 0, marginTop: 8,
+          background: "var(--bg-secondary)", border: "1px solid var(--border-color)",
+          borderRadius: 8, padding: "8px", display: "flex", flexDirection: "column", gap: 4,
+          minWidth: 160, zIndex: 100, boxShadow: "0 8px 24px rgba(0,0,0,0.5)"
+        }}>
+          {options.map((opt) => {
+            const isSelected = selectedValues.includes(opt.value);
+            return (
+              <label
+                key={opt.value}
+                data-testid={`filter-option-${label}-${String(opt.value)}`}
+                style={{
+                  display: "flex", alignItems: "center", gap: 8, padding: "6px 8px", borderRadius: 6,
+                  fontSize: 12, cursor: "pointer", transition: "background 0.1s",
+                  background: isSelected ? "rgba(255,255,255,0.05)" : "transparent",
+                  color: isSelected ? "var(--text-primary)" : "var(--text-secondary)"
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={isSelected}
+                  onChange={() => onToggle(opt.value)}
+                  style={{ accentColor: "var(--accent-blue)", cursor: "pointer", width: 14, height: 14 }}
+                />
+                <span style={{ flex: 1 }}>{opt.label}</span>
+                {opt.colorDot && (
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: opt.colorDot }} />
+                )}
+              </label>
+            );
+          })}
+          {hasSelection && (
+            <div style={{ marginTop: 4, paddingTop: 6, borderTop: "1px solid var(--border-color)", textAlign: "center" }}>
+              <button
+                onClick={onClear}
+                style={{ background: "transparent", border: "none", color: "var(--text-secondary)", fontSize: 11, cursor: "pointer", padding: "4px" }}
+              >
+                초기화
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+// ── 메인 앱 ─────────────────────────────────────────────────────
+function App() {
+  const [activeTab, setActiveTab] = useState("meaning");
+  const [viewMode, setViewMode] = useState("mindmap");
+
+  const [meaningList, setMeaningList] = useState([]);
+  const [situationList, setSituationList] = useState([]);
+  const [unclassifiedList, setUnclassifiedList] = useState([]);
+  const [searchIndex, setSearchIndex] = useState([]);
+  const [facetPayload, setFacetPayload] = useState(null);
+
+  const [selectedTermId, setSelectedTermId] = useState(null);
+  const [selectedTermDetail, setSelectedTermDetail] = useState(null);
+  const [isLoadingChunk, setIsLoadingChunk] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
+
+  const [expandedIds, setExpandedIds] = useState(new Set());
+  const [focusedRootId, setFocusedRootId] = useState(null);
+  const [showEnglish, setShowEnglish] = useState(true);
+  const [translationLanguage, setTranslationLanguage] = useState("영어");
+
+  // 필터 상태
+  const [filters, setFilters] = useState({ bands: [], poses: [], grades: [], query: "" });
+  const [showFilterPanel, setShowFilterPanel] = useState(true);
+
+  // 리사이저 상태
+  const [detailWidth, setDetailWidth] = useState(45); // 초기 패널 너비(%)
+  const isDragging = useRef(false);
+
+  const startDrag = useCallback(() => {
+    isDragging.current = true;
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+  }, []);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (!isDragging.current) return;
+      // 전체 컨테이너에서 사이드바(260px)를 제외한 영역 기준
+      const containerWidth = window.innerWidth - 260; 
+      const newWidth = ((containerWidth - (e.clientX - 260)) / containerWidth) * 100;
+      if (newWidth >= 25 && newWidth <= 75) { // 25% ~ 75% 사이로 제한 (레이아웃 보호)
+        setDetailWidth(newWidth);
+      }
+    };
+    const handleMouseUp = () => {
+      if (isDragging.current) {
+        isDragging.current = false;
+        document.body.style.cursor = "default";
+        document.body.style.userSelect = "auto";
+      }
+    };
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
+
+  // ── 데이터 로드 ─────────────────────────────────────────────────
+  useEffect(() => {
+    async function init() {
+      try {
+        setIsInitializing(true);
+        const [meaning, situation, unclassified, idx, facet] = await Promise.all([
+          loadMeaningTree(),
+          loadSituationTree(),
+          loadUnclassifiedTree(),
+          loadUnifiedSearchIndex(),
+          loadFacetPayload(),
+        ]);
+        const searchIndexArr = Array.isArray(idx) ? idx.map((t) => normalizeItem(t, "mindmap_core")) : [];
+        const idxMap = new Map();
+        searchIndexArr.forEach((t) => { if (t.id) idxMap.set(t.id, t); });
+
+        const meaningArr = Array.isArray(meaning) ? meaning.map((t) => normalizeItem(t, "mindmap_core", idxMap)) : [];
+        const situationArr = Array.isArray(situation) ? situation.map((t) => normalizeItem(t, "mindmap_core", idxMap)) : [];
+        const unclassifiedArr = Array.isArray(unclassified) ? unclassified.map((t) => normalizeItem(t, "mindmap_core", idxMap)) : [];
+        
+        setMeaningList(meaningArr);
+        setSituationList(situationArr);
+        setUnclassifiedList(unclassifiedArr);
+        setSearchIndex(searchIndexArr);
+        setFacetPayload(facet);
+
+        if (meaningArr.length > 0) {
+          const defaultRoot = meaningArr[0].hierarchy?.root_id;
+          if (defaultRoot) {
+            setFocusedRootId(defaultRoot);
+            setExpandedIds(new Set([defaultRoot]));
+          }
+        }
+      } catch (e) {
+        console.error("데이터 로딩 실패", e);
+      } finally {
+        setIsInitializing(false);
+      }
+    }
+    init();
+  }, []);
+
+  // ── 현재 축 데이터 ──────────────────────────────────────────────
+  const activeList = useMemo(() => {
+    if (activeTab === "meaning") return meaningList;
+    if (activeTab === "situation") return situationList;
+    return unclassifiedList;
+  }, [activeTab, meaningList, situationList, unclassifiedList]);
+
+  const filteredList = useMemo(() => applyFilters(activeList, filters), [activeList, filters]);
+  const filteredSearchIndex = useMemo(() => applyFilters(searchIndex, filters), [searchIndex, filters]);
+  const filterBaseList = activeList.length > 0 ? activeList : searchIndex;
+  const filterVisibleList = activeList.length > 0 ? filteredList : filteredSearchIndex;
+  const searchIndexById = useMemo(() => {
+    const map = new Map();
+    searchIndex.forEach((item) => {
+      if (item?.id !== null && item?.id !== undefined) {
+        map.set(String(item.id), item);
+      }
+    });
+    return map;
+  }, [searchIndex]);
+  const searchIndexByWord = useMemo(() => {
+    const map = new Map();
+    searchIndex.forEach((item) => {
+      if (item?.word && !map.has(item.word)) {
+        map.set(item.word, item);
+      }
+    });
+    return map;
+  }, [searchIndex]);
+  const searchWordSet = useMemo(
+    () => new Set(searchIndex.map((item) => item?.word).filter(Boolean)),
+    [searchIndex],
+  );
+
+  const activeSurface = "mindmap_core";
+  const activeTree = useMemo(() => buildTreeFromList(filteredList, activeSurface, activeTab), [filteredList, activeSurface, activeTab]);
+
+  // ── 단어 선택 ───────────────────────────────────────────────────
+  const handleSelectTerm = useCallback(async (term) => {
+    if (!term?.id) return;
+    setIsLoadingChunk(true);
+    setSelectedTermId(term.id);
+    setSelectedTermDetail(term);
+
+    // ── 사이드바 & 마인드맵 루트 상시 동기화: 선택 단어의 소속 노드를 강제 활성화 ──
+    const rootId  = term.hierarchy?.root_id;
+    const sceneId = term.hierarchy?.scene;
+    const catId   = term.hierarchy?.category;
+    
+    if (rootId) {
+      setFocusedRootId(rootId);
+    }
+
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (sceneId) next.add(sceneId);
+      if (catId)   next.add(catId);
+      return next;
+    });
+
+    try {
+      if (term.chunk_id) {
+        const chunkData = await loadTermDetailChunk(term.id, term.chunk_id);
+        if (chunkData)
+          setSelectedTermDetail((prev) => prev?.id === term.id ? { ...prev, ...chunkData } : prev);
+      } else {
+        const detail = await loadEntryDetail(term.id);
+        if (detail) {
+          const primarySense = detail.senses?.[0] || null;
+          const examples_bundle = (primarySense?.examples || [])
+            .flatMap((ex) => (ex.texts || []).map((text) => ({
+              text_ko: text,
+              text_en: null,
+              source: ex.type || null,
+            })))
+            .slice(0, 8);
+          setSelectedTermDetail((prev) => prev?.id === term.id ? {
+            ...prev,
+            senses: detail.senses || [],
+            related_forms: detail.related_forms || [],
+            subwords: detail.subwords || [],
+            phonetic_romanization: detail.pronunciation?.[0]?.text || prev?.phonetic_romanization || null,
+            examples_bundle,
+            translation_summary: primarySense?.translations || prev?.translation_summary || [],
+          } : prev);
+        }
+      }
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setIsLoadingChunk(false);
+    }
+  }, []);
+
+
+  // ── 검색 선택 ───────────────────────────────────────────────────
+  // 탭 전환 후 마인드맵 treeData가 갱신될 때까지 pending term을 추적
+  const pendingSearchTermRef = useRef(null);
+
+  const handleSearchSelect = useCallback((target) => {
+    const categoryTypes = (target.categories || []).map((c) => c.type);
+    let targetTab = "meaning";
+    if (categoryTypes.includes("주제 및 상황 범주")) {
+      targetTab = "situation";
+    } else if (!categoryTypes.includes("의미 범주")) {
+      targetTab = "unclassified";
+    }
+
+    const normalized = normalizeItem(target, "mindmap_core");
+
+    // 탭 전환 + focusedRootId 를 먼저 설정
+    setActiveTab(targetTab);
+    const rid = normalized.hierarchy?.root_id;
+    if (rid) {
+      setFocusedRootId(rid);
+      setExpandedIds((prev) => new Set([...prev, rid]));
+    }
+
+    // term 선택은 동기 경로로 호출 (chunk 로드 + detail 표시)
+    handleSelectTerm(normalized);
+
+    // 탭 전환 시 treeData가 비동기 갱신되므로, MindmapCanvas의 외부 effect
+    // (selectedTermId 변화 → treeData 탐색 → zoom)가 새 treeData 기준으로
+    // 재실행되도록 pendingSearchTermRef를 통해 추적
+    pendingSearchTermRef.current = normalized.id;
+  }, [handleSelectTerm]);
+
+  const resolveReferenceTarget = useCallback((ref) => {
+    if (!ref) return null;
+
+    if (typeof ref === "string") {
+      return searchIndexByWord.get(ref) || null;
+    }
+
+    const targetCode =
+      ref.target_code ||
+      ref.target_id ||
+      ref.id ||
+      null;
+
+    if (targetCode && searchIndexById.has(String(targetCode))) {
+      return searchIndexById.get(String(targetCode));
+    }
+
+    const wordCandidates = [
+      ref.word,
+      ref.target_term,
+      ref.text,
+    ].filter(Boolean);
+
+    for (const candidate of wordCandidates) {
+      if (searchIndexByWord.has(candidate)) {
+        return searchIndexByWord.get(candidate);
+      }
+    }
+
+    return null;
+  }, [searchIndexById, searchIndexByWord]);
+
+  const resolveReferenceMeta = useCallback((ref) => {
+    const target = resolveReferenceTarget(ref);
+    if (!target) return null;
+    return {
+      word: target.word || null,
+      pos: toPosLabel(target.pos || null),
+      def_ko: target.def_ko || null,
+      path_ko: target.hierarchy?.path_ko || null,
+      id: target.id || null,
+    };
+  }, [resolveReferenceTarget]);
+
+  const handleReferenceJump = useCallback((ref) => {
+    const target = resolveReferenceTarget(ref);
+    if (target && target.id !== selectedTermDetail?.id) {
+      handleSearchSelect(target);
+      return;
+    }
+    console.warn("[ReferenceJump] 점프 불가:", ref);
+  }, [handleSearchSelect, resolveReferenceTarget, selectedTermDetail?.id]);
+
+  const handleSubwordJump = useCallback((subword) => {
+    if (!subword?.text) return;
+    const target = searchIndexByWord.get(subword.text);
+    if (target && target.id !== selectedTermDetail?.id) {
+      handleSearchSelect(target);
+      return;
+    }
+    console.info("[Subword] 독립 표제어 연결 없음:", subword.text);
+  }, [handleSearchSelect, searchIndexByWord, selectedTermDetail?.id]);
+
+  // ── 필터 토글 ───────────────────────────────────────────────────
+  const toggleBandFilter = (b) =>
+    setFilters((f) => ({
+      ...f,
+      bands: f.bands.includes(b) ? f.bands.filter((x) => x !== b) : [...f.bands, b],
+    }));
+
+  const togglePosFilter = (posKey) =>
+    setFilters((f) => ({
+      ...f,
+      poses: (f.poses || []).includes(posKey) ? f.poses.filter((x) => x !== posKey) : [...(f.poses || []), posKey],
+    }));
+
+  const toggleGradeFilter = (gradeKey) =>
+    setFilters((f) => ({
+      ...f,
+      grades: (f.grades || []).includes(gradeKey) ? f.grades.filter((x) => x !== gradeKey) : [...(f.grades || []), gradeKey],
+    }));
+
+  const activeFilterCount =
+    filters.bands.length +
+    (filters.poses?.length || 0) +
+    (filters.grades?.length || 0);
+
+  const facetData = facetPayload?.facets || {};
+  const bandOptions = (facetData["TOPIK"]?.options?.band || []).map((opt) => ({
+    value: opt.value === "미기재" ? null : Number(opt.value),
+    label: opt.value === "미기재" ? "미산출" : `Band ${opt.value} (${opt.count})`,
+  }));
+  const posOptions = (facetData["품사"]?.options || []).map((opt) => ({ value: opt.value, label: `${opt.value} (${opt.count})` }));
+  const gradeOptions = (facetData["학습난이도"]?.options || []).map((opt) => ({ value: opt.value, label: `${opt.value} (${opt.count})` }));
+  const translationLanguageOptions = useMemo(() => {
+    const counts = new Map();
+    searchIndex.forEach((item) => {
+      (item.translation_summary || []).forEach((t) => {
+        if (!t?.language) return;
+        counts.set(t.language, (counts.get(t.language) || 0) + 1);
+      });
+    });
+    if (!counts.has("영어")) counts.set("영어", 0);
+    return Array.from(counts.entries())
+      .sort((a, b) => {
+        if (a[0] === "영어") return -1;
+        if (b[0] === "영어") return 1;
+        return b[1] - a[1];
+      })
+      .map(([value, count]) => ({
+        value,
+        label: count > 0 ? `${value} (${count})` : `${value}`,
+      }));
+  }, [searchIndex]);
+
+  // ── 연관 어휘 클릭 — 3대 축 횟단 점프 로직 ─────────────────────────────────
+  // 자동 탭 전환 → 데이터 동기화 → 카테고리 Expand → Zoom-to-node
+  const SYSTEM_TO_TAB = {
+    "상황과 장소": "situations",
+    "마음과 표현": "expressions",
+    "구조와 기초": "basics",
+  };
+
+  const handleRelatedVocabClick = useCallback((wordString) => {
+    const target = searchIndexByWord.get(wordString);
+    if (!target) {
+      console.warn("[RelatedVocab] 검색 인덱스 미존재:", wordString);
+      return;
+    }
+    // handleSearchSelect로 통일: 탭/focusedRootId/expandedIds/마인드맵이 모두 함께 동기화됨
+    handleSearchSelect(target);
+  }, [searchIndexByWord, handleSearchSelect]);
+
+  // ── 로딩 ────────────────────────────────────────────────────────
+  if (isInitializing)
+    return (
+      <div className="welcome-screen">
+        <Loader className="spinner" size={48} />
+        <p>어휘 데이터 준비 중… ({TABS.map((t) => t.label).join(" · ")})</p>
+      </div>
+    );
+
+  const currentTab = TABS.find((t) => t.id === activeTab);
+
+  return (
+    <div className="app-root fade-enter-active">
+      {/* ── 상단 내비게이션 ─────────────────────────────────── */}
+      <div className="top-nav">
+        <div className="nav-left">
+          <div className="logo">
+            <Network size={24} color="var(--accent-blue)" />
+            <span className="logo-text">어휘 마인드맵</span>
+          </div>
+          <div className="nav-tabs">
+            {TABS.map((tab) => (
+              <button
+                key={tab.id}
+                className={`nav-tab ${activeTab === tab.id ? "active" : ""}`}
+                onClick={() => { setActiveTab(tab.id); setSelectedTermDetail(null); setSelectedTermId(null); setFocusedRootId(null); }}
+                style={{ "--tab-color": tab.color }}
+              >
+                {tab.label}
+                {activeTab === tab.id && (
+                  <span style={{ fontSize: 11, opacity: 0.7, marginLeft: 6 }}>
+                    ({filteredList.length.toLocaleString()})
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="nav-right">
+          {/* ENG 토글 */}
+            <button
+            className="card-glass"
+            onClick={() => setShowEnglish(!showEnglish)}
+            style={{
+              display: "flex", alignItems: "center", gap: 6,
+              padding: "6px 12px", borderRadius: 8, cursor: "pointer", fontSize: 12,
+              border: `1px solid ${showEnglish ? "var(--accent-blue)" : "var(--border-color)"}`,
+              color: showEnglish ? "var(--accent-blue)" : "var(--text-secondary)",
+            }}
+          >
+            <Book size={14} /> {showEnglish ? "번역 ON" : "번역 OFF"}
+          </button>
+
+          {/* 필터 버튼 */}
+          <button
+            className="card-glass"
+            onClick={() => setShowFilterPanel(!showFilterPanel)}
+            style={{
+              display: "flex", alignItems: "center", gap: 6,
+              padding: "6px 12px", borderRadius: 8, cursor: "pointer", fontSize: 12,
+              border: `1px solid ${activeFilterCount > 0 ? "var(--accent-orange)" : "var(--border-color)"}`,
+              color: activeFilterCount > 0 ? "var(--accent-orange)" : "var(--text-secondary)",
+              position: "relative",
+            }}
+          >
+            <Filter size={14} />
+            필터 {activeFilterCount > 0 && <span style={{ background: "var(--accent-orange)", color: "#0d1117", borderRadius: 10, padding: "1px 5px", fontSize: 10, fontWeight: 700 }}>{activeFilterCount}</span>}
+            <ChevronDown size={12} style={{ transform: showFilterPanel ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
+          </button>
+
+          <SearchBox
+            searchIndex={filteredSearchIndex}
+            onSelect={handleSearchSelect}
+            showEnglish={showEnglish}
+            translationLanguage={translationLanguage}
+          />
+        </div>
+      </div>
+
+      {/* ── 필터 패널 ─────────────────────────────────────────── */}
+      {showFilterPanel && (
+        <div style={{
+          background: "var(--bg-secondary)", borderBottom: "1px solid var(--border-color)",
+          padding: "12px 24px", display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap",
+        }}>
+          {/* 드롭다운 필터 요소들 */}
+          <DropdownFilter
+            label="Band별"
+            options={bandOptions}
+            selectedValues={filters.bands}
+            onToggle={toggleBandFilter}
+            onClear={() => setFilters(f => ({ ...f, bands: [] }))}
+          />
+
+          <DropdownFilter
+            label="품사별"
+            options={posOptions}
+            selectedValues={filters.poses || []}
+            onToggle={togglePosFilter}
+            onClear={() => setFilters(f => ({ ...f, poses: [] }))}
+          />
+
+          <DropdownFilter
+            label="난이도"
+            options={gradeOptions}
+            selectedValues={filters.grades || []}
+            onToggle={toggleGradeFilter}
+            onClear={() => setFilters(f => ({ ...f, grades: [] }))}
+          />
+
+          <DropdownFilter
+            label="번역 언어"
+            options={translationLanguageOptions}
+            selectedValues={[translationLanguage]}
+            onToggle={(value) => setTranslationLanguage(value)}
+            onClear={() => setTranslationLanguage("영어")}
+          />
+
+          {/* 모든 필터 초기화 버튼 */}
+          {activeFilterCount > 0 && (
+            <button onClick={() => setFilters({ bands: [], poses: [], grades: [], query: "" })}
+              style={{ padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", color: "var(--accent-orange)", background: "rgba(255,166,87,0.1)", border: "1px solid rgba(255,166,87,0.3)", transition: "all 0.15s" }}>
+              전체 필터 초기화
+            </button>
+          )}
+
+          <span data-testid="filter-visible-count" style={{ fontSize: 12, color: "var(--text-secondary)", marginLeft: "auto" }}>
+            {filterVisibleList.length.toLocaleString()} / {filterBaseList.length.toLocaleString()}건 표시 중
+          </span>
+        </div>
+      )}
+
+      {/* ── 메인 콘텐츠 ───────────────────────────────────────── */}
+      <div className="app-container">
+        <SidebarTree
+          treeData={activeTree}
+          expandedIds={expandedIds}
+          toggleExpand={(id) =>
+            setExpandedIds((prev) => {
+              const n = new Set(prev);
+              if (n.has(id)) n.delete(id); else n.add(id);
+              return n;
+            })
+          }
+          onSelectTerm={handleSelectTerm}
+          selectedTermId={selectedTermId}
+        />
+
+        <div className="main-content">
+          {/* 뷰 전환 바 */}
+          <div style={{
+            padding: "12px 24px", borderBottom: "1px solid var(--border-color)",
+            backgroundColor: "var(--bg-secondary)", display: "flex",
+            justifyContent: "space-between", alignItems: "center",
+          }}>
+            <div style={{ fontWeight: 600, fontSize: 15, color: currentTab?.color || "var(--text-primary)" }}>
+              {currentTab?.label}
+              {currentTab?.label_en && <span style={{ fontSize: 12, color: "var(--text-secondary)", marginLeft: 8 }}>{currentTab.label_en}</span>}
+            </div>
+            <div style={{ display: "flex", gap: 8, backgroundColor: "var(--bg-tertiary)", padding: 4, borderRadius: 8, border: "1px solid var(--border-color)" }}>
+              {[
+                { mode: "mindmap", icon: <MapIcon size={14} />, label: "마인드맵" },
+                { mode: "list",    icon: <LayoutList size={14} />, label: "리스트" },
+              ].map(({ mode, icon, label }) => (
+                <button key={mode}
+                  style={{
+                    display: "flex", alignItems: "center", gap: 6, padding: "6px 12px",
+                    borderRadius: 6, cursor: "pointer", fontSize: 13,
+                    border: viewMode === mode ? "1px solid var(--border-color)" : "1px solid transparent",
+                    backgroundColor: viewMode === mode ? "var(--bg-secondary)" : "transparent",
+                    color: viewMode === mode ? "var(--text-primary)" : "var(--text-secondary)",
+                    transition: "all 0.15s",
+                  }}
+                  onClick={() => setViewMode(mode)}
+                >{icon} {label}</button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
+            {/* 뷰 영역 */}
+            <div style={{
+              flex: selectedTermDetail ? `1 1 ${100 - detailWidth}%` : "1",
+              overflow: "hidden",
+            }}>
+              {viewMode === "mindmap" ? (
+                <MindmapCanvas
+                  treeData={activeTree}
+                  onSelectTerm={handleSelectTerm}
+                  selectedTermId={selectedTermId}
+                  focusedRootId={focusedRootId}
+                />
+              ) : (
+                <ListView
+                  list={filteredList}
+                  selectedTermId={selectedTermId}
+                  onSelectTerm={handleSelectTerm}
+                  showEnglish={showEnglish}
+                  translationLanguage={translationLanguage}
+                />
+              )}
+            </div>
+
+            {/* Splitter (가변 조절바) */}
+            {selectedTermDetail && (
+              <div
+                onMouseDown={startDrag}
+                style={{
+                  width: 10,
+                  cursor: "col-resize",
+                  backgroundColor: "transparent",
+                  zIndex: 50,
+                  position: "relative",
+                  marginLeft: -5,
+                  marginRight: -5,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <div
+                  style={{
+                    width: 4,
+                    height: "100%",
+                    backgroundColor: "var(--border-color)",
+                    transition: "background-color 0.2s",
+                  }}
+                  onMouseEnter={(e) => (e.target.style.backgroundColor = "var(--accent-blue)")}
+                  onMouseLeave={(e) => {
+                    if (!isDragging.current) e.target.style.backgroundColor = "var(--border-color)";
+                  }}
+                />
+              </div>
+            )}
+
+            {/* 상세 패널 */}
+            {selectedTermDetail && (
+              <div style={{
+                flex: `0 0 ${detailWidth}%`,
+                borderLeft: "1px solid var(--border-color)",
+                backgroundColor: "var(--bg-primary)", display: "flex", flexDirection: "column",
+                minWidth: 300,
+              }}>
+                <div style={{
+                  padding: "10px 16px", borderBottom: "1px solid var(--border-color)",
+                  backgroundColor: "var(--bg-secondary)", display: "flex", alignItems: "center", gap: 8, justifyContent: "flex-end",
+                }}>
+                  <button onClick={() => setSelectedTermDetail(null)}
+                    style={{ padding: "6px 12px", backgroundColor: "var(--bg-secondary)", border: "1px solid var(--border-color)", color: "var(--text-secondary)", borderRadius: 6, cursor: "pointer", fontSize: 12 }}>
+                    <X size={14} style={{ display: "inline", verticalAlign: "middle" }} /> 닫기
+                  </button>
+                </div>
+                <div style={{ flex: 1, overflowY: "auto" }}>
+                  {isLoadingChunk ? (
+                    <div className="welcome-screen"><Loader className="spinner" /><p>로딩 중...</p></div>
+                  ) : (
+                    <TermDetail
+                      term={selectedTermDetail}
+                      siblingSenses={[]}
+                      onSenseSwitch={handleSelectTerm}
+                      onCrossLinkClick={handleReferenceJump}
+                      onRelatedVocabClick={handleRelatedVocabClick}
+                      onSenseRelationClick={handleReferenceJump}
+                      onRelatedFormClick={handleReferenceJump}
+                      onSubwordClick={handleSubwordJump}
+                      isSearchWordAvailable={(word) => searchWordSet.has(word)}
+                      resolveReferenceMeta={resolveReferenceMeta}
+                      showEnglish={showEnglish}
+                      translationLanguage={translationLanguage}
+                    />
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── 리스트 뷰 ────────────────────────────────────────────────────
+const BAND_COLORS_INLINE = {
+  1: { color: "#ff7b72", bg: "rgba(255,123,114,0.12)", label: "Essential" },
+  2: { color: "#ffa657", bg: "rgba(255,166,87,0.12)",  label: "High"      },
+  3: { color: "#e3b341", bg: "rgba(227,179,65,0.12)",  label: "Medium"    },
+  4: { color: "#3fb950", bg: "rgba(63,185,80,0.12)",   label: "Low"       },
+  5: { color: "#58a6ff", bg: "rgba(88,166,255,0.12)",  label: "Rare"      },
+};
+
+function ListView({ list, selectedTermId, onSelectTerm, showEnglish, translationLanguage }) {
+  const getPrimaryTranslation = (term) => {
+    const translations = term?.translation_summary || [];
+    if (!translations.length) return null;
+    return translations.find((t) => t?.language === translationLanguage) ||
+      translations.find((t) => t?.language === "영어") ||
+      translations[0];
+  };
+  return (
+    <div style={{ padding: 16, overflowY: "auto", height: "100%" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        {list.map((term) => {
+          const primaryTranslation = getPrimaryTranslation(term);
+          const band = term.stats?.band ?? null;
+          const bandValid = band !== null && band >= 1 && band <= 5;
+          const bm = bandValid ? BAND_COLORS_INLINE[band] : null;
+          const isSelected = selectedTermId === term.id;
+
+          return (
+              <div
+                key={term.id}
+                data-list-term-id={term.id}
+                onClick={() => onSelectTerm(term)}
+                style={{
+                padding: "10px 16px", borderRadius: 10, cursor: "pointer",
+                backgroundColor: isSelected ? "rgba(47,129,247,0.12)" : "var(--bg-secondary)",
+                border: `1px solid ${isSelected ? "var(--accent-blue)" : "var(--border-color)"}`,
+                display: "flex", alignItems: "center", gap: 12, transition: "all 0.12s",
+              }}
+            >
+              <span style={{ fontWeight: 600, color: isSelected ? "var(--accent-blue)" : "var(--text-primary)", fontSize: 14 }}>
+                {term.word}
+              </span>
+              {showEnglish && (primaryTranslation?.word || term.def_en) && (
+                <span style={{ color: "var(--text-secondary)", fontSize: 12, flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {primaryTranslation?.language ? `${primaryTranslation.language}: ` : ""}{primaryTranslation?.word || term.def_en}
+                </span>
+              )}
+              <div style={{ display: "flex", gap: 6, marginLeft: "auto", flexShrink: 0 }}>
+                {term.has_subwords && (
+                  <span style={{ fontSize: 10, fontWeight: 600, padding: "2px 7px", borderRadius: 6, background: "rgba(255,166,87,0.12)", color: "var(--accent-orange)", border: "1px solid rgba(255,166,87,0.24)" }}>
+                    다음: 표현층
+                  </span>
+                )}
+                {bm ? (
+                  <span style={{ fontSize: 10, fontWeight: 600, padding: "2px 7px", borderRadius: 6, background: bm.bg, color: bm.color, border: `1px solid ${bm.color}44` }}>
+                    B{band}
+                  </span>
+                ) : (
+                  <span style={{ fontSize: 10, color: "#6e7681", padding: "2px 7px", borderRadius: 6, background: "rgba(110,118,129,0.1)", border: "1px solid rgba(110,118,129,0.2)" }}>
+                    —
+                  </span>
+                )}
+              </div>
+            </div>
+          );
+        })}
+        {list.length === 0 && (
+          <div style={{ textAlign: "center", color: "var(--text-secondary)", padding: "60px 20px" }}>
+            해당 조건의 단어가 없습니다.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default App;

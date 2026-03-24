@@ -1,0 +1,222 @@
+# TASKLIST_V1
+
+## Authoritative Active Work
+
+### MM3-096 Human Pilot Scheduling / Execution
+
+- Status: `IN_PROGRESS`
+- Goal: refreshed runtime 기준으로 internal human pilot scheduling / execution을 다시 연다.
+
+## Active Task Rows
+
+- `MM3-001A` root README / document map / dashboard baseline: `DONE`
+- `MM3-001B` PM operating model 문서화: `DONE`
+- `MM3-001C` document system policy 문서화: `DONE`
+- `MM3-001D` authoritative doc ownership 고정: `DONE`
+- `MM3-001E` next PM handoff 구성: `DONE`
+- `MM3-001F` implementation parked-state 명시: `DONE`
+- `MM3-002A` create multi-agent orchestration lane: `DONE`
+- `MM3-002B` dispatch `SOURCE_SCHEMA_AGENT`: `DONE`
+- `MM3-002C` review `SOURCE_SCHEMA_AGENT` report: `DONE`
+- `MM3-002D` PM accept and sync source review package: `DONE`
+- `MM3-002E` dispatch `DATA_VALIDATION_AGENT`: `DONE`
+- `MM3-003A` source structure taxonomy input package 정의: `DONE`
+- `MM3-003B` MM2 taxonomy 개념 배제 원칙 반영: `DONE`
+- `MM3-003C` dispatch `SOURCE_DISCOVERY_AGENT`: `DONE`
+- `MM3-003D` source-driven taxonomy discovery package 승인: `DONE`
+- `MM3-004A` PM structure options memo 작성: `DONE`
+- `MM3-005A` candidate A 기반 scenario rewrite scope 정의: `DONE`
+- `MM3-005B` dispatch `SCENARIO_REWRITE_AGENT`: `DONE`
+- `MM3-005C` scenario rewrite review and sync canonicals: `DONE`
+- `MM3-006A` identify stale historical summary targets: `DONE`
+- `MM3-006B` decide revise / deprecate / archive rule: `DONE`
+- `MM3-007A` implementation gate inputs 정리: `DONE`
+- `MM3-007B` implementation gate 기준 초안 작성: `DONE`
+- `MM3-008A` fresh summary rewrite 필요성 판단: `DONE`
+- `MM3-009A` 화면 단위 IA scope 정의: `DONE`
+- `MM3-009B` IA package 작성: `DONE`
+- `MM3-009C` IA package review and sync canonicals: `DONE`
+- `MM3-010A` runtime contract scope 정의: `DONE`
+- `MM3-010B` dispatch `RUNTIME_CONTRACT_AGENT`: `DONE`
+- `MM3-010C` runtime contract review and sync canonicals: `DONE`
+- `MM3-011A` acceptance checklist scope 정의: `DONE`
+- `MM3-011B` dispatch `ACCEPTANCE_AGENT`: `DONE`
+- `MM3-012A` mindmap interaction scope 정의: `DONE`
+- `MM3-012B` dispatch `MINDMAP_AGENT`: `DONE`
+- `MM3-012C` mindmap interaction spec acceptance: `DONE`
+- `MM3-013A` dispatch `MINDMAP_SYNC_AGENT`: `DONE`
+- `MM3-013B` review sync result: `DONE`
+- `MM3-013C` PM sync acceptance: `DONE`
+- `MM3-014A` refinement scope 정의: `DONE`
+- `MM3-014B` refinement note 작성: `DONE`
+- `MM3-015A` gate recheck scope 정의: `DONE`
+- `MM3-015B` dispatch `GATE_RECHECK_AGENT`: `DONE`
+- `MM3-015C` gate recheck acceptance: `DONE`
+- `MM3-016A` post-gate scope 정의: `DONE`
+- `MM3-016B` dispatch `POST_GATE_AGENT`: `DONE`
+- `MM3-016C` post-gate next-step planning acceptance: `DONE`
+- `MM3-017A` limited execution packet scope 정의: `DONE`
+- `MM3-017B` dispatch `EXEC_PACKET_AGENT`: `DONE`
+- `MM3-017C` limited execution packet acceptance: `DONE`
+- `MM3-018A` first validation runbook scope 정의: `DONE`
+- `MM3-018B` dispatch `RUNBOOK_AGENT`: `DONE`
+- `MM3-018C` runbook acceptance: `DONE`
+- `MM3-019A` readiness scope 정의: `DONE`
+- `MM3-019B` dispatch `READINESS_AGENT`: `DONE`
+- `MM3-019C` readiness acceptance: `DONE`
+- `MM3-020A` first limited validation scope 정의: `DONE`
+- `MM3-020B` dispatch `FIRST_VALIDATION_AGENT`: `DONE`
+- `MM3-020C` first limited validation result: `FAIL`
+- `MM3-021A` failure triage scope 정의: `DONE`
+- `MM3-021B` dispatch `TRIAGE_AGENT`: `DONE`
+- `MM3-021C` triage acceptance: `DONE`
+- `MM3-022A` repair packet scope 정의: `DONE`
+- `MM3-022B` dispatch `REPAIR_AGENT`: `DONE`
+- `MM3-022C` repair packet acceptance: `DONE`
+- `MM3-023A` repair readiness scope 정의: `DONE`
+- `MM3-023B` dispatch `REPAIR_READINESS_AGENT`: `DONE`
+- `MM3-023C` PM decision: direct repair hold: `DONE`
+- `MM3-024A` validation model reframe scope 정의: `DONE`
+- `MM3-024B` dispatch `VALIDATION_MODEL_AGENT`: `DONE`
+- `MM3-024C` validation model acceptance: `DONE`
+- `MM3-025A` revalidation criteria scope 정의: `DONE`
+- `MM3-025B` dispatch `REVALIDATION_AGENT`: `DONE`
+- `MM3-025C` revalidation criteria acceptance: `DONE`
+- `MM3-026A` second packet scope 정의: `DONE`
+- `MM3-026B` dispatch `SECOND_PACKET_AGENT`: `DONE`
+- `MM3-026C` second packet acceptance: `DONE`
+- `MM3-027A` second readiness scope 정의: `DONE`
+- `MM3-027B` dispatch `SECOND_READINESS_AGENT`: `DONE`
+- `MM3-027C` second readiness acceptance: `DONE`
+- `MM3-028A` second validation scope 정의: `DONE`
+- `MM3-028B` dispatch `SECOND_VALIDATION_AGENT`: `DONE`
+- `MM3-028C` second validation PM note: `DONE`
+- `MM3-029A` helper verification scope 정의: `DONE`
+- `MM3-029B` dispatch `HELPER_VERIFY_AGENT`: `DONE`
+- `MM3-029C` helper PM note: `DONE`
+- `MM3-031A` runtime reflection scope 정의: `DONE`
+- `MM3-031B` dispatch `RUNTIME_EXEC_AGENT`: `DONE`
+- `MM3-031C` runtime reflection PM note: `FAIL`
+- `MM3-032A` runtime triage scope 정의: `DONE`
+- `MM3-032B` dispatch `RUNTIME_TRIAGE_AGENT`: `DONE`
+- `MM3-032C` runtime triage acceptance: `DONE`
+- `MM3-033A` PM artifact split path decision: `DONE`
+- `MM3-034A` thin index / facet target scope 정의: `DONE`
+- `MM3-034B` target contract 작성: `DONE`
+- `MM3-035A` runtime reflection retry scope 정의: `DONE`
+- `MM3-035B` retry plan 작성: `DONE`
+- `MM3-036A` artifact split scope 정의: `DONE`
+- `MM3-036B` dispatch `ARTIFACT_SPLIT_AGENT`: `DONE`
+- `MM3-036C` artifact split acceptance: `DONE`
+- `MM3-037A` split artifact review scope 정의: `DONE`
+- `MM3-037B` dispatch `SPLIT_REVIEW_AGENT`: `DONE`
+- `MM3-037C` split artifact acceptance: `DONE`
+- `MM3-038A` loader wiring scope 정의: `DONE`
+- `MM3-038B` dispatch `LOADER_VERIFY_AGENT`: `DONE`
+- `MM3-038C` loader wiring PM note: `DONE`
+- `MM3-039A` consumer target contract 작성: `DONE`
+- `MM3-040A` search + facet wiring implementation: `DONE`
+- `MM3-041A` consumer/browser smoke triage: `DONE`
+- `MM3-042A` browser smoke acceptance: `DONE`
+- `MM3-043A` gate recheck after wiring: `DONE`
+- `MM3-044A` next implementation slice decision: `DONE`
+- `MM3-045A` tree wiring plan scope 정의: `DONE`
+- `MM3-045B` tree wiring plan 작성: `DONE`
+- `MM3-046A` navigation shell contract scope 정의: `DONE`
+- `MM3-046B` navigation shell contract 작성: `DONE`
+- `MM3-047A` tree wiring readiness: `DONE`
+- `MM3-048A` tree payload / shell implementation: `DONE`
+- `MM3-048B` tree wiring acceptance: `DONE`
+- `MM3-049A` detail wiring plan 작성: `DONE`
+- `MM3-049B` detail wiring acceptance: `DONE`
+- `MM3-050A` detail wiring readiness 정리: `DONE`
+- `MM3-050B` detail wiring implementation: `DONE`
+- `MM3-050C` detail wiring acceptance: `DONE`
+- `MM3-051A` expression wiring plan 작성: `DONE`
+- `MM3-052A` expression wiring readiness 정리: `DONE`
+- `MM3-053A` expression wiring implementation: `DONE`
+- `MM3-053B` expression wiring acceptance: `DONE`
+- `MM3-054A` detail/expression refinement decision: `DONE`
+- `MM3-055A` detail/expression refinement plan 작성: `DONE`
+- `MM3-056A` detail/expression refinement readiness 정리: `DONE`
+- `MM3-057A` detail/expression refinement implementation: `DONE`
+- `MM3-057B` detail/expression refinement acceptance: `DONE`
+- `MM3-058A` post-refinement gate recheck: `DONE`
+- `MM3-059A` core learner flow QA plan 작성: `DONE`
+- `MM3-060A` core learner flow QA execution readiness 정리: `DONE`
+- `MM3-061A` core learner flow QA execution: `DONE`
+- `MM3-062A` core learner flow QA acceptance: `DONE`
+- `MM3-063A` scenario-level QA plan 작성: `DONE`
+- `MM3-064A` scenario-level QA execution readiness 정리: `DONE`
+- `MM3-065A` scenario-level QA execution: `DONE`
+- `MM3-066A` scenario-level QA acceptance: `DONE`
+- `MM3-067A` scenario residual gap note 작성: `DONE`
+- `MM3-068A` scenario residual manual QA readiness: `DONE`
+- `MM3-069A` scenario residual QA execution: `DONE`
+- `MM3-070A` scenario residual QA acceptance: `DONE`
+- `MM3-071A` runtime QA wave closeout: `DONE`
+- `MM3-072A` situation tree precision path decision: `DONE`
+- `MM3-073A` post-QA next slice decision: `DONE`
+- `MM3-074A` translation surface policy: `DONE`
+- `MM3-075A` translation surface policy readiness: `DONE`
+- `MM3-076A` translation surface implementation: `DONE`
+- `MM3-077A` translation surface acceptance: `DONE`
+- `MM3-078A` post-translation next slice decision: `DONE`
+- `MM3-079A` detail / expression micro-polish plan: `DONE`
+- `MM3-080A` detail / expression micro-polish readiness: `DONE`
+- `MM3-081A` detail / expression micro-polish implementation: `DONE`
+- `MM3-082A` detail / expression micro-polish acceptance: `DONE`
+- `MM3-083A` learner locale / translation default decision: `DONE`
+- `MM3-084A` translation default implementation: `DONE`
+- `MM3-085A` translation default acceptance: `DONE`
+- `MM3-086A` compact translation summary gap note: `DONE`
+- `MM3-087A` compact translation summary enrichment decision: `DONE`
+- `MM3-088A` pilot readiness checkpoint: `DONE`
+- `MM3-089A` pilot readiness assessment: `DONE`
+- `MM3-090A` pilot readiness acceptance: `DONE`
+- `MM3-091A` internal pilot demo checklist: `DONE`
+- `MM3-092A` pilot feedback intake protocol: `DONE`
+- `MM3-093A` human pilot session decision: `DONE`
+- `MM3-094A` internal human pilot session packet: `DONE`
+- `MM3-095A` internal human pilot execution readiness: `DONE`
+- `MM3-154A` none / unclassified runtime evidence check: `DONE`
+- `MM3-154B` none / unclassified learner-facing deep scenario plan: `DONE`
+- `MM3-155A` new thread PM handoff packet / handoff message 정리: `DONE`
+- `MM3-156A` none / unclassified minimal UI mapping implementation: `DONE`
+- `MM3-156B` none / unclassified minimal UI mapping acceptance: `DONE`
+- `MM3-157A` expression scenario follow-up scope 정의: `DONE`
+- `MM3-157B` expression scenario pipeline plan 작성: `DONE`
+- `MM3-158A` expression scenario workflow implementation: `DONE`
+- `MM3-158B` expression scenario workflow acceptance: `DONE`
+- `MM3-159A` motion / mindmap human re-check scope 정의: `DONE`
+- `MM3-159B` motion / mindmap quantitative probe recheck: `DONE`
+- `MM3-159C` motion human check packet 준비: `DONE`
+- `MM3-159D` motion human re-check acceptance: `DONE`
+- `MM3-160A` translation runtime payload repair: `DONE`
+- `MM3-160B` english / vietnamese translation regression verification: `DONE`
+- `MM3-161A` example source/order clarification follow-up: `DONE`
+- `MM3-161B` example source/order regression verification: `DONE`
+- `MM3-164A` git / Vercel payload packaging policy: `DONE`
+- `MM3-164B` Vercel build chain configuration: `DONE`
+- `MM3-096A` human pilot scheduling / execution 재오픈: `IN_PROGRESS`
+
+## Next Work
+
+- `MM3-096` human pilot scheduling / execution: `IN_PROGRESS`
+
+## Parked Backlog
+
+- `PARK-001` TOPIK stats linkage policy
+- `PARK-002` runtime payload builder
+- `PARK-003` frontend shell adaptation
+- `PARK-004` payload validation and count reconciliation
+
+## Validation Gates
+
+- dashboard / tasklist / handoff가 같은 active phase를 가리켜야 한다
+- implementation backlog는 active task row로 승격하지 않는다
+- 문서 체계 변경 시 README / dashboard / handoff / document map을 같은 턴에 동기화한다
+- scenario는 source schema / data structure review 이후에만 final package로 승격한다
+- 새 agent dispatch 전에는 사용자 승인과 링크 제공이 선행되어야 한다
+- `3축`은 source 구조 분석 전까지 가정하지 않는다
+- 모든 agent 산출물은 `작업 -> 검증 -> learner 포함 3인 전문가 비판 검토 -> 개선 -> 재검증` 루프를 거쳐야 한다
