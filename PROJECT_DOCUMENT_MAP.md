@@ -153,6 +153,7 @@
 - `08_planning/reports/20260326_MM3_211_NEXT_PM_HANDOFF_PACKET_V1.md`: current next PM handoff packet
 - `08_planning/reports/20260326_MM3_212_PAYLOAD_VALIDATION_COUNT_RECONCILIATION_V1.md`: runtime/source payload validation and count reconciliation
 - `08_planning/reports/20260326_MM3_213_CANONICAL_THIN_INDEX_GENERATOR_RECOVERY_NOTE_V1.md`: thin-index generator recovery boundary note
+- `08_planning/reports/20260326_MM3_215_FRONTEND_SHELL_ADAPTATION_PLANNING_V1.md`: frontend shell adaptation planning
 - `08_planning/reports/20260326_MM3_201_POST_CLOSEOUT_FEEDBACK_COVERAGE_CHECK_V1.md`: post-closeout additional feedback coverage check and todo mapping
 - `08_planning/reports/20260326_MM3_202_POST_CLOSEOUT_DETAIL_SURFACE_FOLLOWUP_IMPLEMENTATION_V1.md`: post-closeout detail / relation / examples / expression follow-up implementation
 - `08_planning/reports/20260326_MM3_205_UNCLASSIFIED_SURFACE_PRODUCT_IA_DECISION_NOTE_V1.md`: unclassified surface product / IA decision note
