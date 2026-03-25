@@ -2,10 +2,14 @@
 
 ## Authoritative Active Work
 
-### MM3-096 Human Pilot Scheduling / Execution
+### MM3-213 Canonical Thin-Index Generator Recovery / Documentation
 
 - Status: `IN_PROGRESS`
-- Goal: refreshed runtime 기준으로 internal human pilot scheduling / execution을 다시 연다.
+- Goal: canonical thin/facet source로부터 current runtime search/facet generator recovery 범위를 문서화하고, exact rebuild에 필요한 field provenance gap을 고정한다.
+- Input:
+  - `08_planning/reports/20260325_MM3_199_RENDER_SIDE_PERFORMANCE_QUICKWIN_V1.md`
+  - `08_planning/reports/20260326_MM3_212_PAYLOAD_VALIDATION_COUNT_RECONCILIATION_V1.md`
+  - `08_planning/reports/20260326_MM3_213_CANONICAL_THIN_INDEX_GENERATOR_RECOVERY_NOTE_V1.md`
 
 ## Active Task Rows
 
@@ -198,11 +202,124 @@
 - `MM3-161B` example source/order regression verification: `DONE`
 - `MM3-164A` git / Vercel payload packaging policy: `DONE`
 - `MM3-164B` Vercel build chain configuration: `DONE`
-- `MM3-096A` human pilot scheduling / execution 재오픈: `IN_PROGRESS`
+- `MM3-165A` refreshed runtime 기준 human pilot reopen note: `DONE`
+- `MM3-166A` runtime thin-index generator follow-up decision: `DONE`
+- `MM3-167A` additional human test feedback coverage check: `DONE`
+- `MM3-167B` additional human test feedback literal documentation sync: `DONE`
+- `MM3-174A` residual feedback pipeline workflow plan: `DONE`
+- `MM3-168A` detail header / close / copy density follow-up scope 정의: `DONE`
+- `MM3-169A` relation / expression surface discoverability follow-up scope 정의: `DONE`
+- `MM3-170A` translation surface completeness re-audit: `DONE`
+- `MM3-171A` runtime performance / payload split follow-up scope 정의: `DONE`
+- `MM3-172A` topic-situation / unclassified tree semantics follow-up scope 정의: `DONE`
+- `MM3-172B` duplicated / isolated / tangled pattern evidence collection: `DONE`
+- `MM3-172C` terminology baseline draft: `DONE`
+- `MM3-172D` review checkpoint `R1`: `DONE`
+- `MM3-173A` terminology / in-app guide planning note: `DONE`
+- `MM3-173B` guide outline draft: `DONE`
+- `MM3-173C` screenshot capture readiness check: `DONE`
+- `MM3-173D` review checkpoint `R4`: `DONE`
+- `MM3-175A` refreshed internal pilot checklist: `DONE`
+- `MM3-176A` refreshed internal human pilot session packet: `DONE`
+- `MM3-177A` refreshed pilot feedback intake protocol: `DONE`
+- `MM3-178A` refreshed human pilot execution handoff: `DONE`
+- `MM3-179A` refreshed human pilot execution readiness: `DONE`
+- `MM3-181A` pilot execution environment spec: `DONE`
+- `MM3-182A` pilot coordination message draft: `DONE`
+- `MM3-183A` human pilot launch sheet: `DONE`
+- `MM3-184A` Playwright pilot rehearsal support: `DONE`
+- `MM3-185A` detail / relation / expression repeated feedback implementation: `DONE`
+- `MM3-096A` human pilot scheduling / execution 재오픈: `DONE`
+- `MM3-096B` participant / facilitator actual value confirmation: `DONE`
+- `MM3-096C` participant / facilitator / execution handoff finalization: `DONE`
+- `MM3-096D` scheduled pilot execution / intake capture: `DONE`
+- `MM3-186A` second human pilot raw feedback / screenshot preservation: `DONE`
+- `MM3-186B` second human pilot normalized note sync: `DONE`
+- `MM3-186C` second human pilot triage / coverage mapping: `DONE`
+- `MM3-187A` `MM3_138` accuracy recheck / wording correction: `DONE`
+- `MM3-187B` second human pilot existing-F / new-holdout mapping: `DONE`
+- `MM3-187C` unified residual pipeline lock: `DONE`
+- `MM3-187D` W1 reopened regressions execution: `DONE`
+- `MM3-187E` expression translation runtime projection repair: `DONE`
+- `MM3-187F1` original-language section removal: `DONE`
+- `MM3-187F2` tab naming decision / execution: `DONE`
+- `MM3-187F3` expression meta / example helper cleanup: `DONE`
+- `MM3-187G` W3 examples / taxonomy policy bundle: `DONE`
+- `MM3-187H` example source restore feasibility / builder path: `DONE`
+- `MM3-187I` example source quality / TOPIK provenance decision: `DONE`
+- `MM3-173E` actual in-app guide authoring: `DONE`
+- `MM3-171B` render-side performance optimization: `DONE`
+- `MM3-192A` second pilot feedback full coverage re-audit: `DONE`
+- `MM3-194A` term mapping / builder gap clarification: `DONE`
+- `MM3-195A` UI term consistency / example chunk builder implementation: `DONE`
+- `MM3-196A` second human pilot feedback pipeline closeout: `DONE`
+- `MM3-198A` feedback full-apply recheck: `DONE`
+- `MM3-199A` render-side performance quick win: `DONE`
+- `MM3-199B` dense category expansion cap quick win: `DONE`
+- `MM3-199C` tree build redundant normalize 제거 quick win: `DONE`
+- `MM3-199D` search index upfront normalize 제거 quick win: `DONE`
+- `MM3-199E` initial-load instrumentation baseline: `DONE`
+- `MM3-199F` meaning tree deferred initial load quick win: `DONE`
+- `MM3-210A` sense-selected examples follow-up: `DONE`
+- `MM3-210B` dynamic sense numbering follow-up: `DONE`
+- `MM3-210C` unresolved related-form jump validation / runtime note: `DONE`
+- `MM3-210D` regression coverage and verification: `DONE`
+- `MM3-210` detail sense / example / relation follow-up closeout: `DONE`
+- `MM3-212A` runtime/source alignment validation script: `DONE`
+- `MM3-212B` payload validation and count reconciliation run: `DONE`
+- `MM3-213A` thin/facet source surface audit: `DONE`
+- `MM3-213B` generator recovery boundary note: `DONE`
+- `MM3-201A` post-closeout additional feedback coverage check: `DONE`
+- `MM3-201B` post-closeout additional feedback literal documentation sync: `DONE`
+- `MM3-202A` detail top-of-fold helper density re-review scope 정의: `DONE`
+- `MM3-202B` example source label presentation follow-up scope 정의: `DONE`
+- `MM3-203A` relation / expression hierarchy follow-up scope 정의: `DONE`
+- `MM3-204A` expression translation visibility consistency follow-up scope 정의: `DONE`
+- `MM3-205A` unclassified surface product / IA decision note: `DONE`
+- `MM3-206A` mindmap Band legend value review note: `DONE`
+- `MM3-207A` screenshot feedback coverage check: `DONE`
+- `MM3-207B` screenshot archive sync: `DONE`
+- `MM3-208A` relation tab renderer parity / grouped related-form follow-up: `DONE`
+- `MM3-209A` example source right-edge alignment follow-up: `DONE`
 
 ## Next Work
 
-- `MM3-096` human pilot scheduling / execution: `IN_PROGRESS`
+- `MM3-213` canonical thin-index generator recovery / documentation: `IN_PROGRESS`
+
+## Residual Feedback Pipeline
+
+- `P0 Queue Lock`
+  - `MM3-167A`, `MM3-167B`: `DONE`
+- `W1 Semantics Baseline`
+  - `MM3-172A`: `DONE`
+  - `MM3-172B`: `DONE`
+  - `MM3-172C`: `DONE`
+  - `MM3-172D`: `DONE`
+- `W2 Runtime Reality Audit`
+  - `MM3-170A`, `MM3-171A`: `DONE`
+  - parallel 허용
+- `W3 Surface Contract`
+  - `MM3-168A`: `DONE`
+  - `MM3-169A`: `DONE`
+  - `W1`, `W2` output을 입력으로 사용
+- `W4 Enablement Closeout`
+  - `MM3-173A`: `DONE`
+  - `MM3-173B`: `DONE`
+  - `MM3-173C`: `DONE`
+  - `MM3-173D`: `DONE`
+  - guide는 `W3` 안정화 이후에만 진행
+- `W5 Post-Closeout Feedback Queue`
+  - `MM3-202A`: `DONE`
+  - `MM3-202B`: `DONE`
+  - `MM3-203A`: `DONE`
+  - `MM3-204A`: `DONE`
+  - `MM3-205A`: `DONE`
+  - `MM3-206A`: `DONE`
+- `W6 Screenshot Feedback Follow-Up`
+  - `MM3-207A`: `DONE`
+  - `MM3-207B`: `DONE`
+  - `MM3-208A`: `DONE`
+  - `MM3-209A`: `DONE`
 
 ## Parked Backlog
 
@@ -210,6 +327,7 @@
 - `PARK-002` runtime payload builder
 - `PARK-003` frontend shell adaptation
 - `PARK-004` payload validation and count reconciliation
+- `PARK-005` canonical thin-index generator recovery / documentation
 
 ## Validation Gates
 

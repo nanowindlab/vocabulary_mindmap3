@@ -19,6 +19,7 @@
 
 - Main PM: Codex
 - 현재 phase: `M1 Runtime Wiring / Core Explorer`
+- current PM operating guide: `pm-operating-guide.md`
 - 현재 authoritative todo: `08_planning/TASKLIST_V1.md`
 - 현재 control plane: `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`
 - 현재 handoff: `.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md`
@@ -28,7 +29,7 @@
 1. `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`
 2. `.codex-orchestration/WORK_ORCHESTRATION_HUB_V1.md`
 3. `08_planning/TASKLIST_V1.md`
-4. `.codex-orchestration/PM_OPERATING_MODEL_V1.md`
+4. `pm-operating-guide.md`
 5. `08_planning/DOCUMENT_SYSTEM_POLICY_V1.md`
 6. `08_planning/DATA_ARCHITECTURE_V1.md`
 7. `08_planning/PRODUCT_SCENARIO_SPEC_V1.md`
@@ -50,9 +51,20 @@
 - `word-first + dual category + sense core`가 현재 구조 기준이다.
 - search + facet, tree shell, detail, expression 보조 진입이 앱에 연결돼 있다.
 - `의미 관계어`, `관련형`, `subword` 카드 점프까지 detail panel에서 동작한다.
+- `MM3-187F3`~`MM3-187I`, `MM3-196`, `MM3-197` 기준으로 direct learner-facing feedback과 guide 작성은 닫혔다.
+- `MM3-171B Render-Side Performance Optimization`은 `MM3-199 R7` 기준으로 closeout됐다.
+- terminology note: raw/internal `미분류` bucket을 learner-facing UI에서는 `분류 밖 항목`으로 보여 준다. 둘은 다른 bucket이 아니다.
 - 앱 runtime payload는 `JSON` 유지다.
 - current gate는 전체 기준 `PARTIAL_OPEN`, core explorer slice 기준 `OPEN`이다.
-- 다음 핵심 작업은 `MM3-096 Human Pilot Scheduling / Execution`이다.
+- `MM3-210`은 closeout됐다.
+- `MM3-212`에서 runtime/source payload validation과 count reconciliation은 `PASS`로 고정됐다.
+- 다음 active step은 `MM3-213 Canonical Thin-Index Generator Recovery / Documentation`이다.
+- 다음 핵심 작업은 exact runtime search generator에 필요한 field provenance gap을 고정하는 것이다.
+- latest pilot capture는 `08_planning/pilot_feedback/20260326_pilot_session_04.md`에 정리돼 있다.
+- additional human feedback residual queue `MM3-168`~`MM3-173`가 기록돼 있다.
+- residual queue는 `MM3-174` 파이프라인 기준으로 관리한다.
+- post-closeout 추가 피드백 queue `MM3-202A`~`MM3-206A`는 closeout까지 반영됐고, 최신 packet은 `08_planning/reports/20260326_MM3_202_POST_CLOSEOUT_DETAIL_SURFACE_FOLLOWUP_IMPLEMENTATION_V1.md`다.
+- screenshot follow-up `MM3-207A`~`MM3-209A`도 closeout까지 반영됐고, 최신 packet은 `08_planning/reports/20260326_MM3_207_SCREENSHOT_FEEDBACK_RELATION_EXAMPLE_FOLLOWUP_V1.md`다.
 
 ## 문서 지도
 

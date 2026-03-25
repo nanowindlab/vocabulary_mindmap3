@@ -3,9 +3,9 @@
 ## 1. Control Plane
 
 - `README.md`: 프로젝트 진입점
+- `pm-operating-guide.md`: PM 운영 기본 지침 canonical source
 - `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`: 현재 milestone, active work, risks
 - `.codex-orchestration/WORK_ORCHESTRATION_HUB_V1.md`: 읽기 순서와 실행 가드레일
-- `.codex-orchestration/PM_OPERATING_MODEL_V1.md`: Main PM 운영 규칙
 - `.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md`: 다음 PM handoff
 - `.codex-orchestration/PM_REVIEW_QUEUE_V1.md`: PM review verdict queue
 
@@ -105,7 +105,66 @@
 - `08_planning/reports/20260324_MM3_162_MOTION_HUMAN_CHECK_PACKET_V1.md`: motion human eye check packet
 - `08_planning/reports/20260324_MM3_163_MOTION_HUMAN_RECHECK_ACCEPTANCE_V1.md`: motion human re-check acceptance
 - `08_planning/reports/20260324_MM3_164_GIT_VERCEL_PAYLOAD_PACKAGING_V1.md`: git / Vercel payload packaging policy
+- `08_planning/reports/20260324_MM3_165_REFRESHED_RUNTIME_HUMAN_PILOT_REOPEN_NOTE_V1.md`: refreshed runtime 기준 human pilot reopen note
+- `08_planning/reports/20260324_MM3_166_THIN_INDEX_GENERATOR_FOLLOWUP_DECISION_V1.md`: thin-index generator follow-up decision
+- `08_planning/reports/20260324_MM3_167_ADDITIONAL_HUMAN_TEST_FEEDBACK_COVERAGE_CHECK_V1.md`: 추가 human test feedback coverage check
+- `08_planning/reports/20260324_MM3_174_RESIDUAL_FEEDBACK_PIPELINE_PLAN_V1.md`: residual feedback linked workflow pipeline plan
+- `08_planning/reports/20260324_MM3_172_TOPIC_SITUATION_UNCLASSIFIED_TREE_SEMANTICS_FOLLOWUP_PLAN_V1.md`: W1 semantics baseline plan
+- `08_planning/reports/20260324_MM3_172_TOPIC_SITUATION_UNCLASSIFIED_TREE_SEMANTICS_EVIDENCE_NOTE_V1.md`: W1 evidence note
+- `08_planning/reports/20260324_MM3_172_TOPIC_SITUATION_UNCLASSIFIED_TERMINOLOGY_BASELINE_DRAFT_V1.md`: W1 terminology baseline draft
+- `08_planning/reports/20260325_MM3_170_TRANSLATION_SURFACE_COMPLETENESS_REAUDIT_NOTE_V1.md`: W2 translation completeness audit
+- `08_planning/reports/20260325_MM3_171_RUNTIME_PERFORMANCE_PAYLOAD_SPLIT_AUDIT_NOTE_V1.md`: W2 performance / payload split audit
+- `08_planning/reports/20260325_MM3_168_DETAIL_HEADER_CLOSE_COPY_DENSITY_PLAN_V1.md`: W3 detail surface plan
+- `08_planning/reports/20260325_MM3_168_DETAIL_HEADER_CLOSE_COPY_DENSITY_CONTRACT_V1.md`: W3 detail surface contract
+- `08_planning/reports/20260325_MM3_169_RELATION_EXPRESSION_DISCOVERABILITY_PLAN_V1.md`: W3 discoverability plan
+- `08_planning/reports/20260325_MM3_169_RELATION_EXPRESSION_DISCOVERABILITY_CONTRACT_V1.md`: W3 discoverability contract
+- `08_planning/reports/20260325_MM3_169_RELATION_EXPRESSION_DISCOVERABILITY_ACCEPTANCE_V1.md`: W3 discoverability acceptance
+- `08_planning/reports/20260325_MM3_173_IN_APP_GUIDE_PLANNING_NOTE_V1.md`: W4 guide planning note
+- `08_planning/reports/20260325_MM3_173_IN_APP_GUIDE_OUTLINE_DRAFT_V1.md`: W4 guide outline draft
+- `08_planning/reports/20260325_MM3_173_SCREENSHOT_CAPTURE_READINESS_CHECK_V1.md`: W4 screenshot readiness check
+- `08_planning/reports/20260325_MM3_173_IN_APP_GUIDE_PLANNING_ACCEPTANCE_V1.md`: W4 guide planning acceptance
+- `08_planning/reports/20260325_MM3_175_REFRESHED_INTERNAL_PILOT_CHECKLIST_V1.md`: refreshed pilot checklist
+- `08_planning/reports/20260325_MM3_176_REFRESHED_INTERNAL_HUMAN_PILOT_SESSION_PACKET_V1.md`: refreshed pilot session packet
+- `08_planning/reports/20260325_MM3_177_REFRESHED_PILOT_FEEDBACK_INTAKE_PROTOCOL_V1.md`: refreshed pilot intake protocol
+- `08_planning/reports/20260325_MM3_178_REFRESHED_HUMAN_PILOT_EXECUTION_HANDOFF_V1.md`: refreshed pilot execution handoff
+- `08_planning/reports/20260325_MM3_179_REFRESHED_HUMAN_PILOT_EXECUTION_READINESS_V1.md`: refreshed pilot readiness
+- `08_planning/reports/20260325_MM3_180_REFRESHED_HUMAN_PILOT_BUNDLE_ACCEPTANCE_V1.md`: refreshed pilot bundle acceptance
+- `08_planning/reports/20260325_MM3_181_PILOT_EXECUTION_ENVIRONMENT_SPEC_V1.md`: pilot execution environment spec
+- `08_planning/reports/20260325_MM3_182_PILOT_COORDINATION_MESSAGE_V1.md`: pilot coordination message draft
+- `08_planning/reports/20260325_MM3_183_HUMAN_PILOT_LAUNCH_SHEET_V1.md`: human pilot launch sheet
+- `08_planning/reports/20260325_MM3_184_PLAYWRIGHT_PILOT_REHEARSAL_SUPPORT_V1.md`: Playwright pilot rehearsal support
+- `08_planning/reports/20260325_MM3_185_DETAIL_RELATION_EXPRESSION_FEEDBACK_IMPLEMENTATION_V1.md`: detail / relation / expression feedback implementation
+- `08_planning/reports/20260325_MM3_186_SECOND_HUMAN_PILOT_FEEDBACK_SYNC_V1.md`: second human pilot raw feedback preservation and normalized sync
+- `08_planning/reports/20260325_MM3_187_SECOND_HUMAN_PILOT_UNIFIED_PIPELINE_V1.md`: second human pilot unified residual pipeline
+- `08_planning/reports/20260325_MM3_188_W1_REOPENED_REGRESSIONS_EXECUTION_NOTE_V1.md`: W1 reopened regressions execution note and decision options
+- `08_planning/reports/20260325_MM3_189_W2_SURFACE_CONTRACT_STUDY_V1.md`: W2 surface contract study and tab naming recommendation
+- `08_planning/reports/20260325_MM3_190_W2_SURFACE_CONTRACT_EXECUTION_NOTE_V1.md`: W2 surface contract execution note
+- `08_planning/reports/20260325_MM3_191_W2_EXPRESSION_META_EXAMPLE_HELPER_CLEANUP_V1.md`: W2 expression meta / examples helper cleanup closeout
+- `08_planning/reports/20260325_MM3_192_SECOND_PILOT_FEEDBACK_FULL_COVERAGE_REAUDIT_V1.md`: second pilot feedback full coverage re-audit and residual blocker audit
+- `08_planning/reports/20260325_MM3_193_W3_EXAMPLES_TAXONOMY_POLICY_BUNDLE_V1.md`: W3 examples / taxonomy policy bundle
+- `08_planning/reports/20260325_MM3_194_EXAMPLE_SOURCE_FEASIBILITY_AND_UNCLASSIFIED_TERM_CLARIFICATION_V1.md`: MM3-187H term mapping clarification and example-source builder feasibility
+- `08_planning/reports/20260325_MM3_195_UI_TERM_CONSISTENCY_AND_EXAMPLE_CHUNK_BUILDER_IMPLEMENTATION_V1.md`: MM3-side example chunk builder implementation and UI term consistency closeout
+- `08_planning/reports/20260325_MM3_196_SECOND_HUMAN_PILOT_FEEDBACK_PIPELINE_CLOSEOUT_V1.md`: second human pilot feedback pipeline closeout acceptance
+- `08_planning/reports/20260325_MM3_197_ACTUAL_IN_APP_GUIDE_V1.md`: screenshot-inclusive actual in-app guide
+- `08_planning/reports/20260325_MM3_198_FEEDBACK_FULL_APPLY_RECHECK_V1.md`: feedback full-apply recheck
+- `08_planning/reports/20260325_MM3_199_RENDER_SIDE_PERFORMANCE_QUICKWIN_V1.md`: render-side performance quick wins
+- `08_planning/reports/20260325_MM3_200_NEXT_PM_HANDOFF_PACKET_V1.md`: compressed next PM handoff packet
+- `08_planning/reports/20260326_MM3_210_DETAIL_SENSE_EXAMPLE_RELATION_FOLLOWUP_IMPLEMENTATION_V1.md`: detail sense / example / relation feedback follow-up implementation
+- `08_planning/reports/20260326_MM3_211_NEXT_PM_HANDOFF_PACKET_V1.md`: current next PM handoff packet
+- `08_planning/reports/20260326_MM3_212_PAYLOAD_VALIDATION_COUNT_RECONCILIATION_V1.md`: runtime/source payload validation and count reconciliation
+- `08_planning/reports/20260326_MM3_213_CANONICAL_THIN_INDEX_GENERATOR_RECOVERY_NOTE_V1.md`: thin-index generator recovery boundary note
+- `08_planning/reports/20260326_MM3_201_POST_CLOSEOUT_FEEDBACK_COVERAGE_CHECK_V1.md`: post-closeout additional feedback coverage check and todo mapping
+- `08_planning/reports/20260326_MM3_202_POST_CLOSEOUT_DETAIL_SURFACE_FOLLOWUP_IMPLEMENTATION_V1.md`: post-closeout detail / relation / examples / expression follow-up implementation
+- `08_planning/reports/20260326_MM3_205_UNCLASSIFIED_SURFACE_PRODUCT_IA_DECISION_NOTE_V1.md`: unclassified surface product / IA decision note
+- `08_planning/reports/20260326_MM3_206_MINDMAP_BAND_LEGEND_VALUE_REVIEW_NOTE_V1.md`: mindmap fixed Band legend review and applied decision
+- `08_planning/reports/20260326_MM3_207_SCREENSHOT_FEEDBACK_RELATION_EXAMPLE_FOLLOWUP_V1.md`: screenshot feedback relation/example follow-up and archive sync
 - `.codex-orchestration/HANDOFF_MESSAGE_TO_NEW_PM_V1.md`: copy-paste handoff message
 - `08_planning/pilot_feedback/20260324_pilot_session_01.md`: normalized pilot session note
+- `08_planning/pilot_feedback/20260325_pilot_session_02.md`: normalized second pilot session note
+- `08_planning/pilot_feedback/20260326_pilot_session_03.md`: normalized post-closeout follow-up feedback note
+- `08_planning/pilot_feedback/20260326_pilot_session_04.md`: normalized screenshot follow-up feedback note
+- `08_planning/pilot_feedback/human pilot test_2차 피드백.md`: raw second human pilot feedback copy
+- `08_planning/pilot_feedback/human pilot test_3차 피드백.md`: raw post-closeout additional feedback copy
+- `08_planning/pilot_feedback/human pilot test_4차 피드백.md`: raw screenshot follow-up feedback copy
 - 보고서 파일명은 유지될 수 있으나, 내부 revision history를 반드시 포함한다
 - `vocab_dictionary/output/topik_stats_linkage/`: TOPIK stats linkage outputs

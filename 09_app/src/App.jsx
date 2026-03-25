@@ -18,8 +18,7 @@ import {
   loadTermDetailChunk,
 } from "./data/loaderAdapter";
 import {
-  buildHierarchyDisplay,
-  normalizeHierarchyBuckets,
+  normalizeHierarchyForDisplay,
   toPosLabel,
 } from "./utils/hierarchyDisplay";
 
@@ -29,50 +28,82 @@ import "./index.css";
 const TABS = [
   { id: "meaning", label: "의미 범주", label_en: "Meaning Categories", color: "#58a6ff" },
   { id: "situation", label: "주제 및 상황", label_en: "Topic & Situation",  color: "#3fb950" },
-  { id: "unclassified", label: "미분류", label_en: "Unclassified",  color: "#bc8cff" },
+  { id: "unclassified", label: "분류 밖 항목", label_en: "Unclassified",  color: "#bc8cff" },
 ];
 
 // ── Band 필터 옵션 ─────────────────────────────────────────
 const BAND_OPTIONS  = [null, 1, 2, 3, 4, 5]; // null = 미산출 포함
 
+const INITIAL_LOAD_PERF_QUERY_KEY = "mm3Perf";
+const INITIAL_LOAD_PERF_STORAGE_KEY = "MM3_PERF_DEBUG";
+
+const perfNow = () =>
+  typeof performance !== "undefined" && typeof performance.now === "function"
+    ? performance.now()
+    : Date.now();
+
+function isInitialLoadPerfConsoleEnabled() {
+  if (typeof window === "undefined") return import.meta.env.DEV;
+  if (import.meta.env.DEV) return true;
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get(INITIAL_LOAD_PERF_QUERY_KEY) === "1") return true;
+    return window.localStorage?.getItem(INITIAL_LOAD_PERF_STORAGE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function publishInitialLoadPerfSnapshot(snapshot) {
+  if (typeof window !== "undefined") {
+    window.__MM3_INITIAL_LOAD_PERF__ = snapshot;
+  }
+
+  if (!isInitialLoadPerfConsoleEnabled()) return;
+
+  const payloadTable = (snapshot.payloads || []).map((entry) => ({
+    payload: entry.payload,
+    source: entry.source,
+    fetch_ms: Number(entry.fetchMs?.toFixed(1) || 0),
+    parse_ms: Number(entry.parseMs?.toFixed(1) || 0),
+    total_ms: Number(entry.totalMs?.toFixed(1) || 0),
+    size_mb: entry.sizeBytes ? Number((entry.sizeBytes / (1024 * 1024)).toFixed(2)) : null,
+  }));
+
+  const stageTable = [
+    { stage: "payloads_ready", ms: snapshot.milestones?.payloadsReadyMs ?? null },
+    { stage: "search_index_map", ms: snapshot.normalize?.searchIndexMapMs ?? null },
+    { stage: "meaning_normalize", ms: snapshot.normalize?.meaningTreeMs ?? null },
+    { stage: "state_queued", ms: snapshot.milestones?.stateQueuedMs ?? null },
+    { stage: "first_stable_render", ms: snapshot.milestones?.firstStableRenderMs ?? null },
+  ].filter((entry) => Number.isFinite(entry.ms))
+    .map((entry) => ({ ...entry, ms: Number(entry.ms.toFixed(1)) }));
+  const deferredTable = Object.entries(snapshot.deferredTabs || {}).map(([tab, entry]) => ({
+    tab,
+    normalize_ms: Number(entry.normalizeMs?.toFixed(1) || 0),
+    ready_ms: Number(entry.readyMs?.toFixed(1) || 0),
+    rows: entry.rows ?? null,
+  }));
+
+  const totalMs = snapshot.milestones?.firstStableRenderMs ?? snapshot.milestones?.stateQueuedMs ?? 0;
+
+  console.groupCollapsed(`[MM3] Initial load ${totalMs.toFixed(1)}ms`);
+  if (payloadTable.length > 0) console.table(payloadTable);
+  if (stageTable.length > 0) console.table(stageTable);
+  if (deferredTable.length > 0) console.table(deferredTable);
+  console.log("rows", snapshot.rows);
+  console.log("enable", {
+    query: `?${INITIAL_LOAD_PERF_QUERY_KEY}=1`,
+    localStorage: `${INITIAL_LOAD_PERF_STORAGE_KEY}=1`,
+  });
+  console.groupEnd();
+}
+
 // ── 데이터 정규화 ────────────────────────────────────────────────
 function normalizeItem(item, surface, idxMap = null) {
   const hier = item.hierarchy || {};
-  const rawPath = hier.path_ko || "";
-  const pathSegments = typeof hier.path_ko === "string"
-    ? hier.path_ko.split(" > ").map((part) => part.trim()).filter(Boolean)
-    : [];
-  const derivedRoot = hier.root || pathSegments[0] || null;
-  const derivedScene = pathSegments.length >= 3
-    ? pathSegments[1]
-    : pathSegments.length === 2
-      ? pathSegments[1]
-      : (hier.scene || derivedRoot || "일반");
-  const derivedCategory = pathSegments.length >= 3
-    ? pathSegments[pathSegments.length - 1]
-    : (hier.category || item.pos || "기타");
-  const rootId   = hier.root_id || derivedRoot || hier.scene || hier.system || null;
-  const rootLabel= hier.root_label || derivedRoot || rootId || "";
-  const rawScene = hier.root_id ? (hier.scene || derivedScene || "일반") : derivedScene;
-  const rawCategory = hier.root_id ? (hier.category || item.pos || "기타") : derivedCategory;
-  const { scene, category } = normalizeHierarchyBuckets({
-    rootId,
-    scene: rawScene,
-    category: rawCategory,
-    pos: item.pos || item.part_of_speech || "품사 없음",
-    wordGrade: item.word_grade || "없음",
-  });
-  const hierarchyForDisplay = {
-    ...hier,
-    root_id: rootId,
-    root_label: rootLabel,
-    root_en: hier.root_en || "",
-    scene,
-    category,
-    raw_path_ko: rawPath || `${rootLabel} > ${rawScene} > ${rawCategory}`,
-  };
-  const hierarchyDisplay = buildHierarchyDisplay({
-    hierarchy: hierarchyForDisplay,
+  const normalizedHierarchy = normalizeHierarchyForDisplay({
+    hierarchy: hier,
     pos: item.pos || item.part_of_speech || "품사 없음",
     wordGrade: item.word_grade || "없음",
   });
@@ -104,19 +135,7 @@ function normalizeItem(item, surface, idxMap = null) {
       ...refs,
       cross_links,
     },
-    hierarchy: {
-      ...hierarchyForDisplay,
-      display_root_label: hierarchyDisplay.displayRootLabel,
-      display_scene: hierarchyDisplay.displayScene,
-      display_category: hierarchyDisplay.displayCategory,
-      display_path_ko: hierarchyDisplay.displayPathKo,
-      context_kind: hierarchyDisplay.contextKind,
-      helper_title: hierarchyDisplay.helperTitle,
-      helper_description: hierarchyDisplay.helperDescription,
-      scene,
-      category,
-      path_ko: hierarchyDisplay.displayPathKo,
-    },
+    hierarchy: normalizedHierarchy,
   };
 }
 
@@ -138,12 +157,20 @@ function formatTreeLabel(contextMode, nodeType, rawLabel) {
   return rawLabel;
 }
 
+function isDisplayNormalized(item) {
+  return !!(
+    item?.surface &&
+    item?.hierarchy?.display_root_label &&
+    item?.hierarchy?.display_path_ko
+  );
+}
+
 // ── 트리 빌더 ────────────────────────────────────────────────────
 function buildTreeFromList(list, surface, contextMode) {
   const tree = {};
   if (!Array.isArray(list)) return tree;
   list.forEach((rawItem) => {
-    const item = normalizeItem(rawItem, surface);
+    const item = isDisplayNormalized(rawItem) ? rawItem : normalizeItem(rawItem, surface);
     const rootId    = item.hierarchy?.root_id;
     const centerId  = item.hierarchy?.scene    || "일반";
     const categoryId= item.hierarchy?.category || item.pos || "기타";
@@ -297,11 +324,18 @@ function App() {
   const [selectedTermDetail, setSelectedTermDetail] = useState(null);
   const [isLoadingChunk, setIsLoadingChunk] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
+  const [tabLoadState, setTabLoadState] = useState({
+    meaning: "idle",
+    situation: "idle",
+    unclassified: "idle",
+  });
 
   const [expandedIds, setExpandedIds] = useState(new Set());
   const [focusedRootId, setFocusedRootId] = useState(null);
   const [showEnglish, setShowEnglish] = useState(true);
   const [translationLanguage, setTranslationLanguage] = useState("영어");
+  const initialLoadPerfRef = useRef(null);
+  const initialLoadPerfFlushedRef = useRef(false);
 
   // 필터 상태
   const [filters, setFilters] = useState({ bands: [], poses: [], grades: [], query: "" });
@@ -345,36 +379,42 @@ function App() {
   // ── 데이터 로드 ─────────────────────────────────────────────────
   useEffect(() => {
     async function init() {
+      const perfSnapshot = {
+        version: "R1",
+        capturedAt: new Date().toISOString(),
+        payloads: [],
+        normalize: {},
+        milestones: {},
+        rows: {},
+        deferredTabs: {},
+        startedAtMs: perfNow(),
+      };
+      initialLoadPerfRef.current = perfSnapshot;
+      initialLoadPerfFlushedRef.current = false;
+
       try {
         setIsInitializing(true);
-        const [meaning, situation, unclassified, idx, facet] = await Promise.all([
-          loadMeaningTree(),
-          loadSituationTree(),
-          loadUnclassifiedTree(),
-          loadUnifiedSearchIndex(),
-          loadFacetPayload(),
+        const [idx, facet] = await Promise.all([
+          loadUnifiedSearchIndex({
+            trace: (metric) => perfSnapshot.payloads.push(metric),
+          }),
+          loadFacetPayload({
+            trace: (metric) => perfSnapshot.payloads.push(metric),
+          }),
         ]);
-        const searchIndexArr = Array.isArray(idx) ? idx.map((t) => normalizeItem(t, "mindmap_core")) : [];
+        perfSnapshot.milestones.payloadsReadyMs = perfNow() - perfSnapshot.startedAtMs;
+
+        const searchIndexArr = Array.isArray(idx) ? idx : [];
+        perfSnapshot.rows.searchIndex = searchIndexArr.length;
+
+        const idxMapStartedAt = perfNow();
         const idxMap = new Map();
         searchIndexArr.forEach((t) => { if (t.id) idxMap.set(t.id, t); });
-
-        const meaningArr = Array.isArray(meaning) ? meaning.map((t) => normalizeItem(t, "mindmap_core", idxMap)) : [];
-        const situationArr = Array.isArray(situation) ? situation.map((t) => normalizeItem(t, "mindmap_core", idxMap)) : [];
-        const unclassifiedArr = Array.isArray(unclassified) ? unclassified.map((t) => normalizeItem(t, "mindmap_core", idxMap)) : [];
-        
-        setMeaningList(meaningArr);
-        setSituationList(situationArr);
-        setUnclassifiedList(unclassifiedArr);
+        perfSnapshot.normalize.searchIndexMapMs = perfNow() - idxMapStartedAt;
+        perfSnapshot.rows.searchIndexMap = idxMap.size;
         setSearchIndex(searchIndexArr);
         setFacetPayload(facet);
-
-        if (meaningArr.length > 0) {
-          const defaultRoot = meaningArr[0].hierarchy?.root_id;
-          if (defaultRoot) {
-            setFocusedRootId(defaultRoot);
-            setExpandedIds(new Set([defaultRoot]));
-          }
-        }
+        perfSnapshot.milestones.stateQueuedMs = perfNow() - perfSnapshot.startedAtMs;
       } catch (e) {
         console.error("데이터 로딩 실패", e);
       } finally {
@@ -383,6 +423,118 @@ function App() {
     }
     init();
   }, []);
+
+  useEffect(() => {
+    if (isInitializing || initialLoadPerfFlushedRef.current) return undefined;
+
+    let raf1 = 0;
+    let raf2 = 0;
+
+    raf1 = window.requestAnimationFrame(() => {
+      raf2 = window.requestAnimationFrame(() => {
+        const snapshot = initialLoadPerfRef.current;
+        if (!snapshot || initialLoadPerfFlushedRef.current) return;
+        snapshot.milestones.firstStableRenderMs = perfNow() - snapshot.startedAtMs;
+        publishInitialLoadPerfSnapshot(snapshot);
+        initialLoadPerfFlushedRef.current = true;
+      });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(raf1);
+      window.cancelAnimationFrame(raf2);
+    };
+  }, [isInitializing]);
+
+  useEffect(() => {
+    if (isInitializing) return undefined;
+    if (tabLoadState[activeTab] !== "idle") return undefined;
+
+    const tabId = activeTab;
+
+    async function loadDeferredTab() {
+      setTabLoadState((prev) => ({ ...prev, [tabId]: "loading" }));
+
+      const idxMap = new Map();
+      searchIndex.forEach((t) => { if (t.id) idxMap.set(t.id, t); });
+      let normalizeMs = 0;
+      let rowCount = 0;
+
+      try {
+        if (tabId === "meaning") {
+          const meaning = await loadMeaningTree({
+            trace: (metric) => initialLoadPerfRef.current?.payloads.push(metric),
+          });
+
+          const meaningNormalizeStartedAt = perfNow();
+          const meaningArr = Array.isArray(meaning) ? meaning.map((t) => normalizeItem(t, "mindmap_core", idxMap)) : [];
+          normalizeMs = perfNow() - meaningNormalizeStartedAt;
+          rowCount = meaningArr.length;
+
+          setMeaningList(meaningArr);
+
+          if (initialLoadPerfRef.current) {
+            initialLoadPerfRef.current.normalize.meaningTreeMs = normalizeMs;
+            initialLoadPerfRef.current.rows.meaningTree = meaningArr.length;
+            initialLoadPerfRef.current.deferredTabs.meaning = {
+              normalizeMs,
+              readyMs: perfNow() - initialLoadPerfRef.current.startedAtMs,
+              rows: meaningArr.length,
+            };
+            publishInitialLoadPerfSnapshot(initialLoadPerfRef.current);
+          }
+        } else if (tabId === "situation") {
+          const situation = await loadSituationTree({
+            trace: (metric) => initialLoadPerfRef.current?.payloads.push(metric),
+          });
+          const situationNormalizeStartedAt = perfNow();
+          const situationArr = Array.isArray(situation) ? situation.map((t) => normalizeItem(t, "mindmap_core", idxMap)) : [];
+          normalizeMs = perfNow() - situationNormalizeStartedAt;
+          rowCount = situationArr.length;
+          setSituationList(situationArr);
+        } else if (tabId === "unclassified") {
+          const unclassified = await loadUnclassifiedTree({
+            trace: (metric) => initialLoadPerfRef.current?.payloads.push(metric),
+          });
+          const unclassifiedNormalizeStartedAt = perfNow();
+          const unclassifiedArr = Array.isArray(unclassified) ? unclassified.map((t) => normalizeItem(t, "mindmap_core", idxMap)) : [];
+          normalizeMs = perfNow() - unclassifiedNormalizeStartedAt;
+          rowCount = unclassifiedArr.length;
+          setUnclassifiedList(unclassifiedArr);
+        }
+
+        if (initialLoadPerfRef.current && tabId !== "meaning") {
+          initialLoadPerfRef.current.deferredTabs[tabId] = {
+            normalizeMs,
+            readyMs: perfNow() - initialLoadPerfRef.current.startedAtMs,
+            rows: rowCount,
+          };
+        }
+        setTabLoadState((prev) => ({ ...prev, [tabId]: "ready" }));
+      } catch (e) {
+        console.error("탭 데이터 로딩 실패", e);
+        setTabLoadState((prev) => ({ ...prev, [tabId]: "idle" }));
+      }
+    }
+
+    loadDeferredTab();
+  }, [activeTab, isInitializing, searchIndex, tabLoadState]);
+
+  useEffect(() => {
+    const listForTab = activeTab === "meaning"
+      ? meaningList
+      : activeTab === "situation"
+        ? situationList
+        : unclassifiedList;
+
+    if (focusedRootId || listForTab.length === 0) return;
+
+    const defaultRoot = listForTab[0].hierarchy?.root_id;
+    if (defaultRoot) {
+      setFocusedRootId(defaultRoot);
+      setExpandedIds(new Set([defaultRoot]));
+    }
+  }, [activeTab, focusedRootId, meaningList, situationList, unclassifiedList]);
 
   // ── 현재 축 데이터 ──────────────────────────────────────────────
   const activeList = useMemo(() => {
@@ -419,7 +571,12 @@ function App() {
   );
 
   const activeSurface = "mindmap_core";
-  const activeTree = useMemo(() => buildTreeFromList(filteredList, activeSurface, activeTab), [filteredList, activeSurface, activeTab]);
+  const activeTree = useMemo(() => {
+    if (viewMode !== "mindmap") return {};
+    return buildTreeFromList(filteredList, activeSurface, activeTab);
+  }, [viewMode, filteredList, activeSurface, activeTab]);
+  const isActiveTabLoading = tabLoadState[activeTab] === "loading";
+  const isActiveTabReady = tabLoadState[activeTab] === "ready";
 
   // ── 단어 선택 ───────────────────────────────────────────────────
   const handleSelectTerm = useCallback(async (term) => {
@@ -564,6 +721,11 @@ function App() {
     console.warn("[ReferenceJump] 점프 불가:", ref);
   }, [handleSearchSelect, resolveReferenceTarget, selectedTermDetail?.id]);
 
+  const isReferenceJumpAvailable = useCallback((ref) => {
+    const target = resolveReferenceTarget(ref);
+    return Boolean(target && target.id);
+  }, [resolveReferenceTarget]);
+
   const handleSubwordJump = useCallback((subword) => {
     if (!subword?.text) return;
     const target = searchIndexByWord.get(subword.text);
@@ -673,7 +835,7 @@ function App() {
                 style={{ "--tab-color": tab.color }}
               >
                 {tab.label}
-                {activeTab === tab.id && (
+                {activeTab === tab.id && isActiveTabReady && (
                   <span style={{ fontSize: 11, opacity: 0.7, marginLeft: 6 }}>
                     ({filteredList.length.toLocaleString()})
                   </span>
@@ -781,6 +943,7 @@ function App() {
       <div className="app-container">
         <SidebarTree
           treeData={activeTree}
+          isLoading={isActiveTabLoading}
           expandedIds={expandedIds}
           toggleExpand={(id) =>
             setExpandedIds((prev) => {
@@ -830,7 +993,12 @@ function App() {
               flex: selectedTermDetail ? `1 1 ${100 - detailWidth}%` : "1",
               overflow: "hidden",
             }}>
-              {viewMode === "mindmap" ? (
+              {isActiveTabLoading ? (
+                <div className="welcome-screen" style={{ minHeight: 240 }}>
+                  <Loader className="spinner" />
+                  <p>{currentTab?.label || "탭"} 데이터 준비 중…</p>
+                </div>
+              ) : viewMode === "mindmap" ? (
                 <MindmapCanvas
                   treeData={activeTree}
                   onSelectTerm={handleSelectTerm}
@@ -888,15 +1056,6 @@ function App() {
                 backgroundColor: "var(--bg-primary)", display: "flex", flexDirection: "column",
                 minWidth: 300,
               }}>
-                <div style={{
-                  padding: "10px 16px", borderBottom: "1px solid var(--border-color)",
-                  backgroundColor: "var(--bg-secondary)", display: "flex", alignItems: "center", gap: 8, justifyContent: "flex-end",
-                }}>
-                  <button onClick={() => setSelectedTermDetail(null)}
-                    style={{ padding: "6px 12px", backgroundColor: "var(--bg-secondary)", border: "1px solid var(--border-color)", color: "var(--text-secondary)", borderRadius: 6, cursor: "pointer", fontSize: 12 }}>
-                    <X size={14} style={{ display: "inline", verticalAlign: "middle" }} /> 닫기
-                  </button>
-                </div>
                 <div style={{ flex: 1, overflowY: "auto" }}>
                   {isLoadingChunk ? (
                     <div className="welcome-screen"><Loader className="spinner" /><p>로딩 중...</p></div>
@@ -911,9 +1070,11 @@ function App() {
                       onRelatedFormClick={handleReferenceJump}
                       onSubwordClick={handleSubwordJump}
                       isSearchWordAvailable={(word) => searchWordSet.has(word)}
+                      isReferenceJumpAvailable={isReferenceJumpAvailable}
                       resolveReferenceMeta={resolveReferenceMeta}
                       showEnglish={showEnglish}
                       translationLanguage={translationLanguage}
+                      onClose={() => setSelectedTermDetail(null)}
                     />
                   )}
                 </div>

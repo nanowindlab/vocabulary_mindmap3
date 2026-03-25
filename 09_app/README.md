@@ -18,6 +18,7 @@
   - `npm run package:live`
   - `npm run prepare:live`
   - `npm run verify:live`
+  - `npm run validate:source-alignment`
   - `npm run build`
 - `package:live`는 압축 payload와 `MANIFEST.json`까지 같이 갱신한다.
 - 현재 tree는 MM3 축 스위처 기준으로 분리된다.
@@ -49,3 +50,5 @@
 - 현재 1차 wiring은 `search + facet`까지만 연결했다.
 - tree는 1차로 `의미 범주 / 주제 및 상황 범주 / 미분류` 축 스위처에 맞춰 연결했다.
 - detail / expression payload의 full wiring은 후속 단계다.
+- `validate:source-alignment`는 runtime search/facets/trees가 canonical thin/facet source와 current truth 기준으로 aligned인지 검증한다.
+- current exact `APP_READY_SEARCH_INDEX` generator는 thin/facet source만으로 완전히 복구되지 않았다. runtime-only field provenance mapping이 별도 필요하다.

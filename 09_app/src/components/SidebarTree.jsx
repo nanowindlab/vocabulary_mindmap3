@@ -93,6 +93,7 @@ const SidebarItem = ({
 // ── 메인 사이드바 ──────────────────────────────────────────────
 export const SidebarTree = ({
   treeData = {},
+  isLoading = false,
   expandedIds,
   toggleExpand,
   onSelectTerm,
@@ -126,7 +127,11 @@ export const SidebarTree = ({
         계층 탐색
       </div>
       <div ref={scrollContainerRef} style={{ flex: 1, overflowY: "auto", padding: "10px 12px" }}>
-        {sceneNodes.length === 0 ? (
+        {isLoading ? (
+          <div style={{ color: "var(--text-secondary)", fontSize: 13, padding: "20px 8px" }}>
+            데이터 준비 중…
+          </div>
+        ) : sceneNodes.length === 0 ? (
           <div style={{ color: "var(--text-secondary)", fontSize: 13, padding: "20px 8px" }}>
             데이터 없음
           </div>

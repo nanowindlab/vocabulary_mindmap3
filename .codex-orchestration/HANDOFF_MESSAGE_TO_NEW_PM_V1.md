@@ -3,29 +3,31 @@
 아래를 새 스레드 첫 메시지로 사용:
 
 ```text
-새 PM로 이어받아줘.
+Take over as the next PM.
 
-우선 읽기:
-1. /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260324_MM3_155_NEW_THREAD_PM_HANDOFF_PACKET_V1.md
+Read first:
+1. /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260326_MM3_214_NEXT_PM_HANDOFF_PACKET_V1.md
 2. /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md
-3. /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/TASKLIST_V1.md
-4. /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260324_MM3_158_EXPRESSION_SCENARIO_WORKFLOW_ACCEPTANCE_V1.md
+3. /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/pm-operating-guide.md
+4. /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/TASKLIST_V1.md
+5. /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260326_MM3_213_CANONICAL_THIN_INDEX_GENERATOR_RECOVERY_NOTE_V1.md
 
-현재 active work:
-- MM3-159 Motion / Mindmap Human Re-check
+Current active work:
+- MM3-213 Canonical Thin-Index Generator Recovery / Documentation
 
-중요 규칙:
-- 한국어
-- 짧고 팩트 중심
-- 승인 불필요 단계는 계속 진행
-- launch readiness보다 완성도 개선 우선
-- raw feedback는 아래 audit를 기준으로 볼 것:
-  - /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260324_MM3_138_PILOT_FEEDBACK_COVERAGE_AUDIT_V1.md
+Current exit condition:
+- lock the field provenance gap for exact runtime search generator recovery and narrow the next recovery step to one concrete path
 
-보고 방식:
-- 링크만 던지지 말고 `요약 + verdict + next`를 항상 같이 말할 것
-- 상태는 tasklist/dashboard/handoff를 같은 턴에 같이 맞출 것
+Verified now:
+- MM3-210 is closed
+- runtime/source payload validation passes
+- thin/facet source artifacts are confirmed
+- exact runtime search generator remains only partially recoverable
+- build/test baseline remains green from the previous turn
 
-먼저 할 일:
-- MM3-158 결과 이후 남은 큰 holdout인 `motion / mindmap human re-check`부터 진행
+Important note:
+- raw/internal `미분류` == learner-facing `분류 밖 항목`
+
+First action:
+- review MM3-212 and MM3-213, then choose between field provenance mapping vs partial builder boundary freeze
 ```

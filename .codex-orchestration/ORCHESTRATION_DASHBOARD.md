@@ -3,7 +3,8 @@
 ## Current Status
 
 - Milestone: `M1 Runtime Wiring / Core Explorer`
-- Active Work: `MM3-096 Human Pilot Scheduling / Execution`
+- Active Work: `MM3-213 Canonical Thin-Index Generator Recovery / Documentation`
+- Latest Pilot Capture: `pilot_session_04 / 2026-03-26 01:28 KST / participant 사용자 / facilitator 사용자 / ad-hoc screenshot follow-up`
 - PM Owner: `Codex`
 - User Constraint: external references are read-only
 - Operating Mode: `Strict`
@@ -48,16 +49,67 @@
 - `MM3-161` example source/order clarification follow-up
 - `MM3-164` git / Vercel payload packaging
 - `MM3-155` new thread PM handoff packet / handoff message 정리
+- `MM3-165` refreshed runtime human pilot reopen note
+- `MM3-166` thin-index generator follow-up decision
+- `MM3-167` additional human test feedback coverage check
+- `MM3-167` literal feedback record sync
+- `MM3-174` residual feedback pipeline workflow plan
+- `MM3-172` W1 semantics baseline bundle + review checkpoint `R1`
+- `MM3-170` W2 translation audit + review checkpoint `R2`
+- `MM3-171` W2 performance audit + review checkpoint `R2`
+- `MM3-168` W3 detail surface contract + review fix
+- `MM3-169` W3 discoverability contract acceptance
+- `MM3-173` W4 guide planning / outline / readiness bundle
+- `MM3-173` W4 guide planning acceptance
+- `MM3-175`~`MM3-179` refreshed human pilot packet bundle
+- `MM3-180` refreshed human pilot bundle acceptance
+- `MM3-181` pilot execution environment spec
+- `MM3-182` pilot coordination message draft
+- `MM3-183` human pilot launch sheet
+- `MM3-184` Playwright pilot rehearsal support
+- `MM3-184` Playwright pilot rehearsal run `3 passed`
+- `MM3-185` detail / relation / expression feedback implementation
+- `MM3-096C` human pilot session slot `2026-03-25 14:00-14:20 KST` 고정
+- `MM3-096C` participant / facilitator를 `사용자 / 사용자`로 확정
+- `MM3-096D` second human pilot actual feedback capture 완료
+- `MM3-186` second human pilot raw feedback/screenshot preservation + normalized sync
+- `MM3-187` `MM3_138` 정확도 보정 + unified residual pipeline lock
+- `MM3-187D` W1 search Enter / relation clarity regression fix + targeted Playwright `3 passed`
+- `MM3-187E` expression translation runtime projection repair + targeted Playwright `4 passed`
+- `MM3-187F1` relation tab `원어 정보` 제거
+- `MM3-187F2` tab naming `의미 관계` / `활용 표현` 적용
+- `MM3-191` expression repeated meta cleanup + examples helper density / ordering guard + targeted Playwright `5 passed`, pilot rehearsal `2 passed`
+- `MM3-192` second pilot feedback full coverage re-audit + direct residual fixes + targeted Playwright `8 passed`, pilot rehearsal `3 passed`
+- `MM3-193` W3 examples / taxonomy policy bundle lock
+- `MM3-194` raw `미분류` / learner-facing `분류 밖 항목` term mapping 확인 + example-source builder 부재 확인
+- `MM3-195` MM3-side example chunk builder 구현 + package/prepare/verify chain 연동 + UI term consistency guard
+- `MM3-196` second human pilot feedback pipeline closeout `ACCEPT`
+- `MM3-197` screenshot-inclusive actual in-app guide 작성
+- `MM3-198` feedback full-apply recheck `PARTIAL_ACCEPT`
+- `MM3-199` selection redraw split + dense category expansion cap + tree build redundant normalize 제거 + actual search index raw init keep + opt-in initial-load instrumentation + meaning tree deferred initial load + perf snapshot probe + `npm run build` + full suite `37 passed`
+- `MM3-201` post-closeout additional feedback capture + coverage/task mapping
+- `MM3-202` post-closeout detail / examples / relation / expression follow-up implementation + full suite `37 passed`
+- `MM3-205` unclassified surface product / IA decision note
+- `MM3-206` mindmap fixed Band legend removal review
+- `MM3-207` screenshot feedback capture + archive sync
+- `MM3-208` relation tab renderer parity / grouped related-form follow-up
+- `MM3-209` example source right-edge alignment follow-up
+- `MM3-171B` render-side performance optimization closeout decision
+- `MM3-210` detail sense / example / relation follow-up implementation + full suite `39 passed`
+- `MM3-212` payload validation and count reconciliation script + validation pass
+- `MM3-213` canonical thin-index generator recovery boundary note
 
 ## In Progress
 
-- `MM3-096A`: refreshed runtime 기준으로 pilot scheduling / execution 재오픈
-- `MM3-096B`: participant / facilitator / path를 다시 확정
+- `MM3-213`: canonical thin-index generator recovery / documentation
 
 ## Current Runtime Baseline
 
 - canonical count: `53,480`
 - runtime payload format: `JSON`
+- deploy payload source: `runtime_payloads/*.json.gz`
+- build chain: `prepare:live -> verify:live -> build`
+- current live example chunk payload: `APP_READY_CHUNK_EXAMPLES_*` `107 files`
 - active live payloads:
   - `APP_READY_SEARCH_INDEX.json`
   - `APP_READY_FACETS.json`
@@ -68,18 +120,27 @@
 
 ## Pending
 
-- 없음
+- `MM3-168`~`MM3-173`: additional human feedback residual follow-up queue recorded
+- queue order: `W1 MM3-172 -> W2 MM3-170/MM3-171 -> W3 MM3-168/MM3-169 -> W4 MM3-173`
+- current pipeline state: `W1 done`, `W2 done`, `W3 done`, `W4 done`
 
 ## Risks
 
 - `R1`: human pilot를 다시 열면 새 feedback wave가 다시 열릴 수 있다.
-- `R2`: `runtime_payloads/*.json.gz`는 배포 가능하지만 장기적으로는 canonical generator 복구가 더 바람직하다.
+- `R2`: `runtime_payloads/*.json.gz` 경로는 현재 배포 기준으로 충분하지만, canonical generator 미복구 상태는 재현성 technical debt로 남아 있다.
 - `R3`: pilot scheduling은 코드보다 사람 일정/운영 정렬 이슈에 더 크게 좌우된다.
+- `R5`: `분류 밖 항목` fallback surface 자체를 유지할지 별도 독립 콘텐츠로 재편할지는 아직 taxonomy/product decision으로 남아 있다.
+- `R7`: `분류 밖 항목`은 새 bucket이 아니라 raw/internal `미분류` bucket의 learner-facing display name이다.
+- `R8`: screenshot-inclusive guide를 쓰는 동안 stale capture가 다시 생기지 않도록 current stable surface만 써야 한다.
+- `R9`: current direct learner-facing feedback follow-up는 구현됐지만 user validation은 아직 남아 있다.
+- `R10`: `MM3-171B`는 closeout했고, deeper performance follow-up은 새 reopen 근거가 생길 때만 다시 연다.
+- `R11`: 일부 related form은 여전히 `unresolved_no_target_code` 상태다. 현재 UI는 broken jump를 막지만, actual target repair는 별도 data-side scope가 필요하다.
+- `R12`: exact runtime search generator는 thin/facet source만으로는 아직 복구되지 않았다. field provenance mapping이 남아 있다.
 
 ## Canonical Pointers
 
 - Tasklist: `08_planning/TASKLIST_V1.md`
-- PM operating model: `.codex-orchestration/PM_OPERATING_MODEL_V1.md`
+- PM operating guide: `pm-operating-guide.md`
 - Document policy: `08_planning/DOCUMENT_SYSTEM_POLICY_V1.md`
 - Working hub: `.codex-orchestration/WORK_ORCHESTRATION_HUB_V1.md`
 - PM review queue: `.codex-orchestration/PM_REVIEW_QUEUE_V1.md`
@@ -102,6 +163,27 @@
 - Latest pilot acceptance: `08_planning/reports/20260324_MM3_090_PILOT_READINESS_ACCEPTANCE_V1.md`
 - Latest pilot protocol: `08_planning/reports/20260324_MM3_092_PILOT_FEEDBACK_INTAKE_PROTOCOL_V1.md`
 - Latest human-pilot readiness: `08_planning/reports/20260324_MM3_095_INTERNAL_HUMAN_PILOT_EXECUTION_READINESS_V1.md`
+- Refreshed pilot checklist: `08_planning/reports/20260325_MM3_175_REFRESHED_INTERNAL_PILOT_CHECKLIST_V1.md`
+- Refreshed pilot session packet: `08_planning/reports/20260325_MM3_176_REFRESHED_INTERNAL_HUMAN_PILOT_SESSION_PACKET_V1.md`
+- Refreshed pilot intake protocol: `08_planning/reports/20260325_MM3_177_REFRESHED_PILOT_FEEDBACK_INTAKE_PROTOCOL_V1.md`
+- Refreshed pilot execution handoff: `08_planning/reports/20260325_MM3_178_REFRESHED_HUMAN_PILOT_EXECUTION_HANDOFF_V1.md`
+- Refreshed pilot readiness: `08_planning/reports/20260325_MM3_179_REFRESHED_HUMAN_PILOT_EXECUTION_READINESS_V1.md`
+- Refreshed pilot bundle acceptance: `08_planning/reports/20260325_MM3_180_REFRESHED_HUMAN_PILOT_BUNDLE_ACCEPTANCE_V1.md`
+- Pilot execution environment spec: `08_planning/reports/20260325_MM3_181_PILOT_EXECUTION_ENVIRONMENT_SPEC_V1.md`
+- Pilot coordination message draft: `08_planning/reports/20260325_MM3_182_PILOT_COORDINATION_MESSAGE_V1.md`
+- Human pilot launch sheet: `08_planning/reports/20260325_MM3_183_HUMAN_PILOT_LAUNCH_SHEET_V1.md`
+- Playwright pilot rehearsal support: `08_planning/reports/20260325_MM3_184_PLAYWRIGHT_PILOT_REHEARSAL_SUPPORT_V1.md`
+- Detail/relation/expression feedback implementation: `08_planning/reports/20260325_MM3_185_DETAIL_RELATION_EXPRESSION_FEEDBACK_IMPLEMENTATION_V1.md`
+- Second human pilot feedback sync: `08_planning/reports/20260325_MM3_186_SECOND_HUMAN_PILOT_FEEDBACK_SYNC_V1.md`
+- Second human pilot unified pipeline: `08_planning/reports/20260325_MM3_187_SECOND_HUMAN_PILOT_UNIFIED_PIPELINE_V1.md`
+- Feedback full coverage re-audit: `08_planning/reports/20260325_MM3_192_SECOND_PILOT_FEEDBACK_FULL_COVERAGE_REAUDIT_V1.md`
+- W3 examples/taxonomy policy bundle: `08_planning/reports/20260325_MM3_193_W3_EXAMPLES_TAXONOMY_POLICY_BUNDLE_V1.md`
+- MM3-187H terminology/builder clarification: `08_planning/reports/20260325_MM3_194_EXAMPLE_SOURCE_FEASIBILITY_AND_UNCLASSIFIED_TERM_CLARIFICATION_V1.md`
+- MM3-187H implementation closeout: `08_planning/reports/20260325_MM3_195_UI_TERM_CONSISTENCY_AND_EXAMPLE_CHUNK_BUILDER_IMPLEMENTATION_V1.md`
+- MM3-187 closeout: `08_planning/reports/20260325_MM3_196_SECOND_HUMAN_PILOT_FEEDBACK_PIPELINE_CLOSEOUT_V1.md`
+- Actual in-app guide: `08_planning/reports/20260325_MM3_197_ACTUAL_IN_APP_GUIDE_V1.md`
+- Feedback full-apply recheck: `08_planning/reports/20260325_MM3_198_FEEDBACK_FULL_APPLY_RECHECK_V1.md`
+- Render-side performance quick win: `08_planning/reports/20260325_MM3_199_RENDER_SIDE_PERFORMANCE_QUICKWIN_V1.md`
 - Latest deep-scenario plan: `08_planning/reports/20260324_MM3_154_NONE_UNCLASSIFIED_DEEP_SCENARIO_PLAN_V1.md`
 - Latest minimal-ui acceptance: `08_planning/reports/20260324_MM3_156_NONE_UNCLASSIFIED_MINIMAL_UI_MAPPING_ACCEPTANCE_V1.md`
 - Latest expression-scenario plan: `08_planning/reports/20260324_MM3_157_EXPRESSION_SCENARIO_FOLLOWUP_PLAN_V1.md`
@@ -112,7 +194,32 @@
 - Latest translation runtime repair: `08_planning/reports/20260324_MM3_160_TRANSLATION_RUNTIME_PAYLOAD_REPAIR_V1.md`
 - Latest example clarification follow-up: `08_planning/reports/20260324_MM3_161_EXAMPLE_SOURCE_ORDER_CLARIFICATION_FOLLOWUP_V1.md`
 - Latest deploy packaging note: `08_planning/reports/20260324_MM3_164_GIT_VERCEL_PAYLOAD_PACKAGING_V1.md`
-- Latest handoff packet: `08_planning/reports/20260324_MM3_155_NEW_THREAD_PM_HANDOFF_PACKET_V1.md`
+- Latest pilot reopen note: `08_planning/reports/20260324_MM3_165_REFRESHED_RUNTIME_HUMAN_PILOT_REOPEN_NOTE_V1.md`
+- Latest generator follow-up decision: `08_planning/reports/20260324_MM3_166_THIN_INDEX_GENERATOR_FOLLOWUP_DECISION_V1.md`
+- Latest additional feedback coverage check: `08_planning/reports/20260324_MM3_167_ADDITIONAL_HUMAN_TEST_FEEDBACK_COVERAGE_CHECK_V1.md`
+- Latest post-closeout additional feedback coverage check: `08_planning/reports/20260326_MM3_201_POST_CLOSEOUT_FEEDBACK_COVERAGE_CHECK_V1.md`
+- Latest post-closeout implementation packet: `08_planning/reports/20260326_MM3_202_POST_CLOSEOUT_DETAIL_SURFACE_FOLLOWUP_IMPLEMENTATION_V1.md`
+- Latest unclassified decision note: `08_planning/reports/20260326_MM3_205_UNCLASSIFIED_SURFACE_PRODUCT_IA_DECISION_NOTE_V1.md`
+- Latest legend review note: `08_planning/reports/20260326_MM3_206_MINDMAP_BAND_LEGEND_VALUE_REVIEW_NOTE_V1.md`
+- Latest screenshot feedback follow-up packet: `08_planning/reports/20260326_MM3_207_SCREENSHOT_FEEDBACK_RELATION_EXAMPLE_FOLLOWUP_V1.md`
+- Latest residual pipeline plan: `08_planning/reports/20260324_MM3_174_RESIDUAL_FEEDBACK_PIPELINE_PLAN_V1.md`
+- Latest W1 semantics baseline plan: `08_planning/reports/20260324_MM3_172_TOPIC_SITUATION_UNCLASSIFIED_TREE_SEMANTICS_FOLLOWUP_PLAN_V1.md`
+- Latest W1 evidence note: `08_planning/reports/20260324_MM3_172_TOPIC_SITUATION_UNCLASSIFIED_TREE_SEMANTICS_EVIDENCE_NOTE_V1.md`
+- Latest W1 terminology baseline draft: `08_planning/reports/20260324_MM3_172_TOPIC_SITUATION_UNCLASSIFIED_TERMINOLOGY_BASELINE_DRAFT_V1.md`
+- Latest W2 translation audit note: `08_planning/reports/20260325_MM3_170_TRANSLATION_SURFACE_COMPLETENESS_REAUDIT_NOTE_V1.md`
+- Latest W2 performance audit note: `08_planning/reports/20260325_MM3_171_RUNTIME_PERFORMANCE_PAYLOAD_SPLIT_AUDIT_NOTE_V1.md`
+- Latest W3 detail surface plan: `08_planning/reports/20260325_MM3_168_DETAIL_HEADER_CLOSE_COPY_DENSITY_PLAN_V1.md`
+- Latest W3 detail surface contract: `08_planning/reports/20260325_MM3_168_DETAIL_HEADER_CLOSE_COPY_DENSITY_CONTRACT_V1.md`
+- Latest W3 discoverability plan: `08_planning/reports/20260325_MM3_169_RELATION_EXPRESSION_DISCOVERABILITY_PLAN_V1.md`
+- Latest W3 discoverability contract: `08_planning/reports/20260325_MM3_169_RELATION_EXPRESSION_DISCOVERABILITY_CONTRACT_V1.md`
+- Latest W3 discoverability acceptance: `08_planning/reports/20260325_MM3_169_RELATION_EXPRESSION_DISCOVERABILITY_ACCEPTANCE_V1.md`
+- Latest W4 guide planning note: `08_planning/reports/20260325_MM3_173_IN_APP_GUIDE_PLANNING_NOTE_V1.md`
+- Latest W4 guide outline draft: `08_planning/reports/20260325_MM3_173_IN_APP_GUIDE_OUTLINE_DRAFT_V1.md`
+- Latest W4 screenshot readiness check: `08_planning/reports/20260325_MM3_173_SCREENSHOT_CAPTURE_READINESS_CHECK_V1.md`
+- Latest W4 guide planning acceptance: `08_planning/reports/20260325_MM3_173_IN_APP_GUIDE_PLANNING_ACCEPTANCE_V1.md`
+- Latest follow-up packet: `08_planning/reports/20260326_MM3_210_DETAIL_SENSE_EXAMPLE_RELATION_FOLLOWUP_IMPLEMENTATION_V1.md`
+- Latest handoff packet: `08_planning/reports/20260326_MM3_214_NEXT_PM_HANDOFF_PACKET_V1.md`
+- Latest pilot note: `08_planning/pilot_feedback/20260326_pilot_session_04.md`
 - Data architecture: `08_planning/DATA_ARCHITECTURE_V1.md`
 - Scenario spec: `08_planning/PRODUCT_SCENARIO_SPEC_V1.md`
 - Decision log: `08_planning/PROJECT_DECISION_LOG_V1.md`

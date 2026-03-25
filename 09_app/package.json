@@ -4,9 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "build:examples": "node scripts/build-example-chunks.mjs",
+    "capture:guide": "playwright test tests/residual.spec.js tests/pilot-rehearsal.spec.js -g \"filter persistence across list and mindmap view|search helper explains ordering and basic-item label|built example chunks surface topik examples before dictionary examples|expression cards follow selected translation language when available|unclassified helper splits grammatical items from uncategorized vocabulary|pilot rehearsal path: 요리하다 translation selector and examples|pilot rehearsal path: 보다 and 버리다 semantics surfaces\" --workers=1",
     "package:live": "node scripts/package-live-payloads.mjs",
     "prepare:live": "node scripts/prepare-live-payloads.mjs",
     "verify:live": "node scripts/verify-runtime-payloads.mjs",
+    "validate:source-alignment": "node scripts/validate-runtime-source-alignment.mjs",
     "dev": "vite",
     "prebuild": "npm run prepare:live && npm run verify:live",
     "build": "vite build",
