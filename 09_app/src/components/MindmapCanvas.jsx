@@ -18,6 +18,16 @@ const BAND_COLORS = {
   null: "#6e7681",
 };
 
+const BAND_LABELS = {
+  1: "최상위 필수",
+  2: "핵심 중요",
+  3: "일반 활용",
+  4: "보조 표현",
+  5: "심화 어휘",
+};
+
+const MAX_VISIBLE_TERMS_PER_CATEGORY = 240;
+
 // Band/Level 방어 함수 (V3 명세 기준)
 const safeBand = (stats) => {
   if (!stats) return null;
@@ -42,8 +52,54 @@ const nodeColor = (type, selected) => {
   return TERM_COLOR;
 };
 
+const isNodeSelected = (node, selectedTermId) =>
+  !!selectedTermId && (node.id === selectedTermId || node.data?.id === selectedTermId);
+
+function applySelectionStyles(nodeSel, selectedTermId) {
+  if (!nodeSel) return;
+
+  nodeSel.each(function updateNode(node) {
+    const group = d3.select(this);
+    const selected = isNodeSelected(node, selectedTermId);
+    const baseRadius = nodeRadius(node.type);
+
+    group.select("circle.node-fill")
+      .attr("r", selected ? baseRadius + 4 : baseRadius)
+      .attr("fill", () => {
+        if (selected) return "rgba(247,129,102,0.55)";
+        if (node.type === "root") return "rgba(88,166,255,0.15)";
+        if (node.type === "scene") return "rgba(63,185,80,0.12)";
+        if (node.type === "category") return "rgba(188,140,255,0.10)";
+
+        const band = safeBand(node.data?.stats);
+        const bc = BAND_COLORS[band] || BAND_COLORS[null];
+        return bc + "22";
+      })
+      .attr("stroke", selected ? SELECTED_COLOR : nodeColor(node.type, false))
+      .attr("stroke-width", selected ? 3.5 : 1.5);
+
+    group.select("circle.selection-ring")
+      .attr("r", baseRadius + 11)
+      .attr("opacity", selected && node.type === "term" ? 0.9 : 0);
+
+    group.select("circle.band-ring")
+      .attr("opacity", selected ? 0 : 0.7);
+
+    group.select("text.node-label")
+      .attr("dy", node.type === "term" ? (selected ? baseRadius + 17 : baseRadius + 13) : baseRadius + 14)
+      .attr("font-size", () => {
+        if (selected) return 13;
+        if (node.type === "root") return 13;
+        if (node.type === "scene") return 12;
+        return 11;
+      })
+      .attr("font-weight", selected ? 700 : (node.type === "term" ? 400 : 700))
+      .attr("fill", selected ? SELECTED_COLOR : nodeColor(node.type, false));
+  });
+}
+
 // ── 트리 → D3 노드/링크 변환 ───────────────────────────────────
-function flattenTree(treeData, focusedRootId, expandedCategoryId) {
+function flattenTree(treeData, focusedRootId, expandedCategoryId, selectedTermId = null) {
   const nodes = [];
   const links = [];
 
@@ -67,7 +123,30 @@ function flattenTree(treeData, focusedRootId, expandedCategoryId) {
 
         // 배타적 단계별 렌더링: expandedCategoryId와 일치하는 중분류만 단어 노출
         if (cat.id === expandedCategoryId) {
-          const terms = Object.values(cat.children || {}); // 제한 없음
+          const termValues = Object.values(cat.children || {});
+          const orderedTerms = termValues
+            .slice()
+            .sort((a, b) => {
+              const aBand = safeBand(a.data?.stats);
+              const bBand = safeBand(b.data?.stats);
+              if ((aBand ?? 99) !== (bBand ?? 99)) return (aBand ?? 99) - (bBand ?? 99);
+
+              const aRank = a.data?.stats?.rank ?? Number.POSITIVE_INFINITY;
+              const bRank = b.data?.stats?.rank ?? Number.POSITIVE_INFINITY;
+              if (aRank !== bRank) return aRank - bRank;
+
+              return (a.label || "").localeCompare(b.label || "", "ko");
+            });
+          let terms = orderedTerms.slice(0, MAX_VISIBLE_TERMS_PER_CATEGORY);
+          if (selectedTermId) {
+            const alreadyIncluded = terms.some((term) => term.id === selectedTermId || term.data?.id === selectedTermId);
+            if (!alreadyIncluded) {
+              const selectedTerm = orderedTerms.find((term) => term.id === selectedTermId || term.data?.id === selectedTermId);
+              if (selectedTerm) {
+                terms = [...terms.slice(0, Math.max(MAX_VISIBLE_TERMS_PER_CATEGORY - 1, 0)), selectedTerm];
+              }
+            }
+          }
           terms.forEach((term) => {
             nodes.push({
               id: term.id,
@@ -97,6 +176,8 @@ export const MindmapCanvas = ({
   const simulationRef = useRef(null);
   const zoomGroupRef = useRef(null);
   const zoomBehaviorRef = useRef(null);
+  const nodeSelRef = useRef(null);
+  const selectedTermIdRef = useRef(selectedTermId);
   const [tooltip, setTooltip] = useState(null);
 
   // 현재 확장된(클릭된) 카테고리
@@ -114,7 +195,7 @@ export const MindmapCanvas = ({
     const svgEl = svgRef.current;
     if (!svgEl) return;
 
-    const { nodes: rawNodes, links: rawLinks } = flattenTree(treeData, focusedRootId, expandedCategoryId);
+    const { nodes: rawNodes, links: rawLinks } = flattenTree(treeData, focusedRootId, expandedCategoryId, selectedTermIdRef.current);
     if (rawNodes.length === 0) return;
 
     const width = svgEl.clientWidth || 900;
@@ -256,15 +337,17 @@ export const MindmapCanvas = ({
             n.fx = null; n.fy = null;
           })
       );
+    nodeSelRef.current = nodeSel;
 
     nodeSel.append("circle")
+      .attr("class", "node-fill")
       .attr("r", (n) => {
-        const isSelected = selectedTermId && (n.id === selectedTermId || n.data?.id === selectedTermId);
+        const isSelected = isNodeSelected(n, selectedTermIdRef.current);
         // 선택된 term은 반경을 키워 한눈에 띄게
         return isSelected ? nodeRadius(n.type) + 4 : nodeRadius(n.type);
       })
       .attr("fill", (n) => {
-        const isSelected = selectedTermId && (n.id === selectedTermId || n.data?.id === selectedTermId);
+        const isSelected = isNodeSelected(n, selectedTermIdRef.current);
         if (isSelected) return "rgba(247,129,102,0.55)";
         if (n.type === "root") return "rgba(88,166,255,0.15)";
         if (n.type === "scene") return "rgba(63,185,80,0.12)";
@@ -275,66 +358,63 @@ export const MindmapCanvas = ({
         return bc + "22";
       })
       .attr("stroke", (n) => {
-        const isSelected = selectedTermId && (n.id === selectedTermId || n.data?.id === selectedTermId);
+        const isSelected = isNodeSelected(n, selectedTermIdRef.current);
         if (isSelected) return SELECTED_COLOR;
         return nodeColor(n.type, false);
       })
       .attr("stroke-width", (n) => {
-        const isSelected = selectedTermId && (n.id === selectedTermId || n.data?.id === selectedTermId);
+        const isSelected = isNodeSelected(n, selectedTermIdRef.current);
         return isSelected ? 3.5 : 1.5;
       });
 
-    // ── 선택 노드 외곽 Glow Ring (선택된 term에만 추가) ──────────────
-    nodeSel.filter((n) => {
-      const isSelected = selectedTermId && (n.id === selectedTermId || n.data?.id === selectedTermId);
-      return isSelected && n.type === "term";
-    })
+    // ── 선택 노드 외곽 Glow Ring (term 노드에 항상 두고 opacity만 조정) ──────────────
+    nodeSel.filter((n) => n.type === "term")
       .append("circle")
+      .attr("class", "selection-ring")
       .attr("r", (n) => nodeRadius(n.type) + 11)
       .attr("fill", "none")
       .attr("stroke", SELECTED_COLOR)
       .attr("stroke-width", 2)
       .attr("stroke-dasharray", "5 3")
-      .attr("opacity", 0.9);
+      .attr("opacity", (n) => isNodeSelected(n, selectedTermIdRef.current) ? 0.9 : 0);
 
     // ── Band 링 (비선택 term에만 표시, 선택 glow와 겹치지 않게) ──────
-    nodeSel.filter((n) => {
-      const isSelected = selectedTermId && (n.id === selectedTermId || n.data?.id === selectedTermId);
-      return !isSelected && n.type === "term" && safeBand(n.data?.stats) !== null;
-    })
+    nodeSel.filter((n) => n.type === "term" && safeBand(n.data?.stats) !== null)
       .append("circle")
+      .attr("class", "band-ring")
       .attr("r", (n) => nodeRadius(n.type) + 3)
       .attr("fill", "none")
       .attr("stroke", (n) => BAND_COLORS[safeBand(n.data?.stats)])
       .attr("stroke-width", 2)
       .attr("stroke-dasharray", "3 2")
-      .attr("opacity", 0.7);
+      .attr("opacity", (n) => isNodeSelected(n, selectedTermIdRef.current) ? 0 : 0.7);
 
     nodeSel.append("text")
+      .attr("class", "node-label")
       .text((n) => {
         if (n.type === "term") return n.label;
         return n.label.replace(/^\d+\.\s*/, "");
       })
       .attr("text-anchor", "middle")
       .attr("dy", (n) => {
-        const isSelected = selectedTermId && (n.id === selectedTermId || n.data?.id === selectedTermId);
+        const isSelected = isNodeSelected(n, selectedTermIdRef.current);
         // 선택된 노드는 반경이 커졌으므로 텍스트 dy도 조정
         const r = isSelected ? nodeRadius(n.type) + 4 : nodeRadius(n.type);
         return n.type === "term" ? r + 13 : r + 14;
       })
       .attr("font-size", (n) => {
-        const isSelected = selectedTermId && (n.id === selectedTermId || n.data?.id === selectedTermId);
+        const isSelected = isNodeSelected(n, selectedTermIdRef.current);
         if (isSelected) return 13; // 선택 시 폰트 확대
         if (n.type === "root") return 13;
         if (n.type === "scene") return 12;
         return 11;
       })
       .attr("font-weight", (n) => {
-        const isSelected = selectedTermId && (n.id === selectedTermId || n.data?.id === selectedTermId);
+        const isSelected = isNodeSelected(n, selectedTermIdRef.current);
         return isSelected ? 700 : (n.type === "term" ? 400 : 700);
       })
       .attr("fill", (n) => {
-        const isSelected = selectedTermId && (n.id === selectedTermId || n.data?.id === selectedTermId);
+        const isSelected = isNodeSelected(n, selectedTermIdRef.current);
         return isSelected ? SELECTED_COLOR : nodeColor(n.type, false);
       })
       .attr("pointer-events", "none");
@@ -376,12 +456,22 @@ export const MindmapCanvas = ({
         }
       }
     });
-  }, [treeData, focusedRootId, expandedCategoryId, selectedTermId, onSelectTerm]);
+
+    applySelectionStyles(nodeSel, selectedTermIdRef.current);
+  }, [treeData, focusedRootId, expandedCategoryId, onSelectTerm]);
 
   useEffect(() => {
     draw();
-    return () => simulationRef.current?.stop();
+    return () => {
+      simulationRef.current?.stop();
+      nodeSelRef.current = null;
+    };
   }, [draw]);
+
+  useEffect(() => {
+    selectedTermIdRef.current = selectedTermId;
+    applySelectionStyles(nodeSelRef.current, selectedTermId);
+  }, [selectedTermId]);
 
   // ── 외부 selectedTermId 변화 감지 (사이드바 → 마인드맵 동기화) ──────
   // 무한 루프 방지: 내부 클릭 여부를 ref로 추적
@@ -412,6 +502,13 @@ export const MindmapCanvas = ({
     // 필요하면 카테고리 자동 확장 (draw 재실행 → 단어 노드 생성)
     if (expandedCategoryId !== foundCatId) {
       setExpandedCategoryId(foundCatId);
+    } else {
+      const hasVisibleSelectedNode = nodeSelRef.current?.data()?.some(
+        (node) => node.id === selectedTermId || node.data?.id === selectedTermId,
+      );
+      if (!hasVisibleSelectedNode) {
+        draw();
+      }
     }
 
     // draw 완료 + 시뮬레이션 안정화 후 줌 (1.0s 대기)
@@ -449,34 +546,15 @@ export const MindmapCanvas = ({
         </button>
       </div>
 
-      <div style={{ position: "absolute", bottom: 12, left: 12, zIndex: 10, background: "rgba(13,17,23,0.85)", border: "1px solid var(--border-color)", borderRadius: 10, padding: "10px 14px", display: "flex", flexDirection: "column", gap: 5 }}>
-        <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4, fontWeight: 600 }}>Band 범위</div>
-        {[
-          { band: 1, label: "최상위 필수" },
-          { band: 2, label: "핵심 중요" },
-          { band: 3, label: "일반 활용" },
-          { band: 4, label: "보조 표현" },
-          { band: 5, label: "심화 어휘" },
-          { band: null, label: "미산출" },
-        ].map(({ band, label }) => (
-          <div key={band} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <div style={{ width: 10, height: 10, borderRadius: "50%", background: BAND_COLORS[band], border: "1px solid rgba(255,255,255,0.2)" }} />
-            <span style={{ fontSize: 11, color: "var(--text-secondary)" }}>
-              {band !== null ? `Band ${band}` : "—"} {label}
-            </span>
-          </div>
-        ))}
-      </div>
-
       {tooltip && (
         <div style={{ position: "fixed", left: tooltip.x + 12, top: tooltip.y - 10, background: "rgba(13,17,23,0.95)", border: "1px solid var(--border-color)", borderRadius: 10, padding: "12px 16px", zIndex: 200, maxWidth: 280, boxShadow: "0 8px 24px rgba(0,0,0,0.5)", pointerEvents: "none" }}>
           <div style={{ fontWeight: 700, fontSize: 16, color: "var(--text-primary)", marginBottom: 4 }}>{tooltip.word}</div>
           <div style={{ fontSize: 13, color: "var(--text-secondary)", marginBottom: 8, lineHeight: 1.5 }}>{tooltip.def || "—"}</div>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             {tooltip.band !== null ? (
-              <span style={{ padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 600, background: BAND_COLORS[tooltip.band] + "33", color: BAND_COLORS[tooltip.band], border: `1px solid ${BAND_COLORS[tooltip.band]}66` }}>Band {tooltip.band}</span>
+              <span style={{ padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 600, background: BAND_COLORS[tooltip.band] + "33", color: BAND_COLORS[tooltip.band], border: `1px solid ${BAND_COLORS[tooltip.band]}66` }}>{BAND_LABELS[tooltip.band] || `Band ${tooltip.band}`}</span>
             ) : (
-              <span style={{ padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 600, background: "rgba(110,118,129,0.15)", color: "#6e7681", border: "1px solid rgba(110,118,129,0.3)" }}>Band 미산출</span>
+              <span style={{ padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 600, background: "rgba(110,118,129,0.15)", color: "#6e7681", border: "1px solid rgba(110,118,129,0.3)" }}>TOPIK band 없음</span>
             )}
           </div>
         </div>

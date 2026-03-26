@@ -2,11 +2,11 @@
 
 ## Current Revision
 
-- `R1`
+- `R2`
 
 ## Last Updated
 
-- `2026-03-26 07:54 KST`
+- `2026-03-26 09:24 KST`
 
 ## Last Updated By
 
@@ -65,6 +65,40 @@
   - original-language / romanization provenance
   - English-first translation projection rule
 
+## Runtime Search Field Provenance Map
+
+| Runtime field | Current provenance status | Source / script evidence | Exact recovery status |
+|---|---|---|---|
+| `id` | known | `kcenter_thin_index.json.gz` `entry.id` | recoverable |
+| `word` | known | `kcenter_thin_index.json.gz` `entry.word` | recoverable |
+| `pos` / `pos_list` | known | `kcenter_thin_index.json.gz` `entry.pos`; runtime flattens first value into `pos` | recoverable |
+| `word_grade` | known | `kcenter_thin_index.json.gz` `entry.word_grade` | recoverable |
+| `categories` | known | `kcenter_thin_index.json.gz` `entry.categories` | recoverable |
+| `sense_count` | known | `kcenter_thin_index.json.gz` `sense_count` | recoverable |
+| `has_subwords` | known | `kcenter_thin_index.json.gz` `has_subwords` | recoverable |
+| `has_related_forms` | known | `kcenter_thin_index.json.gz` `has_related_forms` | recoverable |
+| `representative_sense_id` | known | `kcenter_thin_index.json.gz` `representative_sense.id` | recoverable |
+| `def_ko` | known | `kcenter_thin_index.json.gz` `representative_sense.definition` | recoverable |
+| `translation_summary` | partial | thin index provides a partial translation summary; [repair_runtime_translation_payloads.py](/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/vocab_dictionary/scripts/repair_runtime_translation_payloads.py) rewrites runtime translation fields from `kcenter_translations.json.gz` | partial |
+| `def_en` | known via sidecar repair | [repair_runtime_translation_payloads.py](/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/vocab_dictionary/scripts/repair_runtime_translation_payloads.py) derives English definition from source translations | recoverable with sidecar |
+| `stats` | partial | TOPIK stats come from `entry_topik_stats.json.gz`; current runtime keeps only the matched subset and no explicit confidence field | partial |
+| `original_language_type` | not mapped in current local recovery path | present in `kcenter_base` entry `original_language.type`, but no project-local runtime builder currently maps it into search index | missing mapping |
+| `roman` | not mapped in current local recovery path | present in richer source/detail surfaces, but no project-local runtime builder currently maps it into search index | missing mapping |
+| `hierarchy` | not mapped in current local recovery path | runtime has normalized MM3 hierarchy, but current local note has no project-local generator path from thin index/base to the exact runtime hierarchy object | missing mapping |
+| `surface` / `routing` | not mapped in current local recovery path | runtime constants are visible, but the project-local search generator that stamps them is not recovered | missing mapping |
+| `chunk_id` | known | [package-live-payloads.mjs](/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/09_app/scripts/package-live-payloads.mjs) assigns chunk ids from detail-map chunking | recoverable |
+| `related_vocab` | not mapped in current local recovery path | runtime search rows already carry it, but current local generator path is not recovered; example chunk packaging can preserve it in chunk examples only | missing mapping |
+| `refs.cross_links` | not mapped in current local recovery path | runtime search rows already carry it, but current local generator path is not recovered | missing mapping |
+| `is_center_profile` | not mapped in current local recovery path | runtime value exists, but provenance is not yet documented in the local rebuild path | missing mapping |
+
+## Additional Deploy Truth
+
+- deploy parity for example chunks is now fixed.
+- current production restore path prepares both:
+  - `APP_READY_CHUNK_RICH_*`
+  - `APP_READY_CHUNK_EXAMPLES_*`
+- this closes the local vs Vercel example mismatch, but it does not change the generator provenance gap above.
+
 ## What Can Be Done Without Approval
 
 - recovery boundary documentation
@@ -80,9 +114,17 @@
 ## PM Verdict
 
 - `PARTIAL_RECOVERY_PATH_CONFIRMED`
+- `FIELD_PROVENANCE_MAP_ADDED`
 
 ## Next Step
 
-- next implementation step은 `runtime search index field provenance mapping`이다.
+- next implementation step은 `missing mapping fields` 중 하나를 concrete recovery target으로 고르는 것이다.
+- recommended first target:
+  - `original_language_type`
+  - because source field is visible in `kcenter_base` and does not require policy change
 - 그 전까지는 current deploy/runtime truth를 계속 `runtime_payloads/*.json.gz -> prepare:live -> verify:live -> build`로 유지한다.
 
+## Revision History
+
+- `R1` / `2026-03-26 07:54 KST` / `Codex PM` / thin/facet source 확인과 partial recovery boundary를 최초 정리
+- `R2` / `2026-03-26 09:24 KST` / `Codex PM` / runtime search field provenance map과 example-chunk deploy parity truth를 추가

@@ -657,13 +657,13 @@ const renderSectionTitle = (icon, label, color, count = null) => (
                 color: bandMeta.color, background: bandMeta.bg, border: `1.5px solid ${bandMeta.border}`,
                 whiteSpace: "nowrap",
               }}>
-                Band {band} · {bandMeta.label}
+                {bandMeta.label}
               </span>
             ) : (
               <span style={{
                 padding: "5px 12px", borderRadius: 8, fontSize: 12, fontWeight: 500,
                 color: "#6e7681", background: "rgba(110,118,129,0.08)", border: "1px solid rgba(110,118,129,0.2)",
-              }}>Band 미산출</span>
+              }}>TOPIK band 없음</span>
             )}
             <button
               data-testid="detail-close-button"

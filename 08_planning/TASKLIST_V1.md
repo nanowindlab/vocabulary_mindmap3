@@ -5,7 +5,7 @@
 ### MM3-213 Canonical Thin-Index Generator Recovery / Documentation
 
 - Status: `IN_PROGRESS`
-- Goal: canonical thin/facet source로부터 current runtime search/facet generator recovery 범위를 문서화하고, exact rebuild에 필요한 field provenance gap을 고정한다.
+- Goal: canonical thin/facet source로부터 current runtime search/facet generator recovery 범위를 문서화하고, exact rebuild에 필요한 field provenance gap을 고정한 뒤 첫 recovery target을 `original_language_type`로 좁힌다.
 - Input:
   - `08_planning/reports/20260325_MM3_199_RENDER_SIDE_PERFORMANCE_QUICKWIN_V1.md`
   - `08_planning/reports/20260326_MM3_212_PAYLOAD_VALIDATION_COUNT_RECONCILIATION_V1.md`

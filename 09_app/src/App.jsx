@@ -31,8 +31,13 @@ const TABS = [
   { id: "unclassified", label: "분류 밖 항목", label_en: "Unclassified",  color: "#bc8cff" },
 ];
 
-// ── Band 필터 옵션 ─────────────────────────────────────────
-const BAND_OPTIONS  = [null, 1, 2, 3, 4, 5]; // null = 미산출 포함
+const BAND_FILTER_LABELS = {
+  1: "최상위 필수",
+  2: "핵심 중요",
+  3: "일반 활용",
+  4: "보조 표현",
+  5: "심화 어휘",
+};
 
 const INITIAL_LOAD_PERF_QUERY_KEY = "mm3Perf";
 const INITIAL_LOAD_PERF_STORAGE_KEY = "MM3_PERF_DEBUG";
@@ -761,10 +766,16 @@ function App() {
     (filters.grades?.length || 0);
 
   const facetData = facetPayload?.facets || {};
-  const bandOptions = (facetData["TOPIK"]?.options?.band || []).map((opt) => ({
-    value: opt.value === "미기재" ? null : Number(opt.value),
-    label: opt.value === "미기재" ? "미산출" : `Band ${opt.value} (${opt.count})`,
-  }));
+  const bandOptions = (facetData["TOPIK"]?.options?.band || [])
+    .filter((opt) => opt.value !== "미기재")
+    .map((opt) => {
+      const numericBand = Number(opt.value);
+      const label = BAND_FILTER_LABELS[numericBand] || `Band ${opt.value}`;
+      return {
+        value: numericBand,
+        label: `${label} (${opt.count})`,
+      };
+    });
   const posOptions = (facetData["품사"]?.options || []).map((opt) => ({ value: opt.value, label: `${opt.value} (${opt.count})` }));
   const gradeOptions = (facetData["학습난이도"]?.options || []).map((opt) => ({ value: opt.value, label: `${opt.value} (${opt.count})` }));
   const translationLanguageOptions = useMemo(() => {
