@@ -58,6 +58,7 @@
 - current gate는 전체 기준 `PARTIAL_OPEN`, core explorer slice 기준 `OPEN`이다.
 - `MM3-210`은 closeout됐다.
 - `MM3-212`에서 runtime/source payload validation과 count reconciliation은 `PASS`로 고정됐다.
+- `MM3-216`에서 TOPIK stats linkage policy를 고정했다.
 - 다음 active step은 `MM3-213 Canonical Thin-Index Generator Recovery / Documentation`이다.
 - 다음 핵심 작업은 exact runtime search generator에 필요한 field provenance gap을 고정하는 것이다.
 - latest pilot capture는 `08_planning/pilot_feedback/20260326_pilot_session_04.md`에 정리돼 있다.

@@ -97,6 +97,7 @@
 - `MM3-171B` render-side performance optimization closeout decision
 - `MM3-210` detail sense / example / relation follow-up implementation + full suite `39 passed`
 - `MM3-212` payload validation and count reconciliation script + validation pass
+- `MM3-216` TOPIK stats linkage policy decision
 - `MM3-213` canonical thin-index generator recovery boundary note
 
 ## In Progress
@@ -136,6 +137,7 @@
 - `R10`: `MM3-171B`는 closeout했고, deeper performance follow-up은 새 reopen 근거가 생길 때만 다시 연다.
 - `R11`: 일부 related form은 여전히 `unresolved_no_target_code` 상태다. 현재 UI는 broken jump를 막지만, actual target repair는 별도 data-side scope가 필요하다.
 - `R12`: exact runtime search generator는 thin/facet source만으로는 아직 복구되지 않았다. field provenance mapping이 남아 있다.
+- `R13`: TOPIK stats는 계속 쓰되 learner-facing definition source는 MM3로 고정했고, `level`은 폐기, `미산출`은 main filter에서 제거하는 정책이 승인됐다.
 
 ## Canonical Pointers
 

@@ -267,6 +267,7 @@
 - `MM3-210` detail sense / example / relation follow-up closeout: `DONE`
 - `MM3-212A` runtime/source alignment validation script: `DONE`
 - `MM3-212B` payload validation and count reconciliation run: `DONE`
+- `MM3-216A` TOPIK stats linkage policy decision: `DONE`
 - `MM3-213A` thin/facet source surface audit: `DONE`
 - `MM3-213B` generator recovery boundary note: `DONE`
 - `MM3-201A` post-closeout additional feedback coverage check: `DONE`

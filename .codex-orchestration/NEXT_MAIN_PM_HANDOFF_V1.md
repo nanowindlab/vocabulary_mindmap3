@@ -16,6 +16,7 @@
 - `MM3-171B`는 `MM3-199 R7` 기준으로 closeout됐다.
 - `MM3-210`은 closeout됐다.
 - `MM3-212`에서 runtime/source alignment validation script를 추가했고 payload reconciliation은 `PASS`다.
+- `MM3-216`에서 TOPIK stats linkage policy를 고정했다.
 - `MM3-213` note 기준 thin/facet source는 확인됐지만 exact runtime search generator는 아직 partial recovery 상태다.
 - post-closeout feedback queue `MM3-202A`~`MM3-206A`는 closeout까지 반영됐다.
 - screenshot feedback queue `MM3-207A`~`MM3-209A`도 closeout까지 반영됐다.
@@ -38,6 +39,7 @@
 
 1. `08_planning/reports/20260326_MM3_212_PAYLOAD_VALIDATION_COUNT_RECONCILIATION_V1.md`
 2. `08_planning/reports/20260326_MM3_213_CANONICAL_THIN_INDEX_GENERATOR_RECOVERY_NOTE_V1.md`
+3. `08_planning/reports/20260326_MM3_216_TOPIK_STATS_LINKAGE_POLICY_DECISION_V1.md`
 
 ## Tier 3 Reference On Demand
 
@@ -55,6 +57,7 @@
 
 - current blocker는 exact runtime search generator에 필요한 field provenance가 thin/facet source만으로 닫히지 않는다는 점이다.
 - current runtime truth는 aligned 상태지만 generator truth는 partial recovery 상태다.
+- TOPIK stats policy 자체는 승인 완료 상태다.
 
 ## Next PM Actions
 
