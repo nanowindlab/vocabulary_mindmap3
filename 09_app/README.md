@@ -19,6 +19,9 @@
   - `npm run prepare:live`
   - `npm run verify:live`
   - `npm run validate:source-alignment`
+  - `npm run probe:search-recovery`
+  - `npm run build:runtime-surface-recovery`
+  - `npm run probe:runtime-surface-recovery`
   - `npm run build`
 - `package:live`는 압축 payload와 `MANIFEST.json`까지 같이 갱신한다.
 - 현재 tree는 MM3 축 스위처 기준으로 분리된다.
@@ -51,4 +54,7 @@
 - tree는 1차로 `의미 범주 / 주제 및 상황 범주 / 미분류` 축 스위처에 맞춰 연결했다.
 - detail / expression payload의 full wiring은 후속 단계다.
 - `validate:source-alignment`는 runtime search/facets/trees가 canonical thin/facet source와 current truth 기준으로 aligned인지 검증한다.
+- `probe:search-recovery`는 current runtime search index에서 recoverable subset이 exact 재구성 가능한지 확인한다.
+- `build:runtime-surface-recovery`는 current learner-facing `search + facets` surface를 local canonical builder artifact로 출력한다.
+- `probe:runtime-surface-recovery`는 current learner-facing `search + facets` surface가 runtime과 exact match인지 확인한다.
 - current exact `APP_READY_SEARCH_INDEX` generator는 thin/facet source만으로 완전히 복구되지 않았다. runtime-only field provenance mapping이 별도 필요하다.

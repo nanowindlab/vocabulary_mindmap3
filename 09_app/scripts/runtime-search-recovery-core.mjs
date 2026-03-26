@@ -38,6 +38,14 @@ export function loadRuntimeSearchRows() {
   return readJson(path.join(liveDir, "APP_READY_SEARCH_INDEX.json"));
 }
 
+export function loadRuntimeFacetPayload() {
+  return readJson(path.join(liveDir, "APP_READY_FACETS.json"));
+}
+
+export function loadCanonicalFacetPayload() {
+  return readGzipJson(path.join(unifiedLiveDir, "kcenter_facet_payload.json.gz"));
+}
+
 function buildTranslationMaps() {
   const payload = readGzipJson(path.join(unifiedLiveDir, "kcenter_translations.json.gz"));
   const summaryBySenseId = new Map();

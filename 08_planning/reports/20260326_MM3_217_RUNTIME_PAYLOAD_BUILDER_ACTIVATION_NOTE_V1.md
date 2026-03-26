@@ -2,11 +2,11 @@
 
 ## Current Revision
 
-- `R1`
+- `R2`
 
 ## Last Updated
 
-- `2026-03-26 10:08 KST`
+- `2026-03-26 10:09 KST`
 
 ## Last Updated By
 
@@ -22,13 +22,19 @@
 - scripts added:
   - `npm run probe:search-recovery`
   - `npm run build:search-recovery`
+- surface scripts added:
+  - `npm run probe:runtime-surface-recovery`
+  - `npm run build:runtime-surface-recovery`
 - generated artifact:
   - `tmp_reports/recovered_APP_READY_SEARCH_INDEX.json`
+  - `tmp_reports/runtime_surface_recovery/APP_READY_SEARCH_INDEX.json`
+  - `tmp_reports/runtime_surface_recovery/APP_READY_FACETS.json`
 
 ## What Is Already Proven
 
 - `APP_READY_SEARCH_INDEX.json` current learner-facing field set은 project-local script로 `53,480 / 53,480` exact match다.
 - `APP_READY_FACETS.json`는 source-alignment validator로 canonical facet payload와 일치함이 확인됐다.
+- `search + facets`를 묶은 runtime surface도 local canonical builder로 exact recovery 가능하다.
 - deploy parity for example chunks is fixed.
 
 ## Why A New Active Work Is Needed
@@ -42,6 +48,19 @@
 2. facet payload builder를 같은 control surface로 연결
 3. builder inputs / outputs / non-goals를 문서화
 
+## Verification
+
+- command:
+  - `npm run build:runtime-surface-recovery`
+- result:
+  - `search_rows = 53,480`
+  - `facet_entry_count = 53,480`
+- command:
+  - `npm run probe:runtime-surface-recovery`
+- result:
+  - search matched `53,480 / 53,480`
+  - facet exact match `true`
+
 ## Explicit Non-Goals
 
 - detail map full rebuild
@@ -51,4 +70,14 @@
 ## PM Verdict
 
 - `ACTIVATE`
+- `SEARCH_FACET_BUILDER_SURFACE_CONFIRMED`
 
+## Next Step
+
+- current builder scope는 learner-facing `search + facets`로 고정한다.
+- 다음 결정은 이 surface를 package/build chain에 승격할지 여부다.
+
+## Revision History
+
+- `R1` / `2026-03-26 10:08 KST` / `Codex PM` / runtime payload builder activation note를 최초 작성
+- `R2` / `2026-03-26 10:09 KST` / `Codex PM` / `search + facets` local builder surface와 exact probe 결과를 반영

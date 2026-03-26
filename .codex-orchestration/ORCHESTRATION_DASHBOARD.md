@@ -3,7 +3,7 @@
 ## Current Status
 
 - Milestone: `M1 Runtime Wiring / Core Explorer`
-- Active Work: `MM3-213 Canonical Thin-Index Generator Recovery / Documentation`
+- Active Work: `MM3-217 Runtime Payload Builder Activation`
 - Latest Pilot Capture: `pilot_session_04 / 2026-03-26 01:28 KST / participant 사용자 / facilitator 사용자 / ad-hoc screenshot follow-up`
 - PM Owner: `Codex`
 - User Constraint: external references are read-only
@@ -99,10 +99,11 @@
 - `MM3-212` payload validation and count reconciliation script + validation pass
 - `MM3-216` TOPIK stats linkage policy decision
 - `MM3-213` canonical thin-index generator recovery boundary note
+- `MM3-217` search/facet builder surface confirmation
 
 ## In Progress
 
-- `MM3-213`: canonical thin-index generator recovery / documentation
+- `MM3-217`: runtime payload builder activation
 
 ## Current Runtime Baseline
 
@@ -136,7 +137,7 @@
 - `R9`: current direct learner-facing feedback follow-up는 구현됐지만 user validation은 아직 남아 있다.
 - `R10`: `MM3-171B`는 closeout했고, deeper performance follow-up은 새 reopen 근거가 생길 때만 다시 연다.
 - `R11`: 일부 related form은 여전히 `unresolved_no_target_code` 상태다. 현재 UI는 broken jump를 막지만, actual target repair는 별도 data-side scope가 필요하다.
-- `R12`: exact runtime search generator는 thin/facet source만으로는 아직 복구되지 않았다. field provenance mapping이 남아 있다.
+- `R12`: current learner-facing `search + facets`는 local builder surface로 복구 가능하지만, 이를 package/build chain에 승격할지 여부는 아직 결정되지 않았다.
 - `R13`: TOPIK stats는 계속 쓰되 learner-facing definition source는 MM3로 고정했고, `level`은 폐기, `미산출`은 main filter에서 제거하는 정책이 승인됐다.
 
 ## Canonical Pointers

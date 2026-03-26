@@ -12,6 +12,8 @@
     "validate:source-alignment": "node scripts/validate-runtime-source-alignment.mjs",
     "probe:search-recovery": "node scripts/probe-runtime-search-recovery.mjs",
     "build:search-recovery": "node scripts/build-runtime-search-index-recovery.mjs",
+    "build:runtime-surface-recovery": "node scripts/build-runtime-surface-recovery.mjs",
+    "probe:runtime-surface-recovery": "node scripts/probe-runtime-surface-recovery.mjs",
     "dev": "vite",
     "prebuild": "npm run prepare:live && npm run verify:live",
     "build": "vite build",
