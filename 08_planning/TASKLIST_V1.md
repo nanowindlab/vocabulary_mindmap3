@@ -2,14 +2,14 @@
 
 ## Authoritative Active Work
 
-### MM3-213 Canonical Thin-Index Generator Recovery / Documentation
+### MM3-217 Runtime Payload Builder Activation
 
 - Status: `IN_PROGRESS`
-- Goal: canonical thin/facet source로부터 current runtime search/facet generator recovery 범위를 문서화하고, exact rebuild에 필요한 field provenance gap을 고정한 뒤 첫 recovery target을 `original_language_type`로 좁힌다.
+- Goal: recovered search/facet pieces를 project-local runtime payload builder 형태로 정리하고 builder scope를 search/facet 중심으로 고정한다.
 - Input:
-  - `08_planning/reports/20260325_MM3_199_RENDER_SIDE_PERFORMANCE_QUICKWIN_V1.md`
   - `08_planning/reports/20260326_MM3_212_PAYLOAD_VALIDATION_COUNT_RECONCILIATION_V1.md`
   - `08_planning/reports/20260326_MM3_213_CANONICAL_THIN_INDEX_GENERATOR_RECOVERY_NOTE_V1.md`
+  - `08_planning/reports/20260326_MM3_217_RUNTIME_PAYLOAD_BUILDER_ACTIVATION_NOTE_V1.md`
 
 ## Active Task Rows
 
@@ -270,6 +270,8 @@
 - `MM3-216A` TOPIK stats linkage policy decision: `DONE`
 - `MM3-213A` thin/facet source surface audit: `DONE`
 - `MM3-213B` generator recovery boundary note: `DONE`
+- `MM3-213C` search recovery probe and builder artifact: `DONE`
+- `MM3-213` canonical thin-index generator recovery / documentation: `DONE`
 - `MM3-201A` post-closeout additional feedback coverage check: `DONE`
 - `MM3-201B` post-closeout additional feedback literal documentation sync: `DONE`
 - `MM3-202A` detail top-of-fold helper density re-review scope 정의: `DONE`
@@ -285,7 +287,7 @@
 
 ## Next Work
 
-- `MM3-213` canonical thin-index generator recovery / documentation: `IN_PROGRESS`
+- `MM3-217` runtime payload builder activation: `IN_PROGRESS`
 
 ## Residual Feedback Pipeline
 

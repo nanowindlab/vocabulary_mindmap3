@@ -2,11 +2,11 @@
 
 ## Current Revision
 
-- `R2`
+- `R5`
 
 ## Last Updated
 
-- `2026-03-26 09:24 KST`
+- `2026-03-26 10:08 KST`
 
 ## Last Updated By
 
@@ -82,9 +82,9 @@
 | `translation_summary` | partial | thin index provides a partial translation summary; [repair_runtime_translation_payloads.py](/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/vocab_dictionary/scripts/repair_runtime_translation_payloads.py) rewrites runtime translation fields from `kcenter_translations.json.gz` | partial |
 | `def_en` | known via sidecar repair | [repair_runtime_translation_payloads.py](/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/vocab_dictionary/scripts/repair_runtime_translation_payloads.py) derives English definition from source translations | recoverable with sidecar |
 | `stats` | partial | TOPIK stats come from `entry_topik_stats.json.gz`; current runtime keeps only the matched subset and no explicit confidence field | partial |
-| `original_language_type` | not mapped in current local recovery path | present in `kcenter_base` entry `original_language.type`, but no project-local runtime builder currently maps it into search index | missing mapping |
+| `original_language_type` | intentionally out of learner-facing scope | present in `kcenter_base` entry `original_language.type`, but current product policy does not use it in learner-facing UI | no recovery needed for current scope |
 | `roman` | not mapped in current local recovery path | present in richer source/detail surfaces, but no project-local runtime builder currently maps it into search index | missing mapping |
-| `hierarchy` | not mapped in current local recovery path | runtime has normalized MM3 hierarchy, but current local note has no project-local generator path from thin index/base to the exact runtime hierarchy object | missing mapping |
+| `hierarchy` | known | runtime search hierarchy can be reconstructed from source `categories` with rule `주제 및 상황 범주 우선 -> 의미 범주 -> 미분류 fallback`; verified by recovery probe | recoverable |
 | `surface` / `routing` | not mapped in current local recovery path | runtime constants are visible, but the project-local search generator that stamps them is not recovered | missing mapping |
 | `chunk_id` | known | [package-live-payloads.mjs](/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/09_app/scripts/package-live-payloads.mjs) assigns chunk ids from detail-map chunking | recoverable |
 | `related_vocab` | not mapped in current local recovery path | runtime search rows already carry it, but current local generator path is not recovered; example chunk packaging can preserve it in chunk examples only | missing mapping |
@@ -98,6 +98,46 @@
   - `APP_READY_CHUNK_RICH_*`
   - `APP_READY_CHUNK_EXAMPLES_*`
 - this closes the local vs Vercel example mismatch, but it does not change the generator provenance gap above.
+
+## Recovery Probe Result
+
+- script:
+  - `npm run probe:search-recovery`
+- scope:
+  - `id`
+  - `word`
+  - `pos`
+  - `pos_list`
+  - `word_grade`
+  - `def_ko`
+  - `def_en`
+  - `surface`
+  - `routing`
+  - `stats`
+  - `chunk_id`
+  - `sense_count`
+  - `has_subwords`
+  - `has_related_forms`
+  - `representative_sense_id`
+  - `translation_summary`
+  - `categories`
+- result:
+  - runtime rows: `53,480`
+  - recovered rows: `53,480`
+  - exact matches on recoverable subset: `53,480`
+  - mismatches: `0`
+- builder artifact:
+  - `npm run build:search-recovery`
+  - output: `tmp_reports/recovered_APP_READY_SEARCH_INDEX.json`
+
+## PM Interpretation After Probe
+
+- current runtime search index의 large subset은 project-local recovery path로 exact 재구성 가능하다고 봐도 된다.
+- 남은 non-trivial gap은 below fields 쪽으로 더 좁혀진다.
+  - `related_vocab`
+  - `refs.cross_links`
+  - `roman`
+  - `is_center_profile`
 
 ## What Can Be Done Without Approval
 
@@ -115,16 +155,21 @@
 
 - `PARTIAL_RECOVERY_PATH_CONFIRMED`
 - `FIELD_PROVENANCE_MAP_ADDED`
+- `ORIGINAL_LANGUAGE_TYPE_OUT_OF_SCOPE`
+- `RECOVERABLE_SUBSET_EXACT_MATCH_CONFIRMED`
+- `HIERARCHY_RECOVERY_CONFIRMED`
+- `CLOSEOUT_ACCEPTED_FOR_CURRENT_SEARCH_SCOPE`
 
 ## Next Step
 
-- next implementation step은 `missing mapping fields` 중 하나를 concrete recovery target으로 고르는 것이다.
-- recommended first target:
-  - `original_language_type`
-  - because source field is visible in `kcenter_base` and does not require policy change
-- 그 전까지는 current deploy/runtime truth를 계속 `runtime_payloads/*.json.gz -> prepare:live -> verify:live -> build`로 유지한다.
+- current search generator recovery scope는 closeout한다.
+- next active technical backlog는 `MM3-217 runtime payload builder activation`이다.
+- current deploy/runtime truth는 계속 `runtime_payloads/*.json.gz -> prepare:live -> verify:live -> build`로 유지한다.
 
 ## Revision History
 
 - `R1` / `2026-03-26 07:54 KST` / `Codex PM` / thin/facet source 확인과 partial recovery boundary를 최초 정리
 - `R2` / `2026-03-26 09:24 KST` / `Codex PM` / runtime search field provenance map과 example-chunk deploy parity truth를 추가
+- `R3` / `2026-03-26 09:56 KST` / `Codex PM` / recoverable subset probe에서 `53,480 / 53,480` exact match를 확인하고 next target을 `hierarchy provenance`로 좁힘
+- `R4` / `2026-03-26 10:02 KST` / `Codex PM` / `hierarchy`도 categories 기반 exact recovery가 가능함을 확인하고 next target을 `related_vocab / refs.cross_links`로 재설정
+- `R5` / `2026-03-26 10:08 KST` / `Codex PM` / search recovery builder artifact를 추가하고 current learner-facing search scope closeout을 반영
