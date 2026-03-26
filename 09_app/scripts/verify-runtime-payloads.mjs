@@ -53,16 +53,20 @@ async function main() {
 
   const chunkManifest = JSON.parse(readFileSync(path.join(liveDir, "CHUNK_MANIFEST_V1.json"), "utf-8"));
   for (const chunk of chunkManifest.chunks || []) {
-    const fileName = `APP_READY_CHUNK_RICH_${chunk.chunk_id}.json`;
-    const livePath = path.join(liveDir, fileName);
-    const compressedPath = path.join(compressedDir, `${fileName}.gz`);
-    const manifestEntry = manifestEntries.get(fileName);
-    assert(existsSync(compressedPath), `Missing compressed chunk payload: ${compressedPath}`);
-    assert(existsSync(livePath), `Missing restored live chunk payload: ${livePath}`);
-    assert(manifestEntry, `Manifest missing chunk payload entry: ${fileName}`);
-    assert(statSync(compressedPath).size === manifestEntry.compressed_bytes, `Compressed chunk size mismatch: ${compressedPath}`);
-    assert(statSync(livePath).size === manifestEntry.source_bytes, `Restored chunk payload size mismatch: ${livePath}`);
-    assert(await sha256(compressedPath) === manifestEntry.sha256, `Compressed chunk hash mismatch: ${compressedPath}`);
+    for (const fileName of [
+      `APP_READY_CHUNK_RICH_${chunk.chunk_id}.json`,
+      `APP_READY_CHUNK_EXAMPLES_${chunk.chunk_id}.json`,
+    ]) {
+      const livePath = path.join(liveDir, fileName);
+      const compressedPath = path.join(compressedDir, `${fileName}.gz`);
+      const manifestEntry = manifestEntries.get(fileName);
+      assert(existsSync(compressedPath), `Missing compressed chunk payload: ${compressedPath}`);
+      assert(existsSync(livePath), `Missing restored live chunk payload: ${livePath}`);
+      assert(manifestEntry, `Manifest missing chunk payload entry: ${fileName}`);
+      assert(statSync(compressedPath).size === manifestEntry.compressed_bytes, `Compressed chunk size mismatch: ${compressedPath}`);
+      assert(statSync(livePath).size === manifestEntry.source_bytes, `Restored chunk payload size mismatch: ${livePath}`);
+      assert(await sha256(compressedPath) === manifestEntry.sha256, `Compressed chunk hash mismatch: ${compressedPath}`);
+    }
   }
 
   console.log(`verified ${REQUIRED.length} runtime payloads`);

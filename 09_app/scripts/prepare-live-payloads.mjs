@@ -46,7 +46,9 @@ async function main() {
   }
 
   const chunkFiles = readdirSync(compressedDir)
-    .filter((fileName) => fileName.startsWith("APP_READY_CHUNK_RICH_") && fileName.endsWith(".json.gz"));
+    .filter((fileName) =>
+      (fileName.startsWith("APP_READY_CHUNK_RICH_") || fileName.startsWith("APP_READY_CHUNK_EXAMPLES_")) &&
+      fileName.endsWith(".json.gz"));
   for (const fileName of chunkFiles) {
     await inflatePayload(fileName.replace(/\.gz$/, ""));
     console.log(`prepared ${fileName.replace(/\.gz$/, "")}`);
