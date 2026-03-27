@@ -16,7 +16,8 @@
   - `MM3-267` opening: `DONE`
   - `MM3-267` runtime problem framing + first tranche definition: `DONE`
   - `MM3-267` `T1 Loader/Caching Hardening` local implementation + local verification: `DONE`
-  - next active substep: `MM3-267B` `Vercel` deployed perf verification + approval gate
+  - `MM3-267` large tree fetch bypass via `searchIndex -> tab projection`: `DONE`
+  - next active substep: `MM3-267B` updated production recheck
 
 ## Active Task Rows
 

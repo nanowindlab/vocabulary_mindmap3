@@ -144,11 +144,12 @@
 ## In Progress
 
 - `MM3-267`: runtime data performance optimization
-- current step: `MM3-267B Vercel deployed perf verification + approval gate`
+- current step: `MM3-267B updated production recheck`
 - just completed:
   - default meaning tab load now uses `idle + hard-timeout` kickoff with explicit-user escalation path
   - `chunk_id` parsed chunk cache + in-flight dedupe was added for `RICH`/`EXAMPLES`
   - runtime interaction probe was added for tab load, detail selection, category expansion
+  - runtime tree path now uses `searchIndex -> tab projection` and no longer fetches `APP_READY_MEANING_TREE/SITUATION_TREE/UNCLASSIFIED_TREE`
   - `npm run build` passed
   - `npx playwright test tests/smoke.spec.js tests/scenario.spec.js` passed `5/5`
 

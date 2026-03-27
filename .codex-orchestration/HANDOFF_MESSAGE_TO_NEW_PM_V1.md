@@ -87,6 +87,7 @@ Verified now:
 - default meaning tab now uses `idle + hard-timeout` kickoff with explicit intent escalation
 - `chunk_id` parsed chunk cache + in-flight dedupe is implemented
 - `window.__MM3_RUNTIME_INTERACTION_PERF__` interaction probe is implemented
+- runtime tree view now derives `meaning/situation/unclassified` from `APP_READY_SEARCH_INDEX` category projection and bypasses the three large tree payload fetches
 - local `npm run build` passed
 - local `npx playwright test tests/smoke.spec.js tests/scenario.spec.js` passed `5/5`
 - `MM3-267B` deployed `Vercel` perf verification task is opened
@@ -103,6 +104,6 @@ Important note:
 
 First action:
 - read the latest `MM3-267` implementation packet first
-- if approval is available, push the current branch and verify the deployed `Vercel` runtime
+- verify whether the updated production deployment removes the persistent meaning loading state
 - keep storage/LFS decisions out of scope
 ```

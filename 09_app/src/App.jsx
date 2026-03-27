@@ -10,9 +10,6 @@ import { SearchBox } from "./components/SearchBox";
 import { MindmapCanvas } from "./components/MindmapCanvas";
 import { StatusPanel } from "./components/StatusPanel";
 import {
-  loadMeaningTree,
-  loadSituationTree,
-  loadUnclassifiedTree,
   loadUnifiedSearchIndex,
   loadFacetPayload,
   loadEntryDetail,
@@ -195,6 +192,68 @@ function isDisplayNormalized(item) {
     item?.surface &&
     item?.hierarchy?.display_root_label &&
     item?.hierarchy?.display_path_ko
+  );
+}
+
+function buildProjectedHierarchyForTab(item, tabId) {
+  const categories = Array.isArray(item?.categories) ? item.categories : [];
+
+  if (tabId === "meaning") {
+    const meaningCategory = categories.find((category) => category?.type === "의미 범주")?.value || null;
+    if (!meaningCategory) return null;
+    const parts = meaningCategory.split(" > ").map((part) => part.trim()).filter(Boolean);
+    const scene = parts[0] || "일반";
+    const category = parts[parts.length - 1] || scene;
+    return {
+      root_id: "의미 범주",
+      root_label: "의미 범주",
+      root_en: "",
+      scene,
+      category,
+      path_ko: ["의미 범주", scene, category].join(" > "),
+      system: "의미 범주",
+      root: scene,
+    };
+  }
+
+  if (tabId === "situation") {
+    const situationCategory = categories.find((category) => category?.type === "주제 및 상황 범주")?.value || null;
+    if (!situationCategory) return null;
+    return {
+      root_id: "주제 및 상황 범주",
+      root_label: "주제 및 상황 범주",
+      root_en: "",
+      scene: situationCategory,
+      category: situationCategory,
+      path_ko: ["주제 및 상황 범주", situationCategory, situationCategory].join(" > "),
+      system: "주제 및 상황 범주",
+      root: situationCategory,
+    };
+  }
+
+  const wordGrade = item?.word_grade || "없음";
+  const posLabel = item?.pos || item?.part_of_speech || "품사 없음";
+  return {
+    root_id: "미분류",
+    root_label: "미분류",
+    root_en: "",
+    scene: wordGrade,
+    category: posLabel,
+    path_ko: ["미분류", wordGrade, posLabel].join(" > "),
+    system: "미분류",
+    root: wordGrade,
+  };
+}
+
+function projectSearchItemForTab(item, tabId) {
+  const hierarchy = buildProjectedHierarchyForTab(item, tabId);
+  if (!hierarchy) return null;
+  return normalizeItem(
+    {
+      ...item,
+      hierarchy,
+    },
+    "mindmap_core",
   );
 }
 
@@ -386,9 +445,6 @@ function App() {
   const [activeTab, setActiveTab] = useState("meaning");
   const [viewMode, setViewMode] = useState("mindmap");
 
-  const [meaningList, setMeaningList] = useState([]);
-  const [situationList, setSituationList] = useState([]);
-  const [unclassifiedList, setUnclassifiedList] = useState([]);
   const [searchIndex, setSearchIndex] = useState([]);
   const [facetPayload, setFacetPayload] = useState(null);
 
@@ -398,9 +454,9 @@ function App() {
   const [isLoadingChunk, setIsLoadingChunk] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const [tabLoadState, setTabLoadState] = useState({
-    meaning: "idle",
-    situation: "idle",
-    unclassified: "idle",
+    meaning: "loading",
+    situation: "loading",
+    unclassified: "loading",
   });
 
   const [expandedIds, setExpandedIds] = useState(new Set());
@@ -416,11 +472,6 @@ function App() {
     tabLoads: [],
     detailSelections: [],
     categoryExpansions: [],
-  });
-  const tabLoadModeRef = useRef({
-    meaning: "idle",
-    situation: "immediate",
-    unclassified: "immediate",
   });
   const lastDetailSelectionRef = useRef(null);
 
@@ -448,14 +499,6 @@ function App() {
       [bucket]: nextBucket,
     };
     publishRuntimeInteractionPerfSnapshot(runtimeInteractionPerfRef.current);
-  }, []);
-
-  const requestImmediateTabLoad = useCallback((tabId) => {
-    tabLoadModeRef.current[tabId] = "immediate";
-    setTabLoadState((prev) => {
-      if (!prev || prev[tabId] !== "queued") return prev;
-      return { ...prev, [tabId]: "idle" };
-    });
   }, []);
 
   const startDrag = useCallback(() => {
@@ -527,6 +570,11 @@ function App() {
         perfSnapshot.rows.searchIndexMap = idxMap.size;
         setSearchIndex(searchIndexArr);
         setFacetPayload(facet);
+        setTabLoadState({
+          meaning: "ready",
+          situation: "ready",
+          unclassified: "ready",
+        });
         perfSnapshot.milestones.stateQueuedMs = perfNow() - perfSnapshot.startedAtMs;
       } catch (e) {
         console.error("데이터 로딩 실패", e);
@@ -560,138 +608,58 @@ function App() {
   }, [isInitializing]);
 
   useEffect(() => {
-    if (isInitializing) return undefined;
-    if (tabLoadState[activeTab] !== "idle") return undefined;
-
-    const tabId = activeTab;
-    const loadMode = tabLoadModeRef.current[tabId] || "immediate";
-    let idleHandle = null;
-    let timeoutHandle = null;
-    let cancelled = false;
-    let hasStarted = false;
-
-    async function loadDeferredTab(trigger = "immediate") {
-      const loadStartedAt = perfNow();
-      setTabLoadState((prev) => ({ ...prev, [tabId]: "loading" }));
-
-      const idxMap = new Map();
-      searchIndex.forEach((t) => { if (t.id) idxMap.set(t.id, t); });
-      let normalizeMs = 0;
-      let rowCount = 0;
-
-      try {
-        if (tabId === "meaning") {
-          const meaning = await loadMeaningTree({
-            trace: (metric) => initialLoadPerfRef.current?.payloads.push(metric),
-          });
-
-          const meaningNormalizeStartedAt = perfNow();
-          const meaningArr = Array.isArray(meaning) ? meaning.map((t) => normalizeItem(t, "mindmap_core", idxMap)) : [];
-          normalizeMs = perfNow() - meaningNormalizeStartedAt;
-          rowCount = meaningArr.length;
-
-          setMeaningList(meaningArr);
-
-          if (initialLoadPerfRef.current) {
-            initialLoadPerfRef.current.normalize.meaningTreeMs = normalizeMs;
-            initialLoadPerfRef.current.rows.meaningTree = meaningArr.length;
-            initialLoadPerfRef.current.deferredTabs.meaning = {
-              normalizeMs,
-              readyMs: perfNow() - initialLoadPerfRef.current.startedAtMs,
-              rows: meaningArr.length,
-            };
-            publishInitialLoadPerfSnapshot(initialLoadPerfRef.current);
-          }
-        } else if (tabId === "situation") {
-          const situation = await loadSituationTree({
-            trace: (metric) => initialLoadPerfRef.current?.payloads.push(metric),
-          });
-          const situationNormalizeStartedAt = perfNow();
-          const situationArr = Array.isArray(situation) ? situation.map((t) => normalizeItem(t, "mindmap_core", idxMap)) : [];
-          normalizeMs = perfNow() - situationNormalizeStartedAt;
-          rowCount = situationArr.length;
-          setSituationList(situationArr);
-        } else if (tabId === "unclassified") {
-          const unclassified = await loadUnclassifiedTree({
-            trace: (metric) => initialLoadPerfRef.current?.payloads.push(metric),
-          });
-          const unclassifiedNormalizeStartedAt = perfNow();
-          const unclassifiedArr = Array.isArray(unclassified) ? unclassified.map((t) => normalizeItem(t, "mindmap_core", idxMap)) : [];
-          normalizeMs = perfNow() - unclassifiedNormalizeStartedAt;
-          rowCount = unclassifiedArr.length;
-          setUnclassifiedList(unclassifiedArr);
-        }
-
-        if (initialLoadPerfRef.current && tabId !== "meaning") {
-          initialLoadPerfRef.current.deferredTabs[tabId] = {
-            normalizeMs,
-            readyMs: perfNow() - initialLoadPerfRef.current.startedAtMs,
-            rows: rowCount,
-          };
-        }
-        recordRuntimeInteraction("tabLoads", {
-          tabId,
-          trigger,
-          normalizeMs: Number(normalizeMs.toFixed(1)),
-          rowCount,
-          totalMs: Number((perfNow() - loadStartedAt).toFixed(1)),
-        });
-        tabLoadModeRef.current[tabId] = "immediate";
-        setTabLoadState((prev) => ({ ...prev, [tabId]: "ready" }));
-      } catch (e) {
-        console.error("탭 데이터 로딩 실패", e);
-        recordRuntimeInteraction("tabLoads", {
-          tabId,
-          trigger,
-          failed: true,
-          totalMs: Number((perfNow() - loadStartedAt).toFixed(1)),
-        });
-        setTabLoadState((prev) => ({ ...prev, [tabId]: "idle" }));
-      }
-    }
-
-    if (loadMode === "idle") {
-      setTabLoadState((prev) => ({ ...prev, [tabId]: "queued" }));
-      const kickoff = (trigger) => {
-        if (cancelled || hasStarted) return;
-        hasStarted = true;
-        loadDeferredTab(trigger);
-      };
-      if (typeof window !== "undefined" && typeof window.requestIdleCallback === "function") {
-        idleHandle = window.requestIdleCallback(() => kickoff("idle"), { timeout: TAB_IDLE_LOAD_TIMEOUT_MS });
-      }
-      if (typeof window !== "undefined") {
-        timeoutHandle = window.setTimeout(() => kickoff("timeout"), TAB_IDLE_LOAD_TIMEOUT_MS);
-      } else {
-        kickoff("idle");
-      }
-    } else {
-      loadDeferredTab("immediate");
-    }
-
-    return () => {
-      cancelled = true;
-      if (typeof window !== "undefined" && idleHandle !== null && typeof window.cancelIdleCallback === "function") {
-        window.cancelIdleCallback(idleHandle);
-      }
-      if (typeof window !== "undefined" && timeoutHandle !== null) {
-        window.clearTimeout(timeoutHandle);
-      }
-    };
-  }, [activeTab, isInitializing, recordRuntimeInteraction, searchIndex, tabLoadState]);
-
-  useEffect(() => {
     if (activeTab === "situation") return;
     setSelectedSituationQuickGroup(null);
     setSelectedSituationQuickLeaf(null);
   }, [activeTab]);
 
+  const projectedTabLists = useMemo(() => {
+    const startedAt = perfNow();
+    const projected = {
+      meaning: [],
+      situation: [],
+      unclassified: [],
+    };
+
+    searchIndex.forEach((item) => {
+      const meaningItem = projectSearchItemForTab(item, "meaning");
+      if (meaningItem) projected.meaning.push(meaningItem);
+
+      const situationItem = projectSearchItemForTab(item, "situation");
+      if (situationItem) projected.situation.push(situationItem);
+
+      if (!meaningItem && !situationItem) {
+        projected.unclassified.push(projectSearchItemForTab(item, "unclassified"));
+      }
+    });
+
+    const totalMs = perfNow() - startedAt;
+    if (initialLoadPerfRef.current) {
+      initialLoadPerfRef.current.deferredTabs.meaning = {
+        normalizeMs: Number(totalMs.toFixed(1)),
+        readyMs: perfNow() - initialLoadPerfRef.current.startedAtMs,
+        rows: projected.meaning.length,
+      };
+      initialLoadPerfRef.current.deferredTabs.situation = {
+        normalizeMs: 0,
+        readyMs: perfNow() - initialLoadPerfRef.current.startedAtMs,
+        rows: projected.situation.length,
+      };
+      initialLoadPerfRef.current.deferredTabs.unclassified = {
+        normalizeMs: 0,
+        readyMs: perfNow() - initialLoadPerfRef.current.startedAtMs,
+        rows: projected.unclassified.length,
+      };
+    }
+    return projected;
+  }, [searchIndex]);
+
   useEffect(() => {
     const listForTab = activeTab === "meaning"
-      ? meaningList
+      ? projectedTabLists.meaning
       : activeTab === "situation"
-        ? situationList
-        : unclassifiedList;
+        ? projectedTabLists.situation
+        : projectedTabLists.unclassified;
 
     if (focusedRootId || listForTab.length === 0) return;
 
@@ -700,14 +668,14 @@ function App() {
       setFocusedRootId(defaultRoot);
       setExpandedIds(new Set([defaultRoot]));
     }
-  }, [activeTab, focusedRootId, meaningList, situationList, unclassifiedList]);
+  }, [activeTab, focusedRootId, projectedTabLists]);
 
   // ── 현재 축 데이터 ──────────────────────────────────────────────
   const activeList = useMemo(() => {
-    if (activeTab === "meaning") return meaningList;
-    if (activeTab === "situation") return situationList;
-    return unclassifiedList;
-  }, [activeTab, meaningList, situationList, unclassifiedList]);
+    if (activeTab === "meaning") return projectedTabLists.meaning;
+    if (activeTab === "situation") return projectedTabLists.situation;
+    return projectedTabLists.unclassified;
+  }, [activeTab, projectedTabLists]);
 
   const quickEntryScopedList = useMemo(() => {
     if (activeTab !== "situation" || !selectedSituationQuickLeaf) return activeList;
@@ -843,7 +811,6 @@ function App() {
     const normalized = normalizeItem(target, "mindmap_core");
 
     // 탭 전환 + focusedRootId 를 먼저 설정
-    requestImmediateTabLoad(targetTab);
     setActiveTab(targetTab);
     const rid = normalized.hierarchy?.root_id;
     if (rid) {
@@ -858,7 +825,7 @@ function App() {
     // (selectedTermId 변화 → treeData 탐색 → zoom)가 새 treeData 기준으로
     // 재실행되도록 pendingSearchTermRef를 통해 추적
     pendingSearchTermRef.current = normalized.id;
-  }, [handleSelectTerm, requestImmediateTabLoad]);
+  }, [handleSelectTerm]);
 
   const resolveReferenceTarget = useCallback((ref) => {
     if (!ref) return null;
@@ -1049,7 +1016,6 @@ function App() {
                 key={tab.id}
                 className={`nav-tab ${activeTab === tab.id ? "active" : ""}`}
                 onClick={() => {
-                  requestImmediateTabLoad(tab.id);
                   setActiveTab(tab.id);
                   setSelectedTermDetail(null);
                   setSelectedTermId(null);

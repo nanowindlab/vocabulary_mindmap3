@@ -2,11 +2,11 @@
 
 ## Current Revision
 
-- `R1`
+- `R2`
 
 ## Last Updated
 
-- `2026-03-27 17:30 KST`
+- `2026-03-27 19:01 KST`
 
 ## Last Updated By
 
@@ -61,6 +61,17 @@
 - tree smoke는 deferred tab load 이후 explicit tab intent를 주는 방식으로 guard를 맞췄다.
 - 이 수정은 app behavior regression을 가리는 것이 아니라, stale payload assumption과 current defer contract 불일치를 정리한 것이다.
 
+### 5. tree runtime을 `searchIndex -> tab projection`으로 전환
+
+- current symptom 기준 가장 큰 blocker는 `APP_READY_MEANING_TREE.json` `160MB` 추가 fetch였다.
+- runtime은 이제 `meaning/situation/unclassified` tree payload를 직접 fetch하지 않는다.
+- 대신 already-loaded `APP_READY_SEARCH_INDEX`에서 `categories` 기준으로 tab membership을 다시 계산한다.
+- `meaning`: `의미 범주` category projection 기준 `44,410`
+- `situation`: `주제 및 상황 범주` category projection 기준 `6,399`
+- `unclassified`: neither category 기준 `8,506`
+- 이 방식은 current user-facing count를 유지하면서 extra tree network fetch를 제거한다.
+- `APP_READY_*_TREE.json`는 validator/build-side artifact로는 남아 있지만 app runtime read path에서는 빠진다.
+
 ## Verification
 
 - command:
@@ -71,6 +82,12 @@
   - `npx playwright test tests/smoke.spec.js tests/scenario.spec.js`
 - result:
   - `5 passed`
+- command:
+  - production custom domain `Playwright` probe
+- result:
+  - custom domain shell render 확인
+  - runtime data `200` 확인
+  - Safari user symptom 기준 추가 tree fetch 제거 필요성 확인
 
 ## Additional Task Opened
 
@@ -85,13 +102,15 @@
 
 ## PM Verdict
 
-- local `T1 Loader/Caching Hardening` implementation은 `PARTIAL_ACCEPT`다.
-- local build/test는 통과했지만, actual deployed verification은 아직 남아 있다.
+- `T1 Loader/Caching Hardening` local implementation은 `PARTIAL_ACCEPT`다.
+- current symptom을 직접 겨냥한 `searchIndex -> tab projection` runtime path를 추가했다.
+- local build/test는 통과했지만, updated production deployment recheck는 아직 남아 있다.
 
 ## Next Step
 
-- approval이 들어오면 current branch를 push하고 `Vercel` deployed runtime에서 perf probe와 interaction check를 실행한다.
+- current branch를 push하고 updated production deployment에서 `meaning` tab loading persistence가 실제로 해소됐는지 재확인한다.
 
 ## Revision History
 
+- `R2` / `2026-03-27 19:01 KST` / `Codex PM` / current production symptom을 반영해 tree runtime을 `searchIndex` tab projection으로 전환하고 large tree fetch bypass를 추가
 - `R1` / `2026-03-27 17:30 KST` / `Codex PM` / `MM3-267 / T1 Loader/Caching Hardening` local implementation, local verification, deployed follow-up task opening을 고정

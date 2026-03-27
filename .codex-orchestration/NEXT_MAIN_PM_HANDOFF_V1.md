@@ -102,6 +102,7 @@
 - default meaning tab은 `idle + hard-timeout` kickoff로 내려갔고 explicit tab/search intent는 immediate load로 승격된다.
 - `chunk_id` parsed chunk cache + in-flight dedupe가 추가됐다.
 - `window.__MM3_RUNTIME_INTERACTION_PERF__` interaction probe가 추가됐다.
+- runtime tab tree path is now derived from `APP_READY_SEARCH_INDEX` category projection, so the app no longer fetches the three large tree payloads at runtime.
 - `npm run build`가 통과했다.
 - `npx playwright test tests/smoke.spec.js tests/scenario.spec.js`가 `5 passed`다.
 - `MM3-267B` `Vercel` deployed perf verification task가 추가됐다.
@@ -175,6 +176,6 @@
 ## Next PM Actions
 
 1. latest `MM3-267` implementation packet을 먼저 읽는다.
-2. local implementation/build/test는 끝났으므로 next step은 deployed `Vercel` verification이다.
-3. approval이 오면 current branch를 push하고 deployed URL에서 perf probe와 interaction check를 실행한다.
+2. local implementation/build/test는 끝났고 current symptom 대응으로 tree fetch bypass까지 들어갔다.
+3. next step은 updated production deployment에서 meaning loading persistence가 실제로 사라졌는지 재확인하는 것이다.
 4. `LFS`/storage 결정은 계속 이 task의 범위가 아니다.
