@@ -104,8 +104,11 @@ test("search helper explains ordering and basic-item label", async ({ page }) =>
   const results = page.locator("[data-search-result='true']");
   await expect(results.first()).toBeVisible();
   await page.screenshot({ path: path.join(guideAssetDir, "02_search_results_helper.png"), fullPage: true });
+  await expect(page.getByText("Search Result Panel")).toBeVisible();
+  await expect(page.getByText(/결과 \d+개/)).toBeVisible();
   await expect(page.getByTestId("search-result-helper")).toContainText("정렬: 정확히 일치 -> 앞부분 일치 -> 포함 일치 -> 짧은 단어 순");
   await expect(page.getByTestId("search-result-helper")).toContainText("기본 표제어");
+  await expect(page.getByTestId("search-result-helper")).toContainText("현재 선택한 언어");
   await expect(results.first()).not.toContainText("코어");
 });
 
@@ -149,6 +152,7 @@ test("examples surface removes helper chrome and keeps compact source tags", asy
   await expect(page.getByTestId("detail-word")).toHaveText("요리하다");
   await page.getByRole("button", { name: /^예문/ }).click();
   await expect(page.getByTestId("examples-workflow-helper")).toHaveCount(0);
+  await expect(page.getByTestId("examples-overview")).toContainText("예문 읽는 순서");
   await expect(page.getByTestId("example-card-0")).toBeVisible();
 });
 
@@ -192,6 +196,15 @@ test("built example chunks surface topik examples before dictionary examples", a
   await expect(page.getByTestId("example-card-0")).toContainText("가게");
 });
 
+test("요리하다 entry keeps relation disambiguation labels", async ({ page }) => {
+  await page.goto("/");
+
+  await pickSearchResult(page, "요리하다", (text) => text.includes("음식을 만들다."));
+  await expect(page.getByTestId("detail-word")).toHaveText("요리하다");
+  await page.getByRole("button", { name: /^의미 관계/ }).click();
+  await expect(page.locator("[data-testid^='sense-relation-card-조리하다2-']").first()).toBeVisible();
+});
+
 test("sense selection drives examples and uses dynamic numbering", async ({ page }) => {
   await page.goto("/");
 
@@ -219,8 +232,10 @@ test("unresolved related form stays non-jumpable and shows unavailable note", as
   await expect(page.getByTestId("detail-word")).toHaveText("기분");
 
   await page.getByRole("button", { name: /^의미 관계/ }).click();
+  await expect(page.getByTestId("relation-overview")).toContainText("원본 표면형만 있음");
+  await expect(page.getByText("원본에 표면형만 있는 관련형")).toBeVisible();
   await expect(page.getByTestId("related-form-card-기분적-0")).toBeVisible();
-  await expect(page.getByTestId("related-form-card-unresolved-기분적-0")).toContainText("현재 runtime에 연결 대상이 없습니다.");
+  await expect(page.getByTestId("related-form-card-unresolved-기분적-0")).toContainText("원본 사전에서 연결 대상을 지정하지 않은 항목입니다.");
 
   await page.getByTestId("related-form-card-기분적-0").click();
   await expect(page.getByTestId("detail-word")).toHaveText("기분");
@@ -271,9 +286,12 @@ test("detail header keeps pronunciation inline and removes duplicate translation
   await pickSearchResult(page, "돈", (text) => text.includes("돈"));
   await expect(page.getByTestId("detail-word")).toHaveText("돈");
   await expect(page.getByTestId("detail-pronunciation")).toContainText("[돈ː]");
+  await expect(page.getByTestId("detail-header-definition")).toContainText("동전이나 지폐");
+  await expect(page.getByTestId("detail-header-translation-preview")).toContainText("영어");
   await expect(page.getByTestId("detail-primary-translation")).toHaveCount(1);
   await expect(page.getByRole("heading", { name: "번역" })).toHaveCount(0);
   await expect(page.getByTestId("expression-workflow-helper")).toHaveCount(0);
+  await expect(page.getByTestId("detail-close-button")).toHaveText("닫기");
 });
 
 test("exact duplicate search rows are collapsed", async ({ page }) => {
@@ -310,7 +328,7 @@ test("relation labels disambiguate same surface targets", async ({ page }) => {
 
   await page.getByRole("button", { name: /^의미 관계/ }).click();
   await expect(page.getByTestId("relation-related-forms")).toBeVisible();
-  await expect(page.getByText(/같은 표면형으로 보여도 관계 유형 또는 대상 의미가 다르면 따로 유지합니다/)).toBeVisible();
+  await expect(page.getByText(/바로 이동 가능한 관련형/)).toBeVisible();
   await expect(page.locator("[data-testid^='related-form-card-보이다-']")).toHaveCount(1);
   await expect(page.locator("[data-testid^='related-form-card-type-보이다-']")).toHaveCount(1);
   await expect(page.getByTestId("relation-related-forms")).toContainText("눈으로 대상의 존재나 겉모습을 알게 하다.");
@@ -348,7 +366,88 @@ test("situation none path is reframed as general vocabulary", async ({ page }) =
 
   await expect(page.getByTestId("detail-word")).toHaveText("보다");
   await expect(page.getByTestId("detail-path")).toHaveText("주제 및 상황 > 상황 미지정 > 일반 어휘");
+  await expect(page.getByTestId("detail-guidance-chip")).toHaveText("탐색 기준 · 핵심/예문 먼저");
   await expect(page.getByTestId("detail-context-helper")).toHaveCount(0);
+});
+
+test("situation paths use canonical A taxonomy grouping", async ({ page }) => {
+  await page.goto("/");
+
+  const search = page.getByTestId("search-input");
+  await search.fill("시내버스");
+  const results = page.locator("[data-search-result='true']");
+  await expect(results.first()).toBeVisible();
+  await results.filter({ hasText: "도시 안에서 정해진 노선을 따라 운행하는 버스." }).first().click();
+
+  await expect(page.getByTestId("detail-word")).toHaveText("시내버스");
+  await expect(page.getByTestId("detail-path")).toHaveText("주제 및 상황 > 길과 이동 > 교통 이용하기");
+
+  await page.getByRole("button", { name: /주제 및 상황/ }).click();
+  await page.locator("[data-sidebar-node-type='scene']").first().click();
+  await expect(page.locator("[data-sidebar-node-type='scene']").filter({ hasText: "길과 이동" }).first()).toBeVisible();
+  await expect(page.locator("[data-sidebar-node-type='category']").filter({ hasText: "교통 이용하기" }).first()).toBeVisible();
+});
+
+test("subject-none duplicates route through meaning and none-only entries disappear from search", async ({ page }) => {
+  await page.goto("/");
+
+  const search = page.getByTestId("search-input");
+  await search.fill("연관");
+  const results = page.locator("[data-search-result='true']");
+  await expect(results.first()).toBeVisible();
+  await results.filter({ hasText: "둘 이상의 사물이나 현상 등이 서로 관계를 맺는 것." }).first().click();
+  await expect(page.getByTestId("detail-word")).toHaveText("연관");
+  await expect(page.getByTestId("detail-path")).toHaveText("의미 범주 > 사회 생활 > 사회 활동");
+
+  await search.fill("시일");
+  await expect(results.first()).toBeVisible();
+  await results.filter({ hasText: "어떤 일을 끝내는 데 걸리는 기간이나 시간." }).first().click();
+  await expect(page.getByTestId("detail-word")).toHaveText("시일");
+  await expect(page.getByTestId("detail-path")).toHaveText("의미 범주 > 개념 > 시간");
+
+  await search.fill("실제로");
+  await page.waitForTimeout(200);
+  const exactWordMatches = await page.locator("[data-search-result='true']").evaluateAll((nodes) =>
+    nodes
+      .map((node) => (node.textContent || "").trim())
+      .filter((text) => text.startsWith("실제로"))
+      .length
+  );
+  expect(exactWordMatches).toBe(0);
+});
+
+test("scene nodes show child-category count and total term count", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /주제 및 상황/ }).click();
+
+  const sceneNode = page.locator("[data-sidebar-node-type='scene']").filter({ hasText: "장보기와 음식" }).first();
+  await expect(sceneNode).toBeVisible();
+  await expect(page.getByTestId("sidebar-count-scene-장보기와 음식")).toContainText("5");
+  await expect(page.getByTestId("sidebar-count-scene-장보기와 음식")).toContainText("521");
+});
+
+test("situation quick entry overlay narrows to the selected practical leaf", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: /주제 및 상황/ }).click();
+  await page.getByRole("button", { name: "구매/주문" }).click();
+  await page.getByRole("button", { name: "음식 주문하기" }).click();
+
+  await expect(page.getByTestId("filter-visible-count")).toContainText("/");
+  const firstListTerm = page.locator("[data-list-term-id]").first();
+  await expect(firstListTerm).toBeVisible();
+  await firstListTerm.click();
+  await expect(page.getByTestId("detail-path")).toHaveText(/주제 및 상황 > 장보기와 음식 > 음식 주문하기/);
+});
+
+test("sidebar category click syncs the selected classification to mindmap", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: /의미 범주/ }).click();
+  await page.locator("[data-sidebar-node-type='scene']").filter({ hasText: "장보기와 음식" }).first().click();
+  await page.locator("[data-sidebar-node-type='category']").filter({ hasText: "식사 및 조리 행위" }).first().click();
+
+  await expect(page.locator("svg [data-node-type='term']").first()).toBeVisible();
 });
 
 test("unclassified helper splits grammatical items from uncategorized vocabulary", async ({ page }) => {
@@ -361,10 +460,11 @@ test("unclassified helper splits grammatical items from uncategorized vocabulary
   await results.filter({ hasText: "앞말이 나타내는 행동이 완전히 끝났음을" }).first().click();
 
   await expect(page.getByTestId("detail-word")).toHaveText("버리다");
-  await expect(page.getByTestId("detail-path")).toHaveText("분류 밖 항목 > 학습난이도 · 중급 > 품사 · 보조 동사");
+  await expect(page.getByTestId("detail-path")).toHaveText("분류 밖 항목 > 품사 · 보조 동사 > 학습난이도 · 중급");
+  await expect(page.getByTestId("detail-guidance-chip")).toHaveText("탐색 기준 · 품사/형태 먼저");
   await page.screenshot({ path: path.join(guideAssetDir, "06_unclassified_detail.png"), fullPage: true });
   await expect(page.getByTestId("detail-context-helper")).toContainText("문법 기능 중심 항목");
-  await expect(page.getByTestId("detail-context-helper")).toContainText("장면보다 문법 기능과 형태 변화 중심으로 보면 됩니다");
+  await expect(page.getByTestId("detail-context-helper")).toContainText("품사와 형태 기준을 먼저 보면 됩니다");
 });
 
 test("expression tab separates jumpable expressions from preview-only expressions", async ({ page }) => {
@@ -379,6 +479,7 @@ test("expression tab separates jumpable expressions from preview-only expression
   await target.click();
   await expect(page.getByTestId("detail-word")).toHaveText("두다");
   await page.getByTestId("detail-tab-expressions").click();
+  await expect(page.getByTestId("expression-overview")).toContainText("표현 읽는 순서");
   await expect(page.getByText("바로 탐색 가능한 표현")).toBeVisible();
   await expect(page.getByText("독립 표제어로 바로 이어지는 표현입니다.")).toBeVisible();
   await expect(page.getByText("현재 표제어 안에서 먼저 보는 표현입니다.")).toHaveCount(0);
@@ -394,6 +495,7 @@ test("expression cards follow selected translation language when available", asy
   await expect(page.getByTestId("detail-word")).toHaveText("돈");
   await page.getByTestId("detail-tab-expressions").click();
   await page.screenshot({ path: path.join(guideAssetDir, "04_expression_tab.png"), fullPage: true });
+  await expect(page.getByTestId("expression-overview")).toContainText("바로 이동 가능");
   await expect(page.getByTestId("subword-translation-돈을 굴리다")).toContainText("번역 언어 · 중국어");
   await expect(page.getByTestId("subword-example-돈을 굴리다")).toContainText("예문:");
   await expect(page.getByTestId("subword-card-돈을 굴리다")).not.toContainText("의미 2개 연결");

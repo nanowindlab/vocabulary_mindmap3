@@ -100,9 +100,20 @@ function normalizeStats(rawStats = {}) {
   };
 }
 
+function isSubjectNoneCategory(item = {}) {
+  return item?.type === "주제 및 상황 범주" && item?.value === "없음";
+}
+
+function isSubjectNoneOnly(categories = []) {
+  const normalizedCategories = Array.isArray(categories) ? categories : [];
+  const hasSituationNone = normalizedCategories.some((item) => isSubjectNoneCategory(item));
+  const hasMeaning = normalizedCategories.some((item) => item?.type === "의미 범주");
+  return hasSituationNone && !hasMeaning;
+}
+
 function buildHierarchy(categories = []) {
   const normalizedCategories = Array.isArray(categories) ? categories : [];
-  const firstSituation = normalizedCategories.find((item) => item?.type === "주제 및 상황 범주");
+  const firstSituation = normalizedCategories.find((item) => item?.type === "주제 및 상황 범주" && item?.value && item?.value !== "없음");
   if (firstSituation?.value) {
     return {
       system: "MM3",
@@ -140,7 +151,7 @@ export function buildRecoverableSearchRows() {
   const statsByEntryId = buildTopikStatsMap();
   const chunkMap = buildChunkMap(detailMap);
 
-  return (thin.entries || []).map((item) => {
+  return (thin.entries || []).filter((item) => !isSubjectNoneOnly(item.entry?.categories || [])).map((item) => {
     const entry = item.entry || {};
     const representativeSenseId = item.representative_sense?.id || null;
     return {

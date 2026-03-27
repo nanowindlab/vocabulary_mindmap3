@@ -330,6 +330,174 @@
 - Decision: internal pilot checklist와 feedback intake protocol까지 PM 문서로 정리하고, 실제 human pilot session 여부는 사용자/운영 판단 경계로 둔다.
 - Why: 여기서부터는 코드/문서 작업이 아니라 실제 사람을 대상으로 pilot를 실행할지의 운영 결정이기 때문이다.
 
+## D-086
+
+- Date: `2026-03-27`
+- Decision: `주제 및 상황` hierarchy에서 `scene == category`인 repeated label은 learner-facing path에서는 collapse하고, tree/category node는 structural label `어휘 목록`으로 표시한다.
+- Why: source-shaped hierarchy 자체는 유지해야 하지만, `교통 이용하기 > 교통 이용하기` 같은 repeated path는 learner-facing noise가 크다. semantic rename 대신 structural label을 쓰면 false hierarchy 없이 redundancy만 줄일 수 있다.
+
+## D-087
+
+- Date: `2026-03-27`
+- Decision: `주제 및 상황 범주 = 없음`은 canonical learner-facing taxonomy로 승격하지 않는다; meaning 중복 `4,488`개는 meaning-only로 남기고, none-only `468`개는 live canonical/runtime에서 제외하고 parked review 대상으로 둔다.
+- Why: browse taxonomy에는 없는 entry-level fallback metadata를 `주제 및 상황` tree에 승격하면 canonical structure가 오염되고, 다수는 이미 `의미 범주`에서 충분히 탐색 가능하기 때문이다.
+
+## D-091
+
+- Date: `2026-03-26`
+- Decision: `PRODUCT_SCENARIO_SPEC_V1.md`를 current learner-facing scenario canonical로 승격한다.
+- Why: current search/tree/detail/expression surface, translation rule, unclassified semantics, guide wording, scenario-level QA representative subset이 모두 닫혔고, 이제 scaffold 상태를 유지할 이유보다 canonical 고정의 이점이 더 크기 때문이다.
+
+## D-089
+
+- Date: `2026-03-26`
+- Decision: current tranche에서 `chunk_id`는 runtime-enrichment로 유지한다. canonical `chunk_id` mapping 신규 생성은 `MM3-226A` parked backlog로 남긴다.
+- Why: current critical path는 `search semantic fields + facets` authoritative candidate를 actual authoritative로 전환할지 판단하는 일이며, `chunk_id`는 semantic correctness보다 navigation/performance routing 성격이 더 강하기 때문이다.
+
+## D-090
+
+- Date: `2026-03-26`
+- Decision: approved verdict에 따라 `promote:authoritative-runtime:execute`를 실행한다. current authoritative runtime boundary는 `search semantic fields + facets`로 고정하고, `tmp_reports` sidecar output은 계속 comparison/validation artifact로 유지한다.
+- Why: execute 전 dry-run, diff, rollback-ready path가 모두 정의돼 있었고, current semantic authority candidate는 exact-match evidence를 이미 충족했기 때문이다.
+
+## D-086
+
+- Date: `2026-03-26`
+- Decision: current learner-facing `search + facets only` builder surface는 `package/build-chain`에 `non-authoritative sidecar`로 편입한다. current deploy/runtime truth는 계속 `runtime_payloads/*.json.gz -> prepare:live -> verify:live -> build`로 유지하고, builder output의 authoritative switch는 defer한다.
+- Why: `validate:source-alignment`, `build:runtime-surface-recovery`, `probe:runtime-surface-recovery` evidence는 narrow `search + facets` exact recovery를 build/package chain gate로 쓰기엔 충분하지만, current builder는 tree/detail/chunk full rebuild readiness와 runtime-independent detail provenance를 아직 닫지 못했기 때문이다.
+
+## D-087
+
+- Date: `2026-03-26`
+- Decision: `MM3-217C`의 initial authoritative candidate는 `APP_READY_SEARCH_INDEX` semantic fields + `APP_READY_FACETS`로 좁힌다. `chunk_id`는 initial semantic-authority gate에서 제외하고, authoritative switch 전까지는 runtime navigation/performance enrichment field로 별도 정책을 닫는다.
+- Why: `npm run audit:authoritative-promotion` 기준 full parity와 `without_chunk_id` parity가 모두 `true`이며 semantic candidate readiness는 확보됐지만, `CHUNK_MANIFEST_V1.json` alone으로는 `chunk_id`를 재구성할 수 없고 current app는 `chunk_id` 부재 시 `loadEntryDetail(term.id)` fallback이 있기 때문이다.
+
+## D-088
+
+- Date: `2026-03-26`
+- Decision: authoritative runtime write path / rollback / dual-run diff protocol 정의와 dry-run 검증은 별도 승인 없이 진행한다. 다만 `promote:authoritative-runtime:execute`로 actual authoritative runtime truth를 바꾸는 실행은 explicit promotion verdict 이후에만 진행한다.
+- Why: protocol definition과 dry-run은 current runtime truth를 바꾸지 않지만, actual execute는 `live`와 `runtime_payloads`를 갱신해 authoritative surface를 바꾸기 때문이다.
+
+## D-086
+
+- Date: `2026-03-26`
+- Decision: `분류 밖 항목`은 current main app 안에 유지하고, separate app split은 현재 시점에는 defer한다. future IA implementation tranche가 열리면 browse order는 `품사 -> 학습난이도`를 우선 추천한다.
+- Why: `분류 밖 항목`은 아직 fallback interpretation surface로 main explorer와 강하게 연결돼 있고, `학습난이도`는 이미 filter로 병행 제어가 가능해 browse first discriminator로는 `품사`가 더 직관적이기 때문이다.
+
+## D-087
+
+- Date: `2026-03-26`
+- Decision: `MM3` mindmap에서는 lower-left fixed `Band 범위` legend를 기본 chrome에서 제거한다.
+- Why: current learner task priority는 relation / expression / detail comprehension 쪽이고, band signal은 tooltip / node ring / filter / detail chip으로 이미 충분히 남아 있어 fixed legend는 시야 점유 대비 가치가 낮기 때문이다.
+
+## D-089
+
+- Date: `2026-03-25`
+- Decision: second pilot feedback 기준 learner-facing fallback root는 `미분류`가 아니라 `분류 밖 항목`으로 통일하고, helper copy는 taxonomy 설명보다 현재 탐색 기준만 짧게 전달한다.
+- Why: raw feedback의 핵심 혼란이 같은 surface를 서로 다른 이름과 과한 helper로 설명하는 데 있었고, root 제거 같은 구조 변경 없이도 learner confusion을 크게 줄일 수 있기 때문이다.
+
+## D-090
+
+- Date: `2026-03-25`
+- Decision: search result route label은 `코어` 대신 `기본 항목`을 쓰고, dropdown 안에서 정렬 규칙과 label meaning을 함께 설명한다. preview-only 표현에는 `상세 연결 없음` 같은 negative status pill을 남기지 않는다.
+- Why: raw feedback은 현재 search/result semantics와 preview 표현 상태를 해석하기 어렵다는 것이었고, naming과 inline explanation만 바꿔도 learner-facing ambiguity를 직접 줄일 수 있기 때문이다.
+
+## D-091
+
+- Date: `2026-03-25`
+- Decision: `분류 밖 항목`은 learner-facing fallback surface로 유지하고, `주제 및 상황 > 상황 미지정`과 계속 다른 cohort로 다룬다.
+- Why: current live 기준 `분류 밖 항목 8,506건`, `상황 미지정 4,956건`으로 규모와 역할이 다르고, fallback surface 제거는 연결 영향 검토 없이 바로 실행할 수 있는 수준이 아니기 때문이다.
+
+## D-092
+
+- Date: `2026-03-25`
+- Decision: `TOPIK` example visible priority는 UI guard까지만 reflected로 보고, `APP_READY_CHUNK_EXAMPLES_*` source restore 전까지 fully reflected로 간주하지 않는다. 또한 `vocabulary_mindmap2` example sentence는 현재 boundary에서 import하지 않는다.
+- Why: current runtime-facing example chunk payload가 실제로 `0개`이고, README policy는 MM2 import를 `TOPIK stats`까지만 허용하기 때문이다.
+
+## D-093
+
+- Date: `2026-03-25`
+- Decision: raw/internal 용어 `미분류`와 learner-facing 용어 `분류 밖 항목`은 서로 다른 bucket이 아니라 같은 underlying bucket의 layer-specific naming으로 본다.
+- Why: current runtime payload sample과 app normalization code가 모두 raw `미분류`를 display `분류 밖 항목`으로 재표현하고 있기 때문이다.
+
+## D-094
+
+- Date: `2026-03-25`
+- Decision: current MM3 repo 안에는 `APP_READY_CHUNK_EXAMPLES_*`를 생성/패키징/검증하는 existing builder path가 없다고 본다.
+- Why: current package/prepare/verify chain은 `CHUNK_RICH_*`만 다루고, MM3-side scripts에도 example chunk generator가 확인되지 않았기 때문이다.
+
+## D-095
+
+- Date: `2026-03-25`
+- Decision: learner-facing UI surface에서는 raw `미분류`를 직접 쓰지 않고, 같은 bucket을 `분류 밖 항목`으로 통일해 표시한다.
+- Why: raw/internal 용어와 learner-facing 용어가 한 화면 안에서 섞이면 같은 bucket이 다른 개념처럼 읽히기 때문이다.
+
+## D-096
+
+- Date: `2026-03-25`
+- Decision: MM3-side runtime chain에 `APP_READY_CHUNK_EXAMPLES_*`를 추가하고, source label은 current MM3 dictionary examples의 example type을 우선 사용한다.
+- Why: existing MM3 repo만으로 example chunk restore path를 먼저 복구하는 것이 boundary 변경 없이 가장 작은 구현으로 다음 unlock을 만들 수 있기 때문이다.
+
+## D-097
+
+- Date: `2026-03-25`
+- Decision: MM2 extracted corpus의 `Word_Occurrences.jsonl`와 MM3 `entry_topik_stats` linkage를 사용해 `TOPIK` source sentence provenance를 MM3 example chunk에 붙인다.
+- Why: `TOPIK` priority feedback을 fully reflected로 닫으려면 실제 sentence-level provenance가 필요하고, 현재 로컬 artifact 안에서 가장 직접적인 join path가 이 조합이기 때문이다.
+
+## D-098
+
+- Date: `2026-03-25`
+- Decision: second human pilot feedback pipeline은 `ACCEPT`로 닫고, 다음 active work는 `MM3-173E Actual In-App Guide Authoring`으로 전환한다.
+- Why: direct learner-facing feedback residual은 runtime/UI 기준으로 닫혔고, guide authoring은 example-source quality verdict 이후 reopen한다는 기존 rule도 이제 충족했기 때문이다.
+
+## D-099
+
+- Date: `2026-03-25`
+- Decision: actual guide 작성 이후 feedback full-apply recheck 기준 남은 feedback residue는 `render-side performance optimization` 하나로 본다.
+- Why: screenshot-inclusive guide까지 작성되면서 direct learner-facing feedback 항목은 닫혔고, historical audit 기준 미완 항목은 performance follow-up만 남기 때문이다.
+
+## D-100
+
+- Date: `2026-03-25`
+- Decision: `MM3-171B` first quick win은 `selectedTermId` 변경 시 full redraw를 피하는 방향으로 처리한다.
+- Why: selection highlight는 graph topology를 바꾸지 않는데도 force simulation까지 다시 도는 경로는 비용 대비 이득이 낮고, current UX를 바꾸지 않는 가장 작은 성능 개선이기 때문이다.
+
+## D-101
+
+- Date: `2026-03-25`
+- Decision: dense category expansion에서는 term node를 cap하고, 선택된 term는 cap 밖이라도 강제로 포함한다.
+- Why: 현재 최대 category가 수천 개 term를 한 번에 올리는 구조라 canvas cost가 과도하고, selected-term inclusion만 보장하면 learner path는 유지한 채 render 부담을 줄일 수 있기 때문이다.
+
+## D-102
+
+- Date: `2026-03-25`
+- Decision: 이미 normalized된 active list는 tree build에서 다시 normalize하지 않고, `리스트` 뷰일 때는 mindmap tree build를 생략한다.
+- Why: 같은 payload를 view switch마다 다시 normalize/build하는 비용은 learner-facing 의미를 바꾸지 않으면서도 줄일 수 있는 순수 낭비에 가깝기 때문이다.
+
+## D-103
+
+- Date: `2026-03-25`
+- Decision: `APP_READY_SEARCH_INDEX` 전건은 init 시점에 upfront normalize하지 않고, learner-facing hierarchy display는 search result 상위 노출 항목에서만 lazily 계산한다.
+- Why: search index `53,480`건 전체 normalize는 initial load CPU 비중이 큰 반면, 실제 즉시 필요한 learner-facing path는 검색 결과 상위 몇 건뿐이기 때문이다.
+
+## D-087
+
+- Date: `2026-03-24`
+- Decision: `MM3-168`~`MM3-173` additional human feedback residual은 `W1 Semantics Baseline -> W2 Runtime Reality Audit -> W3 Surface Contract -> W4 Enablement Closeout` linked pipeline으로 처리한다.
+- Why: tree semantics, translation residual, performance, detail/relation/expression contract, guide가 서로 입력과 출력으로 연결돼 있어 개별 task를 독립적으로 닫으면 재작업과 wording drift가 커지기 때문이다.
+
+## D-088
+
+- Date: `2026-03-24`
+- Decision: 이 파이프라인에서는 병렬 가치가 높은 `W2` audit과 중요 stage review에만 멀티에이전트를 적극 사용하고, `W1`/`W3`처럼 contract를 다시 정의하는 단계는 single owner + review checkpoint로 운영한다.
+- Why: 고결합 단계는 병렬화보다 handoff cost와 surface contract drift 위험이 더 크기 때문이다.
+
+## D-086
+
+- Date: `2026-03-24`
+- Decision: refreshed runtime 기준으로 `MM3-096 Human Pilot Scheduling / Execution`을 다시 열고, runtime thin-index generator recovery는 parked follow-up으로 분리한다.
+- Why: raw feedback 큰 holdout은 모두 닫혔고 translation/runtime/examples/motion/packaging baseline도 현재 충분히 정리됐지만, canonical generator 경로 복구는 재현성 technical debt이지 human pilot 재개를 막는 immediate blocker는 아니기 때문이다.
+
 ## D-054
 
 - Date: `2026-03-24`

@@ -52,6 +52,41 @@ const nodeColor = (type, selected) => {
   return TERM_COLOR;
 };
 
+const nodeFill = (node, selected = false) => {
+  if (selected) return "rgba(247,129,102,0.55)";
+  if (node.type === "root") return "rgba(88,166,255,0.18)";
+  if (node.type === "scene") return "rgba(63,185,80,0.14)";
+  if (node.type === "category") return "rgba(188,140,255,0.12)";
+
+  const band = safeBand(node.data?.stats);
+  const bc = BAND_COLORS[band] || BAND_COLORS[null];
+  return `${bc}24`;
+};
+
+const nodeGlow = (node, selected = false) => {
+  if (selected) return "rgba(247,129,102,0.16)";
+  if (node.type === "root") return "rgba(88,166,255,0.12)";
+  if (node.type === "scene") return "rgba(63,185,80,0.10)";
+  if (node.type === "category") return "rgba(188,140,255,0.10)";
+  return "rgba(255,255,255,0.04)";
+};
+
+const linkStroke = (sourceNode) => {
+  if (!sourceNode) return "rgba(130,150,175,0.22)";
+  if (sourceNode.type === "root") return "rgba(88,166,255,0.26)";
+  if (sourceNode.type === "scene") return "rgba(63,185,80,0.24)";
+  if (sourceNode.type === "category") return "rgba(188,140,255,0.22)";
+  return "rgba(130,150,175,0.18)";
+};
+
+const linkWidth = (sourceNode) => {
+  if (!sourceNode) return 1;
+  if (sourceNode.type === "root") return 1.8;
+  if (sourceNode.type === "scene") return 1.4;
+  if (sourceNode.type === "category") return 1.1;
+  return 1;
+};
+
 const isNodeSelected = (node, selectedTermId) =>
   !!selectedTermId && (node.id === selectedTermId || node.data?.id === selectedTermId);
 
@@ -63,18 +98,14 @@ function applySelectionStyles(nodeSel, selectedTermId) {
     const selected = isNodeSelected(node, selectedTermId);
     const baseRadius = nodeRadius(node.type);
 
+    group.select("circle.node-glow")
+      .attr("r", selected ? baseRadius + 12 : baseRadius + 9)
+      .attr("fill", nodeGlow(node, selected))
+      .attr("opacity", selected ? 1 : (node.type === "term" ? 0.42 : 0.9));
+
     group.select("circle.node-fill")
       .attr("r", selected ? baseRadius + 4 : baseRadius)
-      .attr("fill", () => {
-        if (selected) return "rgba(247,129,102,0.55)";
-        if (node.type === "root") return "rgba(88,166,255,0.15)";
-        if (node.type === "scene") return "rgba(63,185,80,0.12)";
-        if (node.type === "category") return "rgba(188,140,255,0.10)";
-
-        const band = safeBand(node.data?.stats);
-        const bc = BAND_COLORS[band] || BAND_COLORS[null];
-        return bc + "22";
-      })
+      .attr("fill", nodeFill(node, selected))
       .attr("stroke", selected ? SELECTED_COLOR : nodeColor(node.type, false))
       .attr("stroke-width", selected ? 3.5 : 1.5);
 
@@ -171,6 +202,7 @@ export const MindmapCanvas = ({
   onSelectTerm,
   selectedTermId,
   focusedRootId,
+  selectedTreeNode,
 }) => {
   const svgRef = useRef(null);
   const simulationRef = useRef(null);
@@ -187,6 +219,7 @@ export const MindmapCanvas = ({
   const centerOnNodeRef = useRef(null);
   // 다음 draw 완료 후 줌할 termId (외부 선택 → 카테고리 확장 → 리드로 → 줌)
   const pendingZoomTermRef = useRef(null);
+  const pendingFocusNodeRef = useRef(null);
 
   // 이전 노드 위치 저장용 (레이아웃 재계산 시 점프 방지)
   const nodePositionsRef = useRef(new Map());
@@ -278,8 +311,10 @@ export const MindmapCanvas = ({
       .selectAll("line")
       .data(links)
       .enter().append("line")
-      .attr("stroke", "rgba(100,120,150,0.25)")
-      .attr("stroke-width", 1);
+      .attr("stroke", (l) => linkStroke(nodes[l.source.index ?? l.source]))
+      .attr("stroke-width", (l) => linkWidth(nodes[l.source.index ?? l.source]))
+      .attr("stroke-linecap", "round")
+      .attr("opacity", 0.9);
 
     // 노드 렌더
     const nodeSel = g.append("g").attr("class", "nodes")
@@ -340,23 +375,25 @@ export const MindmapCanvas = ({
     nodeSelRef.current = nodeSel;
 
     nodeSel.append("circle")
+      .attr("class", "node-glow")
+      .attr("r", (n) => {
+        const isSelected = isNodeSelected(n, selectedTermIdRef.current);
+        return isSelected ? nodeRadius(n.type) + 12 : nodeRadius(n.type) + 9;
+      })
+      .attr("fill", (n) => nodeGlow(n, isNodeSelected(n, selectedTermIdRef.current)))
+      .attr("opacity", (n) => {
+        if (isNodeSelected(n, selectedTermIdRef.current)) return 1;
+        return n.type === "term" ? 0.42 : 0.9;
+      });
+
+    nodeSel.append("circle")
       .attr("class", "node-fill")
       .attr("r", (n) => {
         const isSelected = isNodeSelected(n, selectedTermIdRef.current);
         // 선택된 term은 반경을 키워 한눈에 띄게
         return isSelected ? nodeRadius(n.type) + 4 : nodeRadius(n.type);
       })
-      .attr("fill", (n) => {
-        const isSelected = isNodeSelected(n, selectedTermIdRef.current);
-        if (isSelected) return "rgba(247,129,102,0.55)";
-        if (n.type === "root") return "rgba(88,166,255,0.15)";
-        if (n.type === "scene") return "rgba(63,185,80,0.12)";
-        if (n.type === "category") return "rgba(188,140,255,0.10)";
-
-        const band = safeBand(n.data?.stats);
-        const bc = BAND_COLORS[band] || BAND_COLORS[null];
-        return bc + "22";
-      })
+      .attr("fill", (n) => nodeFill(n, isNodeSelected(n, selectedTermIdRef.current)))
       .attr("stroke", (n) => {
         const isSelected = isNodeSelected(n, selectedTermIdRef.current);
         if (isSelected) return SELECTED_COLOR;
@@ -417,6 +454,10 @@ export const MindmapCanvas = ({
         const isSelected = isNodeSelected(n, selectedTermIdRef.current);
         return isSelected ? SELECTED_COLOR : nodeColor(n.type, false);
       })
+      .attr("paint-order", "stroke")
+      .attr("stroke", "rgba(8,16,24,0.92)")
+      .attr("stroke-width", 3)
+      .attr("stroke-linejoin", "round")
       .attr("pointer-events", "none");
 
     simulation.on("tick", () => {
@@ -526,6 +567,34 @@ export const MindmapCanvas = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTermId, treeData]);
 
+  useEffect(() => {
+    if (!selectedTreeNode?.id) return;
+
+    if (selectedTreeNode.type === "category") {
+      if (expandedCategoryId !== selectedTreeNode.id) {
+        setExpandedCategoryId(selectedTreeNode.id);
+      }
+    } else if (selectedTreeNode.type === "scene" && expandedCategoryId) {
+      setExpandedCategoryId(null);
+    }
+
+    pendingFocusNodeRef.current = selectedTreeNode.id;
+    const t = setTimeout(() => {
+      if (pendingFocusNodeRef.current !== selectedTreeNode.id) return;
+      const pos = nodePositionsRef.current.get(selectedTreeNode.id);
+      if (pos && centerOnNodeRef.current) {
+        centerOnNodeRef.current(
+          pos.x,
+          pos.y,
+          selectedTreeNode.type === "category" ? 1.25 : 1.05,
+        );
+      }
+      pendingFocusNodeRef.current = null;
+    }, 800);
+
+    return () => clearTimeout(t);
+  }, [selectedTreeNode, expandedCategoryId]);
+
   const handleReset = () => {
     const svgEl = svgRef.current;
     if (!svgEl) return;
@@ -536,25 +605,39 @@ export const MindmapCanvas = ({
     );
   };
 
+  const handleZoomBy = (factor) => {
+    const svgEl = svgRef.current;
+    const zoom = zoomBehaviorRef.current;
+    if (!svgEl || !zoom) return;
+    d3.select(svgEl).transition().duration(240).call(zoom.scaleBy, factor);
+  };
+
   return (
-    <div style={{ width: "100%", height: "100%", position: "relative", overflow: "hidden" }}>
+    <div className="mindmap-shell" style={{ width: "100%", height: "100%", position: "relative", overflow: "hidden" }}>
       <svg ref={svgRef} style={{ width: "100%", height: "100%", background: "transparent" }} />
 
-      <div style={{ position: "absolute", top: 12, right: 12, display: "flex", flexDirection: "column", gap: 6, zIndex: 10 }}>
-        <button onClick={handleReset} className="card-glass" style={{ width: 36, height: 36, borderRadius: 8, color: "var(--text-primary)", border: "1px solid var(--border-color)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div className="mindmap-control-stack" style={{ position: "absolute", top: 12, right: 12, display: "flex", flexDirection: "column", gap: 8, zIndex: 10 }}>
+        <button onClick={() => handleZoomBy(1.2)} className="card-glass mindmap-control-button" style={{ width: 40, height: 40, borderRadius: 12, color: "var(--text-primary)", border: "1px solid var(--border-color)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <ZoomIn size={14} />
+        </button>
+        <button onClick={() => handleZoomBy(0.84)} className="card-glass mindmap-control-button" style={{ width: 40, height: 40, borderRadius: 12, color: "var(--text-primary)", border: "1px solid var(--border-color)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <ZoomOut size={14} />
+        </button>
+        <button onClick={handleReset} className="card-glass mindmap-control-button" style={{ width: 40, height: 40, borderRadius: 12, color: "var(--text-primary)", border: "1px solid var(--border-color)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
           <RefreshCcw size={14} />
         </button>
       </div>
 
       {tooltip && (
-        <div style={{ position: "fixed", left: tooltip.x + 12, top: tooltip.y - 10, background: "rgba(13,17,23,0.95)", border: "1px solid var(--border-color)", borderRadius: 10, padding: "12px 16px", zIndex: 200, maxWidth: 280, boxShadow: "0 8px 24px rgba(0,0,0,0.5)", pointerEvents: "none" }}>
+        <div className="mindmap-tooltip-shell" style={{ position: "fixed", left: tooltip.x + 12, top: tooltip.y - 10, background: "rgba(8,14,20,0.96)", border: "1px solid var(--border-color)", borderRadius: 14, padding: "14px 16px", zIndex: 200, maxWidth: 300, boxShadow: "0 18px 42px rgba(0,0,0,0.36)", pointerEvents: "none" }}>
+          <div style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 6 }}>Node Preview</div>
           <div style={{ fontWeight: 700, fontSize: 16, color: "var(--text-primary)", marginBottom: 4 }}>{tooltip.word}</div>
-          <div style={{ fontSize: 13, color: "var(--text-secondary)", marginBottom: 8, lineHeight: 1.5 }}>{tooltip.def || "—"}</div>
+          <div style={{ fontSize: 13, color: "var(--text-secondary)", marginBottom: 10, lineHeight: 1.6 }}>{tooltip.def || "—"}</div>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             {tooltip.band !== null ? (
-              <span style={{ padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 600, background: BAND_COLORS[tooltip.band] + "33", color: BAND_COLORS[tooltip.band], border: `1px solid ${BAND_COLORS[tooltip.band]}66` }}>{BAND_LABELS[tooltip.band] || `Band ${tooltip.band}`}</span>
+              <span style={{ padding: "3px 9px", borderRadius: 999, fontSize: 11, fontWeight: 700, background: BAND_COLORS[tooltip.band] + "33", color: BAND_COLORS[tooltip.band], border: `1px solid ${BAND_COLORS[tooltip.band]}66` }}>{BAND_LABELS[tooltip.band] || `Band ${tooltip.band}`}</span>
             ) : (
-              <span style={{ padding: "2px 8px", borderRadius: 6, fontSize: 11, fontWeight: 600, background: "rgba(110,118,129,0.15)", color: "#6e7681", border: "1px solid rgba(110,118,129,0.3)" }}>TOPIK band 없음</span>
+              <span style={{ padding: "3px 9px", borderRadius: 999, fontSize: 11, fontWeight: 700, background: "rgba(110,118,129,0.15)", color: "#6e7681", border: "1px solid rgba(110,118,129,0.3)" }}>TOPIK band 없음</span>
             )}
           </div>
         </div>

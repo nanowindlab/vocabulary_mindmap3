@@ -6,7 +6,6 @@ import {
   Languages,
   Share2,
   Globe,
-  X,
 } from "lucide-react";
 
 // ── V3 명세 방어 함수 ────────────────────────────────────────────
@@ -70,8 +69,15 @@ const buildExampleItems = (senseExamples = [], fallbackExamples = []) => {
       seen.add(key);
       return true;
     })
-    .slice(0, 8)
     .map(({ __priority, __order, ...item }) => item);
+};
+
+const formatRelationDisplayLabel = (item, meta = null) => {
+  const baseLabel = item?.word || meta?.word || "—";
+  const homonymNo = item?.homonym_no ?? meta?.homonym_no ?? null;
+  const normalized = homonymNo === null || homonymNo === undefined ? "" : String(homonymNo).trim();
+  if (!normalized || normalized === "0") return baseLabel;
+  return `${baseLabel}${normalized}`;
 };
 
 const formatSenseNumber = (senseId, totalCount) => {
@@ -95,6 +101,38 @@ const dedupeDisplayItems = (items, keyBuilder) => {
     result.push(item);
   }
   return result;
+};
+
+const relationStatusMeta = (item) => {
+  const status = item?.link_status || "";
+  if (status === "unresolved_no_target_code" || status === "unresolved_zero_code") {
+    return {
+      label: "원본 target 미지정",
+      tone: "var(--text-secondary)",
+      border: "rgba(148,163,184,0.28)",
+      bg: "rgba(148,163,184,0.10)",
+      helper: "원본 사전에서 연결 대상을 명시하지 않은 관련형입니다.",
+    };
+  }
+  if (status === "resolved_multi_exact_word_backfill") {
+    return {
+      label: "다중 연결",
+      tone: "var(--accent-purple)",
+      border: "rgba(188,140,255,0.35)",
+      bg: "rgba(188,140,255,0.12)",
+      helper: "같은 표면형이 여러 내부 항목으로 이어져 품사와 뜻으로 구분해 보여 줍니다.",
+    };
+  }
+  if (status === "resolved_exact_word_backfill") {
+    return {
+      label: "단일 연결",
+      tone: "var(--accent-blue)",
+      border: "rgba(88,166,255,0.35)",
+      bg: "rgba(88,166,255,0.12)",
+      helper: null,
+    };
+  }
+  return null;
 };
 
 const selectPreferredRelatedForm = (current, candidate) => {
@@ -135,6 +173,16 @@ const getRepeatedWordSet = (items) => {
       .filter(([, count]) => count > 1)
       .map(([word]) => word),
   );
+};
+
+const countUniqueRelationGroups = (items = []) => {
+  const groups = new Set();
+  items.forEach((item) => {
+    const typeLabel = item?.type || "관련형";
+    const word = item?.word || "—";
+    groups.add(`${typeLabel}|${word}`);
+  });
+  return groups.size;
 };
 
 const isUnresolvedRelation = (item) => {
@@ -247,6 +295,70 @@ export const TermDetail = ({
       : null;
   const shouldShowContextHelper =
     !!(helperTitle && helperDescription && helperAccent && contextKind !== "situation_none");
+  const fallbackGuidanceChip = contextKind === "situation_none"
+    ? {
+        label: "탐색 기준 · 핵심/예문 먼저",
+        tone: "var(--accent-green)",
+        border: "rgba(63,185,80,0.24)",
+        background: "rgba(63,185,80,0.12)",
+      }
+    : contextKind === "unclassified_functional"
+      ? {
+          label: "탐색 기준 · 품사/형태 먼저",
+          tone: "var(--accent-purple)",
+          border: "rgba(188,140,255,0.24)",
+          background: "rgba(188,140,255,0.12)",
+        }
+      : contextKind === "unclassified_content"
+        ? {
+            label: "탐색 기준 · 품사/난이도 먼저",
+            tone: "var(--accent-purple)",
+            border: "rgba(188,140,255,0.24)",
+            background: "rgba(188,140,255,0.12)",
+          }
+        : null;
+  const headerTranslationPreview =
+    showEnglish && primaryTranslation?.word
+      ? `${primaryTranslation.language || "대표 번역"} · ${primaryTranslation.word}`
+      : null;
+  const canJumpToRelation = (item) => {
+    if (typeof isReferenceJumpAvailable === "function") {
+      return isReferenceJumpAvailable(item);
+    }
+    return !isUnresolvedRelation(item);
+  };
+  const jumpableRelatedForms = dedupedRelatedForms.filter((item) => !isUnresolvedRelation(item) && canJumpToRelation(item));
+  const textOnlyRelatedForms = dedupedRelatedForms.filter((item) => !jumpableRelatedForms.includes(item));
+  const relationOverviewItems = [
+    {
+      label: "의미 관계어",
+      count: currentRelatedTerms.length,
+      tone: "var(--accent-blue)",
+      border: "rgba(88,166,255,0.28)",
+      background: "rgba(88,166,255,0.10)",
+    },
+    {
+      label: "바로 이동 관련형",
+      count: countUniqueRelationGroups(jumpableRelatedForms),
+      tone: "var(--accent-purple)",
+      border: "rgba(188,140,255,0.32)",
+      background: "rgba(188,140,255,0.10)",
+    },
+    {
+      label: "원본 표면형만 있음",
+      count: countUniqueRelationGroups(textOnlyRelatedForms),
+      tone: "var(--text-secondary)",
+      border: "rgba(148,163,184,0.28)",
+      background: "rgba(148,163,184,0.10)",
+    },
+    {
+      label: "교차 연결 장면",
+      count: dedupedCrossLinks.length,
+      tone: "var(--accent-green)",
+      border: "rgba(63,185,80,0.28)",
+      background: "rgba(63,185,80,0.10)",
+    },
+  ].filter((item) => item.count > 0);
 
   const renderSubwordCards = (items) => {
     if (!items || items.length === 0) return null;
@@ -296,13 +408,46 @@ export const TermDetail = ({
                 </div>
               )}
               {showEnglish && firstTranslation && (
-                <div data-testid={`subword-translation-${item.text}`} style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 8 }}>
-                  {(matchedSubwordPreferred ? "번역 언어" : "대표 번역")} · {firstTranslation.language}: {firstTranslation.word}
+                <div
+                  data-testid={`subword-translation-${item.text}`}
+                  style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 6, marginTop: 8 }}
+                >
+                  <span
+                    style={{
+                      fontSize: 11,
+                      color: "var(--accent-green)",
+                      border: "1px solid rgba(63,185,80,0.24)",
+                      background: "rgba(63,185,80,0.12)",
+                      borderRadius: 999,
+                      padding: "2px 8px",
+                    }}
+                  >
+                    {(matchedSubwordPreferred ? "번역 언어" : "대표 번역")} · {firstTranslation.language}
+                  </span>
+                  <span style={{ fontSize: 12, color: "var(--text-primary)", fontWeight: 600 }}>
+                    {firstTranslation.word}
+                  </span>
                 </div>
               )}
               {exampleText && (
-                <div data-testid={`subword-example-${item.text}`} style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 8, opacity: 0.8 }}>
-                  예문: {exampleText}
+                <div
+                  data-testid={`subword-example-${item.text}`}
+                  style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 6, marginTop: 8 }}
+                >
+                  <span
+                    style={{
+                      fontSize: 11,
+                      color: "var(--text-secondary)",
+                      border: "1px solid var(--border-color)",
+                      borderRadius: 999,
+                      padding: "2px 8px",
+                    }}
+                  >
+                    예문:
+                  </span>
+                  <span style={{ fontSize: 12, color: "var(--text-secondary)", opacity: 0.9 }}>
+                    {exampleText}
+                  </span>
                 </div>
               )}
             </div>
@@ -423,6 +568,47 @@ const renderSectionTitle = (icon, label, color, count = null) => (
     </div>
   );
 
+  const renderCompactOverview = (testId, title, description, items, accentColor = "var(--accent-blue)") => {
+    if (!items || items.length === 0) return null;
+    return (
+      <div
+        data-testid={testId}
+        className="card-glass"
+        style={{ padding: 10, borderRadius: 12, borderLeft: `3px solid ${accentColor}` }}
+      >
+        <div style={{ fontSize: 11, color: accentColor, fontWeight: 700, marginBottom: 4 }}>
+          {title}
+        </div>
+        <div style={{ fontSize: 13, color: "var(--text-primary)", lineHeight: 1.5 }}>
+          {description}
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
+          {items.map((item) => (
+            <div
+              key={item.label}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "6px 10px",
+                borderRadius: 999,
+                border: `1px solid ${item.border}`,
+                background: item.background,
+              }}
+            >
+              <span style={{ fontSize: 11, color: item.tone, fontWeight: 700 }}>
+                {item.label}
+              </span>
+              <span style={{ fontSize: 11, color: "var(--text-primary)", fontWeight: 700 }}>
+                {item.count}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   const hasRepeatedRelationWord = (items) => {
     const counts = new Map();
     (items || []).forEach((item) => {
@@ -470,7 +656,7 @@ const renderSectionTitle = (icon, label, color, count = null) => (
   };
 
   const renderRelationSection = (testId, title, helper, count, color, content) => (
-    <div data-testid={testId} className="card-glass" style={{ padding: 16, borderRadius: 12, borderLeft: `3px solid ${color}` }}>
+    <div data-testid={testId} className="card-glass detail-section-card" style={{ padding: 16, borderRadius: 12, borderLeft: `3px solid ${color}` }}>
       {renderSectionTitle(null, title, color, count)}
       {helper ? (
         <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 8, lineHeight: 1.5 }}>
@@ -480,6 +666,50 @@ const renderSectionTitle = (icon, label, color, count = null) => (
       {content}
     </div>
   );
+
+  const renderRelationOverview = () => {
+    if (relationOverviewItems.length === 0) return null;
+    return (
+      <div
+        data-testid="relation-overview"
+        className="card-glass detail-section-card"
+        style={{ padding: 16, borderRadius: 12, borderLeft: "3px solid var(--accent-blue)" }}
+      >
+        <div style={{ fontSize: 12, color: "var(--accent-blue)", fontWeight: 700, marginBottom: 6 }}>
+          읽는 순서
+        </div>
+        <div style={{ fontSize: 14, color: "var(--text-primary)", lineHeight: 1.6 }}>
+          먼저 현재 뜻과 직접 연결된 관계를 보고, 그다음 관련형과 교차 연결 장면을 확인하면 됩니다.
+        </div>
+        <div style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5, marginTop: 8 }}>
+          같은 표면형이더라도 품사와 뜻이 다르면 따로 유지하고, 원본 사전에 target이 없는 항목은 text-only로 남깁니다.
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
+          {relationOverviewItems.map((item) => (
+            <div
+              key={item.label}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "6px 10px",
+                borderRadius: 999,
+                border: `1px solid ${item.border}`,
+                background: item.background,
+              }}
+            >
+              <span style={{ fontSize: 11, color: item.tone, fontWeight: 700 }}>
+                {item.label}
+              </span>
+              <span style={{ fontSize: 11, color: "var(--text-primary)", fontWeight: 700 }}>
+                {item.count}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
 
   const renderRelationCards = (items, options = {}) => {
     if (!items || items.length === 0) return null;
@@ -505,12 +735,23 @@ const renderSectionTitle = (icon, label, color, count = null) => (
             posLabels: new Set(),
             definitions: [],
             entries: [],
+            rows: [],
+            statusMeta: null,
           });
         }
         const group = groups.get(key);
         if (meta?.pos) group.posLabels.add(meta.pos);
         if (meta?.def_ko && !group.definitions.includes(meta.def_ko)) {
           group.definitions.push(meta.def_ko);
+        }
+        group.rows.push({
+          entry: item,
+          pos: meta?.pos || null,
+          definition: meta?.def_ko || null,
+          statusMeta: relationStatusMeta(item),
+        });
+        if (!group.statusMeta && relationStatusMeta(item)) {
+          group.statusMeta = relationStatusMeta(item);
         }
         group.entries.push(item);
       });
@@ -519,11 +760,18 @@ const renderSectionTitle = (icon, label, color, count = null) => (
       displayItems = items.map((item) => {
         const meta = resolveReferenceMeta?.(item);
         return {
-          label: item?.word || meta?.word || "—",
+          label: formatRelationDisplayLabel(item, meta),
           typeLabel: item?.type || "관련형",
           posLabels: meta?.pos ? new Set([meta.pos]) : new Set(),
           definitions: meta?.def_ko ? [meta.def_ko] : [],
           entries: [item],
+          rows: [{
+            entry: item,
+            pos: meta?.pos || null,
+            definition: meta?.def_ko || null,
+            statusMeta: relationStatusMeta(item),
+          }],
+          statusMeta: relationStatusMeta(item),
         };
       });
     }
@@ -533,10 +781,7 @@ const renderSectionTitle = (icon, label, color, count = null) => (
         {displayItems.map((item, idx) => {
           const clickableEntries = item.entries.filter((entry) => {
             if (!onItemClick) return false;
-            if (typeof isReferenceJumpAvailable === "function") {
-              return isReferenceJumpAvailable(entry);
-            }
-            return !isUnresolvedRelation(entry);
+            return canJumpToRelation(entry);
           });
           const singleEntryClickable = clickableEntries.length === 1 && item.entries.length === 1;
           const unresolvedOnly = item.entries.length > 0 && clickableEntries.length === 0;
@@ -559,7 +804,7 @@ const renderSectionTitle = (icon, label, color, count = null) => (
           >
             <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "flex-start" }}>
               <div style={{ minWidth: 0 }}>
-                <div style={{ fontSize: 24, fontWeight: 700, color: "var(--text-primary)", lineHeight: 1.1 }}>
+                <div style={{ fontSize: 18, fontWeight: 700, color: "var(--text-primary)", lineHeight: 1.25 }}>
                   {item.label}
                 </div>
                 {item.posLabels.size > 0 ? (
@@ -585,30 +830,83 @@ const renderSectionTitle = (icon, label, color, count = null) => (
                 {item.typeLabel}
               </div>
             </div>
+            {item.statusMeta?.helper ? (
+              <div
+                style={{
+                  marginTop: 10,
+                  fontSize: 12,
+                  color: "var(--text-secondary)",
+                  lineHeight: 1.5,
+                }}
+              >
+                {item.statusMeta.helper}
+              </div>
+            ) : null}
             <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 12 }}>
-              {item.definitions.map((definition, definitionIdx) => {
-                const sourceEntry = item.entries[definitionIdx] || item.entries[0];
+              {item.rows.map((row, definitionIdx) => {
+                const sourceEntry = row.entry || item.entries[definitionIdx] || item.entries[0];
                 const clickable = clickableEntries.includes(sourceEntry);
                 return (
-                  <button
+                  <div
                     key={`${item.label}-definition-${definitionIdx}`}
-                    type="button"
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      if (clickable) onItemClick(sourceEntry);
-                    }}
                     style={{
-                      all: "unset",
-                      display: "block",
-                      cursor: clickable ? "pointer" : "default",
-                      color: "var(--text-secondary)",
-                      fontSize: 14,
-                      lineHeight: 1.6,
-                      padding: clickable ? "0" : "0",
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 8,
+                      padding: 0,
                     }}
                   >
-                    {definition}
-                  </button>
+                    {row.pos ? (
+                      <span
+                        style={{
+                          flexShrink: 0,
+                          marginTop: 1,
+                          fontSize: 11,
+                          color: "var(--text-secondary)",
+                          border: "1px solid var(--border-color)",
+                          borderRadius: 999,
+                          padding: "2px 8px",
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        {row.pos}
+                      </span>
+                    ) : null}
+                    <button
+                      type="button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        if (clickable) onItemClick(sourceEntry);
+                      }}
+                      style={{
+                        all: "unset",
+                        display: "block",
+                        cursor: clickable ? "pointer" : "default",
+                        color: "var(--text-secondary)",
+                        fontSize: 14,
+                        lineHeight: 1.6,
+                        flex: 1,
+                      }}
+                    >
+                      {row.definition || "정의 없음"}
+                    </button>
+                    {row.statusMeta?.label ? (
+                      <span
+                        style={{
+                          flexShrink: 0,
+                          fontSize: 11,
+                          color: row.statusMeta.tone,
+                          border: `1px solid ${row.statusMeta.border}`,
+                          background: row.statusMeta.bg,
+                          borderRadius: 999,
+                          padding: "2px 8px",
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        {row.statusMeta.label}
+                      </span>
+                    ) : null}
+                  </div>
                 );
               })}
               {unresolvedOnly ? (
@@ -620,7 +918,7 @@ const renderSectionTitle = (icon, label, color, count = null) => (
                     lineHeight: 1.5,
                   }}
                 >
-                  현재 runtime에 연결 대상이 없습니다.
+                  원본 사전에서 연결 대상을 지정하지 않은 항목입니다.
                 </div>
               ) : null}
             </div>
@@ -632,19 +930,57 @@ const renderSectionTitle = (icon, label, color, count = null) => (
   };
 
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", height: "100%", backgroundColor: "var(--bg-primary)" }}>
+    <div className="detail-surface-root" style={{ flex: 1, display: "flex", flexDirection: "column", height: "100%", backgroundColor: "var(--bg-primary)" }}>
 
       {/* ── 헤더 ── */}
-      <div style={{ padding: "24px 24px 16px", borderBottom: "1px solid var(--border-color)", backgroundColor: "rgba(22,27,34,0.5)" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+      <div className="detail-header-shell" style={{ padding: "16px 16px 12px", borderBottom: "1px solid var(--border-color)", backgroundColor: "rgba(22,27,34,0.5)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
           {/* 단어 + 발음 */}
-          <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
-            <div data-testid="detail-word" style={{ fontSize: 32, fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.5px" }}>
-              {term.word}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
+              <div data-testid="detail-word" style={{ fontSize: 28, fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.5px" }}>
+                {term.word}
+              </div>
+              {roman && (
+                <div data-testid="detail-pronunciation" style={{ color: "var(--accent-purple)", fontSize: 14, fontWeight: 600 }}>
+                  [{roman}]
+                </div>
+              )}
             </div>
-            {roman && (
-              <div data-testid="detail-pronunciation" style={{ color: "var(--accent-purple)", fontSize: 15, fontWeight: 600 }}>
-                [{roman}]
+            {(defKo || headerTranslationPreview) && (
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, alignItems: "center", marginTop: 6 }}>
+                {defKo ? (
+                  <div
+                    data-testid="detail-header-definition"
+                    style={{
+                      fontSize: 13,
+                      color: "var(--text-secondary)",
+                      lineHeight: 1.5,
+                      minWidth: 0,
+                    }}
+                  >
+                    {defKo}
+                  </div>
+                ) : null}
+                {headerTranslationPreview ? (
+                  <span
+                    data-testid="detail-header-translation-preview"
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      fontSize: 10,
+                      color: "var(--accent-green)",
+                      border: "1px solid rgba(63,185,80,0.24)",
+                      background: "rgba(63,185,80,0.12)",
+                      borderRadius: 999,
+                      padding: "3px 8px",
+                      whiteSpace: "nowrap",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {headerTranslationPreview}
+                  </span>
+                ) : null}
               </div>
             )}
           </div>
@@ -653,7 +989,7 @@ const renderSectionTitle = (icon, label, color, count = null) => (
           <div style={{ display: "flex", gap: 8, alignItems: "center", justifyContent: "flex-end", flexWrap: "wrap" }}>
             {bandMeta ? (
               <span style={{
-                padding: "5px 12px", borderRadius: 8, fontSize: 13, fontWeight: 700,
+                padding: "4px 10px", borderRadius: 8, fontSize: 12, fontWeight: 700,
                 color: bandMeta.color, background: bandMeta.bg, border: `1.5px solid ${bandMeta.border}`,
                 whiteSpace: "nowrap",
               }}>
@@ -661,7 +997,7 @@ const renderSectionTitle = (icon, label, color, count = null) => (
               </span>
             ) : (
               <span style={{
-                padding: "5px 12px", borderRadius: 8, fontSize: 12, fontWeight: 500,
+                padding: "4px 10px", borderRadius: 8, fontSize: 11, fontWeight: 500,
                 color: "#6e7681", background: "rgba(110,118,129,0.08)", border: "1px solid rgba(110,118,129,0.2)",
               }}>TOPIK band 없음</span>
             )}
@@ -672,39 +1008,63 @@ const renderSectionTitle = (icon, label, color, count = null) => (
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 4,
-                padding: "5px 10px",
+                padding: "4px 9px",
                 borderRadius: 8,
                 border: "1px solid var(--border-color)",
                 background: "var(--bg-secondary)",
                 color: "var(--text-secondary)",
-                fontSize: 12,
+                fontSize: 11,
                 fontWeight: 600,
                 cursor: "pointer",
               }}
             >
-              <X size={12} />
               닫기
             </button>
           </div>
         </div>
 
         {/* 메타 태그 — 빈도수 숫자 제거, path_ko만 노출 */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, rowGap: 6, marginTop: 8 }}>
           {pos && (
-            <span style={{ fontSize: 12, color: "var(--text-secondary)", border: "1px solid var(--border-color)", padding: "2px 8px", borderRadius: 12 }}>
+            <span style={{ fontSize: 11, color: "var(--text-secondary)", border: "1px solid var(--border-color)", padding: "2px 8px", borderRadius: 999 }}>
               {pos}
             </span>
           )}
           {(term.hierarchy?.display_path_ko || term.hierarchy?.path_ko) && (
-            <span data-testid="detail-path" style={{ fontSize: 12, color: "var(--text-secondary)", border: "1px solid var(--border-color)", padding: "2px 8px", borderRadius: 12 }}>
+            <span
+              data-testid="detail-path"
+              style={{
+                fontSize: 11,
+                color: "var(--text-secondary)",
+                border: "1px solid rgba(88,166,255,0.16)",
+                background: "rgba(88,166,255,0.06)",
+                padding: "2px 8px",
+                borderRadius: 999,
+              }}
+            >
               {term.hierarchy.display_path_ko || term.hierarchy.path_ko}
             </span>
           )}
+          {fallbackGuidanceChip ? (
+            <span
+              data-testid="detail-guidance-chip"
+              style={{
+                fontSize: 11,
+                color: fallbackGuidanceChip.tone,
+                border: `1px solid ${fallbackGuidanceChip.border}`,
+                background: fallbackGuidanceChip.background,
+                padding: "2px 8px",
+                borderRadius: 999,
+              }}
+            >
+              {fallbackGuidanceChip.label}
+            </span>
+          ) : null}
         </div>
       </div>
 
       {/* ── 탭 (통계 탭 제거) ── */}
-      <div style={{ display: "flex", borderBottom: "1px solid var(--border-color)", padding: "0 16px" }}>
+      <div className="detail-tab-shell" style={{ display: "flex", borderBottom: "1px solid var(--border-color)", padding: "0 10px" }}>
         {[
           { key: "core", label: "핵심", cue: null, count: null, countAccent: null },
           { key: "relations", label: "의미 관계", cue: null, count: relationCount || null, countAccent: null },
@@ -714,6 +1074,7 @@ const renderSectionTitle = (icon, label, color, count = null) => (
           <button
             key={t.key}
             data-testid={`detail-tab-${t.key}`}
+            className={`detail-tab-button ${activeTab === t.key ? "active" : ""}`}
             onClick={() => setActiveTab(t.key)}
             style={{
               ...tabBtnStyle,
@@ -748,18 +1109,23 @@ const renderSectionTitle = (icon, label, color, count = null) => (
       </div>
 
       {/* ── 콘텐츠 ── */}
-      <div style={{ flex: 1, overflowY: "auto", padding: "24px" }}>
+      <div className="detail-content-shell" style={{ flex: 1, overflowY: "auto", padding: "16px" }}>
 
         {/* 핵심 탭 */}
         {activeTab === "core" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             {!isVirtual && (
-              <div className="card-glass" style={{ padding: 20, borderRadius: 12 }}>
-                <div data-testid="detail-definition" style={{ fontSize: 16, fontWeight: 500, color: "var(--text-primary)", lineHeight: 1.6 }}>
-                  {defKo || "정의 없음"}
+              <div className="card-glass detail-primary-card" style={{ padding: 20, borderRadius: 12 }}>
+                <div className="detail-definition-block">
+                  <div style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 8 }}>
+                    핵심 뜻
+                  </div>
+                  <div data-testid="detail-definition" style={{ fontSize: 16, fontWeight: 500, color: "var(--text-primary)", lineHeight: 1.7 }}>
+                    {defKo || "정의 없음"}
+                  </div>
                 </div>
                 {showEnglish && defEn && primaryTranslation && (
-                  <div data-testid="detail-primary-translation" style={{ fontSize: 14, color: "var(--text-secondary)", marginTop: 10, borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 10, display: "flex", alignItems: "flex-start", gap: 6 }}>
+                  <div data-testid="detail-primary-translation" className="detail-translation-panel" style={{ marginTop: 14, fontSize: 14, color: "var(--text-secondary)", display: "flex", alignItems: "flex-start", gap: 6 }}>
                     <Globe size={14} style={{ marginTop: 2, flexShrink: 0, opacity: 0.7 }} />
                     <div style={{ width: "100%" }}>
                       {primaryTranslation?.language && (
@@ -790,12 +1156,14 @@ const renderSectionTitle = (icon, label, color, count = null) => (
             )}
 
             {shouldShowContextHelper && (
-              <div data-testid="detail-context-helper" className="card-glass" style={{ padding: 14, borderRadius: 12, borderLeft: `3px solid ${helperAccent}` }}>
-                <div style={{ fontSize: 12, color: helperAccent, fontWeight: 700, marginBottom: 6 }}>
-                  {helperTitle}
-                </div>
-                <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                  {helperDescription}
+              <div data-testid="detail-context-helper" className="card-glass" style={{ padding: 12, borderRadius: 12, borderLeft: `3px solid ${helperAccent}` }}>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "baseline" }}>
+                  <div style={{ fontSize: 12, color: helperAccent, fontWeight: 700 }}>
+                    {helperTitle}
+                  </div>
+                  <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6, flex: 1 }}>
+                    {helperDescription}
+                  </div>
                 </div>
               </div>
             )}
@@ -860,6 +1228,8 @@ const renderSectionTitle = (icon, label, color, count = null) => (
         {/* 관계 탭 */}
         {activeTab === "relations" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+            {renderRelationOverview()}
+
             {term.related_vocab && term.related_vocab.length > 0 && (
               renderRelationSection(
                 "relation-related-vocab",
@@ -893,16 +1263,40 @@ const renderSectionTitle = (icon, label, color, count = null) => (
                 "relation-related-forms",
                 "관련형",
                 hasRepeatedRelationWord(dedupedRelatedForms)
-                  ? "같은 표면형으로 보여도 관계 유형 또는 대상 의미가 다르면 따로 유지합니다."
-                  : "형태나 파생 관계로 이어지는 어휘입니다.",
+                  ? "형태나 파생 관계로 이어지는 어휘입니다. 바로 이동되는 항목과 원본 표면형만 남은 항목을 나누어 보여 줍니다."
+                  : "형태나 파생 관계로 이어지는 어휘입니다. 바로 이동되는 항목과 원본 표면형만 남은 항목을 나누어 보여 줍니다.",
                 dedupedRelatedForms.length,
                 "var(--accent-purple)",
-                renderRelationCards(dedupedRelatedForms, {
-                  accentColor: "var(--accent-purple)",
-                  testPrefix: "related-form-card",
-                  onItemClick: (item) => onRelatedFormClick && onRelatedFormClick(item),
-                  groupBySurface: true,
-                }),
+                <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+                  {jumpableRelatedForms.length > 0 ? (
+                    <div>
+                      {renderWorkflowTitle("바로 이동 가능한 관련형", countUniqueRelationGroups(jumpableRelatedForms))}
+                      <div style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: 10 }}>
+                        원본 사전에서 연결 target이 확인된 관련형입니다. 품사와 뜻을 보고 바로 이동할 수 있습니다.
+                      </div>
+                      {renderRelationCards(jumpableRelatedForms, {
+                        accentColor: "var(--accent-purple)",
+                        testPrefix: "related-form-card",
+                        onItemClick: (item) => onRelatedFormClick && onRelatedFormClick(item),
+                        groupBySurface: true,
+                      })}
+                    </div>
+                  ) : null}
+                  {textOnlyRelatedForms.length > 0 ? (
+                    <div>
+                      {renderWorkflowTitle("원본에 표면형만 있는 관련형", countUniqueRelationGroups(textOnlyRelatedForms))}
+                      <div style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: 10 }}>
+                        원본 사전에 관련형 표면형만 있고 연결 target은 지정되지 않은 항목입니다.
+                      </div>
+                      {renderRelationCards(textOnlyRelatedForms, {
+                        accentColor: "var(--accent-purple)",
+                        testPrefix: "related-form-card",
+                        onItemClick: (item) => onRelatedFormClick && onRelatedFormClick(item),
+                        groupBySurface: true,
+                      })}
+                    </div>
+                  ) : null}
+                </div>,
               )
             )}
 
@@ -946,6 +1340,28 @@ const renderSectionTitle = (icon, label, color, count = null) => (
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             {subwords.length > 0 ? (
               <div>
+                {renderCompactOverview(
+                  "expression-overview",
+                  "표현 읽는 순서",
+                  "먼저 바로 이동 가능한 표현을 보고, 연결이 없는 항목은 현재 표제어 맥락에서 쓰임을 먼저 확인하면 됩니다.",
+                  [
+                    {
+                      label: "바로 이동 가능",
+                      count: jumpableSubwords.length,
+                      tone: "var(--accent-orange)",
+                      border: "rgba(255,166,87,0.28)",
+                      background: "rgba(255,166,87,0.10)",
+                    },
+                    {
+                      label: "맥락 안에서 먼저 보기",
+                      count: previewOnlySubwords.length,
+                      tone: "var(--text-secondary)",
+                      border: "rgba(148,163,184,0.28)",
+                      background: "rgba(148,163,184,0.10)",
+                    },
+                  ].filter((item) => item.count > 0),
+                  "var(--accent-orange)",
+                )}
                 {renderSectionTitle(<BookOpen size={13} />, "표현층", "var(--accent-orange)", subwords.length)}
                 {jumpableSubwords.length > 0 && (
                   <div style={{ marginBottom: 18 }}>
@@ -958,7 +1374,7 @@ const renderSectionTitle = (icon, label, color, count = null) => (
                 )}
                 {previewOnlySubwords.length > 0 && (
                   <div>
-                    {renderWorkflowTitle("현재 표제어에서 먼저 보는 표현", previewOnlySubwords.length)}
+                    {renderWorkflowTitle("현재 표제어 맥락에서 먼저 보는 표현", previewOnlySubwords.length)}
                     <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 10 }}>
                       독립 표제어 연결은 없지만, 현재 단어 안에서 쓰임만 먼저 확인할 수 있는 표현입니다.
                     </div>
@@ -981,43 +1397,67 @@ const renderSectionTitle = (icon, label, color, count = null) => (
                 <span>예문 데이터가 없습니다.</span>
               </div>
             ) : (
-              exampleItems.map((ex, idx) => {
-                const sourceLabel = formatExampleSourceLabel(ex.source);
-                return (
-                <div key={idx} data-testid={`example-card-${idx}`} className="card-glass" style={{ padding: "16px 20px", borderRadius: 12, borderLeft: "3px solid var(--accent-blue)" }}>
-                  <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", columnGap: 8, rowGap: 6 }}>
-                    <div style={{ flex: "1 1 320px", minWidth: 0, fontSize: 15, color: "var(--text-primary)", lineHeight: 1.8 }}>
-                      {ex.text_ko}
+              <>
+                {renderCompactOverview(
+                  "examples-overview",
+                  "예문 읽는 순서",
+                  "현재 의미 예문을 먼저 모두 보여 주고, source가 있을 때만 오른쪽 badge로 조용하게 표시합니다.",
+                  [
+                    {
+                      label: "현재 의미 우선",
+                      count: currentExamples.filter((item) => item?.text_ko).length,
+                      tone: "var(--accent-blue)",
+                      border: "rgba(88,166,255,0.28)",
+                      background: "rgba(88,166,255,0.10)",
+                    },
+                    {
+                      label: "총 예문",
+                      count: exampleItems.length,
+                      tone: "var(--text-secondary)",
+                      border: "rgba(148,163,184,0.28)",
+                      background: "rgba(148,163,184,0.10)",
+                    },
+                  ].filter((item) => item.count > 0),
+                  "var(--accent-blue)",
+                )}
+                {exampleItems.map((ex, idx) => {
+                  const sourceLabel = formatExampleSourceLabel(ex.source);
+                  return (
+                    <div key={idx} data-testid={`example-card-${idx}`} className="card-glass" style={{ padding: "16px 20px", borderRadius: 12, borderLeft: "3px solid var(--accent-blue)" }}>
+                      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", columnGap: 8, rowGap: 6 }}>
+                        <div style={{ flex: "1 1 320px", minWidth: 0, fontSize: 15, color: "var(--text-primary)", lineHeight: 1.8 }}>
+                          {ex.text_ko}
+                        </div>
+                        {sourceLabel ? (
+                          <span
+                            data-testid={`example-source-${idx}`}
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              marginLeft: "auto",
+                              padding: "2px 8px",
+                              borderRadius: 999,
+                              fontSize: 11,
+                              color: "var(--text-secondary)",
+                              background: "rgba(255,255,255,0.05)",
+                              border: "1px solid var(--border-color)",
+                              alignSelf: "flex-start",
+                            }}
+                          >
+                            {sourceLabel}
+                          </span>
+                        ) : null}
+                      </div>
+                      {showEnglish && ex.text_en && (
+                        <div style={{ display: "flex", alignItems: "flex-start", gap: 6, fontSize: 13, color: "var(--text-secondary)", fontStyle: "italic", borderTop: "1px solid var(--border-color)", paddingTop: 8 }}>
+                          <Globe size={12} style={{ marginTop: 2, flexShrink: 0, opacity: 0.7 }} />
+                          {ex.text_en}
+                        </div>
+                      )}
                     </div>
-                    {sourceLabel ? (
-                      <span
-                        data-testid={`example-source-${idx}`}
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          marginLeft: "auto",
-                          padding: "2px 8px",
-                          borderRadius: 999,
-                          fontSize: 11,
-                          color: "var(--text-secondary)",
-                          background: "rgba(255,255,255,0.05)",
-                          border: "1px solid var(--border-color)",
-                          alignSelf: "flex-start",
-                        }}
-                      >
-                        {sourceLabel}
-                      </span>
-                    ) : null}
-                  </div>
-                  {showEnglish && ex.text_en && (
-                    <div style={{ display: "flex", alignItems: "flex-start", gap: 6, fontSize: 13, color: "var(--text-secondary)", fontStyle: "italic", borderTop: "1px solid var(--border-color)", paddingTop: 8 }}>
-                      <Globe size={12} style={{ marginTop: 2, flexShrink: 0, opacity: 0.7 }} />
-                      {ex.text_en}
-                    </div>
-                  )}
-                </div>
-              );
-              })
+                  );
+                })}
+              </>
             )}
           </div>
         )}

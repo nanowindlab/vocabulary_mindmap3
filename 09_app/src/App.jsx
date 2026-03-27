@@ -8,6 +8,7 @@ import { SidebarTree } from "./components/SidebarTree";
 import { TermDetail } from "./components/TermDetail";
 import { SearchBox } from "./components/SearchBox";
 import { MindmapCanvas } from "./components/MindmapCanvas";
+import { StatusPanel } from "./components/StatusPanel";
 import {
   loadMeaningTree,
   loadSituationTree,
@@ -21,6 +22,7 @@ import {
   normalizeHierarchyForDisplay,
   toPosLabel,
 } from "./utils/hierarchyDisplay";
+import { SITUATION_QUICK_ENTRY_GROUPS, getSituationQuickEntryGroup } from "./utils/situationTaxonomy";
 
 import "./index.css";
 
@@ -30,6 +32,12 @@ const TABS = [
   { id: "situation", label: "주제 및 상황", label_en: "Topic & Situation",  color: "#3fb950" },
   { id: "unclassified", label: "분류 밖 항목", label_en: "Unclassified",  color: "#bc8cff" },
 ];
+
+const TAB_SUMMARIES = {
+  meaning: "뜻과 관계를 중심으로 비교하며 탐색합니다.",
+  situation: "장면과 맥락을 따라 실제 쓰임을 확인합니다.",
+  unclassified: "fallback surface에서 품사와 난이도 축으로 정리해 봅니다.",
+};
 
 const BAND_FILTER_LABELS = {
   1: "최상위 필수",
@@ -177,8 +185,8 @@ function buildTreeFromList(list, surface, contextMode) {
   list.forEach((rawItem) => {
     const item = isDisplayNormalized(rawItem) ? rawItem : normalizeItem(rawItem, surface);
     const rootId    = item.hierarchy?.root_id;
-    const centerId  = item.hierarchy?.scene    || "일반";
-    const categoryId= item.hierarchy?.category || item.pos || "기타";
+    const centerId  = item.hierarchy?.display_scene || item.hierarchy?.scene || "일반";
+    const categoryId= item.hierarchy?.display_category || item.hierarchy?.category || item.pos || "기타";
     const rootLabel = item.hierarchy?.display_root_label || formatTreeLabel(contextMode, "root", item.hierarchy.root_label || rootId);
     const sceneLabel = item.hierarchy?.display_scene || formatTreeLabel(contextMode, "scene", centerId);
     const categoryLabel = item.hierarchy?.display_category || formatTreeLabel(contextMode, "category", categoryId);
@@ -189,9 +197,11 @@ function buildTreeFromList(list, surface, contextMode) {
     if (!tree[rootId].children[centerId])
       tree[rootId].children[centerId] = { id: centerId, type: "scene", label: sceneLabel, children: {} };
     if (!tree[rootId].children[centerId].children[categoryId])
-      tree[rootId].children[centerId].children[categoryId] = { id: categoryId, type: "category", label: categoryLabel, children: {} };
-    if (!item.is_center_profile)
+      tree[rootId].children[centerId].children[categoryId] = { id: categoryId, type: "category", label: categoryLabel, children: {}, termCount: 0 };
+    if (!item.is_center_profile) {
       tree[rootId].children[centerId].children[categoryId].children[item.id] = { id: item.id, type: "term", label: item.word, data: item };
+      tree[rootId].children[centerId].children[categoryId].termCount += 1;
+    }
   });
   return tree;
 }
@@ -246,20 +256,22 @@ const DropdownFilter = ({ label, options, selectedValues, onToggle, onClear }) =
   return (
     <div ref={ref} style={{ position: "relative" }}>
       <button
+        type="button"
+        className="filter-trigger-button"
         data-testid={`filter-toggle-${label}`}
         onClick={() => setIsOpen(!isOpen)}
         style={{
           display: "flex", alignItems: "center", gap: 6,
-          padding: "6px 12px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer",
-          background: hasSelection ? "rgba(88,166,255,0.1)" : "rgba(255,255,255,0.05)",
-          border: `1px solid ${hasSelection ? "var(--accent-blue)" : "var(--border-color)"}`,
+          padding: "8px 12px", borderRadius: 12, fontSize: 12, fontWeight: 700, cursor: "pointer",
+          background: hasSelection ? "rgba(88,166,255,0.12)" : "rgba(255,255,255,0.04)",
+          border: `1px solid ${hasSelection ? "rgba(88,166,255,0.24)" : "rgba(255,255,255,0.06)"}`,
           color: hasSelection ? "var(--accent-blue)" : "var(--text-secondary)",
           transition: "all 0.15s"
         }}
       >
         {label}
         {hasSelection && (
-          <span style={{ background: "var(--accent-blue)", color: "#0d1117", padding: "1px 6px", borderRadius: 10, fontSize: 10 }}>
+          <span style={{ background: "var(--accent-blue)", color: "#081018", padding: "2px 7px", borderRadius: 999, fontSize: 10, fontWeight: 700 }}>
             {selectedValues.length}
           </span>
         )}
@@ -267,43 +279,78 @@ const DropdownFilter = ({ label, options, selectedValues, onToggle, onClear }) =
       </button>
 
       {isOpen && (
-        <div style={{
+        <div className="filter-dropdown-panel" style={{
           position: "absolute", top: "100%", left: 0, marginTop: 8,
-          background: "var(--bg-secondary)", border: "1px solid var(--border-color)",
-          borderRadius: 8, padding: "8px", display: "flex", flexDirection: "column", gap: 4,
-          minWidth: 160, zIndex: 100, boxShadow: "0 8px 24px rgba(0,0,0,0.5)"
+          background: "rgba(9,16,24,0.96)", border: "1px solid rgba(255,255,255,0.08)",
+          borderRadius: 16, padding: "10px", display: "flex", flexDirection: "column", gap: 6,
+          minWidth: 220, zIndex: 100, boxShadow: "0 18px 36px rgba(0,0,0,0.32)"
         }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "2px 4px 6px" }}>
+            <div>
+              <div style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 2 }}>
+                Filter
+              </div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)" }}>
+                {label}
+              </div>
+            </div>
+            <div style={{ fontSize: 11, color: hasSelection ? "var(--accent-blue)" : "var(--text-muted)" }}>
+              {hasSelection ? `${selectedValues.length} 선택` : "전체"}
+            </div>
+          </div>
           {options.map((opt) => {
             const isSelected = selectedValues.includes(opt.value);
             return (
-              <label
+              <button
+                type="button"
                 key={opt.value}
                 data-testid={`filter-option-${label}-${String(opt.value)}`}
+                onClick={() => onToggle(opt.value)}
+                className="filter-option-row"
                 style={{
-                  display: "flex", alignItems: "center", gap: 8, padding: "6px 8px", borderRadius: 6,
-                  fontSize: 12, cursor: "pointer", transition: "background 0.1s",
-                  background: isSelected ? "rgba(255,255,255,0.05)" : "transparent",
-                  color: isSelected ? "var(--text-primary)" : "var(--text-secondary)"
+                  display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 10,
+                  fontSize: 12, cursor: "pointer", transition: "background 0.1s, border-color 0.1s",
+                  background: isSelected ? "rgba(88,166,255,0.10)" : "rgba(255,255,255,0.02)",
+                  color: isSelected ? "var(--text-primary)" : "var(--text-secondary)",
+                  border: `1px solid ${isSelected ? "rgba(88,166,255,0.22)" : "rgba(255,255,255,0.04)"}`,
+                  textAlign: "left",
                 }}
               >
-                <input
-                  type="checkbox"
-                  checked={isSelected}
-                  onChange={() => onToggle(opt.value)}
-                  style={{ accentColor: "var(--accent-blue)", cursor: "pointer", width: 14, height: 14 }}
-                />
+                <span
+                  style={{
+                    width: 16,
+                    height: 16,
+                    borderRadius: 5,
+                    border: `1px solid ${isSelected ? "rgba(88,166,255,0.28)" : "rgba(255,255,255,0.08)"}`,
+                    background: isSelected ? "rgba(88,166,255,0.16)" : "transparent",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: 999,
+                      background: isSelected ? "var(--accent-blue)" : "transparent",
+                    }}
+                  />
+                </span>
                 <span style={{ flex: 1 }}>{opt.label}</span>
                 {opt.colorDot && (
                   <div style={{ width: 8, height: 8, borderRadius: "50%", background: opt.colorDot }} />
                 )}
-              </label>
+              </button>
             );
           })}
           {hasSelection && (
             <div style={{ marginTop: 4, paddingTop: 6, borderTop: "1px solid var(--border-color)", textAlign: "center" }}>
               <button
+                type="button"
                 onClick={onClear}
-                style={{ background: "transparent", border: "none", color: "var(--text-secondary)", fontSize: 11, cursor: "pointer", padding: "4px" }}
+                style={{ background: "transparent", border: "none", color: "var(--text-secondary)", fontSize: 11, fontWeight: 600, cursor: "pointer", padding: "6px 8px" }}
               >
                 초기화
               </button>
@@ -327,6 +374,7 @@ function App() {
 
   const [selectedTermId, setSelectedTermId] = useState(null);
   const [selectedTermDetail, setSelectedTermDetail] = useState(null);
+  const [selectedTreeNode, setSelectedTreeNode] = useState(null);
   const [isLoadingChunk, setIsLoadingChunk] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const [tabLoadState, setTabLoadState] = useState({
@@ -339,6 +387,8 @@ function App() {
   const [focusedRootId, setFocusedRootId] = useState(null);
   const [showEnglish, setShowEnglish] = useState(true);
   const [translationLanguage, setTranslationLanguage] = useState("영어");
+  const [selectedSituationQuickGroup, setSelectedSituationQuickGroup] = useState(null);
+  const [selectedSituationQuickLeaf, setSelectedSituationQuickLeaf] = useState(null);
   const initialLoadPerfRef = useRef(null);
   const initialLoadPerfFlushedRef = useRef(false);
 
@@ -526,6 +576,12 @@ function App() {
   }, [activeTab, isInitializing, searchIndex, tabLoadState]);
 
   useEffect(() => {
+    if (activeTab === "situation") return;
+    setSelectedSituationQuickGroup(null);
+    setSelectedSituationQuickLeaf(null);
+  }, [activeTab]);
+
+  useEffect(() => {
     const listForTab = activeTab === "meaning"
       ? meaningList
       : activeTab === "situation"
@@ -548,9 +604,17 @@ function App() {
     return unclassifiedList;
   }, [activeTab, meaningList, situationList, unclassifiedList]);
 
-  const filteredList = useMemo(() => applyFilters(activeList, filters), [activeList, filters]);
+  const quickEntryScopedList = useMemo(() => {
+    if (activeTab !== "situation" || !selectedSituationQuickLeaf) return activeList;
+    return activeList.filter((item) => {
+      const rawLeaf = item.hierarchy?.raw_category || item.hierarchy?.category || null;
+      return rawLeaf === selectedSituationQuickLeaf;
+    });
+  }, [activeList, activeTab, selectedSituationQuickLeaf]);
+
+  const filteredList = useMemo(() => applyFilters(quickEntryScopedList, filters), [quickEntryScopedList, filters]);
   const filteredSearchIndex = useMemo(() => applyFilters(searchIndex, filters), [searchIndex, filters]);
-  const filterBaseList = activeList.length > 0 ? activeList : searchIndex;
+  const filterBaseList = activeList.length > 0 ? quickEntryScopedList : searchIndex;
   const filterVisibleList = activeList.length > 0 ? filteredList : filteredSearchIndex;
   const searchIndexById = useMemo(() => {
     const map = new Map();
@@ -587,6 +651,7 @@ function App() {
   const handleSelectTerm = useCallback(async (term) => {
     if (!term?.id) return;
     setIsLoadingChunk(true);
+    setSelectedTreeNode(null);
     setSelectedTermId(term.id);
     setSelectedTermDetail(term);
 
@@ -621,7 +686,6 @@ function App() {
               text_en: null,
               source: ex.type || null,
             })))
-            .slice(0, 8);
           setSelectedTermDetail((prev) => prev?.id === term.id ? {
             ...prev,
             senses: detail.senses || [],
@@ -817,12 +881,26 @@ function App() {
     handleSearchSelect(target);
   }, [searchIndexByWord, handleSearchSelect]);
 
+  const handleTreeNodeSelect = useCallback((node) => {
+    if (!node || node.type === "term") return;
+    setViewMode("mindmap");
+    setSelectedTermId(null);
+    setSelectedTermDetail(null);
+    setSelectedTreeNode({ id: node.id, type: node.type });
+  }, []);
+
   // ── 로딩 ────────────────────────────────────────────────────────
   if (isInitializing)
     return (
       <div className="welcome-screen">
-        <Loader className="spinner" size={48} />
-        <p>어휘 데이터 준비 중… ({TABS.map((t) => t.label).join(" · ")})</p>
+        <StatusPanel
+          kicker="Initial Load"
+          title="어휘 데이터를 준비 중입니다"
+          description={`현재 ${TABS.map((t) => t.label).join(" · ")} 축을 순서대로 준비하고 있습니다.`}
+          icon={Loader}
+          tone="var(--accent-blue)"
+          loading
+        />
       </div>
     );
 
@@ -834,8 +912,13 @@ function App() {
       <div className="top-nav">
         <div className="nav-left">
           <div className="logo">
-            <Network size={24} color="var(--accent-blue)" />
-            <span className="logo-text">어휘 마인드맵</span>
+            <div className="logo-mark">
+              <Network size={18} color="var(--accent-blue)" />
+            </div>
+            <div className="logo-copy">
+              <span className="logo-kicker">Explorer</span>
+              <span className="logo-text">어휘 마인드맵</span>
+            </div>
           </div>
           <div className="nav-tabs">
             {TABS.map((tab) => (
@@ -858,33 +941,49 @@ function App() {
 
         <div className="nav-right">
           {/* ENG 토글 */}
-            <button
-            className="card-glass"
+          <button
+            className="card-glass nav-utility-button"
             onClick={() => setShowEnglish(!showEnglish)}
             style={{
-              display: "flex", alignItems: "center", gap: 6,
-              padding: "6px 12px", borderRadius: 8, cursor: "pointer", fontSize: 12,
-              border: `1px solid ${showEnglish ? "var(--accent-blue)" : "var(--border-color)"}`,
-              color: showEnglish ? "var(--accent-blue)" : "var(--text-secondary)",
+              display: "flex", alignItems: "center", gap: 8,
+              padding: "8px 12px", borderRadius: 12, cursor: "pointer", fontSize: 12,
+              border: `1px solid ${showEnglish ? "rgba(63,185,80,0.22)" : "rgba(255,255,255,0.06)"}`,
+              color: showEnglish ? "var(--accent-green)" : "var(--text-secondary)",
+              background: showEnglish ? "rgba(63,185,80,0.10)" : "rgba(255,255,255,0.03)",
             }}
           >
-            <Book size={14} /> {showEnglish ? "번역 ON" : "번역 OFF"}
+            <Book size={14} />
+            <span>{showEnglish ? "번역 ON" : "번역 OFF"}</span>
+            <span
+              style={{
+                fontSize: 10,
+                padding: "2px 7px",
+                borderRadius: 999,
+                background: showEnglish ? "rgba(63,185,80,0.16)" : "rgba(255,255,255,0.06)",
+                color: showEnglish ? "var(--accent-green)" : "var(--text-muted)",
+                border: `1px solid ${showEnglish ? "rgba(63,185,80,0.18)" : "rgba(255,255,255,0.05)"}`,
+              }}
+            >
+              {showEnglish ? translationLanguage : "비활성"}
+            </span>
           </button>
 
           {/* 필터 버튼 */}
           <button
-            className="card-glass"
+            className="card-glass nav-utility-button"
             onClick={() => setShowFilterPanel(!showFilterPanel)}
             style={{
-              display: "flex", alignItems: "center", gap: 6,
-              padding: "6px 12px", borderRadius: 8, cursor: "pointer", fontSize: 12,
-              border: `1px solid ${activeFilterCount > 0 ? "var(--accent-orange)" : "var(--border-color)"}`,
+              display: "flex", alignItems: "center", gap: 8,
+              padding: "8px 12px", borderRadius: 12, cursor: "pointer", fontSize: 12,
+              border: `1px solid ${activeFilterCount > 0 ? "rgba(255,166,87,0.22)" : "rgba(255,255,255,0.06)"}`,
               color: activeFilterCount > 0 ? "var(--accent-orange)" : "var(--text-secondary)",
+              background: activeFilterCount > 0 ? "rgba(255,166,87,0.10)" : "rgba(255,255,255,0.03)",
               position: "relative",
             }}
           >
             <Filter size={14} />
-            필터 {activeFilterCount > 0 && <span style={{ background: "var(--accent-orange)", color: "#0d1117", borderRadius: 10, padding: "1px 5px", fontSize: 10, fontWeight: 700 }}>{activeFilterCount}</span>}
+            <span>필터</span>
+            {activeFilterCount > 0 && <span style={{ background: "var(--accent-orange)", color: "#081018", borderRadius: 999, padding: "2px 7px", fontSize: 10, fontWeight: 700 }}>{activeFilterCount}</span>}
             <ChevronDown size={12} style={{ transform: showFilterPanel ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
           </button>
 
@@ -899,10 +998,16 @@ function App() {
 
       {/* ── 필터 패널 ─────────────────────────────────────────── */}
       {showFilterPanel && (
-        <div style={{
-          background: "var(--bg-secondary)", borderBottom: "1px solid var(--border-color)",
-          padding: "12px 24px", display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap",
-        }}>
+        <div className="filter-panel-shell">
+          <div className="filter-panel-heading">
+            <div style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 2 }}>
+              Interaction Controls
+            </div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)" }}>
+              필터와 번역 언어
+            </div>
+          </div>
+
           {/* 드롭다운 필터 요소들 */}
           <DropdownFilter
             label="Band별"
@@ -944,9 +1049,114 @@ function App() {
             </button>
           )}
 
-          <span data-testid="filter-visible-count" style={{ fontSize: 12, color: "var(--text-secondary)", marginLeft: "auto" }}>
+          <span data-testid="filter-visible-count" className="filter-summary-pill" style={{ fontSize: 12, color: "var(--text-secondary)", marginLeft: "auto" }}>
             {filterVisibleList.length.toLocaleString()} / {filterBaseList.length.toLocaleString()}건 표시 중
           </span>
+        </div>
+      )}
+
+      {activeTab === "situation" && (
+        <div
+          className="card-glass"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 10,
+            padding: "10px 12px",
+            borderRadius: 16,
+            border: "1px solid rgba(255,255,255,0.06)",
+            background: "rgba(255,255,255,0.02)",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center" }}>
+            <div>
+              <div style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 2 }}>
+                Quick Entry Overlay
+              </div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)" }}>
+                행동 기준으로 바로 들어가기
+              </div>
+            </div>
+            {selectedSituationQuickLeaf ? (
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedSituationQuickGroup(null);
+                  setSelectedSituationQuickLeaf(null);
+                }}
+                style={{
+                  padding: "6px 10px",
+                  borderRadius: 999,
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  background: "rgba(255,255,255,0.03)",
+                  color: "var(--text-secondary)",
+                  fontSize: 11,
+                  cursor: "pointer",
+                }}
+              >
+                overlay 해제
+              </button>
+            ) : null}
+          </div>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {SITUATION_QUICK_ENTRY_GROUPS.map((group) => {
+              const isActive = selectedSituationQuickGroup === group.label;
+              return (
+                <button
+                  type="button"
+                  key={group.label}
+                  onClick={() => {
+                    setSelectedSituationQuickGroup(isActive ? null : group.label);
+                    setSelectedSituationQuickLeaf(null);
+                  }}
+                  style={{
+                    padding: "6px 10px",
+                    borderRadius: 999,
+                    border: `1px solid ${isActive ? "rgba(63,185,80,0.24)" : "rgba(255,255,255,0.06)"}`,
+                    background: isActive ? "rgba(63,185,80,0.10)" : "rgba(255,255,255,0.03)",
+                    color: isActive ? "var(--accent-green)" : "var(--text-secondary)",
+                    fontSize: 12,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                  }}
+                >
+                  {group.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {selectedSituationQuickGroup ? (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {getSituationQuickEntryGroup(selectedSituationQuickGroup)?.leaves.map((leaf) => {
+                const isActive = selectedSituationQuickLeaf === leaf;
+                return (
+                  <button
+                    type="button"
+                    key={leaf}
+                    onClick={() => {
+                      setSelectedSituationQuickLeaf(isActive ? null : leaf);
+                      setSelectedTermDetail(null);
+                      setSelectedTermId(null);
+                      setViewMode("list");
+                    }}
+                    style={{
+                      padding: "7px 11px",
+                      borderRadius: 10,
+                      border: `1px solid ${isActive ? "rgba(88,166,255,0.24)" : "rgba(255,255,255,0.06)"}`,
+                      background: isActive ? "rgba(88,166,255,0.10)" : "rgba(255,255,255,0.02)",
+                      color: isActive ? "var(--accent-blue)" : "var(--text-primary)",
+                      fontSize: 12,
+                      cursor: "pointer",
+                    }}
+                  >
+                    {leaf}
+                  </button>
+                );
+              })}
+            </div>
+          ) : null}
         </div>
       )}
 
@@ -963,22 +1173,22 @@ function App() {
               return n;
             })
           }
+          onSelectNode={handleTreeNodeSelect}
           onSelectTerm={handleSelectTerm}
           selectedTermId={selectedTermId}
         />
 
         <div className="main-content">
           {/* 뷰 전환 바 */}
-          <div style={{
-            padding: "12px 24px", borderBottom: "1px solid var(--border-color)",
-            backgroundColor: "var(--bg-secondary)", display: "flex",
-            justifyContent: "space-between", alignItems: "center",
-          }}>
-            <div style={{ fontWeight: 600, fontSize: 15, color: currentTab?.color || "var(--text-primary)" }}>
-              {currentTab?.label}
-              {currentTab?.label_en && <span style={{ fontSize: 12, color: "var(--text-secondary)", marginLeft: 8 }}>{currentTab.label_en}</span>}
+          <div className="surface-header">
+            <div className="surface-header-copy">
+              <div className="surface-header-kicker">Explorer View</div>
+              <div style={{ fontWeight: 600, fontSize: 15, color: currentTab?.color || "var(--text-primary)" }}>
+                {currentTab?.label}
+                {currentTab?.label_en && <span style={{ fontSize: 12, color: "var(--text-secondary)", marginLeft: 8 }}>{currentTab.label_en}</span>}
+              </div>
             </div>
-            <div style={{ display: "flex", gap: 8, backgroundColor: "var(--bg-tertiary)", padding: 4, borderRadius: 8, border: "1px solid var(--border-color)" }}>
+            <div className="surface-header-actions">
               {[
                 { mode: "mindmap", icon: <MapIcon size={14} />, label: "마인드맵" },
                 { mode: "list",    icon: <LayoutList size={14} />, label: "리스트" },
@@ -1006,8 +1216,14 @@ function App() {
             }}>
               {isActiveTabLoading ? (
                 <div className="welcome-screen" style={{ minHeight: 240 }}>
-                  <Loader className="spinner" />
-                  <p>{currentTab?.label || "탭"} 데이터 준비 중…</p>
+                  <StatusPanel
+                    kicker="Tab Load"
+                    title={`${currentTab?.label || "탭"} 데이터를 준비 중입니다`}
+                    description="탐색 축에 맞는 트리와 리스트 surface를 먼저 안정화하고 있습니다."
+                    icon={Loader}
+                    tone={currentTab?.color || "var(--accent-blue)"}
+                    loading
+                  />
                 </div>
               ) : viewMode === "mindmap" ? (
                 <MindmapCanvas
@@ -1015,6 +1231,7 @@ function App() {
                   onSelectTerm={handleSelectTerm}
                   selectedTermId={selectedTermId}
                   focusedRootId={focusedRootId}
+                  selectedTreeNode={selectedTreeNode}
                 />
               ) : (
                 <ListView
@@ -1031,6 +1248,7 @@ function App() {
             {selectedTermDetail && (
               <div
                 onMouseDown={startDrag}
+                className="detail-splitter"
                 style={{
                   width: 10,
                   cursor: "col-resize",
@@ -1045,6 +1263,7 @@ function App() {
                 }}
               >
                 <div
+                  className="detail-splitter-thumb"
                   style={{
                     width: 4,
                     height: "100%",
@@ -1061,15 +1280,24 @@ function App() {
 
             {/* 상세 패널 */}
             {selectedTermDetail && (
-              <div style={{
+              <div className="detail-panel-shell" style={{
                 flex: `0 0 ${detailWidth}%`,
-                borderLeft: "1px solid var(--border-color)",
-                backgroundColor: "var(--bg-primary)", display: "flex", flexDirection: "column",
+                display: "flex", flexDirection: "column",
                 minWidth: 300,
               }}>
-                <div style={{ flex: 1, overflowY: "auto" }}>
+                <div className="detail-panel-scroll" style={{ flex: 1, overflowY: "auto" }}>
                   {isLoadingChunk ? (
-                    <div className="welcome-screen"><Loader className="spinner" /><p>로딩 중...</p></div>
+                    <div className="welcome-screen">
+                      <StatusPanel
+                        kicker="Detail Load"
+                        title="상세 정보를 불러오는 중입니다"
+                        description="현재 선택한 항목의 관계, 표현, 예문 surface를 합치는 중입니다."
+                        icon={Loader}
+                        tone="var(--accent-blue)"
+                        loading
+                        compact
+                      />
+                    </div>
                   ) : (
                     <TermDetail
                       term={selectedTermDetail}
@@ -1116,57 +1344,82 @@ function ListView({ list, selectedTermId, onSelectTerm, showEnglish, translation
       translations[0];
   };
   return (
-    <div style={{ padding: 16, overflowY: "auto", height: "100%" }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+    <div className="list-shell" style={{ padding: 18, overflowY: "auto", height: "100%" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {list.map((term) => {
           const primaryTranslation = getPrimaryTranslation(term);
           const band = term.stats?.band ?? null;
           const bandValid = band !== null && band >= 1 && band <= 5;
           const bm = bandValid ? BAND_COLORS_INLINE[band] : null;
           const isSelected = selectedTermId === term.id;
+          const displayPath = term.hierarchy?.display_path_ko || term.hierarchy?.path_ko || null;
 
           return (
               <div
                 key={term.id}
                 data-list-term-id={term.id}
                 onClick={() => onSelectTerm(term)}
+                className="list-row-shell"
                 style={{
-                padding: "10px 16px", borderRadius: 10, cursor: "pointer",
-                backgroundColor: isSelected ? "rgba(47,129,247,0.12)" : "var(--bg-secondary)",
-                border: `1px solid ${isSelected ? "var(--accent-blue)" : "var(--border-color)"}`,
-                display: "flex", alignItems: "center", gap: 12, transition: "all 0.12s",
+                padding: "14px 16px", borderRadius: 14, cursor: "pointer",
+                background: isSelected
+                  ? "linear-gradient(180deg, rgba(88,166,255,0.16), rgba(88,166,255,0.08))"
+                  : "linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02))",
+                border: `1px solid ${isSelected ? "rgba(88,166,255,0.28)" : "rgba(255,255,255,0.06)"}`,
+                display: "flex", flexDirection: "column", gap: 10, transition: "all 0.12s",
+                boxShadow: isSelected ? "0 10px 24px rgba(0,0,0,0.18)" : "none",
               }}
             >
-              <span style={{ fontWeight: 600, color: isSelected ? "var(--accent-blue)" : "var(--text-primary)", fontSize: 14 }}>
-                {term.word}
-              </span>
-              {showEnglish && (primaryTranslation?.word || term.def_en) && (
-                <span style={{ color: "var(--text-secondary)", fontSize: 12, flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                  {primaryTranslation?.language ? `${primaryTranslation.language}: ` : ""}{primaryTranslation?.word || term.def_en}
-                </span>
-              )}
-              <div style={{ display: "flex", gap: 6, marginLeft: "auto", flexShrink: 0 }}>
-                {term.has_subwords && (
-                  <span style={{ fontSize: 10, fontWeight: 600, padding: "2px 7px", borderRadius: 6, background: "rgba(255,166,87,0.12)", color: "var(--accent-orange)", border: "1px solid rgba(255,166,87,0.24)" }}>
-                    다음: 표현층
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <div style={{ fontWeight: 700, color: isSelected ? "var(--accent-blue)" : "var(--text-primary)", fontSize: 15, marginBottom: 6 }}>
+                    {term.word}
+                  </div>
+                  {showEnglish && (primaryTranslation?.word || term.def_en) && (
+                    <div style={{ color: "var(--text-secondary)", fontSize: 12, lineHeight: 1.5 }}>
+                      {primaryTranslation?.language ? `${primaryTranslation.language}: ` : ""}{primaryTranslation?.word || term.def_en}
+                    </div>
+                  )}
+                </div>
+                <div style={{ display: "flex", gap: 6, flexShrink: 0, flexWrap: "wrap", justifyContent: "flex-end" }}>
+                  {term.has_subwords && (
+                    <span style={{ fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 999, background: "rgba(255,166,87,0.12)", color: "var(--accent-orange)", border: "1px solid rgba(255,166,87,0.24)" }}>
+                      다음: 표현층
+                    </span>
+                  )}
+                  {bm ? (
+                    <span style={{ fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 999, background: bm.bg, color: bm.color, border: `1px solid ${bm.color}44` }}>
+                      B{band}
+                    </span>
+                  ) : (
+                    <span style={{ fontSize: 10, color: "#6e7681", padding: "3px 8px", borderRadius: 999, background: "rgba(110,118,129,0.1)", border: "1px solid rgba(110,118,129,0.2)" }}>
+                      —
+                    </span>
+                  )}
+                </div>
+              </div>
+              {displayPath ? (
+                <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center" }}>
+                  <span style={{ fontSize: 11, color: "var(--text-muted)", border: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.02)", borderRadius: 999, padding: "3px 8px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {displayPath}
                   </span>
-                )}
-                {bm ? (
-                  <span style={{ fontSize: 10, fontWeight: 600, padding: "2px 7px", borderRadius: 6, background: bm.bg, color: bm.color, border: `1px solid ${bm.color}44` }}>
-                    B{band}
-                  </span>
-                ) : (
-                  <span style={{ fontSize: 10, color: "#6e7681", padding: "2px 7px", borderRadius: 6, background: "rgba(110,118,129,0.1)", border: "1px solid rgba(110,118,129,0.2)" }}>
-                    —
-                  </span>
-                )}
+                </div>
+              ) : null}
+              <div style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5 }}>
+                {term.def_ko}
               </div>
             </div>
           );
         })}
         {list.length === 0 && (
-          <div style={{ textAlign: "center", color: "var(--text-secondary)", padding: "60px 20px" }}>
-            해당 조건의 단어가 없습니다.
+          <div style={{ padding: "28px 0" }}>
+            <StatusPanel
+              kicker="No Result"
+              title="해당 조건의 단어가 없습니다"
+              description="필터를 줄이거나 다른 번역 언어/검색어로 다시 확인해 보세요."
+              tone="var(--accent-orange)"
+              compact
+            />
           </div>
         )}
       </div>

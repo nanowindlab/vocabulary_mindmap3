@@ -59,8 +59,22 @@
 - `MM3-210`은 closeout됐다.
 - `MM3-212`에서 runtime/source payload validation과 count reconciliation은 `PASS`로 고정됐다.
 - `MM3-216`에서 TOPIK stats linkage policy를 고정했다.
-- 다음 active step은 `MM3-213 Canonical Thin-Index Generator Recovery / Documentation`이다.
-- 다음 핵심 작업은 exact runtime search generator에 필요한 field provenance gap을 고정하는 것이다.
+- 다음 active step은 `MM3-261B Top Architecture Theme Continuity Art-Direction Polish`다.
+- current learner-facing `search + facets only` builder surface는 package/build-chain에 non-authoritative sidecar gate로 편입됐다.
+- `MM3-217C`에서 initial authoritative candidate는 `search semantic fields + facets`로 고정됐다.
+- authoritative write path / rollback / dual-run diff protocol은 정의됐다.
+- `chunk_id`는 current tranche에서 runtime-enrichment로 고정됐다.
+- current authoritative runtime boundary는 `search semantic fields + facets`다.
+- current learner-facing UI refinement roadmap, new design tranche first pass, interaction surface polish tranche, status surface polish tranche는 모두 closeout됐다.
+- `MM3-262` XML-to-app reliability audit은 closeout됐다.
+- XML-derived detail examples/relations는 package chain의 detail fidelity repair로 app runtime까지 다시 연결된다.
+- `MM3-258B`에서 repeated situation label은 learner-facing path collapse + tree category `어휘 목록` rule로 정리됐다.
+- 다음 핵심 작업은 `MM3-261B` theme continuity art-direction polish다.
+- latest review wave 기준 `MM3-257A`, `MM3-258A` study task가 추가됐다.
+- latest review wave 02 practical layout fixes는 반영 완료 상태다.
+- latest review wave 03 기준 `MM3-260C`, `MM3-261A` top architecture follow-up task가 추가됐다.
+- `MM3-257A`, `MM3-258A`, `MM3-260C`, `MM3-261A`는 closeout됐고, current open follow-up은 `MM3-258B`, `MM3-261B`다.
+- `PRODUCT_SCENARIO_SPEC_V1.md`는 current learner-facing scenario canonical로 승격됐다.
 - latest pilot capture는 `08_planning/pilot_feedback/20260326_pilot_session_04.md`에 정리돼 있다.
 - additional human feedback residual queue `MM3-168`~`MM3-173`가 기록돼 있다.
 - residual queue는 `MM3-174` 파이프라인 기준으로 관리한다.

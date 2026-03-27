@@ -1,3 +1,5 @@
+import { getSituationCanonicalGroup } from "./situationTaxonomy";
+
 const FUNCTIONAL_UNCLASSIFIED_POS = new Set([
   "어미",
   "조사",
@@ -46,6 +48,12 @@ export function isSituationNoneHierarchy(hierarchy = {}) {
   );
 }
 
+export function isSituationRepeatedHierarchy(hierarchy = {}) {
+  if (!isSituationHierarchy(hierarchy)) return false;
+  if (isSituationNoneHierarchy(hierarchy)) return false;
+  return Boolean(hierarchy.scene) && Boolean(hierarchy.category) && hierarchy.scene === hierarchy.category;
+}
+
 export function normalizeHierarchyBuckets({ rootId, scene, category, pos, wordGrade }) {
   if (rootId !== "미분류") {
     return {
@@ -92,6 +100,8 @@ export function normalizeHierarchyForDisplay({ hierarchy = {}, pos, wordGrade })
     root_en: hierarchy.root_en || "",
     scene,
     category,
+    raw_scene: rawScene,
+    raw_category: rawCategory,
     raw_path_ko: rawPath || `${rootLabel} > ${rawScene} > ${rawCategory}`,
   };
   const hierarchyDisplay = buildHierarchyDisplay({
@@ -145,7 +155,35 @@ export function buildHierarchyDisplay({ hierarchy = {}, pos, wordGrade }) {
       contextKind: "situation_none",
       helperTitle: "상황 미지정",
       helperDescription:
-        "특정 장면 하나보다 일반 의미와 쓰임을 먼저 보면 되는 어휘입니다. 상황보다 의미 관계와 예문을 먼저 확인하면 됩니다.",
+        "특정 장면보다 일반 의미와 쓰임을 먼저 보면 됩니다.",
+    };
+  }
+
+  if (isSituationHierarchy(hierarchy)) {
+    const rawLeaf = hierarchy.raw_category || hierarchy.category || hierarchy.scene || "";
+    const canonicalGroup = getSituationCanonicalGroup(rawLeaf);
+    if (canonicalGroup) {
+      return {
+        displayRootLabel: "주제 및 상황",
+        displayScene: canonicalGroup,
+        displayCategory: rawLeaf,
+        displayPathKo: ["주제 및 상황", canonicalGroup, rawLeaf].filter(Boolean).join(" > "),
+        contextKind: "situation_canonical",
+        helperTitle: null,
+        helperDescription: null,
+      };
+    }
+  }
+
+  if (isSituationRepeatedHierarchy(hierarchy)) {
+    return {
+      displayRootLabel: "주제 및 상황",
+      displayScene: hierarchy.scene || "",
+      displayCategory: "어휘 목록",
+      displayPathKo: ["주제 및 상황", hierarchy.scene || ""].filter(Boolean).join(" > "),
+      contextKind: "situation_repeated_collapsed",
+      helperTitle: null,
+      helperDescription: null,
     };
   }
 
@@ -154,21 +192,24 @@ export function buildHierarchyDisplay({ hierarchy = {}, pos, wordGrade }) {
       ? "unclassified_functional"
       : "unclassified_content";
 
+    const displayScene = formatUnclassifiedCategory(hierarchy.category, pos);
+    const displayCategory = formatUnclassifiedScene(hierarchy.scene, wordGrade);
+
     return {
       displayRootLabel: "분류 밖 항목",
-      displayScene: formatUnclassifiedScene(hierarchy.scene, wordGrade),
-      displayCategory: formatUnclassifiedCategory(hierarchy.category, pos),
+      displayScene,
+      displayCategory,
       displayPathKo: [
         "분류 밖 항목",
-        formatUnclassifiedScene(hierarchy.scene, wordGrade),
-        formatUnclassifiedCategory(hierarchy.category, pos),
+        displayScene,
+        displayCategory,
       ].join(" > "),
       contextKind: kind,
       helperTitle: kind === "unclassified_functional" ? "문법 기능 중심 항목" : "분류 밖 일반 어휘",
       helperDescription:
         kind === "unclassified_functional"
-          ? "이 항목은 장면보다 문법 기능과 형태 변화 중심으로 보면 됩니다. 이 영역에서는 학습난이도와 품사 기준으로만 묶어 보여줍니다."
-          : "이 항목은 의미/상황 분류 대신 학습난이도와 품사 기준으로만 묶어 둔 일반 어휘입니다.",
+          ? "이 영역에서는 학습난이도보다 품사와 형태 기준을 먼저 보면 됩니다."
+          : "이 영역에서는 상황 분류보다 품사와 학습난이도 기준을 먼저 보면 됩니다.",
     };
   }
 

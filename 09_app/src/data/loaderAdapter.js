@@ -21,42 +21,96 @@ const DATA_DIR = `${BASE_URL}data/`;
 const LIVE_DIR = `${DATA_DIR}live/`;
 const LEGACY_DIR = `${DATA_DIR}legacy/`;
 let detailMapPromise = null;
+let examplesChunkAvailability = null;
+
+const now = () =>
+  typeof performance !== "undefined" && typeof performance.now === "function"
+    ? performance.now()
+    : Date.now();
+
+async function loadJsonPayload(url, errorMessage, trace = null, meta = {}) {
+  const fetchStartedAt = now();
+  const resp = await fetch(url);
+  const responseReceivedAt = now();
+
+  if (!resp.ok) {
+    const error = new Error(errorMessage);
+    error.response = resp;
+    throw error;
+  }
+
+  const parseStartedAt = now();
+  const data = await resp.json();
+  const parseEndedAt = now();
+
+  trace?.({
+    ...meta,
+    url,
+    fetchMs: responseReceivedAt - fetchStartedAt,
+    parseMs: parseEndedAt - parseStartedAt,
+    totalMs: parseEndedAt - fetchStartedAt,
+    sizeBytes: Number(resp.headers.get("content-length")) || null,
+  });
+
+  return data;
+}
 
 // ── 3-축 분리 로더 (신규) ───────────────────────────────────────────────
-export async function loadMeaningTree() {
-  const resp = await fetch(`${LIVE_DIR}APP_READY_MEANING_TREE.json`);
-  if (!resp.ok) throw new Error("Failed to load meaning tree");
-  return await resp.json();
+export async function loadMeaningTree(options = {}) {
+  return loadJsonPayload(
+    `${LIVE_DIR}APP_READY_MEANING_TREE.json`,
+    "Failed to load meaning tree",
+    options.trace,
+    { payload: "meaningTree", source: "live" },
+  );
 }
 
-export async function loadSituationTree() {
-  const resp = await fetch(`${LIVE_DIR}APP_READY_SITUATION_TREE.json`);
-  if (!resp.ok) throw new Error("Failed to load situation tree");
-  return await resp.json();
+export async function loadSituationTree(options = {}) {
+  return loadJsonPayload(
+    `${LIVE_DIR}APP_READY_SITUATION_TREE.json`,
+    "Failed to load situation tree",
+    options.trace,
+    { payload: "situationTree", source: "live" },
+  );
 }
 
-export async function loadUnclassifiedTree() {
-  const resp = await fetch(`${LIVE_DIR}APP_READY_UNCLASSIFIED_TREE.json`);
-  if (!resp.ok) throw new Error("Failed to load unclassified tree");
-  return await resp.json();
+export async function loadUnclassifiedTree(options = {}) {
+  return loadJsonPayload(
+    `${LIVE_DIR}APP_READY_UNCLASSIFIED_TREE.json`,
+    "Failed to load unclassified tree",
+    options.trace,
+    { payload: "unclassifiedTree", source: "live" },
+  );
 }
 
-export async function loadUnifiedSearchIndex() {
-  const resp = await fetch(`${LIVE_DIR}APP_READY_SEARCH_INDEX.json`);
-  if (!resp.ok) {
+export async function loadUnifiedSearchIndex(options = {}) {
+  try {
+    return await loadJsonPayload(
+      `${LIVE_DIR}APP_READY_SEARCH_INDEX.json`,
+      "Failed to load unified search index",
+      options.trace,
+      { payload: "searchIndex", source: "live" },
+    );
+  } catch (error) {
+    if (!error?.response) throw error;
     console.warn("[LIVE] Unified search index not found, falling back to legacy V1");
-    return loadSearchIndex();
+    return loadSearchIndex(options);
   }
-  return await resp.json();
 }
 
-export async function loadFacetPayload() {
-  const resp = await fetch(`${LIVE_DIR}APP_READY_FACETS.json`);
-  if (!resp.ok) {
+export async function loadFacetPayload(options = {}) {
+  try {
+    return await loadJsonPayload(
+      `${LIVE_DIR}APP_READY_FACETS.json`,
+      "Failed to load facet payload",
+      options.trace,
+      { payload: "facetPayload", source: "live" },
+    );
+  } catch (error) {
+    if (!error?.response) throw error;
     console.warn("[LIVE] Facet payload not found, falling back to null");
     return null;
   }
-  return await resp.json();
 }
 
 async function loadDetailMap() {
@@ -106,13 +160,19 @@ export async function loadEnglishMapping() {
   }
 }
 
-export async function loadSearchIndex() {
-  const resp = await fetch(`${LEGACY_DIR}APP_READY_SEARCH_INDEX_V1.json`);
-  if (!resp.ok) {
+export async function loadSearchIndex(options = {}) {
+  try {
+    return await loadJsonPayload(
+      `${LEGACY_DIR}APP_READY_SEARCH_INDEX_V1.json`,
+      "Failed to load legacy search index",
+      options.trace,
+      { payload: "searchIndex", source: "legacy" },
+    );
+  } catch (error) {
+    if (!error?.response) throw error;
     console.warn("Search index not found, falling back to empty array");
     return [];
   }
-  return await resp.json();
 }
 
 /**
@@ -121,26 +181,34 @@ export async function loadSearchIndex() {
 export async function loadTermDetailChunk(termId, chunkId) {
   if (!termId || !chunkId) return null;
 
-  const [richResp, examplesResp] = await Promise.allSettled([
-    fetch(`${LIVE_DIR}APP_READY_CHUNK_RICH_${chunkId}.json`),
-    fetch(`${LIVE_DIR}APP_READY_CHUNK_EXAMPLES_${chunkId}.json`),
-  ]);
+  const richResp = await fetch(`${LIVE_DIR}APP_READY_CHUNK_RICH_${chunkId}.json`);
+  let examplesResp = null;
+
+  if (examplesChunkAvailability !== false) {
+    const candidate = await fetch(`${LIVE_DIR}APP_READY_CHUNK_EXAMPLES_${chunkId}.json`);
+    if (candidate.ok) {
+      examplesChunkAvailability = true;
+      examplesResp = candidate;
+    } else {
+      examplesChunkAvailability = false;
+    }
+  }
 
   let richEntry = null;
   let examplesEntry = null;
 
-  if (richResp.status === "fulfilled" && richResp.value.ok) {
+  if (richResp.ok) {
     try {
-      const richData = await richResp.value.json();
+      const richData = await richResp.json();
       richEntry = richData[termId] || null;
     } catch (e) {
       console.warn("[loaderAdapter] RICH chunk parse error:", e);
     }
   }
 
-  if (examplesResp.status === "fulfilled" && examplesResp.value.ok) {
+  if (examplesResp?.ok) {
     try {
-      const exData = await examplesResp.value.json();
+      const exData = await examplesResp.json();
       examplesEntry = (exData.data || {})[termId] || null;
     } catch (e) {
       console.warn("[loaderAdapter] EXAMPLES chunk parse error:", e);
@@ -153,11 +221,10 @@ export async function loadTermDetailChunk(termId, chunkId) {
   if (examplesEntry?.attested_sentences) {
     examples_bundle = examplesEntry.attested_sentences
       .filter((s) => s.ko && s.ko.length > 5)
-      .slice(0, 8)
       .map((s) => ({
         text_ko: s.ko,
         text_en: s.en || null,
-        source: s.round ? `TOPIK ${s.round}` : null,
+        source: s.round ? `TOPIK ${s.round}` : (s.source_label || s.category || s.type || null),
       }));
   }
 

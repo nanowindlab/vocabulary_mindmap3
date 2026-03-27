@@ -2,14 +2,18 @@
 
 ## Authoritative Active Work
 
-### MM3-217 Runtime Payload Builder Activation
+### MM3-264 A Canonical + E Overlay Taxonomy Implementation
 
 - Status: `IN_PROGRESS`
-- Goal: recovered search/facet pieces를 project-local runtime payload builder 형태로 정리하고 builder scope를 search/facet 중심으로 고정한다.
+- Goal: `주제 및 상황`은 `A`를 canonical taxonomy로, `E`는 quick-entry overlay로만 고정하고 app UI에 반영한다.
 - Input:
-  - `08_planning/reports/20260326_MM3_212_PAYLOAD_VALIDATION_COUNT_RECONCILIATION_V1.md`
-  - `08_planning/reports/20260326_MM3_213_CANONICAL_THIN_INDEX_GENERATOR_RECOVERY_NOTE_V1.md`
-  - `08_planning/reports/20260326_MM3_217_RUNTIME_PAYLOAD_BUILDER_ACTIVATION_NOTE_V1.md`
+  - `08_planning/reports/20260327_MM3_264_A_CANONICAL_E_OVERLAY_TAXONOMY_IMPLEMENTATION_V1.md`
+- Prior closeout:
+  - `MM3-262` XML-to-app data reliability audit: `DONE`
+  - `MM3-258B` situation repeated label resolution decision / implementation: `DONE`
+  - `MM3-263` subject-none cohort canonical/runtime exclusion: `DONE`
+- Progress lock:
+  - `MM3-264` implementation + validation: `DONE`
 
 ## Active Task Rows
 
@@ -272,6 +276,72 @@
 - `MM3-213B` generator recovery boundary note: `DONE`
 - `MM3-213C` search recovery probe and builder artifact: `DONE`
 - `MM3-213` canonical thin-index generator recovery / documentation: `DONE`
+- `MM3-217A` search/facet builder surface confirmation: `DONE`
+- `MM3-217B` authoritative/sidecar guardrail sync: `DONE`
+- `MM3-217C` authoritative output 승격을 위한 지속적 개선 track 유지: `DONE`
+- `MM3-218A` runtime payload builder validation packet: `DONE`
+- `MM3-219A` runtime payload builder three-expert review: `DONE`
+- `MM3-220A` runtime payload builder hardening note: `DONE`
+- `MM3-217` runtime payload builder activation: `DONE`
+- `MM3-221A` runtime payload builder revalidation: `DONE`
+- `MM3-223A` search/facet builder package/build-chain sidecar promotion decision: `DONE`
+- `MM3-223B` package/build-chain sidecar wiring and verification: `DONE`
+- `MM3-224A` authoritative promotion criteria lock: `DONE`
+- `MM3-224B` evidence gap audit: `DONE`
+- `MM3-224C` initial authoritative candidate scope decision: `DONE`
+- `MM3-224D` recurring gate recheck: `DONE`
+- `MM3-225A` authoritative runtime write path 정의: `DONE`
+- `MM3-225B` rollback protocol 정의: `DONE`
+- `MM3-225C` dual-run diff gate 정의 및 dry-run 검증: `DONE`
+- `MM3-226A` canonical `chunk_id` mapping 신규 생성 설계 / acceptance 조건 정의: `TODO`
+- `MM3-226B` current tranche `chunk_id` runtime-enrichment policy decision: `DONE`
+- `MM3-227A` actual authoritative runtime switch execution: `DONE`
+- `MM3-227B` post-switch diff / rollback-ready / build verification: `DONE`
+- `MM3-227C` limited authoritative boundary control-plane sync: `DONE`
+- `MM3-228A` authoritative runtime recurring gate bundle command 추가: `DONE`
+- `MM3-229A` `MM3-217` closeout report 작성 및 next active work 전환: `DONE`
+- `MM3-230A` runtime boundary maintenance protocol lock: `DONE`
+- `MM3-231A` product scenario spec final canonicalization: `DONE`
+- `MM3-232A` related form exact-match conservative backfill 적용: `DONE`
+- `MM3-232B` source/detail/integrity sync: `DONE`
+- `MM3-232C` post-repair validation: `DONE`
+- `MM3-233A` related form deep-repair residual analysis: `DONE`
+- `MM3-234A` source ambiguity `related_form` text-only policy lock: `DONE`
+- `MM3-235A` related form audit automation 추가: `DONE`
+- `MM3-236A` MM3 UI refinement roadmap opening: `DONE`
+- `MM3-236B` relation tab information hierarchy refinement: `DONE`
+- `MM3-236C` detail top-of-fold density refinement: `DONE`
+- `MM3-236D` expression / example legibility refinement: `DONE`
+- `MM3-236E` fallback surface guidance refinement: `DONE`
+- `MM3-241A` MM3 UI refinement roadmap closeout: `DONE`
+- `MM3-242A` new design tranche opening: `DONE`
+- `MM3-243A` explorer chrome visual refresh: `DONE`
+- `MM3-244A` mindmap canvas surface refresh: `DONE`
+- `MM3-245A` detail surface card harmonization: `DONE`
+- `MM3-246A` new design tranche closeout: `DONE`
+- `MM3-247A` interaction surface polish opening: `DONE`
+- `MM3-248A` filter / dropdown surface refresh: `DONE`
+- `MM3-250A` search result panel guidance: `DONE`
+- `MM3-252A` interaction surface polish closeout: `DONE`
+- `MM3-253A` status surface polish opening: `DONE`
+- `MM3-254A` loading / empty surface refresh: `DONE`
+- `MM3-255A` status surface polish closeout: `DONE`
+- `MM3-256A` user review wave 01 intake + practical compression/search row fix: `DONE`
+- `MM3-257A` meaning tree 하위 분류 count exposure study: `DONE`
+- `MM3-258A` situation tree repeated child label redundancy study: `DONE`
+- `MM3-258B` situation tree repeated label resolution options / implementation decision: `DONE`
+- `MM3-259A` review wave 02 top-shell/detail compression follow-up: `DONE`
+- `MM3-259B` review wave 02 search result row density follow-up: `DONE`
+- `MM3-259C` review wave 02 split header line alignment follow-up: `DONE`
+- `MM3-260A` top architecture three-expert review: `DONE`
+- `MM3-260B` top architecture improved plan lock: `DONE`
+- `MM3-260C` detail core/translation practical reading re-review: `DONE`
+- `MM3-261A` top architecture consolidation implementation tranche: `DONE`
+- `MM3-261B` top architecture theme continuity art-direction polish: `IN_PROGRESS`
+- `MM3-263A` subject-none cohort canonical/runtime exclusion policy implementation: `DONE`
+- `MM3-264A` `A` canonical taxonomy display mapping: `DONE`
+- `MM3-264B` `E` quick-entry overlay implementation: `DONE`
+- `MM3-265A` 분류 밖 항목 처리/재분류 comparative study opening: `TODO`
 - `MM3-201A` post-closeout additional feedback coverage check: `DONE`
 - `MM3-201B` post-closeout additional feedback literal documentation sync: `DONE`
 - `MM3-202A` detail top-of-fold helper density re-review scope 정의: `DONE`
@@ -287,7 +357,7 @@
 
 ## Next Work
 
-- `MM3-217` runtime payload builder activation: `IN_PROGRESS`
+- `MM3-217` runtime payload builder activation: `DONE`
 
 ## Residual Feedback Pipeline
 
