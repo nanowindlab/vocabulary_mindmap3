@@ -4,6 +4,8 @@ import { pipeline } from "node:stream/promises";
 import { createGzip } from "node:zlib";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { buildExampleEntry, loadTopikSentenceMap } from "./example-chunk-sources.mjs";
+import { loadCanonicalRuntimeDetailEntries } from "./runtime-detail-projection.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -68,9 +70,8 @@ function writeJsonAtomic(filePath, payload) {
   renameSync(tempPath, filePath);
 }
 
-function chunkEntries(detailMapPayload) {
-  const entries = detailMapPayload.entries || {};
-  const entryIds = Object.keys(entries);
+function chunkEntries(detailEntries) {
+  const entryIds = detailEntries.map((item) => item.id);
   const chunkMap = new Map();
   const chunks = [];
 
@@ -79,7 +80,8 @@ function chunkEntries(detailMapPayload) {
     const chunkId = `chunk-${String((index / CHUNK_SIZE) + 1).padStart(4, "0")}`;
     const richData = {};
     for (const id of ids) {
-      richData[id] = entries[id];
+      const entry = detailEntries[index + ids.indexOf(id)];
+      richData[id] = entry.detail;
       chunkMap.set(id, chunkId);
     }
     chunks.push({
@@ -102,8 +104,9 @@ function applyChunkIds(payload, chunkMap) {
   return payload;
 }
 
-async function writeChunkArtifacts(detailMapPayload) {
-  const { chunkMap, chunks } = chunkEntries(detailMapPayload);
+async function writeChunkArtifacts(detailEntries) {
+  const { chunkMap, chunks } = chunkEntries(detailEntries);
+  const topikSentenceMap = await loadTopikSentenceMap();
   const manifest = {
     version: "MM3_CHUNKED",
     generated_at: new Date().toISOString(),
@@ -120,6 +123,19 @@ async function writeChunkArtifacts(detailMapPayload) {
   for (const chunk of chunks) {
     const richPath = path.join(liveDir, `APP_READY_CHUNK_RICH_${chunk.chunkId}.json`);
     writeJsonAtomic(richPath, chunk.richData);
+
+    const examplesData = {};
+    for (const id of chunk.ids) {
+      const built = buildExampleEntry(chunk.richData[id], { topikSentenceMap });
+      if (Object.keys(built).length > 0) {
+        examplesData[id] = built;
+      }
+    }
+    const examplesPath = path.join(liveDir, `APP_READY_CHUNK_EXAMPLES_${chunk.chunkId}.json`);
+    writeJsonAtomic(examplesPath, {
+      chunk_id: chunk.chunkId,
+      data: examplesData,
+    });
   }
 
   return { chunkMap, manifest };
@@ -128,10 +144,11 @@ async function writeChunkArtifacts(detailMapPayload) {
 async function main() {
   mkdirSync(compressedDir, { recursive: true });
   rmSync(path.join(compressedDir, "MANIFEST.json"), { force: true });
+  rmSync(path.join(compressedDir, `${DETAIL_MAP_FILE}.gz`), { force: true });
   const entries = [];
 
-  const detailMapPayload = loadJson(DETAIL_MAP_FILE);
-  const { chunkMap } = await writeChunkArtifacts(detailMapPayload);
+  const canonicalDetailEntries = loadCanonicalRuntimeDetailEntries();
+  const { chunkMap } = await writeChunkArtifacts(canonicalDetailEntries);
 
   for (const fileName of [
     "APP_READY_SEARCH_INDEX.json",
@@ -171,7 +188,10 @@ async function main() {
 
 function chunksFromManifest(manifestFilePath) {
   const manifest = JSON.parse(readFileSync(manifestFilePath, "utf-8"));
-  return (manifest.chunks || []).map((chunk) => `APP_READY_CHUNK_RICH_${chunk.chunk_id}.json`);
+  return (manifest.chunks || []).flatMap((chunk) => [
+    `APP_READY_CHUNK_RICH_${chunk.chunk_id}.json`,
+    `APP_READY_CHUNK_EXAMPLES_${chunk.chunk_id}.json`,
+  ]);
 }
 
 main().catch((error) => {

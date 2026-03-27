@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Search } from "lucide-react";
+import { normalizeHierarchyForDisplay } from "../utils/hierarchyDisplay";
 
 const getPrimaryTranslation = (item, preferredLanguage = "영어") => {
   const translations = item?.translation_summary || [];
@@ -26,6 +27,8 @@ const collapseExactSearchDuplicates = (items) => {
   return result;
 };
 
+const SEARCH_ORDER_DESCRIPTION = "정렬: 정확히 일치 -> 앞부분 일치 -> 포함 일치 -> 짧은 단어 순";
+
 export const SearchBox = ({
   searchIndex,
   onSelect,
@@ -36,6 +39,7 @@ export const SearchBox = ({
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef(null);
+  const isComposingRef = useRef(false);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -100,8 +104,18 @@ export const SearchBox = ({
     setQuery("");
   };
 
+  const getDisplayPath = (item) => {
+    const normalizedHierarchy = normalizeHierarchyForDisplay({
+      hierarchy: item?.hierarchy || {},
+      pos: item?.pos || item?.part_of_speech || "품사 없음",
+      wordGrade: item?.word_grade || "없음",
+    });
+    return normalizedHierarchy.display_path_ko || normalizedHierarchy.path_ko || null;
+  };
+
   const handleKeyDown = (e) => {
     if (e.key !== "Enter") return;
+    if (e.nativeEvent?.isComposing || isComposingRef.current || e.keyCode === 229) return;
     if (!results.length) return;
     e.preventDefault();
     const exact = results.find((item) => item.word === query.trim());
@@ -109,52 +123,83 @@ export const SearchBox = ({
   };
 
   return (
-    <div ref={wrapperRef} style={{ position: "relative", width: 260 }}>
-      <div style={{ position: "relative" }}>
+    <div ref={wrapperRef} className="search-shell" style={{ position: "relative", width: 360 }}>
+      <div className="search-input-shell" style={{ position: "relative" }}>
         <input
+          className="search-input-field"
           data-testid="search-input"
           type="text"
-          placeholder="단어 검색..."
+          placeholder="어휘 / 뜻 / 번역 검색"
           value={query}
           onChange={handleSearch}
           onKeyDown={handleKeyDown}
+          onCompositionStart={() => {
+            isComposingRef.current = true;
+          }}
+          onCompositionEnd={() => {
+            isComposingRef.current = false;
+          }}
           onFocus={() => {
             if (query.trim()) setIsOpen(true);
           }}
           style={{
             width: "100%",
-            padding: "6px 12px 6px 32px",
-            borderRadius: 8,
-            border: "1px solid var(--border-color)",
-            backgroundColor: "rgba(22, 27, 34, 0.5)",
+            padding: "11px 14px 11px 40px",
+            borderRadius: 15,
+            border: "1px solid rgba(255,255,255,0.08)",
+            backgroundColor: "rgba(255,255,255,0.035)",
             color: "var(--text-primary)",
             fontSize: 13,
             outline: "none",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
           }}
         />
         <Search
           size={14}
           color="var(--text-secondary)"
-          style={{ position: "absolute", left: 10, top: 8 }}
+          style={{ position: "absolute", left: 14, top: 12 }}
         />
       </div>
 
       {isOpen && results.length > 0 && (
         <div
+          className="search-dropdown-shell"
           style={{
             position: "absolute",
             top: "100%",
             left: 0,
             right: 0,
-            marginTop: 4,
-            backgroundColor: "var(--bg-tertiary)",
-            border: "1px solid var(--border-color)",
-            borderRadius: 8,
+            marginTop: 8,
+            backgroundColor: "rgba(10,17,25,0.96)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            borderRadius: 16,
             overflow: "hidden",
-            zIndex: 100,
-            boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+            zIndex: 120,
+            boxShadow: "0 24px 48px rgba(0,0,0,0.36)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
           }}
         >
+          <div className="search-dropdown-header" style={{ padding: "13px 14px 11px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "flex-start" }}>
+              <div>
+                <div style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 4 }}>
+                  Search Result Panel
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)" }}>
+                  `{query.trim()}`
+                </div>
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, justifyContent: "flex-end" }}>
+                <span style={{ fontSize: 11, color: "var(--text-secondary)", border: "1px solid rgba(255,255,255,0.06)", background: "rgba(255,255,255,0.03)", padding: "3px 8px", borderRadius: 999 }}>
+                  결과 {results.length}개
+                </span>
+                <span style={{ fontSize: 11, color: showEnglish ? "var(--accent-green)" : "var(--text-muted)", border: `1px solid ${showEnglish ? "rgba(63,185,80,0.16)" : "rgba(255,255,255,0.06)"}`, background: showEnglish ? "rgba(63,185,80,0.10)" : "rgba(255,255,255,0.03)", padding: "3px 8px", borderRadius: 999 }}>
+                  {showEnglish ? `번역 · ${translationLanguage}` : "번역 OFF"}
+                </span>
+              </div>
+            </div>
+          </div>
           {results.map((res) => (
             (() => {
               const primaryTranslation = getPrimaryTranslation(res, translationLanguage);
@@ -164,17 +209,19 @@ export const SearchBox = ({
               key={res.id}
               data-search-result="true"
               data-search-result-id={res.id}
+              className="search-result-row"
               onClick={() => handleItemClick(res)}
               style={{
-                padding: "8px 12px",
+                padding: "12px 14px",
                 cursor: "pointer",
                 borderBottom: "1px solid rgba(255,255,255,0.05)",
                 display: "flex",
                 flexDirection: "column",
-                gap: 4,
+                gap: 6,
+                backgroundColor: "transparent",
               }}
               onMouseEnter={(e) =>
-                (e.currentTarget.style.backgroundColor = "var(--bg-secondary)")
+                (e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.04)")
               }
               onMouseLeave={(e) =>
                 (e.currentTarget.style.backgroundColor = "transparent")
@@ -183,28 +230,29 @@ export const SearchBox = ({
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: 8,
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  gap: 6,
                 }}
               >
                 <span
                   style={{
-                    fontWeight: 600,
-                    fontSize: 13,
+                    fontWeight: 700,
+                    fontSize: 14,
                     color: "var(--text-primary)",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {res.word}
                 </span>
-                <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+                <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                   {homonymCount > 1 && (
                     <span
                       style={{
                         fontSize: 11,
                         color: "var(--accent-blue)",
-                        padding: "2px 6px",
-                        borderRadius: 4,
+                        padding: "3px 8px",
+                        borderRadius: 999,
                         backgroundColor: "rgba(88,166,255,0.12)",
                         border: "1px solid rgba(88,166,255,0.24)",
                       }}
@@ -217,8 +265,8 @@ export const SearchBox = ({
                       style={{
                         fontSize: 11,
                         color: "var(--text-secondary)",
-                        padding: "2px 6px",
-                        borderRadius: 4,
+                        padding: "3px 8px",
+                        borderRadius: 999,
                         backgroundColor: "rgba(255,255,255,0.05)",
                         border: "1px solid rgba(255,255,255,0.08)",
                       }}
@@ -231,62 +279,79 @@ export const SearchBox = ({
                       style={{
                         fontSize: 11,
                         color: "var(--accent-orange)",
-                        padding: "2px 6px",
-                        borderRadius: 4,
+                        padding: "3px 8px",
+                        borderRadius: 999,
                         backgroundColor: "rgba(255,166,87,0.12)",
                         border: "1px solid rgba(255,166,87,0.24)",
                       }}
                     >
-                      다음: 표현층
+                      표현 연결
                     </span>
                   )}
-                  <span
-                    style={{
-                      fontSize: 11,
-                      color: "var(--text-secondary)",
-                      padding: "2px 6px",
-                      borderRadius: 4,
-                      backgroundColor: "rgba(255,255,255,0.05)",
-                    }}
-                  >
-                    {res.routing === "meta_learning"
-                      ? "메타"
-                      : res.routing === "expression_core"
-                        ? "표현 표제어"
-                        : "코어"}
-                  </span>
+                  {res.routing !== "mindmap_core" && (
+                    <span
+                      style={{
+                        fontSize: 11,
+                        color: "var(--text-secondary)",
+                        padding: "3px 8px",
+                        borderRadius: 999,
+                        backgroundColor: "rgba(255,255,255,0.05)",
+                      }}
+                    >
+                      {res.routing === "meta_learning" ? "메타" : "표현 항목"}
+                    </span>
+                  )}
                 </div>
               </div>
               <div
                 style={{
                   fontSize: 12,
                   color: "var(--text-secondary)",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
+                  lineHeight: 1.55,
                 }}
               >
                 {res.def_ko}
                 {showEnglish && primaryTranslation?.word && ` · ${primaryTranslation.language}: ${primaryTranslation.word}`}
               </div>
-              {(res.hierarchy?.display_path_ko || res.hierarchy?.path_ko) && (
+              {getDisplayPath(res) && (
                 <div
                   style={{
                     fontSize: 11,
-                    color: "var(--text-secondary)",
-                    opacity: 0.75,
+                    color: "var(--text-muted)",
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                   }}
                 >
-                  {res.hierarchy.display_path_ko || res.hierarchy.path_ko}
+                  {getDisplayPath(res)}
                 </div>
               )}
             </div>
               );
             })()
           ))}
+          <div
+            data-testid="search-result-helper"
+            className="search-helper-shell"
+            style={{
+              padding: "10px 14px",
+              backgroundColor: "rgba(255,255,255,0.02)",
+              borderTop: "1px solid rgba(255,255,255,0.05)",
+              display: "flex",
+              flexDirection: "column",
+              gap: 4,
+            }}
+          >
+            <div style={{ fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.5 }}>
+              {SEARCH_ORDER_DESCRIPTION}
+            </div>
+            <div style={{ fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.5 }}>
+              `기본 항목`은 현재 상세 보기로 바로 들어가는 기본 표제어입니다.
+            </div>
+            <div style={{ fontSize: 11, color: "var(--text-muted)", lineHeight: 1.5 }}>
+              번역이 켜져 있으면 현재 선택한 언어 surface를 search row에서도 같이 보여 줍니다.
+            </div>
+          </div>
         </div>
       )}
     </div>

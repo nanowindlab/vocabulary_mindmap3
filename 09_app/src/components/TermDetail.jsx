@@ -933,16 +933,16 @@ const renderSectionTitle = (icon, label, color, count = null) => (
     <div className="detail-surface-root" style={{ flex: 1, display: "flex", flexDirection: "column", height: "100%", backgroundColor: "var(--bg-primary)" }}>
 
       {/* ── 헤더 ── */}
-      <div className="detail-header-shell" style={{ padding: "16px 16px 12px", borderBottom: "1px solid var(--border-color)", backgroundColor: "rgba(22,27,34,0.5)" }}>
+      <div className="detail-header-shell" style={{ padding: "18px 18px 14px", borderBottom: "1px solid var(--border-color)", backgroundColor: "rgba(22,27,34,0.5)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
           {/* 단어 + 발음 */}
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
-              <div data-testid="detail-word" style={{ fontSize: 28, fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.5px" }}>
+              <div data-testid="detail-word" className="detail-wordmark" style={{ fontSize: 28, fontWeight: 700, color: "var(--text-primary)", letterSpacing: "-0.5px" }}>
                 {term.word}
               </div>
               {roman && (
-                <div data-testid="detail-pronunciation" style={{ color: "var(--accent-purple)", fontSize: 14, fontWeight: 600 }}>
+                <div data-testid="detail-pronunciation" className="detail-pronunciation-pill" style={{ color: "var(--accent-purple)", fontSize: 14, fontWeight: 600 }}>
                   [{roman}]
                 </div>
               )}
@@ -1003,6 +1003,7 @@ const renderSectionTitle = (icon, label, color, count = null) => (
             )}
             <button
               data-testid="detail-close-button"
+              className="detail-close-button"
               onClick={() => onClose && onClose()}
               style={{
                 display: "inline-flex",

@@ -192,6 +192,16 @@ button {
   -webkit-backdrop-filter: blur(18px);
   position: relative;
   z-index: 30;
+  overflow: hidden;
+}
+
+.top-nav::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
+  pointer-events: none;
 }
 
 .nav-left,
@@ -388,6 +398,30 @@ button {
   transform: translateY(-1px);
 }
 
+.nav-utility-button {
+  min-height: 38px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.nav-utility-button.is-active {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 10px 20px rgba(0,0,0,0.16);
+}
+
+.nav-utility-button.is-filter {
+  border-color: rgba(255,166,87,0.26);
+}
+
+.nav-utility-pill {
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.nav-utility-count {
+  min-width: 20px;
+  text-align: center;
+}
+
 .filter-panel-heading {
   display: flex;
   flex-direction: column;
@@ -424,12 +458,30 @@ button {
   position: relative;
 }
 
+.search-input-field {
+  transition: border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.search-input-field:hover {
+  border-color: rgba(255,255,255,0.12) !important;
+  background-color: rgba(255,255,255,0.045) !important;
+}
+
+.search-input-field:focus {
+  border-color: rgba(88,166,255,0.24) !important;
+  background-color: rgba(255,255,255,0.05) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 0 0 4px rgba(88,166,255,0.08) !important;
+}
+
 .search-input-field::placeholder {
   color: var(--text-muted);
 }
 
 .search-dropdown-shell {
   overflow: hidden;
+  border-color: rgba(167, 186, 209, 0.11) !important;
 }
 
 .search-result-row:hover {
@@ -445,7 +497,7 @@ button {
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  padding: 9px 12px;
+  padding: 10px 14px;
   border-bottom: 1px solid rgba(167, 186, 209, 0.10);
   background: linear-gradient(180deg, rgba(16, 25, 36, 0.74), rgba(11, 18, 26, 0.60));
   min-height: 72px;
@@ -462,8 +514,9 @@ button {
   gap: 8px;
   padding: 3px;
   border-radius: 11px;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.03);
+  background: rgba(255,255,255,0.018);
+  border: 1px solid rgba(255,255,255,0.045);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
 }
 
 .sidebar-shell {
@@ -509,6 +562,32 @@ button {
 
 .detail-header-shell {
   background: linear-gradient(180deg, rgba(18, 28, 40, 0.74), rgba(10, 18, 27, 0.54));
+  box-shadow: inset 0 -1px 0 rgba(255,255,255,0.03);
+}
+
+.detail-wordmark {
+  text-shadow: 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.detail-pronunciation-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: rgba(188,140,255,0.09);
+  border: 1px solid rgba(188,140,255,0.18);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.detail-close-button {
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.detail-close-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(167, 186, 209, 0.22) !important;
+  background: rgba(255,255,255,0.05) !important;
 }
 
 .detail-tab-shell {

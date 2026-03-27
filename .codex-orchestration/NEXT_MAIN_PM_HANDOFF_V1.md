@@ -3,8 +3,8 @@
 ## Current State
 
 - `mindmap3`는 현재 `M1 Runtime Wiring / Core Explorer` phase다.
-- current active work는 `MM3-267 Runtime Data Performance Optimization`다.
-- current exit condition은 current branch를 deployed runtime까지 올리고 `Vercel`에서 `MM3-267` before/after perf probe를 확인하는 것이다.
+- current active work는 `MM3-261B Top Architecture Theme Continuity Art-Direction Polish`다.
+- current exit condition은 next polish tranche scope를 잠그는 것이다.
 - current gate는 overall `PARTIAL_OPEN`, core explorer slice `OPEN`이다.
 - deploy/runtime truth는 `runtime_payloads/*.json.gz -> prepare:live -> verify:live -> build` 체인이다.
 - current learner-facing `search + facets only` builder surface는 package/build-chain에 **non-authoritative sidecar gate**로 편입됐다.
@@ -105,7 +105,31 @@
 - runtime tab tree path is now derived from `APP_READY_SEARCH_INDEX` category projection, so the app no longer fetches the three large tree payloads at runtime.
 - `npm run build`가 통과했다.
 - `npx playwright test tests/smoke.spec.js tests/scenario.spec.js`가 `5 passed`다.
-- `MM3-267B` `Vercel` deployed perf verification task가 추가됐다.
+- `MM3-267B` `Vercel` deployed perf verification은 closeout됐다.
+- latest production custom domain recheck 기준 `의미 범주(44,410)`과 tree scene list가 다시 렌더된다.
+- next active work는 `MM3-266F APP_READY_* runtime payload repartition design`이다.
+- `MM3-266F` draft 기준 preferred target은:
+  - hot: `APP_READY_SEARCH_INDEX`, `APP_READY_FACETS`
+  - on-demand: `APP_READY_CHUNK_RICH_*`, `APP_READY_CHUNK_EXAMPLES_*`, `CHUNK_MANIFEST_V1`
+  - demote from learner runtime fetch: tree trio
+  - demote from primary runtime truth: `APP_READY_DETAIL_MAP`
+- `MM3-266F` execution plan packet이 추가됐다.
+- selected first tranche는 `T1 Formalize Search-Index-Derived Tree Runtime`이다.
+- `MM3-266F` execution plan은 PM validation / 3-expert review / PM improvement / revalidation까지 닫혔다.
+- current plan verdict is `ACCEPT_FOR_IMPLEMENTATION`.
+- `MM3-266F / T1` implementation packet이 추가됐다.
+- dead tree runtime loader path는 제거됐고 projected tree path가 current runtime contract로 고정됐다.
+- `MM3-266F / T2` preparation packet이 추가됐다.
+- `DETAIL_MAP` demotion의 현재 blocker는:
+  - runtime fallback dependency
+  - chunk build dependency
+  - repair script dependency
+- fallback retirement decision은 `debug-only fallback`으로 고정됐다.
+- chunk build source migration decision은 `canonical direct path`로 고정됐다.
+- `debug-only fallback gate + canonical-direct chunk builder` plan packet이 추가됐다.
+- `canonical-direct chunk builder` implementation은 local packaging까지 통과했다.
+- `debug-only fallback gate` implementation packet이 추가됐다.
+- normal learner runtime no longer uses `DETAIL_MAP` as a silent fallback.
 - PM은 authoritative output으로 완전히 승격할 수 있도록 지속적으로 개선해야 한다.
 - post-closeout feedback queue `MM3-202A`~`MM3-206A`는 closeout까지 반영됐다.
 - screenshot feedback queue `MM3-207A`~`MM3-209A`도 closeout까지 반영됐다.
@@ -175,7 +199,6 @@
 
 ## Next PM Actions
 
-1. latest `MM3-267` implementation packet을 먼저 읽는다.
-2. local implementation/build/test는 끝났고 current symptom 대응으로 tree fetch bypass까지 들어갔다.
-3. next step은 updated production deployment에서 meaning loading persistence가 실제로 사라졌는지 재확인하는 것이다.
-4. `LFS`/storage 결정은 계속 이 task의 범위가 아니다.
+1. `MM3-266F` opening packet과 `MM3-266B/C`, `MM3-267` implementation packet을 먼저 읽는다.
+2. `T1`, `T2 preparation`, decision, plan, debug-only fallback gate implementation, canonical-direct chunk builder implementation은 closeout됐다.
+3. next step은 `DETAIL_MAP demotion` actual execution boundary를 잠그는 것이다.

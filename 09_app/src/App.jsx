@@ -46,7 +46,8 @@ const BAND_FILTER_LABELS = {
 
 const INITIAL_LOAD_PERF_QUERY_KEY = "mm3Perf";
 const INITIAL_LOAD_PERF_STORAGE_KEY = "MM3_PERF_DEBUG";
-const TAB_IDLE_LOAD_TIMEOUT_MS = 1200;
+const DETAIL_FALLBACK_QUERY_KEY = "mm3DetailFallback";
+const DETAIL_FALLBACK_STORAGE_KEY = "MM3_DETAIL_FALLBACK_DEBUG";
 const INTERACTION_PERF_HISTORY_LIMIT = 30;
 
 const perfNow = () =>
@@ -61,6 +62,18 @@ function isInitialLoadPerfConsoleEnabled() {
     const params = new URLSearchParams(window.location.search);
     if (params.get(INITIAL_LOAD_PERF_QUERY_KEY) === "1") return true;
     return window.localStorage?.getItem(INITIAL_LOAD_PERF_STORAGE_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function isDetailFallbackDebugEnabled() {
+  if (typeof window === "undefined") return import.meta.env.DEV;
+  if (import.meta.env.DEV) return true;
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get(DETAIL_FALLBACK_QUERY_KEY) === "1") return true;
+    return window.localStorage?.getItem(DETAIL_FALLBACK_STORAGE_KEY) === "1";
   } catch {
     return false;
   }
@@ -621,6 +634,9 @@ function App() {
       unclassified: [],
     };
 
+    // T1 runtime contract:
+    // derive learner-facing tab trees from APP_READY_SEARCH_INDEX instead of
+    // fetching the large tree trio payloads at runtime.
     searchIndex.forEach((item) => {
       const meaningItem = projectSearchItemForTab(item, "meaning");
       if (meaningItem) projected.meaning.push(meaningItem);
@@ -753,7 +769,7 @@ function App() {
         });
         if (chunkData)
           setSelectedTermDetail((prev) => prev?.id === term.id ? { ...prev, ...chunkData } : prev);
-      } else {
+      } else if (isDetailFallbackDebugEnabled()) {
         const detail = await loadEntryDetail(term.id);
         if (detail) {
           const primarySense = detail.senses?.[0] || null;
@@ -773,6 +789,8 @@ function App() {
             translation_summary: primarySense?.translations || prev?.translation_summary || [],
           } : prev);
         }
+      } else {
+        console.warn("[MM3] detail-map fallback is disabled outside debug mode", term.id);
       }
     } catch (e) {
       console.warn(e);
@@ -1037,7 +1055,7 @@ function App() {
         <div className="nav-right">
           {/* ENG 토글 */}
           <button
-            className="card-glass nav-utility-button"
+            className={`card-glass nav-utility-button ${showEnglish ? "is-active" : ""}`}
             onClick={() => setShowEnglish(!showEnglish)}
             style={{
               display: "flex", alignItems: "center", gap: 8,
@@ -1050,6 +1068,7 @@ function App() {
             <Book size={14} />
             <span>{showEnglish ? "번역 ON" : "번역 OFF"}</span>
             <span
+              className="nav-utility-pill"
               style={{
                 fontSize: 10,
                 padding: "2px 7px",
@@ -1065,7 +1084,7 @@ function App() {
 
           {/* 필터 버튼 */}
           <button
-            className="card-glass nav-utility-button"
+            className={`card-glass nav-utility-button ${activeFilterCount > 0 ? "is-active is-filter" : ""}`}
             onClick={() => setShowFilterPanel(!showFilterPanel)}
             style={{
               display: "flex", alignItems: "center", gap: 8,
@@ -1078,7 +1097,7 @@ function App() {
           >
             <Filter size={14} />
             <span>필터</span>
-            {activeFilterCount > 0 && <span style={{ background: "var(--accent-orange)", color: "#081018", borderRadius: 999, padding: "2px 7px", fontSize: 10, fontWeight: 700 }}>{activeFilterCount}</span>}
+            {activeFilterCount > 0 && <span className="nav-utility-pill nav-utility-count" style={{ background: "var(--accent-orange)", color: "#081018", borderRadius: 999, padding: "2px 7px", fontSize: 10, fontWeight: 700 }}>{activeFilterCount}</span>}
             <ChevronDown size={12} style={{ transform: showFilterPanel ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
           </button>
 

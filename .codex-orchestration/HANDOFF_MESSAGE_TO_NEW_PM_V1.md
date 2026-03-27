@@ -12,10 +12,10 @@ Read first:
 4. /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md
 
 Current active work:
-- MM3-267 Runtime Data Performance Optimization
+- MM3-266F APP_READY Runtime Payload Repartition Design
 
 Current exit condition:
-- push current branch and verify `MM3-267` behavior in deployed `Vercel` runtime without reopening LFS/storage scope
+- lock the `canonical-direct chunk builder` implementation boundary
 
 Verified now:
 - MM3-217 formal validation/review/hardening/revalidation packets are present
@@ -90,7 +90,31 @@ Verified now:
 - runtime tree view now derives `meaning/situation/unclassified` from `APP_READY_SEARCH_INDEX` category projection and bypasses the three large tree payload fetches
 - local `npm run build` passed
 - local `npx playwright test tests/smoke.spec.js tests/scenario.spec.js` passed `5/5`
-- `MM3-267B` deployed `Vercel` perf verification task is opened
+- latest production custom domain recheck passed
+- `MM3-267` is effectively closed
+- next active work is `MM3-266F APP_READY_* runtime payload repartition design`
+- `MM3-266F` draft now exists:
+- hot: `APP_READY_SEARCH_INDEX`, `APP_READY_FACETS`
+- on-demand: `APP_READY_CHUNK_RICH_*`, `APP_READY_CHUNK_EXAMPLES_*`, `CHUNK_MANIFEST_V1`
+- demote from learner runtime fetch: tree trio
+- demote from primary runtime truth: `APP_READY_DETAIL_MAP`
+- `MM3-266F` execution plan packet is present
+- selected first tranche is `T1 Formalize Search-Index-Derived Tree Runtime`
+- `MM3-266F` plan review loop is complete
+- current verdict is `ACCEPT_FOR_IMPLEMENTATION`
+- `MM3-266F / T1` implementation packet is present
+- dead tree runtime loader path is removed
+- projected tree path is now the explicit runtime contract
+- `MM3-266F / T2` preparation packet is present
+- current `DETAIL_MAP` demotion blocker is explicit:
+- runtime fallback dependency
+- chunk build dependency
+- repair script dependency
+- fallback retirement decision is now `debug-only fallback`
+- chunk build source migration decision is now `canonical direct path`
+- `debug-only fallback gate + canonical-direct chunk builder` plan packet is present
+- `debug-only fallback gate` implementation packet is present
+- normal learner runtime no longer uses `DETAIL_MAP` as a silent fallback
 - `MM3-265` study opening is present
 - `분류 밖 항목` handling/reclassification is queued as a separate research task that must compare other dictionaries before decision
 - `MM3-266` study opening is present
@@ -103,7 +127,7 @@ Important note:
 - raw/internal `미분류` == learner-facing `분류 밖 항목`
 
 First action:
-- read the latest `MM3-267` implementation packet first
-- verify whether the updated production deployment removes the persistent meaning loading state
-- keep storage/LFS decisions out of scope
+- read the `debug-only fallback gate` implementation packet first
+- define the `canonical-direct chunk builder` implementation boundary
+- keep `MM3-261B` as lower-priority polish work
 ```

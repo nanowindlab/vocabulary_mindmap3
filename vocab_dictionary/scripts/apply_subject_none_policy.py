@@ -21,7 +21,6 @@ LIVE_FACETS = ROOT / "09_app" / "public" / "data" / "live" / "APP_READY_FACETS.j
 LIVE_MEANING_TREE = ROOT / "09_app" / "public" / "data" / "live" / "APP_READY_MEANING_TREE.json"
 LIVE_SITUATION_TREE = ROOT / "09_app" / "public" / "data" / "live" / "APP_READY_SITUATION_TREE.json"
 LIVE_UNCLASSIFIED_TREE = ROOT / "09_app" / "public" / "data" / "live" / "APP_READY_UNCLASSIFIED_TREE.json"
-LIVE_DETAIL_MAP = ROOT / "09_app" / "public" / "data" / "live" / "APP_READY_DETAIL_MAP.json"
 
 REPORT_PATH = ROOT / "tmp_reports" / "subject_none_policy_report.json"
 
@@ -127,20 +126,6 @@ def patch_thin_index(thin_payload: dict, none_only_ids: set[str]) -> dict:
         if entry_id in none_only_ids:
             continue
         next_entries.append(item)
-    patched["entries"] = next_entries
-    patched["entry_count"] = len(next_entries)
-    return patched
-
-
-def patch_detail_map(detail_payload: dict, none_only_ids: set[str]) -> dict:
-    patched = copy.deepcopy(detail_payload)
-    next_entries = {}
-    for entry_id, entry in (patched.get("entries") or {}).items():
-        if entry_id in none_only_ids:
-            continue
-        copied = copy.deepcopy(entry)
-        copied["categories"] = strip_subject_none(copied.get("categories"))
-        next_entries[entry_id] = copied
     patched["entries"] = next_entries
     patched["entry_count"] = len(next_entries)
     return patched
@@ -256,7 +241,6 @@ def main() -> None:
     base_payload = load_json(SOURCE_BASE_JSON)
     thin_payload = load_gzip_json(THIN_INDEX_GZ)
     facet_payload = load_gzip_json(FACET_PAYLOAD_GZ)
-    detail_payload = load_json(LIVE_DETAIL_MAP)
     search_payload = load_json(LIVE_SEARCH_INDEX)
     meaning_tree = load_json(LIVE_MEANING_TREE)
     situation_tree = load_json(LIVE_SITUATION_TREE)
@@ -268,7 +252,6 @@ def main() -> None:
 
     patched_base = patch_base_payload(base_payload, none_only_ids)
     patched_thin = patch_thin_index(thin_payload, none_only_ids)
-    patched_detail = patch_detail_map(detail_payload, none_only_ids)
     patched_search = patch_search_index(search_payload, none_only_ids)
     patched_meaning = patch_tree_payload(meaning_tree, set(), none_only_ids)
     patched_situation = patch_tree_payload(situation_tree, duplicate_ids, none_only_ids)
@@ -279,7 +262,6 @@ def main() -> None:
     write_gzip_json(SOURCE_BASE_GZ, patched_base)
     write_gzip_json(THIN_INDEX_GZ, patched_thin)
     write_gzip_json(FACET_PAYLOAD_GZ, patched_facet)
-    write_json(LIVE_DETAIL_MAP, patched_detail)
     write_json(LIVE_SEARCH_INDEX, patched_search)
     write_json(LIVE_MEANING_TREE, patched_meaning)
     write_json(LIVE_SITUATION_TREE, patched_situation)

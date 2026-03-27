@@ -2,11 +2,11 @@
 
 ## Current Revision
 
-- `R2`
+- `R3`
 
 ## Last Updated
 
-- `2026-03-27 19:01 KST`
+- `2026-03-27 19:08 KST`
 
 ## Last Updated By
 
@@ -87,7 +87,8 @@
 - result:
   - custom domain shell render 확인
   - runtime data `200` 확인
-  - Safari user symptom 기준 추가 tree fetch 제거 필요성 확인
+  - latest production body 기준 `의미 범주(44,410)`과 scene/category 목록이 렌더됨
+  - latest production smoke `2 passed`
 
 ## Additional Task Opened
 
@@ -102,15 +103,17 @@
 
 ## PM Verdict
 
-- `T1 Loader/Caching Hardening` local implementation은 `PARTIAL_ACCEPT`다.
-- current symptom을 직접 겨냥한 `searchIndex -> tab projection` runtime path를 추가했다.
-- local build/test는 통과했지만, updated production deployment recheck는 아직 남아 있다.
+- `MM3-267`: `ACCEPT`
+- current symptom 기준 `meaning` tab persistent loading은 `searchIndex -> tab projection` runtime path로 완화됐다고 판단한다.
+- latest production custom domain recheck까지 통과했으므로 `MM3-267B`도 closeout한다.
 
 ## Next Step
 
-- current branch를 push하고 updated production deployment에서 `meaning` tab loading persistence가 실제로 해소됐는지 재확인한다.
+- next active work는 `MM3-266F APP_READY_* runtime payload repartition design`이다.
+- current workaround를 durable architecture로 바꾸기 위해 payload repartition 설계를 연다.
 
 ## Revision History
 
+- `R3` / `2026-03-27 19:08 KST` / `Codex PM` / latest production custom domain recheck까지 반영해 `MM3-267`를 `ACCEPT`로 closeout
 - `R2` / `2026-03-27 19:01 KST` / `Codex PM` / current production symptom을 반영해 tree runtime을 `searchIndex` tab projection으로 전환하고 large tree fetch bypass를 추가
 - `R1` / `2026-03-27 17:30 KST` / `Codex PM` / `MM3-267 / T1 Loader/Caching Hardening` local implementation, local verification, deployed follow-up task opening을 고정

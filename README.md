@@ -69,7 +69,7 @@
 - `MM3-262` XML-to-app reliability audit은 closeout됐다.
 - XML-derived detail examples/relations는 package chain의 detail fidelity repair로 app runtime까지 다시 연결된다.
 - `MM3-258B`에서 repeated situation label은 learner-facing path collapse + tree category `어휘 목록` rule로 정리됐다.
-- 다음 핵심 작업은 `MM3-261B` theme continuity art-direction polish다.
+- 다음 핵심 작업은 `MM3-261B` top architecture theme continuity art-direction polish다.
 - latest review wave 기준 `MM3-257A`, `MM3-258A` study task가 추가됐다.
 - latest review wave 02 practical layout fixes는 반영 완료 상태다.
 - latest review wave 03 기준 `MM3-260C`, `MM3-261A` top architecture follow-up task가 추가됐다.

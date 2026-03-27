@@ -1,19 +1,15 @@
-// loaderAdapter.js  – V4 (2026-03-19)
-// ★ Canonical Runtime: live/ (relation model replacement 승격 + 전체 패치 반영)
-// 파일 기준:
-//   APP_READY_SITUATIONS_TREE.json   → Array<item>  (상황과 장소)
-//   APP_READY_EXPRESSIONS_TREE.json  → Array<item>  (마음과 표현)
-//   APP_READY_BASICS_TREE.json       → Array<item>  (구조와 기초)
-//   APP_READY_SEARCH_INDEX.json      → Array<item>  (8,094건+ 통합)
+// loaderAdapter.js
+// Runtime contract:
+// - eager runtime payloads: APP_READY_SEARCH_INDEX, APP_READY_FACETS
+// - on-demand runtime payloads: APP_READY_CHUNK_RICH_*, APP_READY_CHUNK_EXAMPLES_*
+// - APP_READY_DETAIL_MAP is no longer part of the normal runtime delivery contract;
+//   it remains a debug-only fallback artifact during the demotion transition.
+// - APP_READY_MEANING_TREE / SITUATION_TREE / UNCLASSIFIED_TREE are still generated
+//   as build/validation artifacts, but the learner-facing app runtime no longer fetches them.
 //
-// cross_links: relation model 기준 (asymmetry_count=0), related_vocab 유지
-// fully_unlinked=0 (PM 기준, non-control zero-cross 해소 완료)
-//
-// chunk 파일:
-//   APP_READY_CHUNK_RICH_*           → {[termId]: {...}}
-//   APP_READY_CHUNK_EXAMPLES_*       → { chunk_id, data: {[termId]: {...}} }
-//
-// NOTE: internal/, legacy/, archive/는 빌드/복구용. 앱 런타임은 live/만 사용.
+// NOTE:
+// - internal/, legacy/, archive/ are build or recovery layers.
+// - app runtime reads only live/ payloads.
 
 const BASE_URL = import.meta.env.BASE_URL || "/";
 const DATA_DIR = `${BASE_URL}data/`;
@@ -154,34 +150,6 @@ async function loadChunkPayload(kind, chunkId, trace = null) {
   } finally {
     promiseCache.delete(chunkId);
   }
-}
-
-// ── 3-축 분리 로더 (신규) ───────────────────────────────────────────────
-export async function loadMeaningTree(options = {}) {
-  return loadJsonPayload(
-    `${LIVE_DIR}APP_READY_MEANING_TREE.json`,
-    "Failed to load meaning tree",
-    options.trace,
-    { payload: "meaningTree", source: "live" },
-  );
-}
-
-export async function loadSituationTree(options = {}) {
-  return loadJsonPayload(
-    `${LIVE_DIR}APP_READY_SITUATION_TREE.json`,
-    "Failed to load situation tree",
-    options.trace,
-    { payload: "situationTree", source: "live" },
-  );
-}
-
-export async function loadUnclassifiedTree(options = {}) {
-  return loadJsonPayload(
-    `${LIVE_DIR}APP_READY_UNCLASSIFIED_TREE.json`,
-    "Failed to load unclassified tree",
-    options.trace,
-    { payload: "unclassifiedTree", source: "live" },
-  );
 }
 
 export async function loadUnifiedSearchIndex(options = {}) {

@@ -15,10 +15,23 @@ SEARCH_INDEX_PATH = LIVE_DIR / "APP_READY_SEARCH_INDEX.json"
 MEANING_TREE_PATH = LIVE_DIR / "APP_READY_MEANING_TREE.json"
 SITUATION_TREE_PATH = LIVE_DIR / "APP_READY_SITUATION_TREE.json"
 UNCLASSIFIED_TREE_PATH = LIVE_DIR / "APP_READY_UNCLASSIFIED_TREE.json"
-DETAIL_MAP_PATH = LIVE_DIR / "APP_READY_DETAIL_MAP.json"
+CHUNK_GLOB = "APP_READY_CHUNK_RICH_*.json"
 TRANSLATIONS_PATH = SOURCE_DIR / "kcenter_translations.json.gz"
+SOURCE_BASE_PATH = SOURCE_DIR / "kcenter_base.json.gz"
 
-TARGET_LANGUAGES = ["영어", "몽골어", "아랍어", "중국어", "베트남어", "타이어"]
+TARGET_LANGUAGES = [
+    "영어",
+    "몽골어",
+    "아랍어",
+    "중국어",
+    "베트남어",
+    "타이어",
+    "일본어",
+    "프랑스어",
+    "스페인어",
+    "러시아어",
+    "인도네시아어",
+]
 
 
 def load_json(path: Path):
@@ -52,6 +65,27 @@ def load_source_translation_map() -> dict[str, list[dict]]:
     return translation_map
 
 
+def load_source_subword_map() -> dict[str, dict[tuple[str, str], dict]]:
+    with gzip.open(SOURCE_BASE_PATH, "rt", encoding="utf-8") as f:
+        payload = json.load(f)
+
+    subword_map: dict[str, dict[tuple[str, str], dict]] = {}
+    for record in payload.get("entries", []):
+        entry = record.get("entry") or {}
+        entry_id = entry.get("id")
+        if not entry_id:
+            continue
+        current: dict[tuple[str, str], dict] = {}
+        for subword in entry.get("subwords") or []:
+            key = (
+                subword.get("text") or "",
+                subword.get("unit") or "",
+            )
+            current[key] = subword
+        subword_map[str(entry_id)] = current
+    return subword_map
+
+
 def build_translation_summary(sense_translations: list[dict]) -> list[dict]:
     return [
         {
@@ -68,20 +102,69 @@ def english_definition(translations: list[dict]) -> str | None:
     return english.get("definition") if english else None
 
 
-def repair_detail_map(translation_map: dict[str, list[dict]]) -> Counter:
-    payload = load_json(DETAIL_MAP_PATH)
-    entries = payload["entries"]
-    lang_counter = Counter()
+def repair_subwords(entry: dict, subword_map: dict[str, dict[tuple[str, str], dict]], lang_counter: Counter) -> None:
+    source_subwords = subword_map.get(str(entry.get("id")), {})
+    for subword in entry.get("subwords") or []:
+        key = (
+            subword.get("text") or "",
+            subword.get("unit") or "",
+        )
+        source_subword = source_subwords.get(key)
+        if not source_subword:
+            continue
 
-    for entry in entries.values():
-        for sense in entry.get("senses") or []:
-            source_translations = translation_map.get(sense.get("id"), [])
+        source_senses = source_subword.get("senses") or []
+        source_sense_map = {}
+        for source_sense in source_senses:
+            source_key = (
+                (source_sense.get("source_ids") or {}).get("json_sense"),
+                source_sense.get("subsense_order"),
+            )
+            source_sense_map[source_key] = source_sense
+
+        for index, sense in enumerate(subword.get("senses") or [], start=1):
+            lookup_key = (
+                (sense.get("source_ids") or {}).get("json_sense"),
+                sense.get("subsense_order") or index,
+            )
+            source_sense = source_sense_map.get(lookup_key)
+            if not source_sense and len(source_senses) >= index:
+                source_sense = source_senses[index - 1]
+            if not source_sense:
+                continue
+            source_translations = [
+                {
+                    "language": item.get("language"),
+                    "word": item.get("word"),
+                    "definition": item.get("definition"),
+                }
+                for item in (source_sense.get("translations") or [])
+                if item.get("language") in TARGET_LANGUAGES
+            ]
+            source_translations.sort(key=lambda item: TARGET_LANGUAGES.index(item["language"]))
             if source_translations:
                 sense["translations"] = build_translation_summary(source_translations)
                 for item in source_translations:
                     lang_counter[item["language"]] += 1
 
-    write_json(DETAIL_MAP_PATH, payload)
+
+def repair_entry_senses(entry: dict, translation_map: dict[str, list[dict]], lang_counter: Counter) -> None:
+    for sense in entry.get("senses") or []:
+        source_translations = translation_map.get(sense.get("id"), [])
+        if source_translations:
+            sense["translations"] = build_translation_summary(source_translations)
+            for item in source_translations:
+                lang_counter[item["language"]] += 1
+
+
+def repair_rich_chunks(translation_map: dict[str, list[dict]], subword_map: dict[str, dict[tuple[str, str], dict]]) -> Counter:
+    lang_counter = Counter()
+    for chunk_path in sorted(LIVE_DIR.glob(CHUNK_GLOB)):
+        payload = load_json(chunk_path)
+        for entry in payload.values():
+            repair_entry_senses(entry, translation_map, lang_counter)
+            repair_subwords(entry, subword_map, lang_counter)
+        write_json(chunk_path, payload)
     return lang_counter
 
 
@@ -128,15 +211,16 @@ def repair_search_index(translation_map: dict[str, list[dict]]) -> Counter:
 
 def main() -> None:
     translation_map = load_source_translation_map()
+    subword_map = load_source_subword_map()
     print(f"source_sense_ids={len(translation_map):,}")
 
-    detail_counts = repair_detail_map(translation_map)
     search_counts = repair_search_index(translation_map)
+    chunk_counts = repair_rich_chunks(translation_map, subword_map)
     meaning_counts = repair_list_payload(MEANING_TREE_PATH, translation_map)
     situation_counts = repair_list_payload(SITUATION_TREE_PATH, translation_map)
     unclassified_counts = repair_list_payload(UNCLASSIFIED_TREE_PATH, translation_map)
 
-    print("detail_term_counts", detail_counts)
+    print("chunk_term_counts", chunk_counts)
     print("search_term_counts", search_counts)
     print("meaning_term_counts", meaning_counts)
     print("situation_term_counts", situation_counts)

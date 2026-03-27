@@ -10,13 +10,14 @@ const liveDir = path.join(appRoot, "public", "data", "live");
 const compressedDir = path.join(appRoot, "public", "data", "internal", "runtime_payloads");
 const manifestPath = path.join(compressedDir, "MANIFEST.json");
 
+// Tree trio remains a required generated artifact for validation/build parity during T1,
+// even though the learner-facing runtime no longer fetches it directly.
 const REQUIRED = [
   "APP_READY_SEARCH_INDEX.json",
   "APP_READY_MEANING_TREE.json",
   "APP_READY_SITUATION_TREE.json",
   "APP_READY_UNCLASSIFIED_TREE.json",
   "APP_READY_FACETS.json",
-  "APP_READY_DETAIL_MAP.json",
   "CHUNK_MANIFEST_V1.json",
 ];
 

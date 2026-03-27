@@ -3,7 +3,7 @@
 ## Current Status
 
 - Milestone: `M1 Runtime Wiring / Core Explorer`
-- Active Work: `MM3-267 Runtime Data Performance Optimization`
+- Active Work: `MM3-261B Top Architecture Theme Continuity Art-Direction Polish`
 - Latest Pilot Capture: `pilot_session_04 / 2026-03-26 01:28 KST / participant 사용자 / facilitator 사용자 / ad-hoc screenshot follow-up`
 - PM Owner: `Codex`
 - User Constraint: external references are read-only
@@ -143,15 +143,13 @@
 
 ## In Progress
 
-- `MM3-267`: runtime data performance optimization
-- current step: `MM3-267B updated production recheck`
+- `MM3-261B`: top architecture theme continuity art-direction polish
+- current step: `next polish tranche scope decision`
 - just completed:
-  - default meaning tab load now uses `idle + hard-timeout` kickoff with explicit-user escalation path
-  - `chunk_id` parsed chunk cache + in-flight dedupe was added for `RICH`/`EXAMPLES`
-  - runtime interaction probe was added for tab load, detail selection, category expansion
-  - runtime tree path now uses `searchIndex -> tab projection` and no longer fetches `APP_READY_MEANING_TREE/SITUATION_TREE/UNCLASSIFIED_TREE`
-  - `npm run build` passed
-  - `npx playwright test tests/smoke.spec.js tests/scenario.spec.js` passed `5/5`
+  - `MM3-266F` closeout decision을 고정
+  - `DETAIL_MAP` final status는 debug-only generated artifact로 고정
+  - packaged runtime payload에서 `APP_READY_DETAIL_MAP.json.gz` 제거를 확인
+  - selected order is `T1 tree-runtime formalization -> T2 detail-map demotion prep -> T3 search-index slimming`
 
 ## Current Runtime Baseline
 
