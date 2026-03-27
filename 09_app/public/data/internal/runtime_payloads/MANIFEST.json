@@ -1,7 +1,7 @@
 {
   "version": "v1",
   "generated_at": "2026-03-27T06:35:32.262Z",
-  "payload_count": 220,
+  "payload_count": 221,
   "entries": [
     {
       "file": "APP_READY_SEARCH_INDEX.json",
@@ -32,6 +32,12 @@
       "source_bytes": 4114,
       "compressed_bytes": 807,
       "sha256": "409a089272e76d23e641a9e14199df4dd58a307aac5b018a333c81381efb8c7b"
+    },
+    {
+      "file": "APP_READY_DETAIL_MAP.json",
+      "source_bytes": 245842330,
+      "compressed_bytes": 34302250,
+      "sha256": "a686d18cd28d271333537c81a92b6618c87b15b9b75472aa231dd8fc14005ce3"
     },
     {
       "file": "CHUNK_MANIFEST_V1.json",
