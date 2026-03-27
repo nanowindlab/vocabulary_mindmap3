@@ -3,7 +3,7 @@
 ## Current Status
 
 - Milestone: `M1 Runtime Wiring / Core Explorer`
-- Active Work: `MM3-217 Runtime Payload Builder Activation`
+- Active Work: `MM3-267 Runtime Data Performance Optimization`
 - Latest Pilot Capture: `pilot_session_04 / 2026-03-26 01:28 KST / participant 사용자 / facilitator 사용자 / ad-hoc screenshot follow-up`
 - PM Owner: `Codex`
 - User Constraint: external references are read-only
@@ -100,17 +100,68 @@
 - `MM3-216` TOPIK stats linkage policy decision
 - `MM3-213` canonical thin-index generator recovery boundary note
 - `MM3-217` search/facet builder surface confirmation
+- `MM3-217` validation / three-expert review / hardening / revalidation tranche
+- `MM3-223` search/facet builder package/build-chain sidecar promotion decision + chain wiring verification
+- `MM3-224` authoritative promotion criteria lock + evidence gap audit + initial scope narrowing
+- `MM3-225` authoritative runtime write path / rollback / dual-run diff protocol 정의 + dry-run verification
+- `MM3-226` `chunk_id` runtime-enrichment policy lock + canonical mapping parked backlog 분리
+- `MM3-227` actual authoritative runtime switch execution + post-switch verification
+- `MM3-228` authoritative runtime recurring gate bundle command 추가 + PASS verification
+- `MM3-229` `MM3-217` closeout + next active work 전환
+- `MM3-230` runtime boundary maintenance protocol lock
+- `MM3-231` product scenario spec final canonicalization
+- `MM3-232` related form exact/multi-exact target repair + validation
+- `MM3-233` related form deep-repair residual analysis
+- `MM3-234` source ambiguity related-form text-only policy lock
+- `MM3-235` related-form audit automation 추가
+- `MM3-236` MM3 UI refinement roadmap opening
+- `MM3-237` relation tab information hierarchy refinement + targeted validation
+- `MM3-238` detail top-of-fold density closeout + targeted validation
+- `MM3-239` expression / example legibility refinement + targeted validation
+- `MM3-240` fallback surface guidance refinement + targeted validation
+- `MM3-241` MM3 UI refinement roadmap closeout
+- `MM3-242` new design tranche opening
+- `MM3-243` explorer chrome visual refresh + smoke validation
+- `MM3-243` sidebar / list / detail shell extension + smoke revalidation
+- `MM3-244` mindmap canvas surface refresh + targeted validation
+- `MM3-245` detail surface card harmonization + targeted validation
+- `MM3-246` new design tranche closeout
+- `MM3-247` interaction surface polish opening
+- `MM3-248` filter / dropdown surface refresh + targeted validation
+- `MM3-249` filter / dropdown surface closeout
+- `MM3-250` search result panel guidance + targeted validation
+- `MM3-252` interaction surface polish closeout
+- `MM3-253` status surface polish opening
+- `MM3-254` loading / empty surface refresh + smoke validation
+- `MM3-255` status surface polish closeout
+- `MM3-256` user review wave 01 intake + practical compression/search row fix
+- `MM3-259` review wave 02 layout efficiency immediate fix + study task split
+- `MM3-260` top architecture three-expert review + improved plan lock
+- `MM3-257` category-level count semantics/implementation lock
+- `MM3-258` situation tree repeated label redundancy study lock
+- `MM3-261` top architecture consolidation implementation
 
 ## In Progress
 
-- `MM3-217`: runtime payload builder activation
+- `MM3-267`: runtime data performance optimization
+- current step: `MM3-267B Vercel deployed perf verification + approval gate`
+- just completed:
+  - default meaning tab load now uses `idle + hard-timeout` kickoff with explicit-user escalation path
+  - `chunk_id` parsed chunk cache + in-flight dedupe was added for `RICH`/`EXAMPLES`
+  - runtime interaction probe was added for tab load, detail selection, category expansion
+  - `npm run build` passed
+  - `npx playwright test tests/smoke.spec.js tests/scenario.spec.js` passed `5/5`
 
 ## Current Runtime Baseline
 
 - canonical count: `53,480`
 - runtime payload format: `JSON`
 - deploy payload source: `runtime_payloads/*.json.gz`
-- build chain: `prepare:live -> verify:live -> build`
+- build chain: `prepare:live -> verify:live -> check:runtime-surface-sidecar -> build`
+- package chain: `prepackage:live -> check:runtime-surface-sidecar -> package:live`
+- authoritative runtime boundary:
+  - `APP_READY_SEARCH_INDEX` `search semantic fields`
+  - `APP_READY_FACETS`
 - current live example chunk payload: `APP_READY_CHUNK_EXAMPLES_*` `107 files`
 - active live payloads:
   - `APP_READY_SEARCH_INDEX.json`
@@ -136,8 +187,17 @@
 - `R8`: screenshot-inclusive guide를 쓰는 동안 stale capture가 다시 생기지 않도록 current stable surface만 써야 한다.
 - `R9`: current direct learner-facing feedback follow-up는 구현됐지만 user validation은 아직 남아 있다.
 - `R10`: `MM3-171B`는 closeout했고, deeper performance follow-up은 새 reopen 근거가 생길 때만 다시 연다.
-- `R11`: 일부 related form은 여전히 `unresolved_no_target_code` 상태다. 현재 UI는 broken jump를 막지만, actual target repair는 별도 data-side scope가 필요하다.
-- `R12`: current learner-facing `search + facets`는 local builder surface로 복구 가능하지만, 이를 package/build chain에 승격할지 여부는 아직 결정되지 않았다.
+- `R11`: related form source-faithful repair는 적용됐고, source-ambiguous case는 text-only로 고정됐다. no-match와 deeper semantic disambiguation tail은 아직 남아 있다.
+- `R17`: deeper related-form repair는 현재 `-적` 계열 `명사 / 관형사` 다중 후보처럼 learner-facing semantics를 바꾸는 rule choice가 필요하다.
+- `R12`: current learner-facing `search + facets`는 package/build chain에 non-authoritative sidecar gate로 편입됐지만, builder boundary는 계속 `search + facets only`로 좁게 유지해야 한다.
+- `R14`: current authoritative runtime boundary는 `search semantic fields + facets`로 고정됐다. broader parity work는 reopen trigger가 있을 때만 다시 연다.
+- `R15`: `tmp_reports` sidecar output 자체는 계속 comparison/validation artifact이며, canonical `chunk_id` mapping은 아직 parked backlog다.
+- `R16`: `check:authoritative-runtime-boundary`는 runtime boundary 관련 변경에는 유지하되, doc-only 턴에는 생략 가능하다.
+- `R17`: current related-form unresolved 대부분은 source ambiguity다. `audit_related_form_targets.py` 기준 `4,302 / 4,303`이 source-ambiguous다.
+- `R18`: situation tree repeated label redundancy는 source-shaped issue로 고정됐고, resolution choice는 `MM3-258B`로 남아 있다.
+- `R19`: top architecture consolidation은 구현됐지만, theme continuity art-direction polish는 `MM3-261B`로 남아 있다.
+- Latest handoff packet: `08_planning/reports/20260326_MM3_222_NEXT_PM_HANDOFF_PACKET_V1.md`
+- Latest PM decision: `08_planning/reports/20260327_MM3_262_XML_TO_APP_DATA_RELIABILITY_AUDIT_PLAN_V1.md`
 - `R13`: TOPIK stats는 계속 쓰되 learner-facing definition source는 MM3로 고정했고, `level`은 폐기, `미산출`은 main filter에서 제거하는 정책이 승인됐다.
 
 ## Canonical Pointers
@@ -221,7 +281,8 @@
 - Latest W4 screenshot readiness check: `08_planning/reports/20260325_MM3_173_SCREENSHOT_CAPTURE_READINESS_CHECK_V1.md`
 - Latest W4 guide planning acceptance: `08_planning/reports/20260325_MM3_173_IN_APP_GUIDE_PLANNING_ACCEPTANCE_V1.md`
 - Latest follow-up packet: `08_planning/reports/20260326_MM3_210_DETAIL_SENSE_EXAMPLE_RELATION_FOLLOWUP_IMPLEMENTATION_V1.md`
-- Latest handoff packet: `08_planning/reports/20260326_MM3_214_NEXT_PM_HANDOFF_PACKET_V1.md`
+- Latest PM decision: `08_planning/reports/20260327_MM3_262_XML_TO_APP_DATA_RELIABILITY_AUDIT_PLAN_V1.md`
+- Latest handoff packet: `08_planning/reports/20260326_MM3_222_NEXT_PM_HANDOFF_PACKET_V1.md`
 - Latest pilot note: `08_planning/pilot_feedback/20260326_pilot_session_04.md`
 - Data architecture: `08_planning/DATA_ARCHITECTURE_V1.md`
 - Scenario spec: `08_planning/PRODUCT_SCENARIO_SPEC_V1.md`

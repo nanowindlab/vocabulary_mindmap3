@@ -200,6 +200,7 @@ function flattenTree(treeData, focusedRootId, expandedCategoryId, selectedTermId
 export const MindmapCanvas = ({
   treeData = {},
   onSelectTerm,
+  onCategoryExpandPerf,
   selectedTermId,
   focusedRootId,
   selectedTreeNode,
@@ -220,6 +221,7 @@ export const MindmapCanvas = ({
   // 다음 draw 완료 후 줌할 termId (외부 선택 → 카테고리 확장 → 리드로 → 줌)
   const pendingZoomTermRef = useRef(null);
   const pendingFocusNodeRef = useRef(null);
+  const pendingCategoryPerfRef = useRef(null);
 
   // 이전 노드 위치 저장용 (레이아웃 재계산 시 점프 방지)
   const nodePositionsRef = useRef(new Map());
@@ -341,8 +343,16 @@ export const MindmapCanvas = ({
         } else if (n.type === "category") {
           // Category 배타적 전개 토글
           if (expandedCategoryId === n.id) {
+            pendingCategoryPerfRef.current = null;
             setExpandedCategoryId(null); // Collapse
           } else {
+            pendingCategoryPerfRef.current = {
+              categoryId: n.id,
+              startedAtMs:
+                typeof performance !== "undefined" && typeof performance.now === "function"
+                  ? performance.now()
+                  : Date.now(),
+            };
             setExpandedCategoryId(n.id); // Expand
             centerOnNode(n.x, n.y, 1.1);
           }
@@ -496,10 +506,25 @@ export const MindmapCanvas = ({
           svg.call(zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(scale));
         }
       }
+
+      if (pendingCategoryPerfRef.current?.categoryId === expandedCategoryId) {
+        const completedAt =
+          typeof performance !== "undefined" && typeof performance.now === "function"
+            ? performance.now()
+            : Date.now();
+        onCategoryExpandPerf?.({
+          categoryId: expandedCategoryId,
+          totalMs: Number((completedAt - pendingCategoryPerfRef.current.startedAtMs).toFixed(1)),
+          nodeCount: nodes.length,
+          linkCount: links.length,
+          renderedTermCount: nodes.filter((node) => node.type === "term").length,
+        });
+        pendingCategoryPerfRef.current = null;
+      }
     });
 
     applySelectionStyles(nodeSel, selectedTermIdRef.current);
-  }, [treeData, focusedRootId, expandedCategoryId, onSelectTerm]);
+  }, [treeData, focusedRootId, expandedCategoryId, onCategoryExpandPerf, onSelectTerm]);
 
   useEffect(() => {
     draw();

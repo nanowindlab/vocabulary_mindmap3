@@ -2,18 +2,21 @@
 
 ## Authoritative Active Work
 
-### MM3-264 A Canonical + E Overlay Taxonomy Implementation
+### MM3-267 Runtime Data Performance Optimization
 
 - Status: `IN_PROGRESS`
-- Goal: `주제 및 상황`은 `A`를 canonical taxonomy로, `E`는 quick-entry overlay로만 고정하고 app UI에 반영한다.
+- Goal: `LFS`와 분리해 app runtime의 느린 로딩과 간헐적 프리징을 `data structure / loading behavior` 기준으로 개선할 next task를 준비한다.
 - Input:
-  - `08_planning/reports/20260327_MM3_264_A_CANONICAL_E_OVERLAY_TAXONOMY_IMPLEMENTATION_V1.md`
+  - `08_planning/reports/20260327_MM3_267_RUNTIME_DATA_PERFORMANCE_OPTIMIZATION_OPENING_V1.md`
+  - `08_planning/reports/20260325_MM3_171_RUNTIME_PERFORMANCE_PAYLOAD_SPLIT_AUDIT_NOTE_V1.md`
+  - `08_planning/reports/20260327_MM3_266A_PAYLOAD_WEIGHT_AND_DUPLICATION_AUDIT_V1.md`
 - Prior closeout:
-  - `MM3-262` XML-to-app data reliability audit: `DONE`
-  - `MM3-258B` situation repeated label resolution decision / implementation: `DONE`
-  - `MM3-263` subject-none cohort canonical/runtime exclusion: `DONE`
+  - `MM3-266` 자료 구조 최적화 연구/설계: `DONE`
 - Progress lock:
-  - `MM3-264` implementation + validation: `DONE`
+  - `MM3-267` opening: `DONE`
+  - `MM3-267` runtime problem framing + first tranche definition: `DONE`
+  - `MM3-267` `T1 Loader/Caching Hardening` local implementation + local verification: `DONE`
+  - next active substep: `MM3-267B` `Vercel` deployed perf verification + approval gate
 
 ## Active Task Rows
 
@@ -342,6 +345,14 @@
 - `MM3-264A` `A` canonical taxonomy display mapping: `DONE`
 - `MM3-264B` `E` quick-entry overlay implementation: `DONE`
 - `MM3-265A` 분류 밖 항목 처리/재분류 comparative study opening: `TODO`
+- `MM3-266A` 자료 구조 최적화 opening: `DONE`
+- `MM3-266B` payload weight and duplication audit: `DONE`
+- `MM3-266C` alternative storage/layout options study: `DONE`
+- `MM3-266D` recommended optimization architecture and migration plan: `DONE`
+- `MM3-266F` `APP_READY_*` runtime payload repartition design: `TODO`
+- `MM3-267A` runtime data performance optimization opening: `DONE`
+- `MM3-267B` `Vercel` deployed runtime perf verification: `TODO`
+- `MM3-266E` runtime interaction performance hardening: `IN_PROGRESS`
 - `MM3-201A` post-closeout additional feedback coverage check: `DONE`
 - `MM3-201B` post-closeout additional feedback literal documentation sync: `DONE`
 - `MM3-202A` detail top-of-fold helper density re-review scope 정의: `DONE`

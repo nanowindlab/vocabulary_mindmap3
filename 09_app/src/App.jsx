@@ -49,6 +49,8 @@ const BAND_FILTER_LABELS = {
 
 const INITIAL_LOAD_PERF_QUERY_KEY = "mm3Perf";
 const INITIAL_LOAD_PERF_STORAGE_KEY = "MM3_PERF_DEBUG";
+const TAB_IDLE_LOAD_TIMEOUT_MS = 1200;
+const INTERACTION_PERF_HISTORY_LIMIT = 30;
 
 const perfNow = () =>
   typeof performance !== "undefined" && typeof performance.now === "function"
@@ -109,6 +111,24 @@ function publishInitialLoadPerfSnapshot(snapshot) {
     query: `?${INITIAL_LOAD_PERF_QUERY_KEY}=1`,
     localStorage: `${INITIAL_LOAD_PERF_STORAGE_KEY}=1`,
   });
+  console.groupEnd();
+}
+
+function publishRuntimeInteractionPerfSnapshot(snapshot) {
+  if (typeof window !== "undefined") {
+    window.__MM3_RUNTIME_INTERACTION_PERF__ = snapshot;
+  }
+
+  if (!isInitialLoadPerfConsoleEnabled()) return;
+
+  const latestTabLoad = snapshot.tabLoads?.[snapshot.tabLoads.length - 1] || null;
+  const latestDetailSelection = snapshot.detailSelections?.[snapshot.detailSelections.length - 1] || null;
+  const latestCategoryExpansion = snapshot.categoryExpansions?.[snapshot.categoryExpansions.length - 1] || null;
+
+  console.groupCollapsed("[MM3] Runtime interaction probe");
+  if (latestTabLoad) console.log("tabLoad", latestTabLoad);
+  if (latestDetailSelection) console.log("detailSelection", latestDetailSelection);
+  if (latestCategoryExpansion) console.log("categoryExpansion", latestCategoryExpansion);
   console.groupEnd();
 }
 
@@ -391,6 +411,18 @@ function App() {
   const [selectedSituationQuickLeaf, setSelectedSituationQuickLeaf] = useState(null);
   const initialLoadPerfRef = useRef(null);
   const initialLoadPerfFlushedRef = useRef(false);
+  const runtimeInteractionPerfRef = useRef({
+    version: "R1",
+    tabLoads: [],
+    detailSelections: [],
+    categoryExpansions: [],
+  });
+  const tabLoadModeRef = useRef({
+    meaning: "idle",
+    situation: "immediate",
+    unclassified: "immediate",
+  });
+  const lastDetailSelectionRef = useRef(null);
 
   // 필터 상태
   const [filters, setFilters] = useState({ bands: [], poses: [], grades: [], query: "" });
@@ -399,6 +431,32 @@ function App() {
   // 리사이저 상태
   const [detailWidth, setDetailWidth] = useState(45); // 초기 패널 너비(%)
   const isDragging = useRef(false);
+
+  const recordRuntimeInteraction = useCallback((bucket, payload) => {
+    const current = runtimeInteractionPerfRef.current || {
+      version: "R1",
+      tabLoads: [],
+      detailSelections: [],
+      categoryExpansions: [],
+    };
+    const nextBucket = [...(current[bucket] || []), {
+      ...payload,
+      capturedAt: new Date().toISOString(),
+    }].slice(-INTERACTION_PERF_HISTORY_LIMIT);
+    runtimeInteractionPerfRef.current = {
+      ...current,
+      [bucket]: nextBucket,
+    };
+    publishRuntimeInteractionPerfSnapshot(runtimeInteractionPerfRef.current);
+  }, []);
+
+  const requestImmediateTabLoad = useCallback((tabId) => {
+    tabLoadModeRef.current[tabId] = "immediate";
+    setTabLoadState((prev) => {
+      if (!prev || prev[tabId] !== "queued") return prev;
+      return { ...prev, [tabId]: "idle" };
+    });
+  }, []);
 
   const startDrag = useCallback(() => {
     isDragging.current = true;
@@ -506,8 +564,14 @@ function App() {
     if (tabLoadState[activeTab] !== "idle") return undefined;
 
     const tabId = activeTab;
+    const loadMode = tabLoadModeRef.current[tabId] || "immediate";
+    let idleHandle = null;
+    let timeoutHandle = null;
+    let cancelled = false;
+    let hasStarted = false;
 
-    async function loadDeferredTab() {
+    async function loadDeferredTab(trigger = "immediate") {
+      const loadStartedAt = perfNow();
       setTabLoadState((prev) => ({ ...prev, [tabId]: "loading" }));
 
       const idxMap = new Map();
@@ -565,15 +629,56 @@ function App() {
             rows: rowCount,
           };
         }
+        recordRuntimeInteraction("tabLoads", {
+          tabId,
+          trigger,
+          normalizeMs: Number(normalizeMs.toFixed(1)),
+          rowCount,
+          totalMs: Number((perfNow() - loadStartedAt).toFixed(1)),
+        });
+        tabLoadModeRef.current[tabId] = "immediate";
         setTabLoadState((prev) => ({ ...prev, [tabId]: "ready" }));
       } catch (e) {
         console.error("탭 데이터 로딩 실패", e);
+        recordRuntimeInteraction("tabLoads", {
+          tabId,
+          trigger,
+          failed: true,
+          totalMs: Number((perfNow() - loadStartedAt).toFixed(1)),
+        });
         setTabLoadState((prev) => ({ ...prev, [tabId]: "idle" }));
       }
     }
 
-    loadDeferredTab();
-  }, [activeTab, isInitializing, searchIndex, tabLoadState]);
+    if (loadMode === "idle") {
+      setTabLoadState((prev) => ({ ...prev, [tabId]: "queued" }));
+      const kickoff = (trigger) => {
+        if (cancelled || hasStarted) return;
+        hasStarted = true;
+        loadDeferredTab(trigger);
+      };
+      if (typeof window !== "undefined" && typeof window.requestIdleCallback === "function") {
+        idleHandle = window.requestIdleCallback(() => kickoff("idle"), { timeout: TAB_IDLE_LOAD_TIMEOUT_MS });
+      }
+      if (typeof window !== "undefined") {
+        timeoutHandle = window.setTimeout(() => kickoff("timeout"), TAB_IDLE_LOAD_TIMEOUT_MS);
+      } else {
+        kickoff("idle");
+      }
+    } else {
+      loadDeferredTab("immediate");
+    }
+
+    return () => {
+      cancelled = true;
+      if (typeof window !== "undefined" && idleHandle !== null && typeof window.cancelIdleCallback === "function") {
+        window.cancelIdleCallback(idleHandle);
+      }
+      if (typeof window !== "undefined" && timeoutHandle !== null) {
+        window.clearTimeout(timeoutHandle);
+      }
+    };
+  }, [activeTab, isInitializing, recordRuntimeInteraction, searchIndex, tabLoadState]);
 
   useEffect(() => {
     if (activeTab === "situation") return;
@@ -644,12 +749,14 @@ function App() {
     if (viewMode !== "mindmap") return {};
     return buildTreeFromList(filteredList, activeSurface, activeTab);
   }, [viewMode, filteredList, activeSurface, activeTab]);
-  const isActiveTabLoading = tabLoadState[activeTab] === "loading";
+  const isActiveTabLoading = tabLoadState[activeTab] === "loading" || tabLoadState[activeTab] === "queued";
   const isActiveTabReady = tabLoadState[activeTab] === "ready";
 
   // ── 단어 선택 ───────────────────────────────────────────────────
   const handleSelectTerm = useCallback(async (term) => {
     if (!term?.id) return;
+    const selectionStartedAt = perfNow();
+    const chunkTrace = [];
     setIsLoadingChunk(true);
     setSelectedTreeNode(null);
     setSelectedTermId(term.id);
@@ -673,7 +780,9 @@ function App() {
 
     try {
       if (term.chunk_id) {
-        const chunkData = await loadTermDetailChunk(term.id, term.chunk_id);
+        const chunkData = await loadTermDetailChunk(term.id, term.chunk_id, {
+          trace: (metric) => chunkTrace.push(metric),
+        });
         if (chunkData)
           setSelectedTermDetail((prev) => prev?.id === term.id ? { ...prev, ...chunkData } : prev);
       } else {
@@ -700,9 +809,22 @@ function App() {
     } catch (e) {
       console.warn(e);
     } finally {
+      const previousSelection = lastDetailSelectionRef.current;
+      recordRuntimeInteraction("detailSelections", {
+        termId: term.id,
+        chunkId: term.chunk_id || null,
+        usedDetailMap: !term.chunk_id,
+        sameChunkAsPrevious: Boolean(term.chunk_id && previousSelection?.chunkId === term.chunk_id),
+        totalMs: Number((perfNow() - selectionStartedAt).toFixed(1)),
+        chunkTrace,
+      });
+      lastDetailSelectionRef.current = {
+        termId: term.id,
+        chunkId: term.chunk_id || null,
+      };
       setIsLoadingChunk(false);
     }
-  }, []);
+  }, [recordRuntimeInteraction]);
 
 
   // ── 검색 선택 ───────────────────────────────────────────────────
@@ -721,6 +843,7 @@ function App() {
     const normalized = normalizeItem(target, "mindmap_core");
 
     // 탭 전환 + focusedRootId 를 먼저 설정
+    requestImmediateTabLoad(targetTab);
     setActiveTab(targetTab);
     const rid = normalized.hierarchy?.root_id;
     if (rid) {
@@ -735,7 +858,7 @@ function App() {
     // (selectedTermId 변화 → treeData 탐색 → zoom)가 새 treeData 기준으로
     // 재실행되도록 pendingSearchTermRef를 통해 추적
     pendingSearchTermRef.current = normalized.id;
-  }, [handleSelectTerm]);
+  }, [handleSelectTerm, requestImmediateTabLoad]);
 
   const resolveReferenceTarget = useCallback((ref) => {
     if (!ref) return null;
@@ -925,7 +1048,13 @@ function App() {
               <button
                 key={tab.id}
                 className={`nav-tab ${activeTab === tab.id ? "active" : ""}`}
-                onClick={() => { setActiveTab(tab.id); setSelectedTermDetail(null); setSelectedTermId(null); setFocusedRootId(null); }}
+                onClick={() => {
+                  requestImmediateTabLoad(tab.id);
+                  setActiveTab(tab.id);
+                  setSelectedTermDetail(null);
+                  setSelectedTermId(null);
+                  setFocusedRootId(null);
+                }}
                 style={{ "--tab-color": tab.color }}
               >
                 {tab.label}
@@ -1229,6 +1358,7 @@ function App() {
                 <MindmapCanvas
                   treeData={activeTree}
                   onSelectTerm={handleSelectTerm}
+                  onCategoryExpandPerf={(entry) => recordRuntimeInteraction("categoryExpansions", entry)}
                   selectedTermId={selectedTermId}
                   focusedRootId={focusedRootId}
                   selectedTreeNode={selectedTreeNode}
