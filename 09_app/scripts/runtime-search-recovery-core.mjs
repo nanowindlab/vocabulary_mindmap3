@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
@@ -69,7 +69,12 @@ function buildTranslationMaps() {
 }
 
 function buildTopikStatsMap() {
-  const payload = readGzipJson(path.join(linkageDir, "entry_topik_stats.json.gz"));
+  const linkagePath = path.join(linkageDir, "entry_topik_stats.json.gz");
+  if (!existsSync(linkagePath)) {
+    console.warn(`[runtime-search-recovery-core] missing optional topik stats linkage: ${linkagePath}`);
+    return new Map();
+  }
+  const payload = readGzipJson(linkagePath);
   const statsByEntryId = new Map();
   for (const item of payload.matches || []) {
     statsByEntryId.set(String(item.entry_id), item.stats || {});
