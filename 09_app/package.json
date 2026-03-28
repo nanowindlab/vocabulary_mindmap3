@@ -29,7 +29,7 @@
     "rollback:authoritative-runtime:execute": "node scripts/rollback-authoritative-runtime-candidate.mjs --execute",
     "dev": "vite",
     "prepackage:live": "npm run apply:subject-none-policy && npm run repair:runtime-detail-fidelity && npm run check:runtime-surface-sidecar",
-    "prebuild": "npm run rebuild:canonical-runtime && npm run check:runtime-surface-sidecar",
+    "prebuild": "npm run prepare:live && npm run verify:live && npm run check:runtime-surface-sidecar",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",

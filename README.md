@@ -62,10 +62,11 @@
 - `MM3-212`에서 runtime/source payload validation과 count reconciliation은 `PASS`로 고정됐다.
 - `MM3-216`에서 TOPIK stats linkage policy를 고정했다.
 - 현재 active execution task는 없다.
-- latest closeout package는 `MM3-278 2026-03-29 Filter Label And Order Update Closeout`이다.
+- latest closeout package는 `MM3-279 2026-03-29 Deploy Path Revert To Committed Runtime Payloads`이다.
 - source-ambiguous `related_forms`는 SSOT source에 target이 없으므로 `text-only`로 유지하고, current backlog로 다시 열지 않는다.
 - `분류 밖 항목`은 main nav tab에서는 제거됐고, search result와 search-driven detail route로만 계속 접근한다.
-- current deploy boundary payload는 `npm --prefix 09_app run rebuild:canonical-runtime`로 canonical source에서 다시 생성할 수 있다.
+- current deploy boundary payload는 explicit/manual path로 `npm --prefix 09_app run rebuild:canonical-runtime`로 다시 생성할 수 있다.
+- default deploy path는 committed `runtime_payloads/*.json.gz`를 복원해서 사용한다.
 - integrated review `V4`는 registered remediation basis이며, current order는 `MM3-273 -> MM3-274 -> MM3-275 -> MM3-276 -> MM3-277`다.
 - default build path는 canonical mapping availability를 자동 보장하고, release/build path는 canonical rebuild provenance를 먼저 실행한다.
 - chunk manifest와 example chunk build는 같은 chunk membership source를 사용한다.

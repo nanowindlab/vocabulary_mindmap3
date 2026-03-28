@@ -3,7 +3,7 @@
 ## Current Status
 
 - Milestone: `M1 Runtime Wiring / Core Explorer`
-- Active Work: `none (latest closeout: MM3-278)`
+- Active Work: `none (latest closeout: MM3-279)`
 - Latest Pilot Capture: `pilot_session_04 / 2026-03-26 01:28 KST / participant 사용자 / facilitator 사용자 / ad-hoc screenshot follow-up`
 - PM Owner: `Codex`
 - User Constraint: external references are read-only
@@ -12,6 +12,7 @@
 
 ## Completed This Turn
 
+- `MM3-279` deploy path revert to committed runtime payloads
 - `MM3-278` filter label/order update closeout
 - `MM3-277` boundary cleanup closeout
 - `MM3-276` projection consolidation closeout
@@ -155,9 +156,10 @@
 ## In Progress
 
 - no active execution package
-- latest closeout: `MM3-278`
+- latest closeout: `MM3-279`
 - current step: `waiting for next directive`
 - just completed:
+  - `MM3-279`에서 default deploy path를 committed `runtime_payloads` usage로 되돌렸다
   - `MM3-278`에서 filter panel label을 `TOPIK빈도`로 바꾸고 순서를 `난이도 -> 품사 -> TOPIK빈도 -> 번역 언어`로 조정했다
   - `MM3-277`에서 current boundary source artifact ownership을 `09_app` build tooling 기준으로 명시하고 review-driven remediation cycle을 닫았다
   - `MM3-276`에서 app runtime와 canonical rebuild가 shared projection module을 같이 쓰도록 통합했다
@@ -236,7 +238,7 @@
 - `R18`: situation tree repeated label redundancy는 source-shaped issue로 고정됐고, resolution choice는 `MM3-258B`로 남아 있다.
 - `R19`: top architecture consolidation은 구현됐지만, theme continuity art-direction polish는 `MM3-261B`로 남아 있다.
 - Latest handoff packet: `08_planning/reports/20260328_MM3_268_NEXT_PM_HANDOFF_PACKET_V1.md`
-- Latest PM decision: `08_planning/reports/20260329_MM3_278_FILTER_LABEL_AND_ORDER_UPDATE_CLOSEOUT_V1.md`
+- Latest PM decision: `08_planning/reports/20260329_MM3_279_DEPLOY_PATH_REVERT_TO_COMMITTED_RUNTIME_PAYLOADS_V1.md`
 - `R13`: TOPIK stats는 계속 쓰되 learner-facing definition source는 MM3로 고정했고, `level`은 폐기, `미산출`은 main filter에서 제거하는 정책이 승인됐다.
 
 ## Canonical Pointers

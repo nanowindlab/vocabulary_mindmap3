@@ -402,6 +402,12 @@
 - Decision: filter panel learner-facing label은 `Band별` 대신 `TOPIK빈도`를 사용하고, order는 `난이도 -> 품사 -> TOPIK빈도 -> 번역 언어`로 둔다.
 - Why: 현재 사용자 표현 기준에서는 `TOPIK빈도`가 의미를 더 직접적으로 전달하고, filter reading order도 학습자 관점에서 더 자연스럽다.
 
+## D-098
+
+- Date: `2026-03-29`
+- Decision: default deploy/build path는 committed `runtime_payloads/*.json.gz`를 복원해서 사용하고, `rebuild:canonical-runtime`는 explicit/manual path로만 유지한다.
+- Why: current rebuild path는 external local corpus input을 요구하므로 clean/Vercel environment 기본 경로에 두기에는 부적절하다.
+
 ## D-086
 
 - Date: `2026-03-27`

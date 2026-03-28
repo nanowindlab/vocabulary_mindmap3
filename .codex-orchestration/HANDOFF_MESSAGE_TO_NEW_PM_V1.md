@@ -18,12 +18,12 @@ Active work:
 - task id: none
 
 What is already done:
-- latest closeout package is MM3-278
+- latest closeout package is MM3-279
 - deployment preflight check set completed
 - there is no current runtime or product blocker
 - source-ambiguous related forms are closed as text-only because SSOT source has no target
 - unclassified entries are no longer exposed as a permanent nav tab, but remain searchable
-- current deploy boundary can now be rebuilt from canonical source with `npm run rebuild:canonical-runtime`
+- current deploy boundary can be rebuilt from canonical source with `npm run rebuild:canonical-runtime`, but that path is explicit/manual only
 - canonical chunk-id mapping is now source-backed
 - integrated review V4 is registered
 - valid remediation order is locked as MM3-273 -> MM3-274 -> MM3-275 -> MM3-276 -> MM3-277
@@ -34,6 +34,7 @@ What is already done:
 - app runtime and canonical rebuild now share the same projection module
 - current boundary source artifact ownership is explicitly documented
 - filter panel now uses `TOPIK빈도` and the order `난이도 -> 품사 -> TOPIK빈도 -> 번역 언어`
+- default deploy path now uses committed `runtime_payloads` again
 
 Current blocker or mismatch:
 - no blocker

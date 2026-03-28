@@ -2,6 +2,22 @@
 
 ## Authoritative Current State
 
+### MM3-279 2026-03-29 Deploy Path Revert To Committed Runtime Payloads
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: default deploy/build path를 committed runtime payload usage로 되돌린다.
+- Input:
+  - `09_app/package.json`
+  - `08_planning/reports/20260329_MM3_279_DEPLOY_PATH_REVERT_TO_COMMITTED_RUNTIME_PAYLOADS_V1.md`
+- Prior closeout:
+  - `MM3-278` filter label and order update: `DONE`
+- Progress lock:
+  - default deploy path revert: `DONE`
+  - decision record: `DONE`
+  - `build` verification: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
+
 ### MM3-278 2026-03-29 Filter Label And Order Update
 
 - Status: `DONE`

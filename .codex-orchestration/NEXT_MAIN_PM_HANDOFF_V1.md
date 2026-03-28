@@ -4,11 +4,11 @@
 
 - `mindmap3`는 현재 `M1 Runtime Wiring / Core Explorer` phase다.
 - current active work는 `none`이다.
-- latest closeout package는 `MM3-278 2026-03-29 Filter Label And Order Update Closeout`이다.
+- latest closeout package는 `MM3-279 2026-03-29 Deploy Path Revert To Committed Runtime Payloads`이다.
 - current exit condition은 다음 active work가 생기면 그 task id 기준으로 새 packet을 연다.
 - current gate는 overall `PARTIAL_OPEN`, core explorer slice `OPEN`이다.
 - deploy/runtime truth는 `runtime_payloads/*.json.gz -> prepare:live -> verify:live -> build` 체인이다.
-- current deploy boundary canonical regenerate command는 `npm --prefix 09_app run rebuild:canonical-runtime`다.
+- current deploy boundary canonical regenerate command는 explicit/manual path로만 유지한다: `npm --prefix 09_app run rebuild:canonical-runtime`
 - current learner-facing `search + facets only` builder surface는 package/build-chain에 **non-authoritative sidecar gate**로 편입됐다.
 - current builder contract is authoritative for `search semantic fields + facets` when executed through the approved promote path.
 - current sidecar output is **comparison / validation only**.
@@ -55,6 +55,7 @@
 - `MM3-276`에서 app runtime와 canonical rebuild가 shared `tabProjection` module을 같이 쓰도록 통합했다.
 - `MM3-277`에서 `kcenter_chunk_id_mapping.json.gz` ownership을 current boundary에서 `09_app` build tooling이 관리하는 derived canonical runtime build artifact로 명시했다.
 - `MM3-278`에서 filter panel label을 `TOPIK빈도`로 바꾸고 순서를 `난이도 -> 품사 -> TOPIK빈도 -> 번역 언어`로 조정했다.
+- `MM3-279`에서 default deploy path는 committed `runtime_payloads/*.json.gz`를 복원해서 쓰는 방식으로 되돌렸다.
 - 이후 broader parity나 future generator boundary expansion이 reopen되면, same tranche에서 canonical generator contract와 verification set도 함께 갱신해야 한다.
 - `MM3-236`에서 MM3 UI refinement roadmap를 열었고, first slice를 relation tab information hierarchy로 고정했다.
 - `MM3-237`에서 relation tab hierarchy refinement를 구현했고 targeted Playwright `4 passed`로 `MM3-236B`를 닫았다.
