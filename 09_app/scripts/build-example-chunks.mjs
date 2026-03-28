@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync, renameSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildExampleEntry, loadTopikSentenceMap } from "./example-chunk-sources.mjs";
+import { loadCanonicalChunkMappingPayload } from "./canonical-chunk-mapping-core.mjs";
 import { loadCanonicalRuntimeDetailEntries } from "./runtime-detail-projection.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,18 +24,21 @@ function writeJsonAtomic(filePath, payload) {
 async function main() {
   const chunkManifest = loadJson(chunkManifestPath);
   const entries = new Map(loadCanonicalRuntimeDetailEntries().map((item) => [item.id, item.detail]));
+  const canonicalChunkMapping = loadCanonicalChunkMappingPayload();
+  const fallbackChunkIdsByChunkId = new Map(
+    (canonicalChunkMapping.chunks || []).map((chunk) => [chunk.chunk_id, (chunk.entry_ids || []).map((id) => String(id))]),
+  );
   const topikSentenceMap = await loadTopikSentenceMap();
 
-  let offset = 0;
   for (const chunk of chunkManifest.chunks || []) {
-    const count = Number(chunk.entry_count || 0);
     const chunkId = chunk.chunk_id;
-    const ids = Array.from(entries.keys()).slice(offset, offset + count);
-    offset += count;
+    const ids = Array.isArray(chunk.entry_ids) && chunk.entry_ids.length > 0
+      ? chunk.entry_ids.map((id) => String(id))
+      : (fallbackChunkIdsByChunkId.get(chunkId) || []);
 
     const data = {};
     for (const id of ids) {
-      const entry = entries[id];
+      const entry = entries.get(id);
       if (!entry) continue;
       const built = buildExampleEntry(entry, { topikSentenceMap });
       if (Object.keys(built).length > 0) {

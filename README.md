@@ -40,6 +40,8 @@
 - Primary dictionary SSOT:
   - `vocab_dictionary/output/unified_live/kcenter_base.json.gz`
   - `vocab_dictionary/output/unified_live/kcenter_translations.json.gz`
+- Derived canonical runtime build artifact:
+  - `vocab_dictionary/output/unified_live/kcenter_chunk_id_mapping.json.gz`
 - Read-only TOPIK stats reference:
   - `/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap2/09_app/public/data/live/APP_READY_SEARCH_INDEX.json`
 - Read-only PM/process reference:
@@ -60,7 +62,17 @@
 - `MM3-212`에서 runtime/source payload validation과 count reconciliation은 `PASS`로 고정됐다.
 - `MM3-216`에서 TOPIK stats linkage policy를 고정했다.
 - 현재 active execution task는 없다.
-- latest closeout package는 `MM3-268 2026-03-28 Feedback Intake / Execution Plan`이다.
+- latest closeout package는 `MM3-278 2026-03-29 Filter Label And Order Update Closeout`이다.
+- source-ambiguous `related_forms`는 SSOT source에 target이 없으므로 `text-only`로 유지하고, current backlog로 다시 열지 않는다.
+- `분류 밖 항목`은 main nav tab에서는 제거됐고, search result와 search-driven detail route로만 계속 접근한다.
+- current deploy boundary payload는 `npm --prefix 09_app run rebuild:canonical-runtime`로 canonical source에서 다시 생성할 수 있다.
+- integrated review `V4`는 registered remediation basis이며, current order는 `MM3-273 -> MM3-274 -> MM3-275 -> MM3-276 -> MM3-277`다.
+- default build path는 canonical mapping availability를 자동 보장하고, release/build path는 canonical rebuild provenance를 먼저 실행한다.
+- chunk manifest와 example chunk build는 같은 chunk membership source를 사용한다.
+- current boundary chunk contract validation과 node contract tests가 추가됐다.
+- app runtime와 canonical rebuild는 current boundary에서 같은 projection module을 사용한다.
+- `kcenter_chunk_id_mapping.json.gz`는 current boundary에서 `09_app` build tooling이 관리하는 derived canonical runtime build artifact다.
+- filter panel label은 `TOPIK빈도`를 사용하고, order는 `난이도 -> 품사 -> TOPIK빈도 -> 번역 언어`다.
 - current learner-facing `search + facets only` builder surface는 package/build-chain에 non-authoritative sidecar gate로 편입됐다.
 - `MM3-217C`에서 initial authoritative candidate는 `search semantic fields + facets`로 고정됐다.
 - authoritative write path / rollback / dual-run diff protocol은 정의됐다.
@@ -70,8 +82,8 @@
 - `MM3-262` XML-to-app reliability audit은 closeout됐다.
 - XML-derived detail examples/relations는 package chain의 detail fidelity repair로 app runtime까지 다시 연결된다.
 - `MM3-258B`에서 repeated situation label은 learner-facing path collapse + tree category `어휘 목록` rule로 정리됐다.
-- 다음 핵심 작업은 아직 열리지 않았다.
-- parked backlog candidate는 `MM3-226A`지만, user가 다시 열기 전까지는 `none` 상태로 유지한다.
+- review-driven remediation cycle은 닫혔다.
+- broader parity / provenance completion은 parked backlog로 유지한다.
 - latest review wave 기준 `MM3-257A`, `MM3-258A` study task가 추가됐다.
 - latest review wave 02 practical layout fixes는 반영 완료 상태다.
 - latest review wave 03 기준 `MM3-260C`, `MM3-261A` top architecture follow-up task가 추가됐다.

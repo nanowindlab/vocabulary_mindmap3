@@ -52,10 +52,9 @@ test("unclassified surface uses learner-facing label consistently", async ({ pag
   await page.goto("/");
 
   await expect(page.getByTestId("search-input")).toBeVisible({ timeout: 10000 });
-  await expect(page.getByRole("button", { name: /분류 밖 항목/ })).toBeVisible();
+  await expect(page.getByRole("button", { name: /분류 밖 항목/ })).toHaveCount(0);
   await expect(page.getByRole("button", { name: /^미분류$/ })).toHaveCount(0);
 
-  await page.getByRole("button", { name: /분류 밖 항목/ }).click();
   await pickSearchResult(page, "버리다", (text) => text.includes("앞말이 나타내는 행동이 완전히 끝났음을"));
   await expect(page.getByTestId("detail-path")).toContainText("분류 밖 항목");
   await expect(page.getByText(/^미분류$/)).toHaveCount(0);
@@ -463,10 +462,11 @@ test("unclassified helper splits grammatical items from uncategorized vocabulary
   await expect(page.getByTestId("detail-context-helper")).toContainText("품사와 형태 기준을 먼저 보면 됩니다");
 });
 
-test("unclassified tab defaults to list view", async ({ page }) => {
+test("unclassified search route defaults to list view", async ({ page }) => {
   await page.goto("/");
 
-  await page.getByRole("button", { name: /분류 밖 항목/ }).click();
+  await pickSearchResult(page, "버리다", (text) => text.includes("앞말이 나타내는 행동이 완전히 끝났음을"));
+  await expect(page.getByTestId("detail-path")).toContainText("분류 밖 항목");
   await expect(page.locator("[data-list-term-id]").first()).toBeVisible();
 });
 

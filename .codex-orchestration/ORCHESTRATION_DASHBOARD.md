@@ -3,7 +3,7 @@
 ## Current Status
 
 - Milestone: `M1 Runtime Wiring / Core Explorer`
-- Active Work: `none (latest closeout: MM3-268)`
+- Active Work: `none (latest closeout: MM3-278)`
 - Latest Pilot Capture: `pilot_session_04 / 2026-03-26 01:28 KST / participant 사용자 / facilitator 사용자 / ad-hoc screenshot follow-up`
 - PM Owner: `Codex`
 - User Constraint: external references are read-only
@@ -12,6 +12,17 @@
 
 ## Completed This Turn
 
+- `MM3-278` filter label/order update closeout
+- `MM3-277` boundary cleanup closeout
+- `MM3-276` projection consolidation closeout
+- `MM3-275` validation hardening + missing tests closeout
+- `MM3-274` chunk contract unification closeout
+- `MM3-273` build graph closure closeout
+- `MM3-272` integrated review registration + valid remediation order lock
+- `MM3-226A` canonical chunk-id mapping closeout
+- `MM3-271` canonical runtime generator closeout + deterministic packaging hardening
+- `MM3-270` unclassified nav tab removal + search route preservation
+- `MM3-269` related-form source ambiguity policy closeout
 - `MM3-040` search + facet wiring accepted
 - `MM3-042` browser smoke accepted
 - `MM3-043` gate recheck after wiring accepted
@@ -144,9 +155,20 @@
 ## In Progress
 
 - no active execution package
-- latest closeout: `MM3-268`
+- latest closeout: `MM3-278`
 - current step: `waiting for next directive`
 - just completed:
+  - `MM3-278`에서 filter panel label을 `TOPIK빈도`로 바꾸고 순서를 `난이도 -> 품사 -> TOPIK빈도 -> 번역 언어`로 조정했다
+  - `MM3-277`에서 current boundary source artifact ownership을 `09_app` build tooling 기준으로 명시하고 review-driven remediation cycle을 닫았다
+  - `MM3-276`에서 app runtime와 canonical rebuild가 shared projection module을 같이 쓰도록 통합했다
+  - `MM3-275`에서 current boundary chunk contract validation script와 node contract tests를 추가하고 sidecar validation bundle에 편입했다
+  - `MM3-274`에서 mapping-package-examples 경로가 같은 chunk membership source를 읽도록 통합했다
+  - `MM3-273`에서 default build path가 canonical mapping availability를 자동 보장하고 release/build path가 canonical rebuild provenance를 선행하도록 닫았다
+  - `MM3-272`에서 review `V4`를 control-plane에 등록하고 valid remediation order를 `MM3-273 -> MM3-274 -> MM3-275 -> MM3-276 -> MM3-277`로 고정했다
+  - `MM3-226A`에서 canonical `chunk_id` mapping artifact를 추가하고 generator/search recovery/package chain을 source-backed mapping으로 전환했다
+  - `MM3-271`에서 current deploy boundary canonical generator를 `npm run rebuild:canonical-runtime`로 고정하고 repeated rebuild deterministic packaging까지 검증했다
+  - `MM3-270`에서 `분류 밖 항목` 상시 nav tab을 제거하고 search-driven internal route만 유지했다
+  - `MM3-269`에서 related-form source ambiguity는 SSOT source 부재 기준 `text-only`로 닫고 deep-repair reopen expectation을 closeout했다
   - `MM3-268` feedback wave를 closeout packet으로 닫았다
   - `MM3-265A`를 comparative study + `unclassified` 기본 `list` 진입 정책으로 닫았다
   - `MM3-266E`를 stale overwrite guard + redundant selection churn 완화로 닫았다
@@ -196,24 +218,25 @@
 ## Risks
 
 - `R1`: human pilot를 다시 열면 새 feedback wave가 다시 열릴 수 있다.
-- `R2`: `runtime_payloads/*.json.gz` 경로는 현재 배포 기준으로 충분하지만, canonical generator 미복구 상태는 재현성 technical debt로 남아 있다.
+- `R2`: current deploy boundary canonical generator는 복구됐다. 남은 재현성 technical debt는 broader parity와 source provenance completion 쪽으로만 좁혀졌다.
+- `R2A`: broader parity나 future generator boundary expansion을 다시 열면 `rebuild:canonical-runtime`와 verification set도 같은 tranche에서 같이 갱신해야 한다.
 - `R3`: pilot scheduling은 코드보다 사람 일정/운영 정렬 이슈에 더 크게 좌우된다.
 - `R5`: `분류 밖 항목` fallback surface 자체를 유지할지 별도 독립 콘텐츠로 재편할지는 아직 taxonomy/product decision으로 남아 있다.
 - `R7`: `분류 밖 항목`은 새 bucket이 아니라 raw/internal `미분류` bucket의 learner-facing display name이다.
 - `R8`: screenshot-inclusive guide를 쓰는 동안 stale capture가 다시 생기지 않도록 current stable surface만 써야 한다.
 - `R9`: current direct learner-facing feedback follow-up는 구현됐지만 user validation은 아직 남아 있다.
 - `R10`: `MM3-171B`는 closeout했고, deeper performance follow-up은 새 reopen 근거가 생길 때만 다시 연다.
-- `R11`: related form source-faithful repair는 적용됐고, source-ambiguous case는 text-only로 고정됐다. no-match와 deeper semantic disambiguation tail은 아직 남아 있다.
-- `R17`: deeper related-form repair는 현재 `-적` 계열 `명사 / 관형사` 다중 후보처럼 learner-facing semantics를 바꾸는 rule choice가 필요하다.
+- `R11`: related form source-faithful repair는 closeout됐다. source-ambiguous case는 SSOT source에 target이 없으므로 `text-only`로 유지하며 current backlog로 다시 열지 않는다.
+- `R17`: related-form ambiguity를 source를 넘어 heuristic disambiguation으로 푸는 일은 current scope가 아니다. reopen은 새 product override 또는 source update가 있을 때만 가능하다.
 - `R12`: current learner-facing `search + facets`는 package/build chain에 non-authoritative sidecar gate로 편입됐지만, builder boundary는 계속 `search + facets only`로 좁게 유지해야 한다.
 - `R14`: current authoritative runtime boundary는 `search semantic fields + facets`로 고정됐다. broader parity work는 reopen trigger가 있을 때만 다시 연다.
-- `R15`: `tmp_reports` sidecar output 자체는 계속 comparison/validation artifact이며, canonical `chunk_id` mapping은 아직 parked backlog다.
+- `R15`: `tmp_reports` sidecar output 자체는 계속 comparison/validation artifact다. `chunk_id`는 이제 canonical source artifact로 고정됐고, 남은 technical debt는 broader parity/provenance completion이다.
 - `R16`: `check:authoritative-runtime-boundary`는 runtime boundary 관련 변경에는 유지하되, doc-only 턴에는 생략 가능하다.
 - `R17`: current related-form unresolved 대부분은 source ambiguity다. `audit_related_form_targets.py` 기준 `4,302 / 4,303`이 source-ambiguous다.
 - `R18`: situation tree repeated label redundancy는 source-shaped issue로 고정됐고, resolution choice는 `MM3-258B`로 남아 있다.
 - `R19`: top architecture consolidation은 구현됐지만, theme continuity art-direction polish는 `MM3-261B`로 남아 있다.
 - Latest handoff packet: `08_planning/reports/20260328_MM3_268_NEXT_PM_HANDOFF_PACKET_V1.md`
-- Latest PM decision: `08_planning/reports/20260328_MM3_268_FEEDBACK_WAVE_CLOSEOUT_V1.md`
+- Latest PM decision: `08_planning/reports/20260329_MM3_278_FILTER_LABEL_AND_ORDER_UPDATE_CLOSEOUT_V1.md`
 - `R13`: TOPIK stats는 계속 쓰되 learner-facing definition source는 MM3로 고정했고, `level`은 폐기, `미산출`은 main filter에서 제거하는 정책이 승인됐다.
 
 ## Canonical Pointers

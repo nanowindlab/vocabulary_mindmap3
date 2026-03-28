@@ -20,6 +20,6 @@
 
 ## Next Review Item
 
-- Task ID: `MM3-226A`
-- Pending Report: `parked_until_reopen_trigger`
+- Task ID: `none`
+- Pending Report: `none`
 - PM Verdict: `not_started`

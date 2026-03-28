@@ -332,6 +332,78 @@
 
 ## D-086
 
+- Date: `2026-03-28`
+- Decision: source-ambiguous `related_forms`는 SSOT source에 explicit target이 없으면 `text-only`로 유지하고, current scope에서 heuristic jump target을 생성하지 않는다.
+- Why: 같은 논점이 반복 reopen되지 않게 source-faithful rule을 최종 기준으로 고정해야 하며, source에 없는 target을 생성하는 것은 현재 SSOT governance를 깨기 때문이다.
+
+## D-087
+
+- Date: `2026-03-29`
+- Decision: `분류 밖 항목`은 main app의 상시 navigation tab에서는 제거하고, search result와 search-driven internal route로만 유지한다.
+- Why: fallback/list 성격이 더 강한 surface를 상시 browse tab으로 노출해 수천 개 리스트를 직접 탐색하게 할 이점이 작고, 필요한 접근성은 search route로 충분히 유지할 수 있기 때문이다.
+
+## D-088
+
+- Date: `2026-03-29`
+- Decision: current deploy boundary canonical runtime generator는 `npm --prefix 09_app run rebuild:canonical-runtime`를 공식 entrypoint로 사용한다. broader parity와 provenance completion은 별도 backlog로 남긴다. future parity 또는 generator boundary expansion이 다시 열리면 verification set도 같은 tranche에서 함께 업데이트한다.
+- Why: current source 조각들은 이미 존재했지만 실행 entrypoint가 분산돼 있었고 packaging도 deterministic하지 않았다. current deploy boundary를 한 명령으로 regenerate 가능하게 묶는 것이 현재 재현성 debt를 가장 직접적으로 줄인다.
+
+## D-089
+
+- Date: `2026-03-29`
+- Decision: canonical `chunk_id` mapping은 `vocab_dictionary/output/unified_live/kcenter_chunk_id_mapping.json.gz`를 source truth로 사용한다. current generator/search recovery/package chain은 이 artifact를 읽는다.
+- Why: `chunk_id`를 canonical source artifact 없이 implicit order에만 의존시키면 generator contract가 불투명해지고 future parity 작업 추적이 어려워진다. explicit mapping artifact로 고정해야 source-backed routing contract가 생긴다.
+
+## D-090
+
+- Date: `2026-03-29`
+- Decision: integrated review `V4`를 current remediation basis로 등록하고, valid issue remediation order를 `MM3-273 Build Graph Closure -> MM3-274 Chunk Contract Unification -> MM3-275 Validation Hardening + Missing Tests -> MM3-276 Projection Consolidation -> MM3-277 Boundary Cleanup`으로 고정한다.
+- Why: 단발성 리뷰 문서로 두면 다음 턴에서 다시 해석이 흔들릴 수 있다. control-plane에 remediation order를 직접 고정해야 다음 구현 tranche가 review truth와 분리되지 않는다.
+
+## D-091
+
+- Date: `2026-03-29`
+- Decision: current first remediation tranche는 `MM3-273 Build Graph Closure`로 연다.
+- Why: registered valid issues 중 immediate deployment/reproducibility risk가 가장 큰 항목이 hidden mapping dependency와 release provenance gap이기 때문이다.
+
+## D-092
+
+- Date: `2026-03-29`
+- Decision: default build path는 canonical mapping artifact를 missing state에서도 자동 보장해야 하며, release/build path는 canonical rebuild provenance를 먼저 실행해야 한다.
+- Why: hidden local residue에 의존하는 build graph는 clean checkout과 CI/Vercel 재현성을 깨고, committed payload inflate만으로는 stale deploy risk를 없애지 못하기 때문이다.
+
+## D-093
+
+- Date: `2026-03-29`
+- Decision: current boundary에서 chunk membership source-of-truth는 canonical mapping artifact이고, `CHUNK_MANIFEST_V1`와 `build:examples`는 이 membership를 직접 반영해야 한다.
+- Why: mapping / package / examples가 서로 다른 규칙으로 chunk membership를 재구성하면 current runtime contract drift가 생기기 때문이다.
+
+## D-094
+
+- Date: `2026-03-29`
+- Decision: current boundary에서는 `validate:chunk-contract`와 `test:contracts`를 기본 validation/test surface로 사용한다.
+- Why: mapping / manifest / search / chunk payload coherence를 문서와 수동 점검에만 의존시키면 current boundary contract drift를 늦게 발견하게 되기 때문이다.
+
+## D-095
+
+- Date: `2026-03-29`
+- Decision: current boundary의 `meaning / situation / unclassified` projection rule은 shared module 하나로 유지한다.
+- Why: app runtime와 canonical rebuild가 서로 다른 구현을 가지면 taxonomy/display rule drift를 다시 만들 수 있기 때문이다.
+
+## D-096
+
+- Date: `2026-03-29`
+- Decision: `vocab_dictionary/output/unified_live/kcenter_chunk_id_mapping.json.gz`는 current boundary에서 `09_app` build tooling이 생성/갱신하는 derived canonical runtime build artifact로 본다.
+- Why: source-builder 쪽으로 ownership을 즉시 이동시키지 않는 현재 단계에서는, 누가 이 artifact를 만들고 언제 갱신하는지 명확히 고정하는 편이 boundary drift를 줄인다.
+
+## D-097
+
+- Date: `2026-03-29`
+- Decision: filter panel learner-facing label은 `Band별` 대신 `TOPIK빈도`를 사용하고, order는 `난이도 -> 품사 -> TOPIK빈도 -> 번역 언어`로 둔다.
+- Why: 현재 사용자 표현 기준에서는 `TOPIK빈도`가 의미를 더 직접적으로 전달하고, filter reading order도 학습자 관점에서 더 자연스럽다.
+
+## D-086
+
 - Date: `2026-03-27`
 - Decision: `주제 및 상황` hierarchy에서 `scene == category`인 repeated label은 learner-facing path에서는 collapse하고, tree/category node는 structural label `어휘 목록`으로 표시한다.
 - Why: source-shaped hierarchy 자체는 유지해야 하지만, `교통 이용하기 > 교통 이용하기` 같은 repeated path는 learner-facing noise가 크다. semantic rename 대신 structural label을 쓰면 false hierarchy 없이 redundancy만 줄일 수 있다.

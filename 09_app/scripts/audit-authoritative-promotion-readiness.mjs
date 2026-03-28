@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { canonicalChunkMappingPath } from "./canonical-chunk-mapping-core.mjs";
 import {
   buildRecoverableSearchRows,
   compareRuntimeRows,
@@ -35,8 +36,9 @@ const semanticComparison = compareRuntimeRows(
 const facetExactMatch = JSON.stringify(runtimeFacets) === JSON.stringify(canonicalFacets);
 const runtimeRowsWithChunkId = runtimeSearch.filter((row) => Boolean(row.chunk_id)).length;
 const manifestHasEntryIds = (chunkManifest.chunks || []).some(
-  (chunk) => Array.isArray(chunk.ids) && chunk.ids.length > 0,
+  (chunk) => Array.isArray(chunk.entry_ids) && chunk.entry_ids.length > 0,
 );
+const canonicalChunkMappingExists = existsSync(canonicalChunkMappingPath);
 
 console.log(JSON.stringify({
   generated_at: new Date().toISOString(),
@@ -60,13 +62,14 @@ console.log(JSON.stringify({
       : null,
     chunk_manifest_chunk_count: (chunkManifest.chunks || []).length,
     chunk_manifest_has_entry_ids: manifestHasEntryIds,
+    canonical_chunk_mapping_exists: canonicalChunkMappingExists,
   },
   interpretation: {
     semantic_authority_candidate_ready:
       semanticComparison.mismatched === 0 && facetExactMatch,
     unresolved_authoritative_gap:
-      manifestHasEntryIds
+      canonicalChunkMappingExists
         ? null
-        : "chunk_id cannot be reconstructed from CHUNK_MANIFEST_V1.json alone",
+        : "canonical chunk_id mapping artifact is missing",
   },
 }, null, 2));

@@ -4,6 +4,7 @@ import { pipeline } from "node:stream/promises";
 import { createGzip } from "node:zlib";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { ensureCanonicalChunkMapping } from "./canonical-chunk-mapping-core.mjs";
 import { buildExampleEntry, loadTopikSentenceMap } from "./example-chunk-sources.mjs";
 import { loadCanonicalRuntimeDetailEntries } from "./runtime-detail-projection.mjs";
 
@@ -46,7 +47,7 @@ async function gzipPayload(fileName) {
 
   await pipeline(
     createReadStream(source),
-    createGzip({ level: 6 }),
+    createGzip({ level: 6, mtime: 0 }),
     createWriteStream(tempTarget),
   );
 
@@ -70,25 +71,36 @@ function writeJsonAtomic(filePath, payload) {
   renameSync(tempPath, filePath);
 }
 
-function chunkEntries(detailEntries) {
-  const entryIds = detailEntries.map((item) => item.id);
+function chunkEntries(detailEntries, chunkMappingPayload) {
+  const detailById = new Map(detailEntries.map((item) => [String(item.id), item.detail]));
   const chunkMap = new Map();
   const chunks = [];
 
-  for (let index = 0; index < entryIds.length; index += CHUNK_SIZE) {
-    const ids = entryIds.slice(index, index + CHUNK_SIZE);
-    const chunkId = `chunk-${String((index / CHUNK_SIZE) + 1).padStart(4, "0")}`;
+  for (const chunk of chunkMappingPayload.chunks || []) {
+    const ids = (chunk.entry_ids || []).map((id) => String(id));
     const richData = {};
     for (const id of ids) {
-      const entry = detailEntries[index + ids.indexOf(id)];
-      richData[id] = entry.detail;
-      chunkMap.set(id, chunkId);
+      const entry = detailById.get(id);
+      if (!entry) {
+        throw new Error(`Canonical chunk mapping references missing detail entry: ${id}`);
+      }
+      richData[id] = entry;
+      chunkMap.set(id, chunk.chunk_id);
     }
     chunks.push({
-      chunkId,
+      chunkId: chunk.chunk_id,
       ids,
       richData,
     });
+  }
+
+  if (chunkMap.size !== detailById.size) {
+    const missingIds = [];
+    for (const id of detailById.keys()) {
+      if (!chunkMap.has(id)) missingIds.push(id);
+      if (missingIds.length >= 10) break;
+    }
+    throw new Error(`Canonical chunk mapping does not cover all detail entries: ${missingIds.join(", ")}`);
   }
 
   return { chunkMap, chunks };
@@ -105,16 +117,20 @@ function applyChunkIds(payload, chunkMap) {
 }
 
 async function writeChunkArtifacts(detailEntries) {
-  const { chunkMap, chunks } = chunkEntries(detailEntries);
+  const chunkMappingPayload = ensureCanonicalChunkMapping({ force: false });
+  const { chunkMap, chunks } = chunkEntries(
+    detailEntries,
+    chunkMappingPayload,
+  );
   const topikSentenceMap = await loadTopikSentenceMap();
   const manifest = {
     version: "MM3_CHUNKED",
-    generated_at: new Date().toISOString(),
-    chunk_size: CHUNK_SIZE,
+    chunk_size: chunkMappingPayload.chunk_size,
     chunk_count: chunks.length,
     chunks: chunks.map((chunk) => ({
       chunk_id: chunk.chunkId,
       entry_count: chunk.ids.length,
+      entry_ids: chunk.ids,
     })),
   };
 
@@ -175,7 +191,6 @@ async function main() {
 
   const manifest = {
     version: "v1",
-    generated_at: new Date().toISOString(),
     payload_count: entries.length,
     entries,
   };

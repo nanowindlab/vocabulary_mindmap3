@@ -2,6 +2,214 @@
 
 ## Authoritative Current State
 
+### MM3-278 2026-03-29 Filter Label And Order Update
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: filter panel에서 `Band별` 명칭을 `TOPIK빈도`로 바꾸고, filter 순서를 `난이도 -> 품사 -> TOPIK빈도 -> 번역 언어`로 조정한다.
+- Input:
+  - `09_app/src/App.jsx`
+  - `08_planning/reports/20260329_MM3_278_FILTER_LABEL_AND_ORDER_UPDATE_CLOSEOUT_V1.md`
+- Prior closeout:
+  - `MM3-277` boundary cleanup closeout: `DONE`
+- Progress lock:
+  - filter label update: `DONE`
+  - filter order update: `DONE`
+  - decision record: `DONE`
+  - `build` verification: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
+
+### MM3-277 2026-03-29 Boundary Cleanup
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: current boundary source artifact ownership을 명시하고 review-driven remediation cycle을 닫는다.
+- Input:
+  - `08_planning/reports/20260329_MM3_277_BOUNDARY_CLEANUP_CLOSEOUT_V1.md`
+  - `08_planning/DATA_ARCHITECTURE_V1.md`
+  - `README.md`
+  - `08_planning/PROJECT_DECISION_LOG_V1.md`
+- Prior closeout:
+  - `MM3-276` projection consolidation closeout: `DONE`
+- Progress lock:
+  - ownership documentation: `DONE`
+  - decision lock: `DONE`
+  - remediation cycle closeout: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
+
+### MM3-276 2026-03-29 Projection Consolidation
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: app runtime와 canonical rebuild가 같은 projection implementation을 쓰게 만든다.
+- Input:
+  - `09_app/src/utils/tabProjection.js`
+  - `09_app/src/App.jsx`
+  - `09_app/scripts/rebuild-canonical-runtime.mjs`
+- Prior closeout:
+  - `MM3-275` validation hardening and missing tests closeout: `DONE`
+- Progress lock:
+  - shared projection module 추가: `DONE`
+  - app runtime projection 전환: `DONE`
+  - canonical rebuild projection 전환: `DONE`
+  - `test:contracts` / `build` / targeted Playwright 검증: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
+
+### MM3-275 2026-03-29 Validation Hardening And Missing Tests
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: current boundary에서 mapping / manifest / search / chunk payload coherence를 validation gate와 automated tests로 고정한다.
+- Input:
+  - `09_app/scripts/validate-chunk-contract.mjs`
+  - `09_app/test-contracts/chunk-contract.test.mjs`
+  - `09_app/package.json`
+- Prior closeout:
+  - `MM3-274` chunk contract unification closeout: `DONE`
+- Progress lock:
+  - chunk contract validation script 추가: `DONE`
+  - contract node tests 추가: `DONE`
+  - sidecar validation bundle 편입: `DONE`
+  - `validate:chunk-contract` / `test:contracts` / `build:examples` / `build` 검증: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
+
+### MM3-274 2026-03-29 Chunk Contract Unification
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: mapping / package / examples 경로가 같은 chunk membership source를 읽게 만든다.
+- Input:
+  - `08_planning/reports/20260329_MM3_272_INTEGRATED_REVIEW_REGISTRATION_AND_VALID_REMEDIATION_PLAN_V1.md`
+  - `09_app/scripts/package-live-payloads.mjs`
+  - `09_app/scripts/build-example-chunks.mjs`
+  - `09_app/scripts/audit-authoritative-promotion-readiness.mjs`
+- Prior closeout:
+  - `MM3-273` build graph closure closeout: `DONE`
+- Progress lock:
+  - manifest `entry_ids` 추가: `DONE`
+  - examples path direct membership source 전환: `DONE`
+  - audit schema sync: `DONE`
+  - `rebuild:canonical-runtime` / `build:examples` / `audit` / `build` 검증: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
+
+### MM3-273 2026-03-29 Build Graph Closure
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: default build/release path에서 canonical mapping dependency와 canonical rebuild provenance gap을 닫는다.
+- Input:
+  - `08_planning/reports/20260329_MM3_272_INTEGRATED_REVIEW_REGISTRATION_AND_VALID_REMEDIATION_PLAN_V1.md`
+  - `08_planning/reports/20260329_MM3_273_BUILD_GRAPH_CLOSURE_OPENING_V1.md`
+  - `08_planning/reports/20260329_MM3_273_BUILD_GRAPH_CLOSURE_CLOSEOUT_V1.md`
+  - `.codex-orchestration/reviews/20260329_PRINCIPAL_CODE_REVIEW_MM3_226A_MM3_271_V4.md`
+- Prior closeout:
+  - `MM3-272` integrated review registration and valid remediation plan: `DONE`
+- Progress lock:
+  - first tranche target lock: `DONE`
+  - implementation boundary lock: `DONE`
+  - default build path mapping availability 보장: `DONE`
+  - release path canonical rebuild provenance 반영: `DONE`
+  - missing mapping auto-regeneration 검증: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
+
+### MM3-272 2026-03-29 Integrated Review Registration And Valid Remediation Plan
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: integrated review `V4`를 control-plane에 등록하고 valid issue remediation order를 고정한다.
+- Input:
+  - `.codex-orchestration/reviews/20260329_PRINCIPAL_CODE_REVIEW_MM3_226A_MM3_271_V4.md`
+  - `.codex-orchestration/reviews/20260329_PRINCIPAL_CODE_REVIEW_MM3_226A_MM3_271_V1.md`
+- Prior closeout:
+  - `MM3-226A` canonical chunk id mapping closeout: `DONE`
+- Progress lock:
+  - review `V4` registration: `DONE`
+  - valid issue registration: `DONE`
+  - remediation order lock: `DONE`
+  - first execution tranche opening decision: `DONE`
+  - next active substep: `MM3-273 build graph closure opening`
+
+### MM3-226A 2026-03-29 Canonical Chunk ID Mapping Closeout
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: explicit canonical `chunk_id` mapping artifact를 추가하고 current generator/search recovery/package chain이 이를 source-backed contract로 사용하게 만든다.
+- Input:
+  - `08_planning/reports/20260326_MM3_226_CHUNK_ID_POLICY_DECISION_V1.md`
+  - `08_planning/reports/20260326_MM3_224_AUTHORITATIVE_PROMOTION_CRITERIA_AND_EVIDENCE_GAP_V1.md`
+  - `08_planning/reports/20260329_MM3_271_CANONICAL_RUNTIME_GENERATOR_CLOSEOUT_V1.md`
+  - `09_app/scripts/canonical-chunk-mapping-core.mjs`
+  - `vocab_dictionary/output/unified_live/kcenter_chunk_id_mapping.json.gz`
+- Prior closeout:
+  - `MM3-271` canonical runtime generator closeout: `DONE`
+- Progress lock:
+  - canonical chunk mapping artifact 추가: `DONE`
+  - search recovery mapping source 전환: `DONE`
+  - package/rebuild mapping source 전환: `DONE`
+  - authoritative promotion audit 갱신: `DONE`
+  - `build:canonical-chunk-mapping` / `rebuild:canonical-runtime` / `build` 검증: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
+
+### MM3-271 2026-03-29 Canonical Runtime Generator Closeout
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: current deploy boundary payload를 canonical source에서 공식 command 하나로 재생성하고 deterministic packaging까지 고정한다.
+- Input:
+  - `09_app/scripts/rebuild-canonical-runtime.mjs`
+  - `09_app/scripts/package-live-payloads.mjs`
+  - `09_app/package.json`
+  - `08_planning/reports/20260324_MM3_164_GIT_VERCEL_PAYLOAD_PACKAGING_V1.md`
+  - `08_planning/reports/20260326_MM3_213_CANONICAL_THIN_INDEX_GENERATOR_RECOVERY_NOTE_V1.md`
+- Prior closeout:
+  - `MM3-270` unclassified tab removal: `DONE`
+- Progress lock:
+  - canonical rebuild entrypoint 추가: `DONE`
+  - current deploy boundary live payload generation: `DONE`
+  - package/verify chain 연결: `DONE`
+  - deterministic gzip packaging: `DONE`
+  - repeated rebuild hash stability check: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
+
+### MM3-270 2026-03-29 Unclassified Tab Removal
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: `분류 밖 항목`을 main app의 상시 browse tab에서 제외하고, search-driven 접근만 유지한다.
+- Input:
+  - `08_planning/reports/20260326_MM3_205_UNCLASSIFIED_SURFACE_PRODUCT_IA_DECISION_NOTE_V1.md`
+  - `08_planning/reports/20260328_MM3_265A_UNCLASSIFIED_HANDLING_RECOMMENDATION_V1.md`
+  - `09_app/src/App.jsx`
+  - `09_app/tests/residual.spec.js`
+- Prior closeout:
+  - `MM3-269` related-form source ambiguity policy closeout: `DONE`
+- Progress lock:
+  - `분류 밖 항목` nav tab 제거: `DONE`
+  - search result discoverability 유지: `DONE`
+  - search-driven unclassified detail route 유지: `DONE`
+  - unclassified 기본 `viewMode = list` 유지: `DONE`
+  - targeted Playwright verification: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
+
+### MM3-269 2026-03-28 Related Form Source-Ambiguity Policy Closeout
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: 이전에 여러 번 논의된 `related_forms` source ambiguity 처리 기준을 reopen issue처럼 남기지 않고 source-faithful policy로 최종 closeout한다.
+- Input:
+  - `08_planning/reports/20260326_MM3_232_RELATED_FORM_TARGET_REPAIR_V1.md`
+  - `08_planning/reports/20260326_MM3_233_RELATED_FORM_DEEP_REPAIR_ANALYSIS_V1.md`
+  - `08_planning/reports/20260326_MM3_234_RELATED_FORM_SOURCE_AMBIGUITY_TEXT_ONLY_POLICY_V1.md`
+- Prior closeout:
+  - `MM3-268` feedback wave closeout: `DONE`
+- Progress lock:
+  - `source-explicit single` keep linked: `DONE`
+  - `source-explicit multiple` keep all source-faithful targets: `DONE`
+  - `source-ambiguous` keep `text-only`: `DONE`
+  - source에 없는 jump target을 생성/추론하지 않음: `DONE`
+  - `MM3-233` deep-repair reopen expectation closeout: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
+
 ### MM3-268 2026-03-28 Feedback Intake / Execution Plan
 
 - Status: `DONE`
@@ -307,7 +515,16 @@
 - `MM3-225A` authoritative runtime write path 정의: `DONE`
 - `MM3-225B` rollback protocol 정의: `DONE`
 - `MM3-225C` dual-run diff gate 정의 및 dry-run 검증: `DONE`
-- `MM3-226A` canonical `chunk_id` mapping 신규 생성 설계 / acceptance 조건 정의: `TODO`
+- `MM3-226A` canonical `chunk_id` mapping artifact / generator contract update / verification closeout: `DONE`
+- `MM3-272A` integrated review `V4` registration / control-plane sync: `DONE`
+- `MM3-272B` valid remediation order lock: `DONE`
+- `MM3-273A` build graph closure opening / acceptance boundary lock: `DONE`
+- `MM3-273B` build graph closure implementation: `DONE`
+- `MM3-274A` chunk contract unification implementation: `DONE`
+- `MM3-275A` chunk contract validation hardening / missing tests: `DONE`
+- `MM3-276A` projection consolidation: `DONE`
+- `MM3-277A` boundary ownership documentation cleanup: `DONE`
+- `MM3-278A` filter label/order update: `DONE`
 - `MM3-226B` current tranche `chunk_id` runtime-enrichment policy decision: `DONE`
 - `MM3-227A` actual authoritative runtime switch execution: `DONE`
 - `MM3-227B` post-switch diff / rollback-ready / build verification: `DONE`
@@ -322,6 +539,9 @@
 - `MM3-233A` related form deep-repair residual analysis: `DONE`
 - `MM3-234A` source ambiguity `related_form` text-only policy lock: `DONE`
 - `MM3-235A` related form audit automation 추가: `DONE`
+- `MM3-269A` related-form source ambiguity policy closeout / control-plane sync: `DONE`
+- `MM3-270A` unclassified nav tab removal / search route preservation: `DONE`
+- `MM3-271A` canonical runtime generator entrypoint / deterministic packaging closeout: `DONE`
 - `MM3-236A` MM3 UI refinement roadmap opening: `DONE`
 - `MM3-236B` relation tab information hierarchy refinement: `DONE`
 - `MM3-236C` detail top-of-fold density refinement: `DONE`
@@ -430,7 +650,7 @@
 - `PARK-002` runtime payload builder
 - `PARK-003` frontend shell adaptation
 - `PARK-004` payload validation and count reconciliation
-- `PARK-005` canonical thin-index generator recovery / documentation
+- `PARK-005` broader canonical runtime parity / provenance completion / canonical generator contract tracking
 
 ## Validation Gates
 

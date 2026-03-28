@@ -19,15 +19,18 @@ import {
   normalizeHierarchyForDisplay,
   toPosLabel,
 } from "./utils/hierarchyDisplay";
+import { buildProjectedTabPayloads } from "./utils/tabProjection";
 
 import "./index.css";
 
 // ── 3-축 탭 정의 ────────────────────────────────────────────────
-const TABS = [
+const ALL_TABS = [
   { id: "meaning", label: "의미 범주", label_en: "Meaning Categories", color: "#58a6ff" },
   { id: "situation", label: "주제 및 상황", label_en: "Topic & Situation",  color: "#3fb950" },
   { id: "unclassified", label: "분류 밖 항목", label_en: "Unclassified",  color: "#bc8cff" },
 ];
+
+const NAV_TABS = ALL_TABS.filter((tab) => tab.id !== "unclassified");
 
 const TAB_SUMMARIES = {
   meaning: "뜻과 관계를 중심으로 비교하며 탐색합니다.",
@@ -214,68 +217,6 @@ function isDisplayNormalized(item) {
     item?.surface &&
     item?.hierarchy?.display_root_label &&
     item?.hierarchy?.display_path_ko
-  );
-}
-
-function buildProjectedHierarchyForTab(item, tabId) {
-  const categories = Array.isArray(item?.categories) ? item.categories : [];
-
-  if (tabId === "meaning") {
-    const meaningCategory = categories.find((category) => category?.type === "의미 범주")?.value || null;
-    if (!meaningCategory) return null;
-    const parts = meaningCategory.split(" > ").map((part) => part.trim()).filter(Boolean);
-    const scene = parts[0] || "일반";
-    const category = parts[parts.length - 1] || scene;
-    return {
-      root_id: "의미 범주",
-      root_label: "의미 범주",
-      root_en: "",
-      scene,
-      category,
-      path_ko: ["의미 범주", scene, category].join(" > "),
-      system: "의미 범주",
-      root: scene,
-    };
-  }
-
-  if (tabId === "situation") {
-    const situationCategory = categories.find((category) => category?.type === "주제 및 상황 범주")?.value || null;
-    if (!situationCategory) return null;
-    return {
-      root_id: "주제 및 상황 범주",
-      root_label: "주제 및 상황 범주",
-      root_en: "",
-      scene: situationCategory,
-      category: situationCategory,
-      path_ko: ["주제 및 상황 범주", situationCategory, situationCategory].join(" > "),
-      system: "주제 및 상황 범주",
-      root: situationCategory,
-    };
-  }
-
-  const wordGrade = item?.word_grade || "없음";
-  const posLabel = item?.pos || item?.part_of_speech || "품사 없음";
-  return {
-    root_id: "미분류",
-    root_label: "미분류",
-    root_en: "",
-    scene: wordGrade,
-    category: posLabel,
-    path_ko: ["미분류", wordGrade, posLabel].join(" > "),
-    system: "미분류",
-    root: wordGrade,
-  };
-}
-
-function projectSearchItemForTab(item, tabId) {
-  const hierarchy = buildProjectedHierarchyForTab(item, tabId);
-  if (!hierarchy) return null;
-  return normalizeItem(
-    {
-      ...item,
-      hierarchy,
-    },
-    "mindmap_core",
   );
 }
 
@@ -635,26 +576,13 @@ function App() {
 
   const projectedTabLists = useMemo(() => {
     const startedAt = perfNow();
-    const projected = {
-      meaning: [],
-      situation: [],
-      unclassified: [],
-    };
-
     // T1 runtime contract:
     // derive learner-facing tab trees from APP_READY_SEARCH_INDEX instead of
     // fetching the large tree trio payloads at runtime.
-    searchIndex.forEach((item) => {
-      const meaningItem = projectSearchItemForTab(item, "meaning");
-      if (meaningItem) projected.meaning.push(meaningItem);
-
-      const situationItem = projectSearchItemForTab(item, "situation");
-      if (situationItem) projected.situation.push(situationItem);
-
-      if (!meaningItem && !situationItem) {
-        projected.unclassified.push(projectSearchItemForTab(item, "unclassified"));
-      }
-    });
+    const projected = buildProjectedTabPayloads(
+      searchIndex,
+      (item) => normalizeItem(item, "mindmap_core"),
+    );
 
     const totalMs = perfNow() - startedAt;
     if (initialLoadPerfRef.current) {
@@ -1059,7 +987,7 @@ function App() {
         <StatusPanel
           kicker="Initial Load"
           title="어휘 데이터를 준비 중입니다"
-          description={`현재 ${TABS.map((t) => t.label).join(" · ")} 축을 순서대로 준비하고 있습니다.`}
+          description={`현재 ${NAV_TABS.map((t) => t.label).join(" · ")} 축을 순서대로 준비하고 있습니다.`}
           icon={Loader}
           tone="var(--accent-blue)"
           loading
@@ -1067,7 +995,7 @@ function App() {
       </div>
     );
 
-  const currentTab = TABS.find((t) => t.id === activeTab);
+  const currentTab = ALL_TABS.find((t) => t.id === activeTab);
 
   return (
     <div className="app-root fade-enter-active">
@@ -1084,7 +1012,7 @@ function App() {
             </div>
           </div>
           <div className="nav-tabs">
-            {TABS.map((tab) => (
+            {NAV_TABS.map((tab) => (
               <button
                 key={tab.id}
                 className={`nav-tab ${activeTab === tab.id ? "active" : ""}`}
@@ -1182,11 +1110,11 @@ function App() {
 
           {/* 드롭다운 필터 요소들 */}
           <DropdownFilter
-            label="Band별"
-            options={bandOptions}
-            selectedValues={filters.bands}
-            onToggle={toggleBandFilter}
-            onClear={() => setFilters(f => ({ ...f, bands: [] }))}
+            label="난이도"
+            options={gradeOptions}
+            selectedValues={filters.grades || []}
+            onToggle={toggleGradeFilter}
+            onClear={() => setFilters(f => ({ ...f, grades: [] }))}
           />
 
           <DropdownFilter
@@ -1198,11 +1126,11 @@ function App() {
           />
 
           <DropdownFilter
-            label="난이도"
-            options={gradeOptions}
-            selectedValues={filters.grades || []}
-            onToggle={toggleGradeFilter}
-            onClear={() => setFilters(f => ({ ...f, grades: [] }))}
+            label="TOPIK빈도"
+            options={bandOptions}
+            selectedValues={filters.bands}
+            onToggle={toggleBandFilter}
+            onClear={() => setFilters(f => ({ ...f, bands: [] }))}
           />
 
           <DropdownFilter

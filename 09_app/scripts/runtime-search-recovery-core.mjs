@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
-import { loadCanonicalRuntimeDetailIds } from "./runtime-detail-projection.mjs";
+import { loadCanonicalChunkMap } from "./canonical-chunk-mapping-core.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -83,17 +83,6 @@ function buildTopikStatsMap() {
   return statsByEntryId;
 }
 
-function buildChunkMap(entryIds, chunkSize = 500) {
-  const chunkMap = new Map();
-  for (let index = 0; index < entryIds.length; index += chunkSize) {
-    const chunkId = `chunk-${String((index / chunkSize) + 1).padStart(4, "0")}`;
-    for (const id of entryIds.slice(index, index + chunkSize)) {
-      chunkMap.set(String(id), chunkId);
-    }
-  }
-  return chunkMap;
-}
-
 function normalizeStats(rawStats = {}) {
   return {
     frequency: rawStats.frequency ?? null,
@@ -152,7 +141,7 @@ export function buildRecoverableSearchRows() {
   const thin = readGzipJson(path.join(unifiedLiveDir, "kcenter_thin_index.json.gz"));
   const { summaryBySenseId, englishDefBySenseId } = buildTranslationMaps();
   const statsByEntryId = buildTopikStatsMap();
-  const chunkMap = buildChunkMap(loadCanonicalRuntimeDetailIds());
+  const chunkMap = loadCanonicalChunkMap();
 
   return (thin.entries || []).filter((item) => !isSubjectNoneOnly(item.entry?.categories || [])).map((item) => {
     const entry = item.entry || {};

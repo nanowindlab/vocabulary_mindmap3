@@ -4,10 +4,11 @@
 
 - `mindmap3`는 현재 `M1 Runtime Wiring / Core Explorer` phase다.
 - current active work는 `none`이다.
-- latest closeout package는 `MM3-268 2026-03-28 Feedback Intake / Execution Plan`이다.
+- latest closeout package는 `MM3-278 2026-03-29 Filter Label And Order Update Closeout`이다.
 - current exit condition은 다음 active work가 생기면 그 task id 기준으로 새 packet을 연다.
 - current gate는 overall `PARTIAL_OPEN`, core explorer slice `OPEN`이다.
 - deploy/runtime truth는 `runtime_payloads/*.json.gz -> prepare:live -> verify:live -> build` 체인이다.
+- current deploy boundary canonical regenerate command는 `npm --prefix 09_app run rebuild:canonical-runtime`다.
 - current learner-facing `search + facets only` builder surface는 package/build-chain에 **non-authoritative sidecar gate**로 편입됐다.
 - current builder contract is authoritative for `search semantic fields + facets` when executed through the approved promote path.
 - current sidecar output is **comparison / validation only**.
@@ -33,7 +34,7 @@
 - `npm run audit:authoritative-promotion` 기준 semantic authority candidate readiness는 `true`다.
 - `MM3-225`에서 authoritative runtime write path / rollback / dual-run diff protocol이 정의됐다.
 - `npm run plan:authoritative-runtime`는 `PLAN_READY`, `npm run diff:authoritative-runtime`는 `PASS`다.
-- `MM3-226`에서 current tranche `chunk_id` policy는 runtime-enrichment로 고정됐고, canonical mapping은 parked backlog `MM3-226A`로 분리됐다.
+- `MM3-226`에서 current tranche `chunk_id` policy는 runtime-enrichment로 고정됐고, 후속 `MM3-226A`에서 canonical mapping artifact를 추가했다.
 - `MM3-227`에서 actual authoritative runtime switch가 실행됐고, post-switch diff / rollback-ready / build verification이 통과했다.
 - current search semantic fields + facets boundary is now authoritative runtime truth.
 - `MM3-228`에서 recurring gate bundle `npm run check:authoritative-runtime-boundary`를 추가했고 `PASS`를 확인했다.
@@ -43,6 +44,18 @@
 - `MM3-232`에서 related form source-faithful repair를 적용했고 unresolved total `4,563 -> 4,303`, dangling forms `1,085 -> 1,019`로 줄였다.
 - `MM3-234`에서 source-ambiguous related form을 text-only로 고정하는 policy를 잠궜다.
 - `MM3-235`에서 related-form audit automation을 추가했고 unresolved `4,303` 중 `4,302`가 source ambiguity임을 고정했다.
+- `MM3-269`에서 source-ambiguous related form은 SSOT source에 target이 없으므로 current scope에서 deep repair reopen 없이 `text-only`로 닫는다고 다시 고정했다.
+- `MM3-270`에서 `분류 밖 항목`은 main nav tab에서 제거했고, search result와 search-driven detail/list route는 유지했다.
+- `MM3-271`에서 current deploy boundary canonical generator를 `npm run rebuild:canonical-runtime`로 고정했고, deterministic packaging까지 반영했다.
+- `MM3-226A`에서 canonical `chunk_id` mapping artifact를 source에 추가했고, generator/search recovery/package chain이 그 artifact를 읽도록 갱신했다.
+- `MM3-272`에서 integrated review `V4`를 registered review basis로 올렸고, valid remediation order를 `MM3-273 -> MM3-274 -> MM3-275 -> MM3-276 -> MM3-277`로 고정했다.
+- `MM3-273`에서 default build path가 canonical mapping availability를 자동 보장하고 release/build path가 canonical rebuild provenance를 선행하도록 닫았다.
+- `MM3-274`에서 mapping / package / examples 경로가 같은 chunk membership source를 읽도록 통합했고, `chunk_manifest_has_entry_ids`를 current schema로 맞췄다.
+- `MM3-275`에서 `validate:chunk-contract`, `test:contracts`를 추가했고 sidecar validation bundle에 current boundary chunk contract 검증을 편입했다.
+- `MM3-276`에서 app runtime와 canonical rebuild가 shared `tabProjection` module을 같이 쓰도록 통합했다.
+- `MM3-277`에서 `kcenter_chunk_id_mapping.json.gz` ownership을 current boundary에서 `09_app` build tooling이 관리하는 derived canonical runtime build artifact로 명시했다.
+- `MM3-278`에서 filter panel label을 `TOPIK빈도`로 바꾸고 순서를 `난이도 -> 품사 -> TOPIK빈도 -> 번역 언어`로 조정했다.
+- 이후 broader parity나 future generator boundary expansion이 reopen되면, same tranche에서 canonical generator contract와 verification set도 함께 갱신해야 한다.
 - `MM3-236`에서 MM3 UI refinement roadmap를 열었고, first slice를 relation tab information hierarchy로 고정했다.
 - `MM3-237`에서 relation tab hierarchy refinement를 구현했고 targeted Playwright `4 passed`로 `MM3-236B`를 닫았다.
 - `MM3-238`에서 detail top-of-fold density를 closeout했고 targeted Playwright `7 passed`를 확인했다.
@@ -108,7 +121,7 @@
 - `npx playwright test tests/smoke.spec.js tests/scenario.spec.js`가 `5 passed`다.
 - `MM3-267B` `Vercel` deployed perf verification은 closeout됐다.
 - latest production custom domain recheck 기준 `의미 범주(44,410)`과 tree scene list가 다시 렌더된다.
-- `MM3-266F` closeout chain은 완료됐고 current active work는 계속 `MM3-261B`다.
+- `MM3-266F` closeout chain은 완료됐고, 당시 active work는 `MM3-261B`였다.
 - `MM3-261B` batch 03 `detail primary card spacing cadence` 구현은 `build PASS`, `Playwright 5 passed`로 검증됐다.
 - `MM3-266F` draft 기준 preferred target은:
   - hot: `APP_READY_SEARCH_INDEX`, `APP_READY_FACETS`
@@ -172,13 +185,13 @@
 
 - current blocker는 current limited authoritative boundary 안에서는 없다.
 - `chunk_id`는 current semantic authority gate 밖의 runtime-enrichment로 고정됐다.
-- `MM3-226A` canonical `chunk_id` mapping 신규 생성은 parked backlog로 남아 있다.
+- canonical `chunk_id` mapping artifact는 current source truth에 반영됐다.
 - TOPIK stats policy 자체는 승인 완료 상태다.
 - `original_language_type` 자체는 blocker가 아니다.
 - `MM3-217C` 지속적 개선 track은 tasklist에서 계속 유지되어야 한다.
 
 ## Next PM Actions
 
-1. `MM3-268A`~`MM3-268H`는 모두 `DONE`이다.
+1. `MM3-268A`~`MM3-268H`, `MM3-269A`, `MM3-270A`, `MM3-271A`, `MM3-272A`, `MM3-272B`, `MM3-273A`, `MM3-273B`는 `DONE`이다.
 2. current active execution package는 `none`이다.
-3. 다음 feedback이나 PM directive가 오기 전까지는 새 active work를 열지 않는다.
+3. current review-driven remediation cycle은 닫혔다. broader parity / provenance completion은 parked backlog다.

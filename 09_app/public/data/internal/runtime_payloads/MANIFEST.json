@@ -1,6 +1,5 @@
 {
   "version": "v1",
-  "generated_at": "2026-03-28T14:15:54.225Z",
   "payload_count": 220,
   "entries": [
     {
@@ -11,21 +10,21 @@
     },
     {
       "file": "APP_READY_MEANING_TREE.json",
-      "source_bytes": 160435724,
-      "compressed_bytes": 29169277,
-      "sha256": "51e887392da86ac2e189e8733b431b47f658e223631180ad2c6b4bf244c57858"
+      "source_bytes": 158604092,
+      "compressed_bytes": 29079126,
+      "sha256": "002ed727b9577890d32e0ed8e6b28706a7cd2988d24a7cdb91b4e4099cfff668"
     },
     {
       "file": "APP_READY_SITUATION_TREE.json",
-      "source_bytes": 23986085,
-      "compressed_bytes": 4886132,
-      "sha256": "14b3b965ea0da246d5c4bfb3ac7d48dbcf78c5fbe9c8b16a0c7d94c1b1db2c1a"
+      "source_bytes": 23723181,
+      "compressed_bytes": 4870042,
+      "sha256": "da36a401fb2aa7b7d54c9bbd1079672893dbce70fe5a8c49451e79adb3958ea5"
     },
     {
       "file": "APP_READY_UNCLASSIFIED_TREE.json",
-      "source_bytes": 27471995,
-      "compressed_bytes": 4527862,
-      "sha256": "22b0edf0a053924b852156be7195984b7bee81c4562d343ee493bd36b50d08c6"
+      "source_bytes": 27112661,
+      "compressed_bytes": 4510715,
+      "sha256": "4fe73bb8adbb0146b588af2efebdf149ea7e7c5fa2d525125e45a552b0976cfa"
     },
     {
       "file": "APP_READY_FACETS.json",
@@ -35,9 +34,9 @@
     },
     {
       "file": "CHUNK_MANIFEST_V1.json",
-      "source_bytes": 7627,
-      "compressed_bytes": 461,
-      "sha256": "48085a3667d1bd9fe98b67643ee3a871ca92745eb9b973197b5985ca8eac3a45"
+      "source_bytes": 913200,
+      "compressed_bytes": 134424,
+      "sha256": "18be2a8b33534455529f8167aeaf1c658c3e8044d1af98aad2106cf776fb9750"
     },
     {
       "file": "APP_READY_CHUNK_RICH_chunk-0001.json",

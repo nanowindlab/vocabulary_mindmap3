@@ -26,6 +26,30 @@
   - observed `records` length on 2026-03-23: `71,683`
   - record shape: `sense_id`, `entry_id`, `translations[]`
 
+### L0-C. Canonical Chunk Mapping Side Artifact
+
+- Path: `vocab_dictionary/output/unified_live/kcenter_chunk_id_mapping.json.gz`
+- Role:
+  - current boundary derived canonical runtime build artifact
+  - source-backed `entry_id -> chunk_id` mapping
+- Ownership:
+  - generator owner: `09_app` build tooling
+  - generate commands:
+    - `npm --prefix 09_app run build:canonical-chunk-mapping`
+    - `npm --prefix 09_app run rebuild:canonical-runtime`
+- Relationship:
+  - derived from `kcenter_base.json.gz`
+  - not an independent lexical SSOT
+  - manual edit 금지
+- Shape:
+  - `schema_version`
+  - `source_artifact`
+  - `chunk_size`
+  - `entry_count`
+  - `chunk_count`
+  - `chunks[]`
+  - `records[]`
+
 ### L1. Imported TOPIK Stats Sidecar
 
 - Source reference:
