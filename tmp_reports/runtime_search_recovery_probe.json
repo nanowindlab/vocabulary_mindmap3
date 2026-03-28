@@ -1,0 +1,34 @@
+{
+  "generated_at": "2026-03-26T01:09:00.331Z",
+  "runtime_rows": 53480,
+  "recovered_rows": 53480,
+  "comparison": {
+    "matched": 53480,
+    "mismatched": 0,
+    "samples": []
+  },
+  "recoverable_fields": [
+    "id",
+    "word",
+    "pos",
+    "pos_list",
+    "word_grade",
+    "def_ko",
+    "def_en",
+    "hierarchy",
+    "surface",
+    "routing",
+    "stats",
+    "chunk_id",
+    "related_vocab",
+    "refs",
+    "is_center_profile",
+    "roman",
+    "sense_count",
+    "has_subwords",
+    "has_related_forms",
+    "representative_sense_id",
+    "translation_summary",
+    "categories"
+  ]
+}

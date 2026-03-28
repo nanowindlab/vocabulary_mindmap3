@@ -19,7 +19,6 @@ import {
   normalizeHierarchyForDisplay,
   toPosLabel,
 } from "./utils/hierarchyDisplay";
-import { SITUATION_QUICK_ENTRY_GROUPS, getSituationQuickEntryGroup } from "./utils/situationTaxonomy";
 
 import "./index.css";
 
@@ -54,6 +53,16 @@ const perfNow = () =>
   typeof performance !== "undefined" && typeof performance.now === "function"
     ? performance.now()
     : Date.now();
+
+function hasLoadedDetailPayload(detail) {
+  if (!detail) return false;
+  return Boolean(
+    (Array.isArray(detail.senses) && detail.senses.length > 0) ||
+    (Array.isArray(detail.related_forms) && detail.related_forms.length > 0) ||
+    (Array.isArray(detail.subwords) && detail.subwords.length > 0) ||
+    (Array.isArray(detail.examples_bundle) && detail.examples_bundle.length > 0),
+  );
+}
 
 function isInitialLoadPerfConsoleEnabled() {
   if (typeof window === "undefined") return import.meta.env.DEV;
@@ -287,9 +296,9 @@ function buildTreeFromList(list, surface, contextMode) {
     if (!tree[rootId])
       tree[rootId] = { id: rootId, type: "root", label: rootLabel, label_en: item.hierarchy.root_en, children: {} };
     if (!tree[rootId].children[centerId])
-      tree[rootId].children[centerId] = { id: centerId, type: "scene", label: sceneLabel, children: {} };
+      tree[rootId].children[centerId] = { id: centerId, type: "scene", rootId, label: sceneLabel, children: {} };
     if (!tree[rootId].children[centerId].children[categoryId])
-      tree[rootId].children[centerId].children[categoryId] = { id: categoryId, type: "category", label: categoryLabel, children: {}, termCount: 0 };
+      tree[rootId].children[centerId].children[categoryId] = { id: categoryId, type: "category", rootId, sceneId: centerId, label: categoryLabel, children: {}, termCount: 0 };
     if (!item.is_center_profile) {
       tree[rootId].children[centerId].children[categoryId].children[item.id] = { id: item.id, type: "term", label: item.word, data: item };
       tree[rootId].children[centerId].children[categoryId].termCount += 1;
@@ -476,8 +485,6 @@ function App() {
   const [focusedRootId, setFocusedRootId] = useState(null);
   const [showEnglish, setShowEnglish] = useState(true);
   const [translationLanguage, setTranslationLanguage] = useState("영어");
-  const [selectedSituationQuickGroup, setSelectedSituationQuickGroup] = useState(null);
-  const [selectedSituationQuickLeaf, setSelectedSituationQuickLeaf] = useState(null);
   const initialLoadPerfRef = useRef(null);
   const initialLoadPerfFlushedRef = useRef(false);
   const runtimeInteractionPerfRef = useRef({
@@ -487,6 +494,8 @@ function App() {
     categoryExpansions: [],
   });
   const lastDetailSelectionRef = useRef(null);
+  const selectedTermDetailRef = useRef(null);
+  const activeDetailRequestRef = useRef(0);
 
   // 필터 상태
   const [filters, setFilters] = useState({ bands: [], poses: [], grades: [], query: "" });
@@ -513,6 +522,10 @@ function App() {
     };
     publishRuntimeInteractionPerfSnapshot(runtimeInteractionPerfRef.current);
   }, []);
+
+  useEffect(() => {
+    selectedTermDetailRef.current = selectedTermDetail;
+  }, [selectedTermDetail]);
 
   const startDrag = useCallback(() => {
     isDragging.current = true;
@@ -620,12 +633,6 @@ function App() {
     };
   }, [isInitializing]);
 
-  useEffect(() => {
-    if (activeTab === "situation") return;
-    setSelectedSituationQuickGroup(null);
-    setSelectedSituationQuickLeaf(null);
-  }, [activeTab]);
-
   const projectedTabLists = useMemo(() => {
     const startedAt = perfNow();
     const projected = {
@@ -693,17 +700,9 @@ function App() {
     return projectedTabLists.unclassified;
   }, [activeTab, projectedTabLists]);
 
-  const quickEntryScopedList = useMemo(() => {
-    if (activeTab !== "situation" || !selectedSituationQuickLeaf) return activeList;
-    return activeList.filter((item) => {
-      const rawLeaf = item.hierarchy?.raw_category || item.hierarchy?.category || null;
-      return rawLeaf === selectedSituationQuickLeaf;
-    });
-  }, [activeList, activeTab, selectedSituationQuickLeaf]);
-
-  const filteredList = useMemo(() => applyFilters(quickEntryScopedList, filters), [quickEntryScopedList, filters]);
+  const filteredList = useMemo(() => applyFilters(activeList, filters), [activeList, filters]);
   const filteredSearchIndex = useMemo(() => applyFilters(searchIndex, filters), [searchIndex, filters]);
-  const filterBaseList = activeList.length > 0 ? quickEntryScopedList : searchIndex;
+  const filterBaseList = activeList.length > 0 ? activeList : searchIndex;
   const filterVisibleList = activeList.length > 0 ? filteredList : filteredSearchIndex;
   const searchIndexById = useMemo(() => {
     const map = new Map();
@@ -741,10 +740,11 @@ function App() {
     if (!term?.id) return;
     const selectionStartedAt = perfNow();
     const chunkTrace = [];
-    setIsLoadingChunk(true);
+    const currentDetail = selectedTermDetailRef.current;
+    const alreadyLoadedSameTerm = currentDetail?.id === term.id && hasLoadedDetailPayload(currentDetail);
     setSelectedTreeNode(null);
-    setSelectedTermId(term.id);
-    setSelectedTermDetail(term);
+    setSelectedTermId((prev) => (prev === term.id ? prev : term.id));
+    setSelectedTermDetail((prev) => (prev?.id === term.id ? prev : term));
 
     // ── 사이드바 & 마인드맵 루트 상시 동기화: 선택 단어의 소속 노드를 강제 활성화 ──
     const rootId  = term.hierarchy?.root_id;
@@ -756,22 +756,52 @@ function App() {
     }
 
     setExpandedIds((prev) => {
+      let changed = false;
       const next = new Set(prev);
-      if (sceneId) next.add(sceneId);
-      if (catId)   next.add(catId);
-      return next;
+      if (sceneId && !next.has(sceneId)) {
+        next.add(sceneId);
+        changed = true;
+      }
+      if (catId && !next.has(catId)) {
+        next.add(catId);
+        changed = true;
+      }
+      return changed ? next : prev;
     });
+
+    if (alreadyLoadedSameTerm) {
+      const previousSelection = lastDetailSelectionRef.current;
+      recordRuntimeInteraction("detailSelections", {
+        termId: term.id,
+        chunkId: term.chunk_id || null,
+        usedDetailMap: !term.chunk_id,
+        sameChunkAsPrevious: Boolean(term.chunk_id && previousSelection?.chunkId === term.chunk_id),
+        totalMs: Number((perfNow() - selectionStartedAt).toFixed(1)),
+        chunkTrace,
+        reuse: "selected-detail",
+      });
+      lastDetailSelectionRef.current = {
+        termId: term.id,
+        chunkId: term.chunk_id || null,
+      };
+      setIsLoadingChunk(false);
+      return;
+    }
+
+    const requestId = activeDetailRequestRef.current + 1;
+    activeDetailRequestRef.current = requestId;
+    setIsLoadingChunk(true);
 
     try {
       if (term.chunk_id) {
         const chunkData = await loadTermDetailChunk(term.id, term.chunk_id, {
           trace: (metric) => chunkTrace.push(metric),
         });
-        if (chunkData)
+        if (chunkData && activeDetailRequestRef.current === requestId)
           setSelectedTermDetail((prev) => prev?.id === term.id ? { ...prev, ...chunkData } : prev);
       } else if (isDetailFallbackDebugEnabled()) {
         const detail = await loadEntryDetail(term.id);
-        if (detail) {
+        if (detail && activeDetailRequestRef.current === requestId) {
           const primarySense = detail.senses?.[0] || null;
           const examples_bundle = (primarySense?.examples || [])
             .flatMap((ex) => (ex.texts || []).map((text) => ({
@@ -795,6 +825,7 @@ function App() {
     } catch (e) {
       console.warn(e);
     } finally {
+      const isLatestRequest = activeDetailRequestRef.current === requestId;
       const previousSelection = lastDetailSelectionRef.current;
       recordRuntimeInteraction("detailSelections", {
         termId: term.id,
@@ -804,11 +835,13 @@ function App() {
         totalMs: Number((perfNow() - selectionStartedAt).toFixed(1)),
         chunkTrace,
       });
-      lastDetailSelectionRef.current = {
-        termId: term.id,
-        chunkId: term.chunk_id || null,
-      };
-      setIsLoadingChunk(false);
+      if (isLatestRequest) {
+        lastDetailSelectionRef.current = {
+          termId: term.id,
+          chunkId: term.chunk_id || null,
+        };
+        setIsLoadingChunk(false);
+      }
     }
   }, [recordRuntimeInteraction]);
 
@@ -830,10 +863,16 @@ function App() {
 
     // 탭 전환 + focusedRootId 를 먼저 설정
     setActiveTab(targetTab);
+    if (targetTab === "unclassified") {
+      setViewMode("list");
+    }
     const rid = normalized.hierarchy?.root_id;
     if (rid) {
       setFocusedRootId(rid);
-      setExpandedIds((prev) => new Set([...prev, rid]));
+      setExpandedIds((prev) => {
+        if (prev.has(rid)) return prev;
+        return new Set([...prev, rid]);
+      });
     }
 
     // term 선택은 동기 경로로 호출 (chunk 로드 + detail 표시)
@@ -989,11 +1028,27 @@ function App() {
     handleSearchSelect(target);
   }, [searchIndexByWord, handleSearchSelect]);
 
-  const handleTreeNodeSelect = useCallback((node) => {
+  const handleTreeNodeSelect = useCallback((node, source = "sidebar") => {
     if (!node || node.type === "term") return;
     setViewMode("mindmap");
     setSelectedTermId(null);
     setSelectedTermDetail(null);
+    if (node.rootId) {
+      setFocusedRootId(node.rootId);
+    }
+    if (source === "mindmap") {
+      setExpandedIds((prev) => {
+        const next = new Set(prev);
+        if (node.type === "scene") {
+          next.add(node.id);
+        }
+        if (node.type === "category") {
+          if (node.sceneId) next.add(node.sceneId);
+          next.add(node.id);
+        }
+        return next;
+      });
+    }
     setSelectedTreeNode({ id: node.id, type: node.type });
   }, []);
 
@@ -1038,6 +1093,9 @@ function App() {
                   setSelectedTermDetail(null);
                   setSelectedTermId(null);
                   setFocusedRootId(null);
+                  if (tab.id === "unclassified") {
+                    setViewMode("list");
+                  }
                 }}
                 style={{ "--tab-color": tab.color }}
               >
@@ -1169,111 +1227,6 @@ function App() {
         </div>
       )}
 
-      {activeTab === "situation" && (
-        <div
-          className="card-glass"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 10,
-            padding: "10px 12px",
-            borderRadius: 16,
-            border: "1px solid rgba(255,255,255,0.06)",
-            background: "rgba(255,255,255,0.02)",
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center" }}>
-            <div>
-              <div style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 2 }}>
-                Quick Entry Overlay
-              </div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)" }}>
-                행동 기준으로 바로 들어가기
-              </div>
-            </div>
-            {selectedSituationQuickLeaf ? (
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedSituationQuickGroup(null);
-                  setSelectedSituationQuickLeaf(null);
-                }}
-                style={{
-                  padding: "6px 10px",
-                  borderRadius: 999,
-                  border: "1px solid rgba(255,255,255,0.06)",
-                  background: "rgba(255,255,255,0.03)",
-                  color: "var(--text-secondary)",
-                  fontSize: 11,
-                  cursor: "pointer",
-                }}
-              >
-                overlay 해제
-              </button>
-            ) : null}
-          </div>
-
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-            {SITUATION_QUICK_ENTRY_GROUPS.map((group) => {
-              const isActive = selectedSituationQuickGroup === group.label;
-              return (
-                <button
-                  type="button"
-                  key={group.label}
-                  onClick={() => {
-                    setSelectedSituationQuickGroup(isActive ? null : group.label);
-                    setSelectedSituationQuickLeaf(null);
-                  }}
-                  style={{
-                    padding: "6px 10px",
-                    borderRadius: 999,
-                    border: `1px solid ${isActive ? "rgba(63,185,80,0.24)" : "rgba(255,255,255,0.06)"}`,
-                    background: isActive ? "rgba(63,185,80,0.10)" : "rgba(255,255,255,0.03)",
-                    color: isActive ? "var(--accent-green)" : "var(--text-secondary)",
-                    fontSize: 12,
-                    fontWeight: 600,
-                    cursor: "pointer",
-                  }}
-                >
-                  {group.label}
-                </button>
-              );
-            })}
-          </div>
-
-          {selectedSituationQuickGroup ? (
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-              {getSituationQuickEntryGroup(selectedSituationQuickGroup)?.leaves.map((leaf) => {
-                const isActive = selectedSituationQuickLeaf === leaf;
-                return (
-                  <button
-                    type="button"
-                    key={leaf}
-                    onClick={() => {
-                      setSelectedSituationQuickLeaf(isActive ? null : leaf);
-                      setSelectedTermDetail(null);
-                      setSelectedTermId(null);
-                      setViewMode("list");
-                    }}
-                    style={{
-                      padding: "7px 11px",
-                      borderRadius: 10,
-                      border: `1px solid ${isActive ? "rgba(88,166,255,0.24)" : "rgba(255,255,255,0.06)"}`,
-                      background: isActive ? "rgba(88,166,255,0.10)" : "rgba(255,255,255,0.02)",
-                      color: isActive ? "var(--accent-blue)" : "var(--text-primary)",
-                      fontSize: 12,
-                      cursor: "pointer",
-                    }}
-                  >
-                    {leaf}
-                  </button>
-                );
-              })}
-            </div>
-          ) : null}
-        </div>
-      )}
-
       {/* ── 메인 콘텐츠 ───────────────────────────────────────── */}
       <div className="app-container">
         <SidebarTree
@@ -1287,9 +1240,10 @@ function App() {
               return n;
             })
           }
-          onSelectNode={handleTreeNodeSelect}
+          onSelectNode={(node) => handleTreeNodeSelect(node, "sidebar")}
           onSelectTerm={handleSelectTerm}
           selectedTermId={selectedTermId}
+          selectedTreeNode={selectedTreeNode}
         />
 
         <div className="main-content">
@@ -1343,6 +1297,7 @@ function App() {
                 <MindmapCanvas
                   treeData={activeTree}
                   onSelectTerm={handleSelectTerm}
+                  onSelectTreeNode={(node) => handleTreeNodeSelect(node, "mindmap")}
                   onCategoryExpandPerf={(entry) => recordRuntimeInteraction("categoryExpansions", entry)}
                   selectedTermId={selectedTermId}
                   focusedRootId={focusedRootId}

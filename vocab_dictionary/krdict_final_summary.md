@@ -8,6 +8,11 @@ script: /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antig
 output_dir: /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/vocab_dictionary/output/unified_live
 ---
 
+> 상태 메모:
+> 이 문서는 현재 `merged artifact summary`가 아니라 `historical seed-stage summary`를 일부 포함한다.
+> 현재 canonical count는 `53,439`가 아니라 `53,480`이며, 차이 원인은 merge 단계에서 API-only entry `41`개가 추가 생성되었기 때문이다.
+> 근거 문서: `08_planning/reports/20260323_MM3_006_STALE_SUMMARY_POLICY_V1.md`
+
 ## 1. 최종 결과 요약
 
 - 최종 집대성본은 **JSON seed + Open API(view) 풍부화 병합본**이다.

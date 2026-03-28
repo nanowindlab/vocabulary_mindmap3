@@ -3,8 +3,9 @@
 ## Current State
 
 - `mindmap3`는 현재 `M1 Runtime Wiring / Core Explorer` phase다.
-- current active work는 `MM3-261B Top Architecture Theme Continuity Art-Direction Polish`다.
-- current exit condition은 next polish tranche scope를 잠그는 것이다.
+- current active work는 `none`이다.
+- latest closeout package는 `MM3-268 2026-03-28 Feedback Intake / Execution Plan`이다.
+- current exit condition은 다음 active work가 생기면 그 task id 기준으로 새 packet을 연다.
 - current gate는 overall `PARTIAL_OPEN`, core explorer slice `OPEN`이다.
 - deploy/runtime truth는 `runtime_payloads/*.json.gz -> prepare:live -> verify:live -> build` 체인이다.
 - current learner-facing `search + facets only` builder surface는 package/build-chain에 **non-authoritative sidecar gate**로 편입됐다.
@@ -107,7 +108,8 @@
 - `npx playwright test tests/smoke.spec.js tests/scenario.spec.js`가 `5 passed`다.
 - `MM3-267B` `Vercel` deployed perf verification은 closeout됐다.
 - latest production custom domain recheck 기준 `의미 범주(44,410)`과 tree scene list가 다시 렌더된다.
-- next active work는 `MM3-266F APP_READY_* runtime payload repartition design`이다.
+- `MM3-266F` closeout chain은 완료됐고 current active work는 계속 `MM3-261B`다.
+- `MM3-261B` batch 03 `detail primary card spacing cadence` 구현은 `build PASS`, `Playwright 5 passed`로 검증됐다.
 - `MM3-266F` draft 기준 preferred target은:
   - hot: `APP_READY_SEARCH_INDEX`, `APP_READY_FACETS`
   - on-demand: `APP_READY_CHUNK_RICH_*`, `APP_READY_CHUNK_EXAMPLES_*`, `CHUNK_MANIFEST_V1`
@@ -145,36 +147,14 @@
 1. `pm-operating-guide.md`
 2. `08_planning/TASKLIST_V1.md`
 3. `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`
-4. `08_planning/reports/20260327_MM3_266_DATA_STRUCTURE_OPTIMIZATION_OPENING_V1.md`
-5. `08_planning/reports/20260327_MM3_266A_PAYLOAD_WEIGHT_AND_DUPLICATION_AUDIT_V1.md`
-6. `08_planning/reports/20260327_MM3_266B_STORAGE_LAYOUT_OPTIONS_STUDY_V1.md`
-7. `08_planning/reports/20260327_MM3_266C_RECOMMENDED_ARCHITECTURE_AND_MIGRATION_PLAN_V1.md`
-8. `08_planning/reports/20260327_MM3_264_A_CANONICAL_E_OVERLAY_TAXONOMY_IMPLEMENTATION_V1.md`
-9. `08_planning/reports/20260327_MM3_267_RUNTIME_DATA_PERFORMANCE_OPTIMIZATION_OPENING_V1.md`
-8. `08_planning/reports/20260327_MM3_265_UNCLASSIFIED_RECLASSIFICATION_STUDY_OPENING_V1.md`
-9. `08_planning/reports/20260327_MM3_266_DATA_STRUCTURE_OPTIMIZATION_OPENING_V1.md`
+4. `08_planning/reports/20260328_MM3_268_NEXT_PM_HANDOFF_PACKET_V1.md`
 
 ## Tier 2 Reads
 
-1. `08_planning/reports/20260326_MM3_212_PAYLOAD_VALIDATION_COUNT_RECONCILIATION_V1.md`
-2. `08_planning/reports/20260326_MM3_213_CANONICAL_THIN_INDEX_GENERATOR_RECOVERY_NOTE_V1.md`
-3. `08_planning/reports/20260326_MM3_217_RUNTIME_PAYLOAD_BUILDER_ACTIVATION_NOTE_V1.md`
-4. `08_planning/reports/20260326_MM3_218_RUNTIME_PAYLOAD_BUILDER_VALIDATION_V1.md`
-5. `08_planning/reports/20260326_MM3_219_RUNTIME_PAYLOAD_BUILDER_THREE_EXPERT_REVIEW_V1.md`
-6. `08_planning/reports/20260326_MM3_220_RUNTIME_PAYLOAD_BUILDER_HARDENING_NOTE_V1.md`
-7. `08_planning/reports/20260326_MM3_221_RUNTIME_PAYLOAD_BUILDER_REVALIDATION_V1.md`
-8. `08_planning/reports/20260326_MM3_223_RUNTIME_PAYLOAD_BUILDER_PACKAGE_BUILD_CHAIN_DECISION_V1.md`
-9. `08_planning/reports/20260326_MM3_224_AUTHORITATIVE_PROMOTION_CRITERIA_AND_EVIDENCE_GAP_V1.md`
-10. `08_planning/reports/20260326_MM3_225_AUTHORITATIVE_RUNTIME_WRITE_PATH_ROLLBACK_DUAL_RUN_PROTOCOL_V1.md`
-11. `08_planning/reports/20260326_MM3_226_CHUNK_ID_POLICY_DECISION_V1.md`
-12. `08_planning/reports/20260326_MM3_228_AUTHORITATIVE_RUNTIME_RECURRING_GATE_BUNDLE_V1.md`
-13. `08_planning/reports/20260326_MM3_230_RUNTIME_BOUNDARY_MAINTENANCE_PROTOCOL_V1.md`
-14. `08_planning/reports/20260326_MM3_231_PRODUCT_SCENARIO_SPEC_FINAL_CANONICALIZATION_V1.md`
-15. `08_planning/reports/20260326_MM3_232_RELATED_FORM_TARGET_REPAIR_V1.md`
-16. `08_planning/reports/20260326_MM3_234_RELATED_FORM_SOURCE_AMBIGUITY_TEXT_ONLY_POLICY_V1.md`
-17. `08_planning/reports/20260326_MM3_235_RELATED_FORM_AUDIT_AUTOMATION_V1.md`
-18. `08_planning/reports/20260326_MM3_236_MM3_UI_REFINEMENT_ROADMAP_V1.md`
-19. `08_planning/PRODUCT_SCENARIO_SPEC_V1.md`
+1. `08_planning/reports/20260328_MM3_268_FEEDBACK_INTAKE_AND_EXECUTION_PLAN_V1.md`
+2. `08_planning/reports/20260328_MM3_268_NEXT_PM_HANDOFF_PACKET_V1.md`
+3. `08_planning/reports/20260328_MM3_268A_EXAMPLE_TYPE_PRIORITY_DECISION_DRAFT_V1.md`
+4. `08_planning/reports/20260328_MM3_268B_UNCLASSIFIED_FLOATING_NODE_ANALYSIS_V1.md`
 
 ## Tier 3 Reference On Demand
 
@@ -199,6 +179,6 @@
 
 ## Next PM Actions
 
-1. `MM3-266F` opening packet과 `MM3-266B/C`, `MM3-267` implementation packet을 먼저 읽는다.
-2. `T1`, `T2 preparation`, decision, plan, debug-only fallback gate implementation, canonical-direct chunk builder implementation은 closeout됐다.
-3. next step은 `DETAIL_MAP demotion` actual execution boundary를 잠그는 것이다.
+1. `MM3-268A`~`MM3-268H`는 모두 `DONE`이다.
+2. current active execution package는 `none`이다.
+3. 다음 feedback이나 PM directive가 오기 전까지는 새 active work를 열지 않는다.

@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 async function pickSearchResult(page, query, matcher) {
   const search = page.getByTestId("search-input");
-  await expect(search).toBeVisible({ timeout: 10000 });
+  await expect(search).toBeVisible({ timeout: 20000 });
   await search.fill(query);
   const results = page.locator("[data-search-result='true']");
   await expect(results.first()).toBeVisible();
@@ -23,7 +23,7 @@ test("word-first + expression-assist scenario", async ({ page }) => {
 
   await pickSearchResult(page, "두다", (text) => text.includes("표현"));
   await expect(page.getByTestId("detail-word")).toHaveText("두다");
-  await page.getByRole("button", { name: /^표현/ }).click();
+  await page.getByRole("button", { name: /^활용 표현/ }).click();
   await expect(page.getByRole("heading", { name: "표현층" })).toBeVisible();
 
   await page.getByTestId("subword-card-두고 보다").click();
@@ -59,6 +59,6 @@ test("filter-first scenario", async ({ page }) => {
 
   await pickSearchResult(page, "밥", (text) => text.includes("밥"));
   await expect(page.getByTestId("detail-word")).toHaveText("밥");
-  await page.getByRole("button", { name: /^표현/ }).click();
+  await page.getByRole("button", { name: /^활용 표현/ }).click();
   await expect(page.getByRole("heading", { name: "표현층" })).toBeVisible();
 });

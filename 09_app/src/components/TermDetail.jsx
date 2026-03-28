@@ -72,6 +72,25 @@ const buildExampleItems = (senseExamples = [], fallbackExamples = []) => {
     .map(({ __priority, __order, ...item }) => item);
 };
 
+const EXAMPLE_SOURCE_PRIORITY = new Map([
+  ["문장", 0],
+  ["대화", 1],
+  ["구", 2],
+  ["TOPIK", 3],
+]);
+
+const exampleSourcePriority = (source = null) => {
+  const normalized = formatExampleSourceLabel(source);
+  return EXAMPLE_SOURCE_PRIORITY.get(normalized) ?? 4;
+};
+
+const sortExamplesByLearnerPriority = (items = []) =>
+  [...items].sort((a, b) => {
+    const bySource = exampleSourcePriority(a.source) - exampleSourcePriority(b.source);
+    if (bySource !== 0) return bySource;
+    return (a.text_ko || "").localeCompare(b.text_ko || "", "ko");
+  });
+
 const formatRelationDisplayLabel = (item, meta = null) => {
   const baseLabel = item?.word || meta?.word || "—";
   const homonymNo = item?.homonym_no ?? meta?.homonym_no ?? null;
@@ -262,10 +281,19 @@ export const TermDetail = ({
     [];
   const shouldUseFallbackExamples =
     senses.length <= 1 || currentSense?.id === defaultSenseId;
-  const exampleItems = buildExampleItems(
-    currentExamples,
-    shouldUseFallbackExamples ? (term.examples_bundle || []) : [],
+  const currentExampleItems = sortExamplesByLearnerPriority(
+    buildExampleItems(currentExamples, []),
   );
+  const fallbackExampleItems = buildExampleItems(
+    shouldUseFallbackExamples ? (term.examples_bundle || []) : [],
+    [],
+  );
+  const currentExampleKeySet = new Set(currentExampleItems.map((item) => item.text_ko));
+  const otherExampleItems = sortExamplesByLearnerPriority(
+    fallbackExampleItems.filter((item) => !currentExampleKeySet.has(item.text_ko)),
+  );
+  const prioritizedCurrentExampleItems = sortExamplesByLearnerPriority(currentExampleItems);
+  const exampleItems = [...prioritizedCurrentExampleItems, ...otherExampleItems];
 
   const band = safeBand(term.stats);
   const bandMeta = band ? BAND_META[band] : null;
@@ -279,11 +307,6 @@ export const TermDetail = ({
   const pos = Array.isArray(term.pos) ? term.pos.join(", ") : term.pos || term.part_of_speech || "";
   const jumpableSubwords = subwords.filter((item) => isSearchWordAvailable?.(item.text));
   const previewOnlySubwords = subwords.filter((item) => !isSearchWordAvailable?.(item.text));
-  const relationCount =
-    (term.related_vocab?.length || 0) +
-    currentRelatedTerms.length +
-    dedupedRelatedForms.length +
-    dedupedCrossLinks.length;
   const visibleSenses = showAllSenses ? senses : senses.slice(0, 8);
   const contextKind = term.hierarchy?.context_kind || null;
   const helperTitle = term.hierarchy?.helper_title || null;
@@ -328,38 +351,11 @@ export const TermDetail = ({
     return !isUnresolvedRelation(item);
   };
   const jumpableRelatedForms = dedupedRelatedForms.filter((item) => !isUnresolvedRelation(item) && canJumpToRelation(item));
-  const textOnlyRelatedForms = dedupedRelatedForms.filter((item) => !jumpableRelatedForms.includes(item));
-  const relationOverviewItems = [
-    {
-      label: "의미 관계어",
-      count: currentRelatedTerms.length,
-      tone: "var(--accent-blue)",
-      border: "rgba(88,166,255,0.28)",
-      background: "rgba(88,166,255,0.10)",
-    },
-    {
-      label: "바로 이동 관련형",
-      count: countUniqueRelationGroups(jumpableRelatedForms),
-      tone: "var(--accent-purple)",
-      border: "rgba(188,140,255,0.32)",
-      background: "rgba(188,140,255,0.10)",
-    },
-    {
-      label: "원본 표면형만 있음",
-      count: countUniqueRelationGroups(textOnlyRelatedForms),
-      tone: "var(--text-secondary)",
-      border: "rgba(148,163,184,0.28)",
-      background: "rgba(148,163,184,0.10)",
-    },
-    {
-      label: "교차 연결 장면",
-      count: dedupedCrossLinks.length,
-      tone: "var(--accent-green)",
-      border: "rgba(63,185,80,0.28)",
-      background: "rgba(63,185,80,0.10)",
-    },
-  ].filter((item) => item.count > 0);
-
+  const relationCount =
+    (term.related_vocab?.length || 0) +
+    currentRelatedTerms.length +
+    jumpableRelatedForms.length +
+    dedupedCrossLinks.length;
   const renderSubwordCards = (items) => {
     if (!items || items.length === 0) return null;
     return (
@@ -568,47 +564,6 @@ const renderSectionTitle = (icon, label, color, count = null) => (
     </div>
   );
 
-  const renderCompactOverview = (testId, title, description, items, accentColor = "var(--accent-blue)") => {
-    if (!items || items.length === 0) return null;
-    return (
-      <div
-        data-testid={testId}
-        className="card-glass"
-        style={{ padding: 10, borderRadius: 12, borderLeft: `3px solid ${accentColor}` }}
-      >
-        <div style={{ fontSize: 11, color: accentColor, fontWeight: 700, marginBottom: 4 }}>
-          {title}
-        </div>
-        <div style={{ fontSize: 13, color: "var(--text-primary)", lineHeight: 1.5 }}>
-          {description}
-        </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 8 }}>
-          {items.map((item) => (
-            <div
-              key={item.label}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "6px 10px",
-                borderRadius: 999,
-                border: `1px solid ${item.border}`,
-                background: item.background,
-              }}
-            >
-              <span style={{ fontSize: 11, color: item.tone, fontWeight: 700 }}>
-                {item.label}
-              </span>
-              <span style={{ fontSize: 11, color: "var(--text-primary)", fontWeight: 700 }}>
-                {item.count}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
   const hasRepeatedRelationWord = (items) => {
     const counts = new Map();
     (items || []).forEach((item) => {
@@ -666,50 +621,6 @@ const renderSectionTitle = (icon, label, color, count = null) => (
       {content}
     </div>
   );
-
-  const renderRelationOverview = () => {
-    if (relationOverviewItems.length === 0) return null;
-    return (
-      <div
-        data-testid="relation-overview"
-        className="card-glass detail-section-card"
-        style={{ padding: 16, borderRadius: 12, borderLeft: "3px solid var(--accent-blue)" }}
-      >
-        <div style={{ fontSize: 12, color: "var(--accent-blue)", fontWeight: 700, marginBottom: 6 }}>
-          읽는 순서
-        </div>
-        <div style={{ fontSize: 14, color: "var(--text-primary)", lineHeight: 1.6 }}>
-          먼저 현재 뜻과 직접 연결된 관계를 보고, 그다음 관련형과 교차 연결 장면을 확인하면 됩니다.
-        </div>
-        <div style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5, marginTop: 8 }}>
-          같은 표면형이더라도 품사와 뜻이 다르면 따로 유지하고, 원본 사전에 target이 없는 항목은 text-only로 남깁니다.
-        </div>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
-          {relationOverviewItems.map((item) => (
-            <div
-              key={item.label}
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "6px 10px",
-                borderRadius: 999,
-                border: `1px solid ${item.border}`,
-                background: item.background,
-              }}
-            >
-              <span style={{ fontSize: 11, color: item.tone, fontWeight: 700 }}>
-                {item.label}
-              </span>
-              <span style={{ fontSize: 11, color: "var(--text-primary)", fontWeight: 700 }}>
-                {item.count}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
 
   const renderRelationCards = (items, options = {}) => {
     if (!items || items.length === 0) return null;
@@ -856,10 +767,10 @@ const renderSectionTitle = (icon, label, color, count = null) => (
                       padding: 0,
                     }}
                   >
-                    {row.pos ? (
-                      <span
-                        style={{
-                          flexShrink: 0,
+                {row.pos && item.posLabels.size > 1 ? (
+                  <span
+                    style={{
+                      flexShrink: 0,
                           marginTop: 1,
                           fontSize: 11,
                           color: "var(--text-secondary)",
@@ -1083,11 +994,11 @@ const renderSectionTitle = (icon, label, color, count = null) => (
               borderBottomColor: activeTab === t.key ? "var(--accent-blue)" : "transparent",
             }}
           >
-            <span>{t.label}</span>
+            <span className="detail-tab-label">{t.label}</span>
             {t.count ? (
               <span
+                className="detail-tab-count"
                 style={{
-                  marginLeft: 8,
                   fontSize: 11,
                   borderRadius: 999,
                   padding: "1px 8px",
@@ -1114,40 +1025,56 @@ const renderSectionTitle = (icon, label, color, count = null) => (
 
         {/* 핵심 탭 */}
         {activeTab === "core" && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+          <div className="detail-core-stack" style={{ display: "flex", flexDirection: "column" }}>
             {!isVirtual && (
-              <div className="card-glass detail-primary-card" style={{ padding: 20, borderRadius: 12 }}>
-                <div className="detail-definition-block">
-                  <div style={{ fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 8 }}>
-                    핵심 뜻
+              <div className="card-glass detail-primary-card" style={{ padding: 18, borderRadius: 12 }}>
+                <div className="detail-primary-stack">
+                  <div className="detail-definition-block">
+                    <div
+                      data-testid="detail-definition"
+                      className="detail-primary-definition"
+                      style={{ fontSize: 18, fontWeight: 500, color: "var(--text-primary)", lineHeight: 1.6 }}
+                    >
+                      {defKo || "정의 없음"}
+                    </div>
                   </div>
-                  <div data-testid="detail-definition" style={{ fontSize: 16, fontWeight: 500, color: "var(--text-primary)", lineHeight: 1.7 }}>
-                    {defKo || "정의 없음"}
-                  </div>
-                </div>
-                {showEnglish && defEn && primaryTranslation && (
-                  <div data-testid="detail-primary-translation" className="detail-translation-panel" style={{ marginTop: 14, fontSize: 14, color: "var(--text-secondary)", display: "flex", alignItems: "flex-start", gap: 6 }}>
-                    <Globe size={14} style={{ marginTop: 2, flexShrink: 0, opacity: 0.7 }} />
-                    <div style={{ width: "100%" }}>
-                      {primaryTranslation?.language && (
-                        <div data-testid="detail-translation-language" style={{ fontSize: 11, color: "var(--accent-green)", marginBottom: 4 }}>
-                          {matchedPreferred ? `번역 언어 · ${primaryTranslation.language}` : `대표 번역 · ${primaryTranslation.language}`}
+                  {showEnglish && defEn && primaryTranslation && (
+                    <div
+                      data-testid="detail-primary-translation"
+                      className="detail-translation-panel"
+                      style={{ fontSize: 14, color: "var(--text-secondary)" }}
+                    >
+                      <div className="detail-translation-meta-row" style={{ display: "flex", justifyContent: "space-between", gap: 10, alignItems: "center" }}>
+                        <div className="detail-translation-meta-copy" style={{ display: "inline-flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+                          <Globe size={14} style={{ flexShrink: 0, opacity: 0.72 }} />
+                          {primaryTranslation?.language && (
+                            <div
+                              data-testid="detail-translation-language"
+                              className="detail-translation-kicker"
+                              style={{ fontSize: 11, color: "var(--accent-green)" }}
+                            >
+                              {matchedPreferred ? `번역 언어 · ${primaryTranslation.language}` : `대표 번역 · ${primaryTranslation.language}`}
+                            </div>
+                          )}
                         </div>
-                      )}
-                      <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "center" }}>
-                        <div data-testid="detail-translation-word" style={{ fontWeight: 700, color: "var(--text-primary)" }}>
-                          {primaryTranslation.word}
-                        </div>
-                        <div style={{ fontSize: 11, color: "var(--accent-green)", border: "1px solid rgba(63,185,80,0.24)", background: "rgba(63,185,80,0.12)", borderRadius: 10, padding: "2px 8px", flexShrink: 0 }}>
+                        <div
+                          className="detail-translation-badge"
+                          style={{ fontSize: 11, color: "var(--accent-green)", border: "1px solid rgba(63,185,80,0.24)", background: "rgba(63,185,80,0.10)", borderRadius: 999, padding: "2px 8px", flexShrink: 0 }}
+                        >
                           {primaryTranslation.language || "대표 번역"}
                         </div>
                       </div>
-                      <div data-testid="detail-translation-definition" style={{ fontStyle: "italic", marginTop: 8 }}>
-                        {defEn}
+                      <div className="detail-translation-body">
+                        <div data-testid="detail-translation-word" className="detail-translation-word" style={{ fontWeight: 700, color: "var(--text-primary)" }}>
+                          {primaryTranslation.word}
+                        </div>
+                        <div data-testid="detail-translation-definition" className="detail-translation-definition" style={{ fontStyle: "italic", marginTop: 8 }}>
+                          {defEn}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             )}
             {isVirtual && (
@@ -1157,12 +1084,16 @@ const renderSectionTitle = (icon, label, color, count = null) => (
             )}
 
             {shouldShowContextHelper && (
-              <div data-testid="detail-context-helper" className="card-glass" style={{ padding: 12, borderRadius: 12, borderLeft: `3px solid ${helperAccent}` }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "baseline" }}>
-                  <div style={{ fontSize: 12, color: helperAccent, fontWeight: 700 }}>
+              <div
+                data-testid="detail-context-helper"
+                className="card-glass detail-context-helper-card"
+                style={{ padding: 12, borderRadius: 12, borderLeft: `3px solid ${helperAccent}` }}
+              >
+                <div className="detail-context-helper-content" style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "baseline" }}>
+                  <div className="detail-context-helper-title" style={{ fontSize: 12, color: helperAccent, fontWeight: 700 }}>
                     {helperTitle}
                   </div>
-                  <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6, flex: 1 }}>
+                  <div className="detail-context-helper-description" style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6, flex: 1 }}>
                     {helperDescription}
                   </div>
                 </div>
@@ -1229,13 +1160,11 @@ const renderSectionTitle = (icon, label, color, count = null) => (
         {/* 관계 탭 */}
         {activeTab === "relations" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            {renderRelationOverview()}
-
             {term.related_vocab && term.related_vocab.length > 0 && (
               renderRelationSection(
                 "relation-related-vocab",
                 "연관 어휘",
-                "비슷하게 이어서 탐색할 수 있는 어휘입니다.",
+                null,
                 term.related_vocab.length,
                 "var(--text-secondary)",
                 renderRelatedChips(term.related_vocab, onRelatedVocabClick),
@@ -1246,9 +1175,7 @@ const renderSectionTitle = (icon, label, color, count = null) => (
               renderRelationSection(
                 "relation-sense-relations",
                 "의미 관계어",
-                hasRepeatedRelationWord(currentRelatedTerms)
-                  ? "같은 표면형이라도 대상 의미가 다르면 따로 유지합니다."
-                  : "현재 의미와 직접 연결된 비교/연결 어휘입니다.",
+                null,
                 currentRelatedTerms.length,
                 "var(--accent-blue)",
                 renderRelationCards(currentRelatedTerms, {
@@ -1259,45 +1186,19 @@ const renderSectionTitle = (icon, label, color, count = null) => (
               )
             )}
 
-            {dedupedRelatedForms.length > 0 && (
+            {jumpableRelatedForms.length > 0 && (
               renderRelationSection(
                 "relation-related-forms",
                 "관련형",
-                hasRepeatedRelationWord(dedupedRelatedForms)
-                  ? "형태나 파생 관계로 이어지는 어휘입니다. 바로 이동되는 항목과 원본 표면형만 남은 항목을 나누어 보여 줍니다."
-                  : "형태나 파생 관계로 이어지는 어휘입니다. 바로 이동되는 항목과 원본 표면형만 남은 항목을 나누어 보여 줍니다.",
-                dedupedRelatedForms.length,
+                null,
+                countUniqueRelationGroups(jumpableRelatedForms),
                 "var(--accent-purple)",
-                <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-                  {jumpableRelatedForms.length > 0 ? (
-                    <div>
-                      {renderWorkflowTitle("바로 이동 가능한 관련형", countUniqueRelationGroups(jumpableRelatedForms))}
-                      <div style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: 10 }}>
-                        원본 사전에서 연결 target이 확인된 관련형입니다. 품사와 뜻을 보고 바로 이동할 수 있습니다.
-                      </div>
-                      {renderRelationCards(jumpableRelatedForms, {
-                        accentColor: "var(--accent-purple)",
-                        testPrefix: "related-form-card",
-                        onItemClick: (item) => onRelatedFormClick && onRelatedFormClick(item),
-                        groupBySurface: true,
-                      })}
-                    </div>
-                  ) : null}
-                  {textOnlyRelatedForms.length > 0 ? (
-                    <div>
-                      {renderWorkflowTitle("원본에 표면형만 있는 관련형", countUniqueRelationGroups(textOnlyRelatedForms))}
-                      <div style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: 10 }}>
-                        원본 사전에 관련형 표면형만 있고 연결 target은 지정되지 않은 항목입니다.
-                      </div>
-                      {renderRelationCards(textOnlyRelatedForms, {
-                        accentColor: "var(--accent-purple)",
-                        testPrefix: "related-form-card",
-                        onItemClick: (item) => onRelatedFormClick && onRelatedFormClick(item),
-                        groupBySurface: true,
-                      })}
-                    </div>
-                  ) : null}
-                </div>,
+                renderRelationCards(jumpableRelatedForms, {
+                  accentColor: "var(--accent-purple)",
+                  testPrefix: "related-form-card",
+                  onItemClick: (item) => onRelatedFormClick && onRelatedFormClick(item),
+                  groupBySurface: true,
+                }),
               )
             )}
 
@@ -1305,7 +1206,7 @@ const renderSectionTitle = (icon, label, color, count = null) => (
               renderRelationSection(
                 "relation-cross-links",
                 "교차 연결 장면",
-                "현재 단어가 다른 탐색 장면과 이어지는 경우에만 보입니다.",
+                null,
                 dedupedCrossLinks.length,
                 "var(--accent-blue)",
                 renderChips(
@@ -1341,46 +1242,15 @@ const renderSectionTitle = (icon, label, color, count = null) => (
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             {subwords.length > 0 ? (
               <div>
-                {renderCompactOverview(
-                  "expression-overview",
-                  "표현 읽는 순서",
-                  "먼저 바로 이동 가능한 표현을 보고, 연결이 없는 항목은 현재 표제어 맥락에서 쓰임을 먼저 확인하면 됩니다.",
-                  [
-                    {
-                      label: "바로 이동 가능",
-                      count: jumpableSubwords.length,
-                      tone: "var(--accent-orange)",
-                      border: "rgba(255,166,87,0.28)",
-                      background: "rgba(255,166,87,0.10)",
-                    },
-                    {
-                      label: "맥락 안에서 먼저 보기",
-                      count: previewOnlySubwords.length,
-                      tone: "var(--text-secondary)",
-                      border: "rgba(148,163,184,0.28)",
-                      background: "rgba(148,163,184,0.10)",
-                    },
-                  ].filter((item) => item.count > 0),
-                  "var(--accent-orange)",
-                )}
                 {renderSectionTitle(<BookOpen size={13} />, "표현층", "var(--accent-orange)", subwords.length)}
                 {jumpableSubwords.length > 0 && (
                   <div style={{ marginBottom: 18 }}>
-                    {renderWorkflowTitle("바로 탐색 가능한 표현", jumpableSubwords.length)}
-                    <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 10 }}>
-                      독립 표제어로 바로 이어지는 표현입니다. 먼저 여기서 확장하면 표현 중심 탐색이 자연스럽게 이어집니다.
-                    </div>
+                    {renderWorkflowTitle("바로 이동", jumpableSubwords.length)}
                     {renderSubwordCards(jumpableSubwords)}
                   </div>
                 )}
                 {previewOnlySubwords.length > 0 && (
-                  <div>
-                    {renderWorkflowTitle("현재 표제어 맥락에서 먼저 보는 표현", previewOnlySubwords.length)}
-                    <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 10 }}>
-                      독립 표제어 연결은 없지만, 현재 단어 안에서 쓰임만 먼저 확인할 수 있는 표현입니다.
-                    </div>
-                    {renderSubwordCards(previewOnlySubwords)}
-                  </div>
+                  renderSubwordCards(previewOnlySubwords)
                 )}
               </div>
             ) : (
@@ -1399,29 +1269,94 @@ const renderSectionTitle = (icon, label, color, count = null) => (
               </div>
             ) : (
               <>
-                {renderCompactOverview(
-                  "examples-overview",
-                  "예문 읽는 순서",
-                  "현재 의미 예문을 먼저 모두 보여 주고, source가 있을 때만 오른쪽 badge로 조용하게 표시합니다.",
-                  [
-                    {
-                      label: "현재 의미 우선",
-                      count: currentExamples.filter((item) => item?.text_ko).length,
-                      tone: "var(--accent-blue)",
-                      border: "rgba(88,166,255,0.28)",
-                      background: "rgba(88,166,255,0.10)",
-                    },
-                    {
-                      label: "총 예문",
-                      count: exampleItems.length,
-                      tone: "var(--text-secondary)",
-                      border: "rgba(148,163,184,0.28)",
-                      background: "rgba(148,163,184,0.10)",
-                    },
-                  ].filter((item) => item.count > 0),
-                  "var(--accent-blue)",
-                )}
-                {exampleItems.map((ex, idx) => {
+                {currentExampleItems.length > 0 ? (
+                  <div>
+                    {renderWorkflowTitle("현재 뜻 예문", currentExampleItems.length)}
+                    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                      {currentExampleItems.map((ex, idx) => {
+                        const sourceLabel = formatExampleSourceLabel(ex.source);
+                        return (
+                          <div key={`current-${idx}`} data-testid={`example-card-current-${idx}`} className="card-glass" style={{ padding: "16px 20px", borderRadius: 12, borderLeft: "3px solid var(--accent-blue)" }}>
+                            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", columnGap: 8, rowGap: 6 }}>
+                              <div style={{ flex: "1 1 320px", minWidth: 0, fontSize: 15, color: "var(--text-primary)", lineHeight: 1.8 }}>
+                                {ex.text_ko}
+                              </div>
+                              {sourceLabel ? (
+                                <span
+                                  data-testid={`example-source-current-${idx}`}
+                                  style={{
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    fontSize: 11,
+                                    color: "var(--text-secondary)",
+                                    border: "1px solid var(--border-color)",
+                                    background: "rgba(255,255,255,0.04)",
+                                    borderRadius: 999,
+                                    padding: "3px 8px",
+                                    flexShrink: 0,
+                                  }}
+                                >
+                                  {sourceLabel}
+                                </span>
+                              ) : null}
+                            </div>
+                            {showEnglish && ex.text_en && (
+                              <div style={{ marginTop: 8, fontSize: 13, color: "var(--text-secondary)", fontStyle: "italic", lineHeight: 1.7 }}>
+                                {ex.text_en}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
+
+                {otherExampleItems.length > 0 ? (
+                  <div>
+                    {renderWorkflowTitle("다른 뜻 예문", otherExampleItems.length)}
+                    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                      {otherExampleItems.map((ex, idx) => {
+                        const sourceLabel = formatExampleSourceLabel(ex.source);
+                        return (
+                          <div key={`other-${idx}`} data-testid={`example-card-other-${idx}`} className="card-glass" style={{ padding: "16px 20px", borderRadius: 12, borderLeft: "3px solid rgba(148,163,184,0.45)" }}>
+                            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", columnGap: 8, rowGap: 6 }}>
+                              <div style={{ flex: "1 1 320px", minWidth: 0, fontSize: 15, color: "var(--text-primary)", lineHeight: 1.8 }}>
+                                {ex.text_ko}
+                              </div>
+                              {sourceLabel ? (
+                                <span
+                                  data-testid={`example-source-other-${idx}`}
+                                  style={{
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    fontSize: 11,
+                                    color: "var(--text-secondary)",
+                                    border: "1px solid var(--border-color)",
+                                    background: "rgba(255,255,255,0.04)",
+                                    borderRadius: 999,
+                                    padding: "3px 8px",
+                                    flexShrink: 0,
+                                  }}
+                                >
+                                  {sourceLabel}
+                                </span>
+                              ) : null}
+                            </div>
+                            {showEnglish && ex.text_en && (
+                              <div style={{ marginTop: 8, fontSize: 13, color: "var(--text-secondary)", fontStyle: "italic", lineHeight: 1.7 }}>
+                                {ex.text_en}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
+
+                {currentExampleItems.length === 0 && otherExampleItems.length === 0
+                  ? exampleItems.map((ex, idx) => {
                   const sourceLabel = formatExampleSourceLabel(ex.source);
                   return (
                     <div key={idx} data-testid={`example-card-${idx}`} className="card-glass" style={{ padding: "16px 20px", borderRadius: 12, borderLeft: "3px solid var(--accent-blue)" }}>
@@ -1457,7 +1392,8 @@ const renderSectionTitle = (icon, label, color, count = null) => (
                       )}
                     </div>
                   );
-                })}
+                })
+                  : null}
               </>
             )}
           </div>

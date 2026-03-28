@@ -2,11 +2,11 @@
 
 ## Current Revision
 
-- `R2`
+- `R3`
 
 ## Last Updated
 
-- `2026-03-26 10:09 KST`
+- `2026-03-26 10:43 KST`
 
 ## Last Updated By
 
@@ -29,6 +29,13 @@
   - `tmp_reports/recovered_APP_READY_SEARCH_INDEX.json`
   - `tmp_reports/runtime_surface_recovery/APP_READY_SEARCH_INDEX.json`
   - `tmp_reports/runtime_surface_recovery/APP_READY_FACETS.json`
+
+## Approved Guardrails
+
+- current local builder output is **not** authoritative output yet.
+- current sidecar output is fixed as **comparison / validation only**.
+- PM은 authoritative output으로 완전히 승격할 수 있도록 지속적으로 개선한다.
+- 이 지속적 개선 의무는 `TASKLIST_V1.md`에 남겨 놓고, carry-forward 문서에서도 빠지지 않게 유지한다.
 
 ## What Is Already Proven
 
@@ -76,8 +83,11 @@
 
 - current builder scope는 learner-facing `search + facets`로 고정한다.
 - 다음 결정은 이 surface를 package/build chain에 승격할지 여부다.
+- 승격 전까지는 sidecar comparison / validation 용도로만 사용한다.
+- PM은 authoritative output 승격이 가능해질 때까지 지속적으로 개선한다.
 
 ## Revision History
 
 - `R1` / `2026-03-26 10:08 KST` / `Codex PM` / runtime payload builder activation note를 최초 작성
 - `R2` / `2026-03-26 10:09 KST` / `Codex PM` / `search + facets` local builder surface와 exact probe 결과를 반영
+- `R3` / `2026-03-26 10:43 KST` / `Codex PM` / authoritative/sidecar guardrail과 지속적 개선 의무를 명시

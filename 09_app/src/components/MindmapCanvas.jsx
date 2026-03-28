@@ -145,11 +145,11 @@ function flattenTree(treeData, focusedRootId, expandedCategoryId, selectedTermId
     nodes.push({ id: root.id, label: root.label, type: "root", data: null });
 
     Object.values(root.children || {}).forEach((scene) => {
-      nodes.push({ id: scene.id, label: scene.label, type: "scene", data: null });
+      nodes.push({ id: scene.id, rootId: root.id, label: scene.label, type: "scene", data: null });
       links.push({ source: root.id, target: scene.id });
 
       Object.values(scene.children || {}).forEach((cat) => {
-        nodes.push({ id: cat.id, label: cat.label, type: "category", data: null, sceneId: scene.id });
+        nodes.push({ id: cat.id, rootId: root.id, label: cat.label, type: "category", data: null, sceneId: scene.id });
         links.push({ source: scene.id, target: cat.id });
 
         // 배타적 단계별 렌더링: expandedCategoryId와 일치하는 중분류만 단어 노출
@@ -196,10 +196,70 @@ function flattenTree(treeData, focusedRootId, expandedCategoryId, selectedTermId
   return { nodes, links };
 }
 
+function buildSeedPositions(rawNodes, width, height) {
+  const centerX = width / 2;
+  const centerY = height / 2;
+  const seeds = new Map();
+
+  const roots = rawNodes.filter((node) => node.type === "root");
+  const rootRadius = roots.length > 1 ? Math.min(width, height) * 0.18 : 0;
+  roots.forEach((root, index) => {
+    if (roots.length === 1) {
+      seeds.set(root.id, { x: centerX, y: centerY });
+      return;
+    }
+    const angle = (Math.PI * 2 * index) / roots.length - Math.PI / 2;
+    seeds.set(root.id, {
+      x: centerX + Math.cos(angle) * rootRadius,
+      y: centerY + Math.sin(angle) * rootRadius,
+    });
+  });
+
+  roots.forEach((root) => {
+    const rootSeed = seeds.get(root.id) || { x: centerX, y: centerY };
+    const scenes = rawNodes.filter((node) => node.type === "scene" && node.rootId === root.id);
+    const sceneRadius = Math.min(Math.max(170, scenes.length * 18), 260);
+    scenes.forEach((scene, index) => {
+      const angle = (Math.PI * 2 * index) / Math.max(scenes.length, 1) - Math.PI / 2;
+      seeds.set(scene.id, {
+        x: rootSeed.x + Math.cos(angle) * sceneRadius,
+        y: rootSeed.y + Math.sin(angle) * sceneRadius,
+      });
+    });
+
+    scenes.forEach((scene) => {
+      const sceneSeed = seeds.get(scene.id) || rootSeed;
+      const categories = rawNodes.filter((node) => node.type === "category" && node.sceneId === scene.id);
+      const categoryRadius = Math.min(Math.max(72, categories.length * 10), 128);
+      categories.forEach((category, index) => {
+        const angle = (Math.PI * 2 * index) / Math.max(categories.length, 1) - Math.PI / 2;
+        seeds.set(category.id, {
+          x: sceneSeed.x + Math.cos(angle) * categoryRadius,
+          y: sceneSeed.y + Math.sin(angle) * categoryRadius,
+        });
+      });
+    });
+  });
+
+  rawNodes.forEach((node, index) => {
+    if (node.type !== "term" || seeds.has(node.id)) return;
+    const parent = seeds.get(node.categoryId);
+    if (!parent) return;
+    const angle = (Math.PI * 2 * index) / Math.max(rawNodes.length, 1);
+    seeds.set(node.id, {
+      x: parent.x + Math.cos(angle) * 28,
+      y: parent.y + Math.sin(angle) * 28,
+    });
+  });
+
+  return seeds;
+}
+
 // ── 컴포넌트 ─────────────────────────────────────────────────────
 export const MindmapCanvas = ({
   treeData = {},
   onSelectTerm,
+  onSelectTreeNode,
   onCategoryExpandPerf,
   selectedTermId,
   focusedRootId,
@@ -238,6 +298,7 @@ export const MindmapCanvas = ({
 
     // 이전 위치 복원
     const prevPosMap = nodePositionsRef.current;
+    const seedPositions = buildSeedPositions(rawNodes, width, height);
     rawNodes.forEach((n) => {
       if (prevPosMap.has(n.id)) {
         const p = prevPosMap.get(n.id);
@@ -247,6 +308,13 @@ export const MindmapCanvas = ({
         n.vy = 0;
       } else {
         // 새로 추가된 노드 (보통 부모 위치 근처러 초기화)
+        if (seedPositions.has(n.id)) {
+          const p = seedPositions.get(n.id);
+          n.x = p.x;
+          n.y = p.y;
+          n.vx = 0;
+          n.vy = 0;
+        } else
         if (n.type === "term" && prevPosMap.has(n.categoryId)) {
           const p = prevPosMap.get(n.categoryId);
           n.x = p.x + (Math.random() - 0.5) * 50;
@@ -335,12 +403,25 @@ export const MindmapCanvas = ({
       })
       .on("click", (event, n) => {
         event.stopPropagation();
+        setTooltip(null);
         if (n.type === "term" && n.data && onSelectTerm) {
           internalClickRef.current = true; // 내부 클릭 표시 → 외부 effect 무한루프 차단
           onSelectTerm(n.data);
           // Zoom to Term (즉시 실행)
           centerOnNode(n.x, n.y, 1.8);
+        } else if (n.type === "scene" && onSelectTreeNode) {
+          onSelectTreeNode(n);
+          centerOnNode(n.x, n.y, 1.05);
         } else if (n.type === "category") {
+          const hasActiveTermSelection = Boolean(selectedTermIdRef.current);
+          if (hasActiveTermSelection) {
+            pendingCategoryPerfRef.current = null;
+            setExpandedCategoryId(n.id);
+            if (onSelectTreeNode) onSelectTreeNode(n);
+            centerOnNode(n.x, n.y, 1.1);
+            return;
+          }
+
           // Category 배타적 전개 토글
           if (expandedCategoryId === n.id) {
             pendingCategoryPerfRef.current = null;
@@ -354,6 +435,7 @@ export const MindmapCanvas = ({
                   : Date.now(),
             };
             setExpandedCategoryId(n.id); // Expand
+            if (onSelectTreeNode) onSelectTreeNode(n);
             centerOnNode(n.x, n.y, 1.1);
           }
         }
@@ -486,6 +568,7 @@ export const MindmapCanvas = ({
 
     // 배경 클릭 시 Collapse
     svg.on("click", () => {
+      setTooltip(null);
       setExpandedCategoryId(null);
     });
 
@@ -537,6 +620,9 @@ export const MindmapCanvas = ({
   useEffect(() => {
     selectedTermIdRef.current = selectedTermId;
     applySelectionStyles(nodeSelRef.current, selectedTermId);
+    if (selectedTermId) {
+      setTooltip(null);
+    }
   }, [selectedTermId]);
 
   // ── 외부 selectedTermId 변화 감지 (사이드바 → 마인드맵 동기화) ──────

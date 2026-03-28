@@ -18,10 +18,13 @@ const SidebarItem = ({
   onSelectNode,
   onSelectTerm,
   selectedTermId,
+  selectedTreeNode,
 }) => {
   const isExpanded = expandedIds.has(node.id);
   const isSelected =
-    selectedTermId === (node.type === "term" ? node.data?.id : node.id);
+    node.type === "term"
+      ? selectedTermId === node.data?.id
+      : selectedTreeNode?.id === node.id && selectedTreeNode?.type === node.type;
   const hasChildren = node.children && Object.keys(node.children).length > 0;
 
   const getSceneTermCount = () =>
@@ -64,6 +67,7 @@ const SidebarItem = ({
         onClick={handleClick}
         data-sidebar-node-type={node.type}
         data-sidebar-node-id={node.id}
+        data-sidebar-selected={isSelected ? "true" : "false"}
         // data-term-id: 사이드바 scrollIntoView 타겟팅에 사용
         data-term-id={node.type === "term" ? node.data?.id : undefined}
         style={{
@@ -111,6 +115,7 @@ const SidebarItem = ({
               onSelectNode={onSelectNode}
               onSelectTerm={onSelectTerm}
               selectedTermId={selectedTermId}
+              selectedTreeNode={selectedTreeNode}
             />
           ))}
         </div>
@@ -128,6 +133,7 @@ export const SidebarTree = ({
   onSelectNode,
   onSelectTerm,
   selectedTermId,
+  selectedTreeNode,
 }) => {
   const scrollContainerRef = useRef(null);
 
@@ -145,6 +151,19 @@ export const SidebarTree = ({
     }, 150);
     return () => clearTimeout(t);
   }, [selectedTermId]);
+
+  useEffect(() => {
+    if (!selectedTreeNode?.id || !scrollContainerRef.current) return;
+    const t = setTimeout(() => {
+      const el = scrollContainerRef.current?.querySelector(
+        `[data-sidebar-node-id="${selectedTreeNode.id}"]`
+      );
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    }, 150);
+    return () => clearTimeout(t);
+  }, [selectedTreeNode]);
 
   // root 레벨 숨기고 scene(중분류)부터 노출
   const sceneNodes = Object.values(treeData).flatMap((root) =>
@@ -191,6 +210,7 @@ export const SidebarTree = ({
               onSelectNode={onSelectNode}
               onSelectTerm={onSelectTerm}
               selectedTermId={selectedTermId}
+              selectedTreeNode={selectedTreeNode}
             />
           ))
         )}

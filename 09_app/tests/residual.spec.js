@@ -68,9 +68,9 @@ test("expression non-standalone messaging", async ({ page }) => {
   await expect(page.getByTestId("detail-word")).toHaveText("밥");
   await page.getByTestId("detail-tab-expressions").click();
   await expect(page.getByRole("heading", { name: "표현층" })).toBeVisible();
-  await expect(page.getByText("현재 표제어에서 먼저 보는 표현")).toBeVisible();
   await expect(page.getByText("상세 연결 없음")).toHaveCount(0);
   await expect(page.getByText("현재 표제어 안에서 먼저 보는 표현입니다.")).toHaveCount(0);
+  await expect(page.locator("[data-testid^='subword-card-']").first()).toBeVisible();
 });
 
 test("longer learner session path", async ({ page }) => {
@@ -180,20 +180,21 @@ test("examples prioritize TOPIK source when chunk examples are available", async
   await pickSearchResult(page, "돈", (text) => text.includes("돈"));
   await expect(page.getByTestId("detail-word")).toHaveText("돈");
   await page.getByRole("button", { name: /^예문/ }).click();
-  await expect(page.getByTestId("examples-workflow-helper")).toHaveCount(0);
-  await expect(page.getByTestId("example-source-0")).toHaveText("TOPIK");
-  await expect(page.getByTestId("example-card-0")).toContainText("돈을 모아 두면 예상치 못한 상황에도 대비할 수 있다.");
+  await expect(page.getByText("현재 뜻 예문")).toBeVisible();
+  await expect(page.getByText("다른 뜻 예문")).toBeVisible();
+  await expect(page.getByTestId("example-source-other-0")).toHaveText("TOPIK");
 });
 
-test("built example chunks surface topik examples before dictionary examples", async ({ page }) => {
+test("built example chunks split current-sense and other-sense groups", async ({ page }) => {
   await page.goto("/");
 
   await pickSearchResult(page, "가게", (text) => text.includes("가게"));
   await expect(page.getByTestId("detail-word")).toHaveText("가게");
   await page.getByRole("button", { name: /^예문/ }).click();
   await page.screenshot({ path: path.join(guideAssetDir, "03_examples_topik_first.png"), fullPage: true });
-  await expect(page.getByTestId("example-source-0")).toHaveText("TOPIK");
-  await expect(page.getByTestId("example-card-0")).toContainText("가게");
+  await expect(page.getByText("현재 뜻 예문")).toBeVisible();
+  await expect(page.getByText("다른 뜻 예문")).toBeVisible();
+  await expect(page.locator("[data-testid^='example-card-current-']").first()).toBeVisible();
 });
 
 test("요리하다 entry keeps relation disambiguation labels", async ({ page }) => {
@@ -225,19 +226,15 @@ test("sense selection drives examples and uses dynamic numbering", async ({ page
   await expect(page.getByText("글쓴이의 기분을 고르십시오. (3점)")).toHaveCount(0);
 });
 
-test("unresolved related form stays non-jumpable and shows unavailable note", async ({ page }) => {
+test("unresolved related form is hidden from the default relation surface", async ({ page }) => {
   await page.goto("/");
 
   await pickSearchResult(page, "기분", (text) => text.includes("불쾌, 유쾌"));
   await expect(page.getByTestId("detail-word")).toHaveText("기분");
 
   await page.getByRole("button", { name: /^의미 관계/ }).click();
-  await expect(page.getByTestId("relation-overview")).toContainText("원본 표면형만 있음");
-  await expect(page.getByText("원본에 표면형만 있는 관련형")).toBeVisible();
-  await expect(page.getByTestId("related-form-card-기분적-0")).toBeVisible();
-  await expect(page.getByTestId("related-form-card-unresolved-기분적-0")).toContainText("원본 사전에서 연결 대상을 지정하지 않은 항목입니다.");
-
-  await page.getByTestId("related-form-card-기분적-0").click();
+  await expect(page.getByTestId("relation-related-forms")).toHaveCount(0);
+  await expect(page.getByText("기분적")).toHaveCount(0);
   await expect(page.getByTestId("detail-word")).toHaveText("기분");
 });
 
@@ -328,7 +325,6 @@ test("relation labels disambiguate same surface targets", async ({ page }) => {
 
   await page.getByRole("button", { name: /^의미 관계/ }).click();
   await expect(page.getByTestId("relation-related-forms")).toBeVisible();
-  await expect(page.getByText(/바로 이동 가능한 관련형/)).toBeVisible();
   await expect(page.locator("[data-testid^='related-form-card-보이다-']")).toHaveCount(1);
   await expect(page.locator("[data-testid^='related-form-card-type-보이다-']")).toHaveCount(1);
   await expect(page.getByTestId("relation-related-forms")).toContainText("눈으로 대상의 존재나 겉모습을 알게 하다.");
@@ -467,6 +463,13 @@ test("unclassified helper splits grammatical items from uncategorized vocabulary
   await expect(page.getByTestId("detail-context-helper")).toContainText("품사와 형태 기준을 먼저 보면 됩니다");
 });
 
+test("unclassified tab defaults to list view", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: /분류 밖 항목/ }).click();
+  await expect(page.locator("[data-list-term-id]").first()).toBeVisible();
+});
+
 test("expression tab separates jumpable expressions from preview-only expressions", async ({ page }) => {
   await page.goto("/");
 
@@ -474,15 +477,12 @@ test("expression tab separates jumpable expressions from preview-only expression
   await search.fill("두다");
   const results = page.locator("[data-search-result='true']");
   await expect(results.first()).toBeVisible();
-  const target = results.filter({ hasText: "다음: 표현층" }).first();
+  const target = results.filter({ hasText: "표현 연결" }).first();
   await expect(target).toBeVisible();
   await target.click();
   await expect(page.getByTestId("detail-word")).toHaveText("두다");
   await page.getByTestId("detail-tab-expressions").click();
-  await expect(page.getByTestId("expression-overview")).toContainText("표현 읽는 순서");
-  await expect(page.getByText("바로 탐색 가능한 표현")).toBeVisible();
-  await expect(page.getByText("독립 표제어로 바로 이어지는 표현입니다.")).toBeVisible();
-  await expect(page.getByText("현재 표제어 안에서 먼저 보는 표현입니다.")).toHaveCount(0);
+  await expect(page.locator("[data-testid^='subword-card-']").first()).toBeVisible();
 });
 
 test("expression cards follow selected translation language when available", async ({ page }) => {
@@ -495,7 +495,7 @@ test("expression cards follow selected translation language when available", asy
   await expect(page.getByTestId("detail-word")).toHaveText("돈");
   await page.getByTestId("detail-tab-expressions").click();
   await page.screenshot({ path: path.join(guideAssetDir, "04_expression_tab.png"), fullPage: true });
-  await expect(page.getByTestId("expression-overview")).toContainText("바로 이동 가능");
+  await expect(page.locator("[data-testid^='subword-card-']").first()).toBeVisible();
   await expect(page.getByTestId("subword-translation-돈을 굴리다")).toContainText("번역 언어 · 중국어");
   await expect(page.getByTestId("subword-example-돈을 굴리다")).toContainText("예문:");
   await expect(page.getByTestId("subword-card-돈을 굴리다")).not.toContainText("의미 2개 연결");
@@ -581,4 +581,25 @@ test("mindmap motion settles after category expansion", async ({ page }) => {
 test("mindmap hides fixed band legend", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByText("Band 범위")).toHaveCount(0);
+});
+
+test("node preview clears after term detail selection", async ({ page }) => {
+  await page.goto("/");
+
+  await page.locator("[data-node-type='category']").first().evaluate((el) => {
+    el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  });
+  await page.locator("[data-node-type='term']").first().waitFor({ state: "visible", timeout: 10000 });
+
+  await page.locator("[data-node-type='term']").first().evaluate((el) => {
+    el.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true, clientX: 240, clientY: 240 }));
+  });
+  await expect(page.getByText("Node Preview")).toBeVisible();
+
+  await page.locator("[data-node-type='term']").first().evaluate((el) => {
+    el.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  });
+
+  await expect(page.getByTestId("detail-word")).toBeVisible();
+  await expect(page.getByText("Node Preview")).toHaveCount(0);
 });

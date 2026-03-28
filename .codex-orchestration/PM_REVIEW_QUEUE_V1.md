@@ -7,19 +7,19 @@
 
 ## Current Review Item
 
-- Task ID: `MM3-002`
-- Pending Report: `.codex-orchestration/reports/MM3-002_SOURCE_SCHEMA_REVIEW_REPORT_V1.md`
-- Validation Report: `.codex-orchestration/reports/MM3-002_DATA_VALIDATION_REPORT_V1.md`
-- Working Agent Board: `.codex-orchestration/SOURCE_SCHEMA_AGENT_WORKBOARD_V1.md`
-- Validation Board: `.codex-orchestration/DATA_VALIDATION_AGENT_WORKBOARD_V1.md`
-- Review Board: `.codex-orchestration/REVIEW_AGENT_WORKBOARD_V1.md`
-- Review Status: `completed`
-- Review Agent Verdict: `ACCEPT`
-- Validation Verdict: `ACCEPT`
-- PM Verdict: `ACCEPT`
+- Task ID: `none`
+- Pending Report: `none`
+- Validation Report: `none`
+- Working Agent Board: `none`
+- Validation Board: `none`
+- Review Board: `none`
+- Review Status: `idle`
+- Review Agent Verdict: `none`
+- Validation Verdict: `none`
+- PM Verdict: `none`
 
 ## Next Review Item
 
-- Task ID: `MM3-003`
-- Pending Report: `not_started`
+- Task ID: `MM3-226A`
+- Pending Report: `parked_until_reopen_trigger`
 - PM Verdict: `not_started`

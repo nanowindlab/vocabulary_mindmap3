@@ -1,0 +1,606 @@
+{
+  "source_entries": 53012,
+  "detail_map_write_removed": true,
+  "samples": [
+    {
+      "entry_id": "9471",
+      "word": "요리하다",
+      "example_text_count_source": 19,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "13943",
+      "word": "역사학",
+      "example_text_count_source": 9,
+      "relation_count_source": 2
+    },
+    {
+      "entry_id": "13955",
+      "word": "시내버스",
+      "example_text_count_source": 5,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "13957",
+      "word": "시대적",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13958",
+      "word": "시대적",
+      "example_text_count_source": 10,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13959",
+      "word": "시댁",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13960",
+      "word": "시도",
+      "example_text_count_source": 15,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13961",
+      "word": "시들다",
+      "example_text_count_source": 27,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13962",
+      "word": "시디",
+      "example_text_count_source": 10,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "13963",
+      "word": "시디롬",
+      "example_text_count_source": 18,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13964",
+      "word": "시멘트",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13965",
+      "word": "시선",
+      "example_text_count_source": 28,
+      "relation_count_source": 2
+    },
+    {
+      "entry_id": "13966",
+      "word": "시스템",
+      "example_text_count_source": 19,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13967",
+      "word": "시아버지",
+      "example_text_count_source": 9,
+      "relation_count_source": 2
+    },
+    {
+      "entry_id": "13968",
+      "word": "시야",
+      "example_text_count_source": 20,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "13969",
+      "word": "시외버스",
+      "example_text_count_source": 9,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "13970",
+      "word": "시위",
+      "example_text_count_source": 23,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "13971",
+      "word": "시일",
+      "example_text_count_source": 18,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13972",
+      "word": "연간",
+      "example_text_count_source": 10,
+      "relation_count_source": 2
+    },
+    {
+      "entry_id": "13973",
+      "word": "연결",
+      "example_text_count_source": 14,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13974",
+      "word": "연관",
+      "example_text_count_source": 12,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "13975",
+      "word": "연구실",
+      "example_text_count_source": 11,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13976",
+      "word": "연구원",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13977",
+      "word": "연극",
+      "example_text_count_source": 20,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13978",
+      "word": "시장",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13979",
+      "word": "시점",
+      "example_text_count_source": 8,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13980",
+      "word": "시중",
+      "example_text_count_source": 12,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13981",
+      "word": "시즌",
+      "example_text_count_source": 21,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13982",
+      "word": "시집",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13983",
+      "word": "시집가다",
+      "example_text_count_source": 9,
+      "relation_count_source": 2
+    },
+    {
+      "entry_id": "13984",
+      "word": "시청률",
+      "example_text_count_source": 10,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "13985",
+      "word": "시합",
+      "example_text_count_source": 10,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "13986",
+      "word": "식기",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13987",
+      "word": "식량",
+      "example_text_count_source": 9,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "13988",
+      "word": "식료품",
+      "example_text_count_source": 8,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "13989",
+      "word": "식생활",
+      "example_text_count_source": 9,
+      "relation_count_source": 2
+    },
+    {
+      "entry_id": "13990",
+      "word": "식욕",
+      "example_text_count_source": 16,
+      "relation_count_source": 2
+    },
+    {
+      "entry_id": "13991",
+      "word": "식품점",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13992",
+      "word": "식히다",
+      "example_text_count_source": 23,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13993",
+      "word": "신",
+      "example_text_count_source": 10,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13994",
+      "word": "신경",
+      "example_text_count_source": 18,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13995",
+      "word": "신고하다",
+      "example_text_count_source": 16,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13996",
+      "word": "신규",
+      "example_text_count_source": 7,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13997",
+      "word": "신기하다",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13998",
+      "word": "신기하다",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "13999",
+      "word": "신념",
+      "example_text_count_source": 11,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14001",
+      "word": "신부",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14002",
+      "word": "담당자",
+      "example_text_count_source": 9,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "14003",
+      "word": "답",
+      "example_text_count_source": 28,
+      "relation_count_source": 3
+    },
+    {
+      "entry_id": "14004",
+      "word": "답변",
+      "example_text_count_source": 16,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14005",
+      "word": "닷새",
+      "example_text_count_source": 18,
+      "relation_count_source": 4
+    },
+    {
+      "entry_id": "14006",
+      "word": "담당",
+      "example_text_count_source": 19,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "14007",
+      "word": "당당하다",
+      "example_text_count_source": 18,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14008",
+      "word": "연기",
+      "example_text_count_source": 7,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14009",
+      "word": "연기되다",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14010",
+      "word": "연기자",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14011",
+      "word": "연기하다",
+      "example_text_count_source": 10,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14012",
+      "word": "연두색",
+      "example_text_count_source": 9,
+      "relation_count_source": 2
+    },
+    {
+      "entry_id": "14013",
+      "word": "연락",
+      "example_text_count_source": 11,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14014",
+      "word": "연락처",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14015",
+      "word": "연령",
+      "example_text_count_source": 9,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "14016",
+      "word": "연상하다",
+      "example_text_count_source": 10,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14017",
+      "word": "연설",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14018",
+      "word": "연세",
+      "example_text_count_source": 8,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "14019",
+      "word": "연속",
+      "example_text_count_source": 9,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "14020",
+      "word": "연애",
+      "example_text_count_source": 7,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14021",
+      "word": "연예인",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14022",
+      "word": "연인",
+      "example_text_count_source": 10,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "14023",
+      "word": "연장",
+      "example_text_count_source": 20,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "14024",
+      "word": "연주",
+      "example_text_count_source": 10,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14025",
+      "word": "연출",
+      "example_text_count_source": 26,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14026",
+      "word": "연출하다",
+      "example_text_count_source": 27,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14027",
+      "word": "연하다",
+      "example_text_count_source": 20,
+      "relation_count_source": 2
+    },
+    {
+      "entry_id": "14028",
+      "word": "연합",
+      "example_text_count_source": 11,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "14039",
+      "word": "간음",
+      "example_text_count_source": 10,
+      "relation_count_source": 4
+    },
+    {
+      "entry_id": "14041",
+      "word": "간음죄",
+      "example_text_count_source": 11,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14043",
+      "word": "간음하다",
+      "example_text_count_source": 10,
+      "relation_count_source": 3
+    },
+    {
+      "entry_id": "14044",
+      "word": "간이",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14046",
+      "word": "간이식",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14047",
+      "word": "간이식당",
+      "example_text_count_source": 11,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14049",
+      "word": "간장",
+      "example_text_count_source": 10,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "14050",
+      "word": "간절하다",
+      "example_text_count_source": 20,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14051",
+      "word": "간절히",
+      "example_text_count_source": 17,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14054",
+      "word": "간접세",
+      "example_text_count_source": 10,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "14055",
+      "word": "간접흡연",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14056",
+      "word": "간조",
+      "example_text_count_source": 10,
+      "relation_count_source": 1
+    },
+    {
+      "entry_id": "14057",
+      "word": "간주",
+      "example_text_count_source": 6,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14064",
+      "word": "신분",
+      "example_text_count_source": 35,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14065",
+      "word": "신비",
+      "example_text_count_source": 10,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14066",
+      "word": "신사",
+      "example_text_count_source": 18,
+      "relation_count_source": 2
+    },
+    {
+      "entry_id": "14067",
+      "word": "신설",
+      "example_text_count_source": 9,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14068",
+      "word": "신세",
+      "example_text_count_source": 13,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14069",
+      "word": "신세대",
+      "example_text_count_source": 10,
+      "relation_count_source": 2
+    },
+    {
+      "entry_id": "14070",
+      "word": "신속하다",
+      "example_text_count_source": 15,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14071",
+      "word": "신인",
+      "example_text_count_source": 13,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14072",
+      "word": "신제품",
+      "example_text_count_source": 11,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14073",
+      "word": "신중하다",
+      "example_text_count_source": 15,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14074",
+      "word": "신청서",
+      "example_text_count_source": 11,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14075",
+      "word": "신청하다",
+      "example_text_count_source": 25,
+      "relation_count_source": 0
+    },
+    {
+      "entry_id": "14076",
+      "word": "신체적",
+      "example_text_count_source": 15,
+      "relation_count_source": 0
+    }
+  ]
+}

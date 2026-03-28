@@ -1,0 +1,8 @@
+{
+  "created_at": "2026-03-26T03:23:49.690Z",
+  "scope": "search_semantic_fields_plus_facets",
+  "rollback_files": [
+    "APP_READY_SEARCH_INDEX.json",
+    "APP_READY_FACETS.json"
+  ]
+}

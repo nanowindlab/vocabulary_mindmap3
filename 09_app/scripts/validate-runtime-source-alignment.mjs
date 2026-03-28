@@ -39,6 +39,8 @@ function assertEqual(actual, expected, label) {
 }
 
 function main() {
+  // During T1 the tree trio is still validated as generated build artifacts,
+  // not as learner-facing runtime fetch objects.
   const runtimeSearch = readJson(path.join(liveDir, "APP_READY_SEARCH_INDEX.json"));
   const runtimeFacets = readJson(path.join(liveDir, "APP_READY_FACETS.json"));
   const meaningTree = readJson(path.join(liveDir, "APP_READY_MEANING_TREE.json"));

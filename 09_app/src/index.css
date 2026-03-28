@@ -192,7 +192,7 @@ button {
   -webkit-backdrop-filter: blur(18px);
   position: relative;
   z-index: 30;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .top-nav::after {
@@ -592,18 +592,38 @@ button {
 
 .detail-tab-shell {
   background: rgba(255,255,255,0.02);
+  gap: 2px;
+  flex-wrap: nowrap;
 }
 
 .detail-tab-button {
   border-radius: 12px 12px 0 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  white-space: nowrap;
 }
 
 .detail-tab-button.active {
   background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
 }
 
+.detail-tab-label {
+  min-width: 0;
+}
+
+.detail-tab-count {
+  flex-shrink: 0;
+}
+
 .detail-content-shell {
   background: transparent;
+}
+
+.detail-core-stack {
+  gap: 22px;
 }
 
 .detail-section-card {
@@ -612,6 +632,13 @@ button {
 
 .detail-primary-card {
   background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.detail-primary-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .detail-core-grid {
@@ -625,11 +652,73 @@ button {
   min-width: 0;
 }
 
+.detail-section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.detail-primary-definition {
+  letter-spacing: -0.01em;
+}
+
 .detail-translation-panel {
-  padding: 14px 14px 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.06);
-  background: rgba(255,255,255,0.03);
+  margin-top: 4px;
+  padding: 12px 0 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  background: transparent;
+  min-width: 0;
+}
+
+.detail-translation-kicker {
+  letter-spacing: 0.02em;
+}
+
+.detail-translation-meta-row {
+  margin-bottom: 10px;
+}
+
+.detail-translation-meta-copy {
+  min-width: 0;
+}
+
+.detail-translation-header {
+  margin-top: 2px;
+}
+
+.detail-translation-body {
+  padding-left: 22px;
+}
+
+.detail-translation-word {
+  letter-spacing: -0.01em;
+  font-size: 17px;
+}
+
+.detail-translation-badge {
+  margin-left: auto;
+}
+
+.detail-translation-definition {
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+.detail-context-helper-card {
+  margin-top: -4px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.038), rgba(255,255,255,0.02));
+}
+
+.detail-context-helper-content {
+  row-gap: 6px;
+}
+
+.detail-context-helper-title {
+  min-width: fit-content;
+}
+
+.detail-context-helper-description {
   min-width: 0;
 }
 

@@ -33,3 +33,8 @@ vocab_dictionary/output/**/*.zip
 !vocab_dictionary/output/unified_live/kcenter_merge_report.json
 !vocab_dictionary/output/unified_live/kcenter_review_queue.json
 !vocab_dictionary/output/unified_live/dangling_code_fetch_report.json
+
+# oversized tmp report snapshots
+tmp_reports/**/APP_READY_SEARCH_INDEX.json
+tmp_reports/recovered_APP_READY_SEARCH_INDEX.json
+.vercel

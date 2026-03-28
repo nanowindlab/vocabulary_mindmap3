@@ -122,6 +122,174 @@ def normalize_text(value: str | None) -> str:
     return collapse_ws(value)
 
 
+def build_entry_word_index(record_by_id: dict[str, dict[str, Any]]) -> dict[str, list[str]]:
+    index: dict[str, list[str]] = defaultdict(list)
+    for entry_id, record in record_by_id.items():
+        word = strip_text(record.get("entry", {}).get("word"))
+        if not word:
+            continue
+        index[word].append(entry_id)
+    return index
+
+
+def build_explicit_related_form_target_index(record_by_id: dict[str, dict[str, Any]]) -> dict[str, set[str]]:
+    index: dict[str, set[str]] = defaultdict(set)
+    for entry_id, record in record_by_id.items():
+        for form in record["entry"].get("related_forms", []):
+            target_code = strip_text(form.get("target_code"))
+            if not target_code or target_code == "0":
+                continue
+            if form.get("link_status") != "resolved_internal":
+                continue
+            index[entry_id].add(target_code)
+    return index
+
+
+def make_related_form_key(form: dict[str, Any]) -> tuple[str | None, str | None, str | None]:
+    return (
+        strip_text(form.get("type")),
+        strip_text(form.get("word")),
+        strip_text(form.get("target_code")),
+    )
+
+
+def related_form_group_key(form: dict[str, Any]) -> tuple[str | None, str | None, str | None]:
+    return (
+        strip_text(form.get("type")),
+        strip_text(form.get("word")),
+        strip_text(form.get("link_type")),
+    )
+
+
+def make_unresolved_related_form_placeholder(form: dict[str, Any]) -> dict[str, Any]:
+    placeholder = copy.deepcopy(form)
+    if strip_text(placeholder.get("link_type")):
+        placeholder["target_code"] = None
+        placeholder["link_status"] = "unresolved_no_target_code"
+        placeholder["is_dangling"] = False
+    else:
+        placeholder["target_code"] = "0"
+        placeholder["link_status"] = "unresolved_zero_code"
+        placeholder["is_dangling"] = True
+    return placeholder
+
+
+def choose_related_form_backfill_targets(
+    source_entry_id: str,
+    candidate_ids: list[str],
+    explicit_target_index: dict[str, set[str]],
+) -> tuple[list[str], str | None]:
+    direct = [candidate_id for candidate_id in candidate_ids if source_entry_id in explicit_target_index.get(candidate_id, set())]
+    if direct:
+        return direct, "reverse_explicit"
+
+    unclaimed = [candidate_id for candidate_id in candidate_ids if not explicit_target_index.get(candidate_id)]
+    if len(unclaimed) == 1:
+        return unclaimed, "reverse_unclaimed_single"
+    if len(unclaimed) > 1:
+        return unclaimed, "reverse_unclaimed_multi"
+
+    return [], None
+
+
+def backfill_related_form_targets(record_by_id: dict[str, dict[str, Any]], report: dict[str, Any]) -> None:
+    word_index = build_entry_word_index(record_by_id)
+    explicit_target_index = build_explicit_related_form_target_index(record_by_id)
+    backfill_counter: dict[str, int] = defaultdict(int)
+    backfill_samples: list[dict[str, Any]] = []
+
+    for entry_id, record in record_by_id.items():
+        expanded_forms: list[dict[str, Any]] = []
+        seen_keys: set[tuple[str | None, str | None, str | None]] = set()
+        grouped_forms: dict[tuple[str | None, str | None, str | None], dict[str, Any]] = {}
+        for form in record["entry"].get("related_forms", []):
+            target_code = strip_text(form.get("target_code"))
+            form_word = strip_text(form.get("word"))
+            if form.get("link_status") == "resolved_internal" and target_code and target_code != "0":
+                key = make_related_form_key(form)
+                if key not in seen_keys:
+                    expanded_forms.append(form)
+                    seen_keys.add(key)
+                continue
+            if not form_word:
+                key = make_related_form_key(form)
+                if key not in seen_keys:
+                    expanded_forms.append(form)
+                    seen_keys.add(key)
+                continue
+            group_key = related_form_group_key(form)
+            if group_key not in grouped_forms:
+                grouped_forms[group_key] = copy.deepcopy(form)
+
+        for form in grouped_forms.values():
+            form_word = strip_text(form.get("word"))
+            matches = [candidate_id for candidate_id in word_index.get(form_word, []) if candidate_id != entry_id]
+            if not matches:
+                key = make_related_form_key(form)
+                if key not in seen_keys:
+                    expanded_forms.append(form)
+                    seen_keys.add(key)
+                continue
+            if len(matches) == 1:
+                new_form = copy.deepcopy(form)
+                new_form["target_code"] = matches[0]
+                new_form["link_status"] = "resolved_exact_word_backfill"
+                new_form["is_dangling"] = False
+                key = make_related_form_key(new_form)
+                if key not in seen_keys:
+                    expanded_forms.append(new_form)
+                    seen_keys.add(key)
+                    backfill_counter["exact_related_forms"] += 1
+                    if len(backfill_samples) < 200:
+                        backfill_samples.append(
+                        {
+                            "entry_id": entry_id,
+                            "entry_word": record["entry"].get("word"),
+                            "related_form": form_word,
+                            "resolved_target_code": matches[0],
+                            "mode": "exact_single",
+                            }
+                        )
+                continue
+            chosen_targets, chosen_mode = choose_related_form_backfill_targets(entry_id, matches, explicit_target_index)
+            if not chosen_targets:
+                unresolved_form = make_unresolved_related_form_placeholder(form)
+                key = make_related_form_key(unresolved_form)
+                if key not in seen_keys:
+                    expanded_forms.append(unresolved_form)
+                    seen_keys.add(key)
+                continue
+            for candidate_id in chosen_targets:
+                new_form = copy.deepcopy(form)
+                new_form["target_code"] = candidate_id
+                new_form["link_status"] = "resolved_multi_exact_word_backfill"
+                new_form["is_dangling"] = False
+                key = make_related_form_key(new_form)
+                if key in seen_keys:
+                    continue
+                expanded_forms.append(new_form)
+                seen_keys.add(key)
+                backfill_counter["multi_related_forms"] += 1
+                if len(backfill_samples) < 200:
+                    backfill_samples.append(
+                        {
+                            "entry_id": entry_id,
+                            "entry_word": record["entry"].get("word"),
+                            "related_form": form_word,
+                            "resolved_target_code": candidate_id,
+                            "mode": chosen_mode,
+                        }
+                    )
+
+        record["entry"]["related_forms"] = expanded_forms
+
+    report["related_form_exact_backfill"] = {
+        "exact_resolved_count": backfill_counter["exact_related_forms"],
+        "multi_resolved_count": backfill_counter["multi_related_forms"],
+        "samples": backfill_samples,
+    }
+
+
 def normalize_loose(value: str | None) -> str:
     if not value:
         return ""
@@ -1118,6 +1286,8 @@ def validate_links(record_by_id: dict[str, dict[str, Any]], report: dict[str, An
     related_terms_status_counts: dict[str, int] = defaultdict(int)
     related_forms_status_counts: dict[str, int] = defaultdict(int)
 
+    backfill_related_form_targets(record_by_id, report)
+
     for record in record_by_id.values():
         for sense in record["entry"].get("senses", []):
             for relation in sense.get("related_terms", []):
@@ -1371,6 +1541,8 @@ def build_link_integrity_payload(entry_records: list[dict[str, Any]], merge_repo
             "dangling_related_terms": "Treat as non-clickable relation chips or unresolved references, not hard navigation targets.",
             "dangling_related_forms": "Treat as unresolved related forms; display text but guard navigation.",
             "unresolved_zero_code": "Source provided target_code=0, so this relation should be handled as text-only and not as a resolvable internal link.",
+            "resolved_exact_word_backfill": "If a related form word maps to exactly one different internal entry, backfill the target_code conservatively.",
+            "resolved_multi_exact_word_backfill": "If multiple exact word matches exist, only keep source-consistent candidates: explicit reverse matches first, then uniquely unclaimed candidates, then truly unclaimed multi-targets for UI disambiguation.",
         },
         "dangling_link_type_counts": {
             "related_terms": dict(dangling_terms_link_type_counts),

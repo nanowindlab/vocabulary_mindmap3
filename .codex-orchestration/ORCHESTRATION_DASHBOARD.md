@@ -3,7 +3,7 @@
 ## Current Status
 
 - Milestone: `M1 Runtime Wiring / Core Explorer`
-- Active Work: `MM3-261B Top Architecture Theme Continuity Art-Direction Polish`
+- Active Work: `none (latest closeout: MM3-268)`
 - Latest Pilot Capture: `pilot_session_04 / 2026-03-26 01:28 KST / participant 사용자 / facilitator 사용자 / ad-hoc screenshot follow-up`
 - PM Owner: `Codex`
 - User Constraint: external references are read-only
@@ -143,9 +143,26 @@
 
 ## In Progress
 
-- `MM3-261B`: top architecture theme continuity art-direction polish
-- current step: `next polish tranche scope decision`
+- no active execution package
+- latest closeout: `MM3-268`
+- current step: `waiting for next directive`
 - just completed:
+  - `MM3-268` feedback wave를 closeout packet으로 닫았다
+  - `MM3-265A`를 comparative study + `unclassified` 기본 `list` 진입 정책으로 닫았다
+  - `MM3-266E`를 stale overwrite guard + redundant selection churn 완화로 닫았다
+  - `MM3-268F` detail tab count wrapping review와 compression 적용을 반영했다
+  - `MM3-268G` 핵심 뜻 카드 review 결과로 flatter translation rail 구조를 반영했다
+  - `MM3-268A` learner-facing example priority draft를 `문장 -> 대화 -> 구 -> TOPIK`으로 고정했다
+  - `MM3-268C` node preview dismiss regression을 `residual.spec.js`로 고정했고 통과했다
+  - `MM3-268B` 분류 밖 항목 floating node는 repeated grade label duplication issue로 분석했다
+  - `MM3-268A` examples payload source inventory를 수치로 뽑았다
+  - `MM3-268H` tree navigation ↔ mindmap 분류 양방향 sync를 반영했고 `tree-sync` regression test를 추가했다
+  - `MM3-268E`는 local repro spec 기준 dropdown/result row가 정상 표시되는 것을 확인했다
+  - `MM3-268D` Quick Entry Overlay(E 방법)를 제거했고 `build PASS`, `smoke/scenario PASS`를 확인했다
+  - 2026-03-28 feedback를 item 단위 task로 분해하고 tracking packet을 만들었다
+  - execution order를 `MM3-268E -> C -> D -> B -> A -> F -> G`로 고정했다
+  - `MM3-261B` batch 03 implementation과 validation(`build`, `Playwright 5 passed`)을 닫았다
+  - `MM3-261B` batch 03 target을 `detail primary card spacing cadence`로 잠갔다
   - `MM3-266F` closeout decision을 고정
   - `DETAIL_MAP` final status는 debug-only generated artifact로 고정
   - packaged runtime payload에서 `APP_READY_DETAIL_MAP.json.gz` 제거를 확인
@@ -195,8 +212,8 @@
 - `R17`: current related-form unresolved 대부분은 source ambiguity다. `audit_related_form_targets.py` 기준 `4,302 / 4,303`이 source-ambiguous다.
 - `R18`: situation tree repeated label redundancy는 source-shaped issue로 고정됐고, resolution choice는 `MM3-258B`로 남아 있다.
 - `R19`: top architecture consolidation은 구현됐지만, theme continuity art-direction polish는 `MM3-261B`로 남아 있다.
-- Latest handoff packet: `08_planning/reports/20260326_MM3_222_NEXT_PM_HANDOFF_PACKET_V1.md`
-- Latest PM decision: `08_planning/reports/20260327_MM3_262_XML_TO_APP_DATA_RELIABILITY_AUDIT_PLAN_V1.md`
+- Latest handoff packet: `08_planning/reports/20260328_MM3_268_NEXT_PM_HANDOFF_PACKET_V1.md`
+- Latest PM decision: `08_planning/reports/20260328_MM3_268_FEEDBACK_WAVE_CLOSEOUT_V1.md`
 - `R13`: TOPIK stats는 계속 쓰되 learner-facing definition source는 MM3로 고정했고, `level`은 폐기, `미산출`은 main filter에서 제거하는 정책이 승인됐다.
 
 ## Canonical Pointers
@@ -280,8 +297,8 @@
 - Latest W4 screenshot readiness check: `08_planning/reports/20260325_MM3_173_SCREENSHOT_CAPTURE_READINESS_CHECK_V1.md`
 - Latest W4 guide planning acceptance: `08_planning/reports/20260325_MM3_173_IN_APP_GUIDE_PLANNING_ACCEPTANCE_V1.md`
 - Latest follow-up packet: `08_planning/reports/20260326_MM3_210_DETAIL_SENSE_EXAMPLE_RELATION_FOLLOWUP_IMPLEMENTATION_V1.md`
-- Latest PM decision: `08_planning/reports/20260327_MM3_262_XML_TO_APP_DATA_RELIABILITY_AUDIT_PLAN_V1.md`
-- Latest handoff packet: `08_planning/reports/20260326_MM3_222_NEXT_PM_HANDOFF_PACKET_V1.md`
+- Latest PM decision: `08_planning/reports/20260328_MM3_268_FEEDBACK_WAVE_CLOSEOUT_V1.md`
+- Latest handoff packet: `08_planning/reports/20260328_MM3_268_FEEDBACK_INTAKE_AND_EXECUTION_PLAN_V1.md`
 - Latest pilot note: `08_planning/pilot_feedback/20260326_pilot_session_04.md`
 - Data architecture: `08_planning/DATA_ARCHITECTURE_V1.md`
 - Scenario spec: `08_planning/PRODUCT_SCENARIO_SPEC_V1.md`

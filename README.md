@@ -59,7 +59,8 @@
 - `MM3-210`은 closeout됐다.
 - `MM3-212`에서 runtime/source payload validation과 count reconciliation은 `PASS`로 고정됐다.
 - `MM3-216`에서 TOPIK stats linkage policy를 고정했다.
-- 다음 active step은 `MM3-261B Top Architecture Theme Continuity Art-Direction Polish`다.
+- 현재 active execution task는 없다.
+- latest closeout package는 `MM3-268 2026-03-28 Feedback Intake / Execution Plan`이다.
 - current learner-facing `search + facets only` builder surface는 package/build-chain에 non-authoritative sidecar gate로 편입됐다.
 - `MM3-217C`에서 initial authoritative candidate는 `search semantic fields + facets`로 고정됐다.
 - authoritative write path / rollback / dual-run diff protocol은 정의됐다.
@@ -69,7 +70,8 @@
 - `MM3-262` XML-to-app reliability audit은 closeout됐다.
 - XML-derived detail examples/relations는 package chain의 detail fidelity repair로 app runtime까지 다시 연결된다.
 - `MM3-258B`에서 repeated situation label은 learner-facing path collapse + tree category `어휘 목록` rule로 정리됐다.
-- 다음 핵심 작업은 `MM3-261B` top architecture theme continuity art-direction polish다.
+- 다음 핵심 작업은 아직 열리지 않았다.
+- parked backlog candidate는 `MM3-226A`지만, user가 다시 열기 전까지는 `none` 상태로 유지한다.
 - latest review wave 기준 `MM3-257A`, `MM3-258A` study task가 추가됐다.
 - latest review wave 02 practical layout fixes는 반영 완료 상태다.
 - latest review wave 03 기준 `MM3-260C`, `MM3-261A` top architecture follow-up task가 추가됐다.

@@ -3,131 +3,44 @@
 아래를 새 스레드 첫 메시지로 사용:
 
 ```text
-Take over as the next PM.
+Use the current control-plane docs as source of truth.
+
+Source of truth:
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/TASKLIST_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/ORCHESTRATION_DASHBOARD.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260328_MM3_268_NEXT_PM_HANDOFF_PACKET_V1.md
+
+Active work:
+- pipeline: M1 Runtime Wiring / Core Explorer
+- workflow: none
+- step: waiting for next directive
+- task id: none
+
+What is already done:
+- latest closeout package is MM3-268
+- deployment preflight check set completed
+- there is no current runtime or product blocker
+
+Current blocker or mismatch:
+- no blocker
+- no active execution package is open
+
+Exit condition:
+- open a new task id only when the next directive is actually given
 
 Read first:
-1. /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260327_MM3_267_RUNTIME_DATA_PERFORMANCE_OPTIMIZATION_OPENING_V1.md
-2. /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260325_MM3_171_RUNTIME_PERFORMANCE_PAYLOAD_SPLIT_AUDIT_NOTE_V1.md
-3. /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260327_MM3_266A_PAYLOAD_WEIGHT_AND_DUPLICATION_AUDIT_V1.md
-4. /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/TASKLIST_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/ORCHESTRATION_DASHBOARD.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260328_MM3_268_FEEDBACK_WAVE_CLOSEOUT_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260328_MM3_268_NEXT_PM_HANDOFF_PACKET_V1.md
 
-Current active work:
-- MM3-266F APP_READY Runtime Payload Repartition Design
+Immediate next action:
+- hold this state until the next active work is opened
+- if a new directive arrives, open a new task id instead of reusing MM3-268
 
-Current exit condition:
-- lock the `canonical-direct chunk builder` implementation boundary
-
-Verified now:
-- MM3-217 formal validation/review/hardening/revalidation packets are present
-- current learner-facing search + facets builder surface is exact-match reproducible
-- current `search + facets only` builder surface is promoted into package/build-chain as a non-authoritative sidecar gate
-- `MM3-224` criteria and evidence gap packet is present
-- `npm run audit:authoritative-promotion` says `semantic_authority_candidate_ready = true`
-- `MM3-225` write/rollback/diff protocol packet is present
-- `npm run plan:authoritative-runtime` is `PLAN_READY`
-- `npm run diff:authoritative-runtime` is `PASS`
-- `MM3-226` chunk_id policy packet is present
-- canonical mapping is parked as `MM3-226A`
-- `MM3-227` authoritative switch execution packet is present
-- `npm run promote:authoritative-runtime:execute` completed
-- `MM3-228` recurring gate bundle packet is present
-- `npm run check:authoritative-runtime-boundary` is `PASS`
-- `MM3-229` closeout packet is present
-- `MM3-230` maintenance protocol packet is present
-- `MM3-231` scenario canonicalization packet is present
-- `MM3-232` related form repair packet is present
-- `MM3-234` source ambiguity text-only policy packet is present
-- `MM3-235` related form audit automation packet is present
-- `MM3-236` UI refinement roadmap packet is present
-- `MM3-237` relation tab hierarchy refinement packet is present
-- `MM3-238` detail top-of-fold density refinement packet is present
-- `MM3-239` expression/example legibility refinement packet is present
-- `MM3-240` fallback surface guidance refinement packet is present
-- `MM3-241` MM3 UI refinement roadmap closeout packet is present
-- `MM3-242` new design tranche opening packet is present
-- `MM3-243` explorer chrome visual refresh packet is present
-- `MM3-244` mindmap canvas surface refresh packet is present
-- `MM3-245` detail surface card harmonization packet is present
-- `MM3-246` new design tranche closeout packet is present
-- `MM3-247` interaction surface polish opening packet is present
-- `MM3-249` filter/dropdown surface closeout packet is present
-- `MM3-251` search result panel guidance closeout packet is present
-- `MM3-252` interaction surface polish closeout packet is present
-- `MM3-254` loading / empty surface refresh packet is present
-- `MM3-255` status surface polish closeout packet is present
-- `MM3-256` user review wave 01 intake/practical fix packet is present
-- `MM3-259` review wave 02 layout efficiency follow-up packet is present
-- `MM3-260` top architecture three-expert review packet is present
-- `MM3-257` category-level count semantics/implementation packet is present
-- `MM3-258` situation tree repeated label redundancy study packet is present
-- `MM3-261` top architecture consolidation implementation packet is present
-- `MM3-262` XML-to-app data reliability audit plan packet is present
-- `MM3-262` closeout is complete
-- XML-derived detail examples/relations now survive to app runtime
-- post-repair `kcenter_base -> APP_READY_DETAIL_MAP` example loss diff is `0`
-- `14112 실제로` now keeps restored examples in detail/rich and expanded examples chunk
-- `MM3-258B` closeout is complete
-- repeated situation labels now collapse in learner-facing paths, and tree category nodes use `어휘 목록`
-- `npm run build` passes
-- targeted Playwright regression passes
-- `MM3-261B` first polish batch is complete
-- shell contrast / edge rhythm / panel emphasis were rebalanced without structural changes
-- `MM3-263` subject-none policy is complete
-- duplicated `주제 및 상황 = 없음` entries now route through meaning only
-- none-only `468` entries are excluded from canonical/live runtime and parked for later review
-- `MM3-264` taxonomy implementation is complete
-- learner-facing situation path now reads `주제 및 상황 > A middle layer > raw leaf`
-- quick-entry overlay exists only inside `주제 및 상황` tab and narrows to practical leaves without changing canonical path
-- `MM3-267` opening packet is present
-- current task is explicitly about runtime loading/freezing, not LFS/storage policy
-- `MM3-171` perf note and `MM3-266A` weight audit are inputs, not the task itself
-- current `MM3-267` packet reframes the runtime issue into boot/tab-load vs interaction bottlenecks
-- first tranche is fixed as `T1 Loader/Caching Hardening`
-- `MM3-267` implementation packet is present
-- default meaning tab now uses `idle + hard-timeout` kickoff with explicit intent escalation
-- `chunk_id` parsed chunk cache + in-flight dedupe is implemented
-- `window.__MM3_RUNTIME_INTERACTION_PERF__` interaction probe is implemented
-- runtime tree view now derives `meaning/situation/unclassified` from `APP_READY_SEARCH_INDEX` category projection and bypasses the three large tree payload fetches
-- local `npm run build` passed
-- local `npx playwright test tests/smoke.spec.js tests/scenario.spec.js` passed `5/5`
-- latest production custom domain recheck passed
-- `MM3-267` is effectively closed
-- next active work is `MM3-266F APP_READY_* runtime payload repartition design`
-- `MM3-266F` draft now exists:
-- hot: `APP_READY_SEARCH_INDEX`, `APP_READY_FACETS`
-- on-demand: `APP_READY_CHUNK_RICH_*`, `APP_READY_CHUNK_EXAMPLES_*`, `CHUNK_MANIFEST_V1`
-- demote from learner runtime fetch: tree trio
-- demote from primary runtime truth: `APP_READY_DETAIL_MAP`
-- `MM3-266F` execution plan packet is present
-- selected first tranche is `T1 Formalize Search-Index-Derived Tree Runtime`
-- `MM3-266F` plan review loop is complete
-- current verdict is `ACCEPT_FOR_IMPLEMENTATION`
-- `MM3-266F / T1` implementation packet is present
-- dead tree runtime loader path is removed
-- projected tree path is now the explicit runtime contract
-- `MM3-266F / T2` preparation packet is present
-- current `DETAIL_MAP` demotion blocker is explicit:
-- runtime fallback dependency
-- chunk build dependency
-- repair script dependency
-- fallback retirement decision is now `debug-only fallback`
-- chunk build source migration decision is now `canonical direct path`
-- `debug-only fallback gate + canonical-direct chunk builder` plan packet is present
-- `debug-only fallback gate` implementation packet is present
-- normal learner runtime no longer uses `DETAIL_MAP` as a silent fallback
-- `MM3-265` study opening is present
-- `분류 밖 항목` handling/reclassification is queued as a separate research task that must compare other dictionaries before decision
-- `MM3-266` study opening is present
-- data structure optimization is queued as a separate research/design task for payload layout, deduplication, sharding, and storage format options
-- `npm run prepackage:live` and `npm run build` both pass with the same sidecar gate
-- current authoritative runtime boundary is active
-- current sidecar output is comparison / validation only
-
-Important note:
-- raw/internal `미분류` == learner-facing `분류 밖 항목`
-
-First action:
-- read the `debug-only fallback gate` implementation packet first
-- define the `canonical-direct chunk builder` implementation boundary
-- keep `MM3-261B` as lower-priority polish work
+Constraints:
+- do not change the active task id unless control-plane truth changes
+- do not reopen MM3-266F unless a new blocker appears
+- keep replies concise and fact-only unless the user asks for depth
 ```

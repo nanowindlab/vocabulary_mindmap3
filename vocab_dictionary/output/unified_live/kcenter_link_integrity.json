@@ -4,13 +4,15 @@
   "summary": {
     "unmatched_api_subwords": 0,
     "dangling_related_terms": 811,
-    "dangling_related_forms": 1085
+    "dangling_related_forms": 1019
   },
   "policy": {
     "unmatched_api_subwords": "Keep visible as subwords but disable deep link unless a target_code is resolved.",
     "dangling_related_terms": "Treat as non-clickable relation chips or unresolved references, not hard navigation targets.",
     "dangling_related_forms": "Treat as unresolved related forms; display text but guard navigation.",
-    "unresolved_zero_code": "Source provided target_code=0, so this relation should be handled as text-only and not as a resolvable internal link."
+    "unresolved_zero_code": "Source provided target_code=0, so this relation should be handled as text-only and not as a resolvable internal link.",
+    "resolved_exact_word_backfill": "If a related form word maps to exactly one different internal entry, backfill the target_code conservatively.",
+    "resolved_multi_exact_word_backfill": "If a related form word maps to multiple internal entries with the same surface, keep all internal targets so the UI can disambiguate by POS and definition."
   },
   "dangling_link_type_counts": {
     "related_terms": {
@@ -29,9 +31,11 @@
       "unresolved_missing_entry": 32
     },
     "related_forms": {
-      "resolved_internal": 30419,
-      "unresolved_no_target_code": 3478,
-      "unresolved_zero_code": 1084,
+      "resolved_internal": 30418,
+      "unresolved_no_target_code": 3284,
+      "unresolved_zero_code": 1018,
+      "resolved_multi_exact_word_backfill": 95,
+      "resolved_exact_word_backfill": 130,
       "unresolved_missing_entry": 1
     }
   },
@@ -4652,14 +4656,6 @@
       "link_type": null
     },
     {
-      "entry_id": "14241",
-      "entry_word": "감상",
-      "type": "파생어",
-      "word": "감상하다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
       "entry_id": "14242",
       "entry_word": "가판",
       "type": "파생어",
@@ -4876,14 +4872,6 @@
       "link_type": null
     },
     {
-      "entry_id": "15462",
-      "entry_word": "발전",
-      "type": "파생어",
-      "word": "발전하다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
       "entry_id": "15507",
       "entry_word": "간사",
       "type": "파생어",
@@ -4960,14 +4948,6 @@
       "entry_word": "검사",
       "type": "파생어",
       "word": "검사되다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
-      "entry_id": "17409",
-      "entry_word": "야만",
-      "type": "파생어",
-      "word": "야만적",
       "target_code": "0",
       "link_type": null
     },
@@ -5188,14 +5168,6 @@
       "link_type": null
     },
     {
-      "entry_id": "19985",
-      "entry_word": "단편",
-      "type": "파생어",
-      "word": "단편적",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
       "entry_id": "20019",
       "entry_word": "달거리",
       "type": "파생어",
@@ -5236,14 +5208,6 @@
       "link_type": null
     },
     {
-      "entry_id": "20626",
-      "entry_word": "연동",
-      "type": "파생어",
-      "word": "연동하다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
       "entry_id": "20748",
       "entry_word": "연예",
       "type": "파생어",
@@ -5280,14 +5244,6 @@
       "entry_word": "강론",
       "type": "파생어",
       "word": "강론되다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
-      "entry_id": "20983",
-      "entry_word": "강설",
-      "type": "파생어",
-      "word": "강설하다",
       "target_code": "0",
       "link_type": null
     },
@@ -5620,22 +5576,6 @@
       "link_type": null
     },
     {
-      "entry_id": "24979",
-      "entry_word": "이중",
-      "type": "파생어",
-      "word": "이중적",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
-      "entry_id": "25007",
-      "entry_word": "인공",
-      "type": "파생어",
-      "word": "인공적",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
       "entry_id": "25204",
       "entry_word": "검소",
       "type": "파생어",
@@ -5672,14 +5612,6 @@
       "entry_word": "경향",
       "type": "파생어",
       "word": "경향적",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
-      "entry_id": "25919",
-      "entry_word": "경주",
-      "type": "파생어",
-      "word": "경주하다",
       "target_code": "0",
       "link_type": null
     },
@@ -5980,14 +5912,6 @@
       "link_type": null
     },
     {
-      "entry_id": "31357",
-      "entry_word": "게걸스럽다",
-      "type": "파생어",
-      "word": "게걸스레",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
       "entry_id": "31397",
       "entry_word": "교사",
       "type": "파생어",
@@ -6032,22 +5956,6 @@
       "entry_word": "감수",
       "type": "파생어",
       "word": "감수되다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
-      "entry_id": "32131",
-      "entry_word": "결정",
-      "type": "파생어",
-      "word": "결정되다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
-      "entry_id": "32131",
-      "entry_word": "결정",
-      "type": "파생어",
-      "word": "결정하다",
       "target_code": "0",
       "link_type": null
     },
@@ -6204,14 +6112,6 @@
       "link_type": null
     },
     {
-      "entry_id": "34855",
-      "entry_word": "관상",
-      "type": "파생어",
-      "word": "관상하다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
       "entry_id": "34919",
       "entry_word": "구구",
       "type": "파생어",
@@ -6256,14 +6156,6 @@
       "entry_word": "간담",
       "type": "파생어",
       "word": "간담하다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
-      "entry_id": "35759",
-      "entry_word": "구인",
-      "type": "파생어",
-      "word": "구인하다",
       "target_code": "0",
       "link_type": null
     },
@@ -6572,14 +6464,6 @@
       "link_type": null
     },
     {
-      "entry_id": "38630",
-      "entry_word": "납작",
-      "type": "파생어",
-      "word": "납작하다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
       "entry_id": "38848",
       "entry_word": "나물",
       "type": "파생어",
@@ -6688,14 +6572,6 @@
       "entry_word": "꾀병",
       "type": "파생어",
       "word": "꾀병하다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
-      "entry_id": "40485",
-      "entry_word": "늘씬",
-      "type": "파생어",
-      "word": "늘씬하다",
       "target_code": "0",
       "link_type": null
     },
@@ -6980,14 +6856,6 @@
       "link_type": null
     },
     {
-      "entry_id": "45003",
-      "entry_word": "설문",
-      "type": "파생어",
-      "word": "설문하다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
       "entry_id": "45650",
       "entry_word": "누에치기",
       "type": "파생어",
@@ -7140,22 +7008,6 @@
       "link_type": null
     },
     {
-      "entry_id": "48703",
-      "entry_word": "덜컥",
-      "type": "파생어",
-      "word": "덜컥하다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
-      "entry_id": "48716",
-      "entry_word": "덜컹",
-      "type": "파생어",
-      "word": "덜컹하다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
       "entry_id": "48884",
       "entry_word": "독살",
       "type": "파생어",
@@ -7184,14 +7036,6 @@
       "entry_word": "독수공방",
       "type": "파생어",
       "word": "독수공방하다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
-      "entry_id": "49093",
-      "entry_word": "환경",
-      "type": "파생어",
-      "word": "환경적",
       "target_code": "0",
       "link_type": null
     },
@@ -7940,26 +7784,10 @@
       "link_type": null
     },
     {
-      "entry_id": "56949",
-      "entry_word": "반려",
-      "type": "파생어",
-      "word": "반려하다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
       "entry_id": "57119",
       "entry_word": "뭉실뭉실",
       "type": "파생어",
       "word": "뭉실뭉실하다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
-      "entry_id": "57160",
-      "entry_word": "반어",
-      "type": "파생어",
-      "word": "반어적",
       "target_code": "0",
       "link_type": null
     },
@@ -8088,14 +7916,6 @@
       "entry_word": "방긋",
       "type": "파생어",
       "word": "방긋대다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
-      "entry_id": "57916",
-      "entry_word": "방화",
-      "type": "파생어",
-      "word": "방화하다",
       "target_code": "0",
       "link_type": null
     },
@@ -8348,14 +8168,6 @@
       "link_type": null
     },
     {
-      "entry_id": "59140",
-      "entry_word": "배상",
-      "type": "파생어",
-      "word": "배상하다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
       "entry_id": "59188",
       "entry_word": "부릉",
       "type": "파생어",
@@ -8536,6 +8348,198 @@
       "entry_word": "빙그레",
       "type": "파생어",
       "word": "빙그레하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60333",
+      "entry_word": "분재",
+      "type": "파생어",
+      "word": "분재하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60347",
+      "entry_word": "빙긋",
+      "type": "파생어",
+      "word": "빙긋하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60352",
+      "entry_word": "불개입",
+      "type": "파생어",
+      "word": "불개입하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60379",
+      "entry_word": "빨랑빨랑",
+      "type": "파생어",
+      "word": "빨랑빨랑하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60386",
+      "entry_word": "불쑥불쑥",
+      "type": "파생어",
+      "word": "불쑥불쑥하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60388",
+      "entry_word": "불안",
+      "type": "파생어",
+      "word": "불안히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60423",
+      "entry_word": "빙빙",
+      "type": "파생어",
+      "word": "빙빙거리다, 빙빙대다, 빙빙하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60492",
+      "entry_word": "다수",
+      "type": "파생어",
+      "word": "다수하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60492",
+      "entry_word": "다수",
+      "type": "파생어",
+      "word": "다수히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60504",
+      "entry_word": "불구속",
+      "type": "파생어",
+      "word": "불구속되다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60504",
+      "entry_word": "불구속",
+      "type": "파생어",
+      "word": "불구속하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60568",
+      "entry_word": "빌미",
+      "type": "파생어",
+      "word": "빌미하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60629",
+      "entry_word": "불량스럽다",
+      "type": "파생어",
+      "word": "불량스레",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60748",
+      "entry_word": "비명횡사",
+      "type": "파생어",
+      "word": "비명횡사하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60757",
+      "entry_word": "비죽비죽",
+      "type": "파생어",
+      "word": "비죽비죽하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60795",
+      "entry_word": "빠끔",
+      "type": "파생어",
+      "word": "빠끔하다, 빠끔거리다, 빠끔대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60798",
+      "entry_word": "빠끔빠끔",
+      "type": "파생어",
+      "word": "빠끔빠끔하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60884",
+      "entry_word": "불쑥",
+      "type": "파생어",
+      "word": "불쑥거리다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60884",
+      "entry_word": "불쑥",
+      "type": "파생어",
+      "word": "불쑥대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60884",
+      "entry_word": "불쑥",
+      "type": "파생어",
+      "word": "불쑥하다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60896",
+      "entry_word": "비례",
+      "type": "파생어",
+      "word": "비례적",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60924",
+      "entry_word": "빡빡",
+      "type": "파생어",
+      "word": "빡빡거리다, 빡빡대다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60962",
+      "entry_word": "불쾌",
+      "type": "파생어",
+      "word": "불쾌히",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "60971",
+      "entry_word": "불편스럽다",
+      "type": "파생어",
+      "word": "불편스레",
       "target_code": "0",
       "link_type": null
     }

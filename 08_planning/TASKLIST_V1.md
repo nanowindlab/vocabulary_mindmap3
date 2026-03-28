@@ -1,31 +1,33 @@
 # TASKLIST_V1
 
-## Authoritative Active Work
+## Authoritative Current State
 
-### MM3-266F APP_READY Runtime Payload Repartition Design
+### MM3-268 2026-03-28 Feedback Intake / Execution Plan
 
-- Status: `IN_PROGRESS`
-- Goal: current runtime symptom과 `MM3-267` workaround를 기준으로 `APP_READY_*` payload를 learner-facing access pattern 기준으로 다시 나누는 design task를 진행한다.
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: 2026-03-28 사용자 feedback를 원문 의미를 유지한 채 task 단위로 추적하고 direct-fix부터 순서대로 처리한다.
 - Input:
-  - `08_planning/reports/20260327_MM3_266B_STORAGE_LAYOUT_OPTIONS_STUDY_V1.md`
-  - `08_planning/reports/20260327_MM3_266C_RECOMMENDED_ARCHITECTURE_AND_MIGRATION_PLAN_V1.md`
-  - `08_planning/reports/20260327_MM3_267_T1_LOADER_CACHING_HARDENING_IMPLEMENTATION_V1.md`
-  - `08_planning/reports/20260327_MM3_266F_APP_READY_RUNTIME_PAYLOAD_REPARTITION_OPENING_V1.md`
+  - `08_planning/reports/20260328_MM3_268_FEEDBACK_INTAKE_AND_EXECUTION_PLAN_V1.md`
+  - `/Users/nanowind/Desktop/스크린샷 2026-03-28 오후 1.51.26.png`
+  - `/Users/nanowind/Desktop/스크린샷 2026-03-28 오후 1.32.43.png`
+  - `/Users/nanowind/Desktop/스크린샷 2026-03-28 오후 2.06.00.png`
+  - `/Users/nanowind/Desktop/스크린샷 2026-03-28 오후 2.13.30.png`
+  - `/Users/nanowind/Desktop/스크린샷 2026-03-28 오후 2.12.57.png`
 - Prior closeout:
-  - `MM3-267` runtime data performance optimization: `DONE`
+  - `MM3-261B` batch 03 implementation: `DONE`
 - Progress lock:
-  - `MM3-266F` opening: `DONE`
-  - `MM3-266F` repartition target architecture draft: `DONE`
-  - `MM3-266F` tranche selection / execution plan: `DONE`
-  - `MM3-266F` PM validation / 3-expert review / PM improvement / revalidation: `DONE`
-  - `MM3-266F` `T1 Formalize Search-Index-Derived Tree Runtime`: `DONE`
-  - `MM3-266F` `T2 DETAIL_MAP demotion preparation`: `DONE`
-  - `MM3-266F` fallback retirement / chunk build source migration decision: `DONE`
-  - `MM3-266F` debug-only fallback gate + canonical-direct chunk builder plan: `DONE`
-  - `MM3-266F` debug-only fallback gate implementation: `DONE`
-  - `MM3-266F` canonical-direct chunk builder implementation: `DONE`
-  - `MM3-266F` repair target migration: `DONE`
-  - next active substep: `DETAIL_MAP retention vs removal decision`
+  - feedback item decomposition and tracking rule: `DONE`
+  - execution order lock: `DONE`
+  - `MM3-268E` search dropdown / homonym selection local repro check: `DONE`
+  - `MM3-268D` Quick Entry Overlay(E 방법) 제거: `DONE`
+  - `MM3-268C` node preview persistence closeout: `DONE`
+  - `MM3-268B` unclassified floating node analysis: `DONE`
+  - `MM3-268A` example type learner priority decision draft: `DONE`
+  - `MM3-268F` tab count wrapping review: `DONE`
+  - `MM3-268G` 핵심 뜻 카드 redesign review: `DONE`
+  - `MM3-268` feedback wave closeout: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
 
 ## Active Task Rows
 
@@ -349,19 +351,27 @@
 - `MM3-260B` top architecture improved plan lock: `DONE`
 - `MM3-260C` detail core/translation practical reading re-review: `DONE`
 - `MM3-261A` top architecture consolidation implementation tranche: `DONE`
-- `MM3-261B` top architecture theme continuity art-direction polish: `IN_PROGRESS`
+- `MM3-261B` top architecture theme continuity art-direction polish: `DONE`
 - `MM3-263A` subject-none cohort canonical/runtime exclusion policy implementation: `DONE`
 - `MM3-264A` `A` canonical taxonomy display mapping: `DONE`
 - `MM3-264B` `E` quick-entry overlay implementation: `DONE`
-- `MM3-265A` 분류 밖 항목 처리/재분류 comparative study opening: `TODO`
+- `MM3-265A` 분류 밖 항목 처리/재분류 comparative study opening: `DONE`
 - `MM3-266A` 자료 구조 최적화 opening: `DONE`
 - `MM3-266B` payload weight and duplication audit: `DONE`
 - `MM3-266C` alternative storage/layout options study: `DONE`
 - `MM3-266D` recommended optimization architecture and migration plan: `DONE`
-- `MM3-266F` `APP_READY_*` runtime payload repartition design: `IN_PROGRESS`
+- `MM3-266F` `APP_READY_*` runtime payload repartition design: `DONE`
 - `MM3-267A` runtime data performance optimization opening: `DONE`
 - `MM3-267B` `Vercel` deployed runtime perf verification: `DONE`
-- `MM3-266E` runtime interaction performance hardening: `IN_PROGRESS`
+- `MM3-266E` runtime interaction performance hardening: `DONE`
+- `MM3-268A` 예문 종류 learner priority review: `DONE`
+- `MM3-268B` 분류 밖 항목 floating node 상황 분석: `DONE`
+- `MM3-268C` detail load 후 node preview 잔류 bug 확인: `DONE`
+- `MM3-268D` Quick Entry Overlay(E 방법) 폐기: `DONE`
+- `MM3-268E` 검색창 결과 리스트 / 동형어 선택 복구: `DONE`
+- `MM3-268F` tab count wrapping feasibility review: `DONE`
+- `MM3-268G` 핵심 뜻 카드 redesign review: `DONE`
+- `MM3-268H` tree navigation ↔ mindmap 분류 양방향 sync: `DONE`
 - `MM3-201A` post-closeout additional feedback coverage check: `DONE`
 - `MM3-201B` post-closeout additional feedback literal documentation sync: `DONE`
 - `MM3-202A` detail top-of-fold helper density re-review scope 정의: `DONE`

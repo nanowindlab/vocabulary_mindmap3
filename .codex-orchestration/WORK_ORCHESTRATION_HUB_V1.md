@@ -3,7 +3,7 @@
 ## Project
 
 - Name: 어휘 마인드맵 3
-- Current Phase: `M0 Governance / Documentation Setup`
+- Current Phase: `M1 Runtime Wiring / Core Explorer`
 - Main PM: `Codex`
 - PM Canonical Docs: `08_planning/`
 
@@ -11,7 +11,7 @@
 
 1. `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`
 2. `08_planning/TASKLIST_V1.md`
-3. `.codex-orchestration/PM_OPERATING_MODEL_V1.md`
+3. `pm-operating-guide.md`
 4. `08_planning/DOCUMENT_SYSTEM_POLICY_V1.md`
 5. `08_planning/PRODUCT_SCENARIO_SPEC_V1.md`
 6. `.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md`
@@ -31,13 +31,14 @@
 
 ## Active Work Package
 
-- `MM3-009`: IA package definition
+- none
+- latest closeout: `MM3-268`
 
 ## Immediate Next Outcomes
 
-1. accepted scenario structure를 IA package로 세분화
-2. `IA_AGENT`가 홈/결과/상세/표현층/필터 바의 화면 단위 IA를 정리
-3. PM가 IA를 기준으로 runtime contract 준비 여부를 판단
+1. no active execution package
+2. wait for next user directive
+3. when reopened, open a new task id instead of reusing `MM3-268`
 
 ## Active Agents
 

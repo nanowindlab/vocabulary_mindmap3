@@ -1,6 +1,6 @@
 {
   "version": "v1",
-  "generated_at": "2026-03-27T12:57:57.667Z",
+  "generated_at": "2026-03-28T14:15:54.225Z",
   "payload_count": 220,
   "entries": [
     {
@@ -36,8 +36,8 @@
     {
       "file": "CHUNK_MANIFEST_V1.json",
       "source_bytes": 7627,
-      "compressed_bytes": 462,
-      "sha256": "6ddc6e62039d6664d270b9c516137aac4e9a75f541e220b5b0d9bc6243937eed"
+      "compressed_bytes": 461,
+      "sha256": "48085a3667d1bd9fe98b67643ee3a871ca92745eb9b973197b5985ca8eac3a45"
     },
     {
       "file": "APP_READY_CHUNK_RICH_chunk-0001.json",

@@ -16,6 +16,10 @@ test("search and facet wiring smoke", async ({ page }) => {
   await expect(page.getByRole("button", { name: /주제 및 상황/ })).toBeVisible();
 
   const search = page.getByTestId("search-input");
+  await search.fill("보다");
+  await expect(page.locator(".search-dropdown-shell")).toBeVisible();
+  await expect(page.locator("[data-search-result='true']").first()).toBeVisible();
+
   await search.fill("엄수하다");
 
   const firstResult = page.locator("[data-search-result='true']").first();
@@ -36,7 +40,6 @@ test("search and facet wiring smoke", async ({ page }) => {
   await expect(page.getByTestId("detail-word")).toHaveText("밥");
   await page.getByRole("button", { name: /^활용 표현/ }).click();
   await expect(page.getByRole("heading", { name: "표현층" })).toBeVisible();
-  await expect(page.getByText("현재 표제어 맥락에서 먼저 보는 표현").first()).toBeVisible();
   await expect(page.locator("[data-testid^='subword-card-']").first()).toBeVisible();
 
   await page.getByRole("button", { name: /주제 및 상황/ }).click();
