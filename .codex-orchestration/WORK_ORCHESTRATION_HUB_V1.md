@@ -25,27 +25,29 @@
 - 업무지시와 보고서는 한국어를 기본으로 한다.
 - `mindmap2`에서 가져오는 것은 운영 참고, UI rhythm, TOPIK stats뿐이며 taxonomy 개념은 그대로 가져오지 않는다.
 - 문서 요약보다 실제 artifact를 우선한다.
-- active state source of truth는 `08_planning/TASKLIST_V1.md`, `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`, `.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md`, `08_planning/reports/20260329_MM3_290_PHASE1_CLOSEOUT_AND_PHASE2_RELATION_EXPLORER_KICKOFF_V1.md`다.
+- active state source of truth는 `08_planning/TASKLIST_V1.md`, `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`, `.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md`, `08_planning/reports/20260329_MM3_300_RELATION_TOP_FILTER_CARRYOVER_V1.md`다.
 - 스크립트/앱 작업은 사용자가 별도로 다시 열기 전까지 parked backlog다.
 - 모든 agent lane은 기본적으로 `작업 -> 검증 -> learner 포함 3인 전문가 비판 검토 -> 개선 -> 재검증` 루프를 거친다.
 
 ## Active Work Package
 
 - none
-- latest closeout: `MM3-290`
+- latest closeout: `MM3-300`
 
 ## Immediate Next Outcomes
 
 1. no active execution package
-2. wait for next user directive
-3. when reopened, open a new task id instead of reusing `MM3-290`
+2. current queue is empty
+3. local preview is live
 
 ## Planned Workset
 
 - Phase 2 Workflow A:
-  - `MM3-291 -> MM3-292`
+  - none
 - Phase 2 Workflow B:
-  - `MM3-293 -> MM3-294`
+  - parked follow-on only
+- Phase 2 Workflow C:
+  - parked follow-on only
 
 - `WS1 / MM3-285` `DONE`
   - relation compare contract
@@ -68,24 +70,64 @@
   - expected output: expression redesign implementation + validation evidence
 
 - `WS5 / MM3-291`
+  - `DONE`
   - relation explorer IA canonical
   - write boundary: PM packet + planning docs
   - expected output: IA canonical + study unit definition
 
 - `WS6 / MM3-292`
+  - `DONE`
   - relation navigator data contract
   - write boundary: PM packet + data/architecture docs only
   - expected output: shared data contract + derived relation navigator rule
 
 - `WS7 / MM3-293`
+  - `DONE`
   - workspace / Vercel multi-project topology
   - write boundary: PM packet + foundation / deploy docs
   - expected output: build/deploy topology rule
 
 - `WS8 / MM3-294`
+  - `DONE`
   - relation explorer shell opening
   - write boundary: `10_relation_app/` only
   - expected output: app shell opening
+
+- `WS9 / MM3-295`
+  - `DONE`
+  - expression follow-on planning
+  - write boundary: PM packet + roadmap docs
+  - expected output: later expression roadmap registration
+
+- `WS10 / MM3-296`
+  - `DONE`
+  - relation navigator data wiring
+  - write boundary: `10_relation_app/` + shell data adapter only
+  - expected output: shell-to-data integration
+
+- `WS11 / MM3-297`
+  - `DONE`
+  - relation compare detail and mindmap wiring
+  - write boundary: `10_relation_app/` only
+  - expected output: actual compare/detail jump + mindmap expansion wiring
+
+- `WS12 / MM3-298`
+  - `DONE`
+  - relation explorer local preview launch
+  - write boundary: local run only
+  - expected output: user-viewable local preview
+
+- `WS13 / MM3-299`
+  - `DONE`
+  - relation route and deep detail follow-on
+  - write boundary: `10_relation_app/` only
+  - expected output: route-level jump + deeper detail fetch refinement
+
+- `WS14 / MM3-300`
+  - `DONE`
+  - relation top filter carryover
+  - write boundary: `10_relation_app/` only
+  - expected output: MM3-style top filter carryover
 
 ## Active Agents
 

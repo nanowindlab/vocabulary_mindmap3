@@ -101,30 +101,72 @@
 ### `MM3-291` Relation Explorer IA Canonical
 
 - status:
-  - `PLANNED`
+  - `DONE`
 - target:
   - relation-first app IA와 study unit을 canonical로 고정
 
 ### `MM3-292` Relation Navigator Data Contract
 
 - status:
-  - `PLANNED`
+  - `DONE`
 - target:
   - shared DB 기준 relation navigator source contract를 고정
 
 ### `MM3-293` Workspace / Vercel Multi-Project Topology
 
 - status:
-  - `PLANNED`
+  - `DONE`
 - target:
   - same repo / separate app / separate deploy boundary를 고정
 
 ### `MM3-294` Relation Explorer App Shell Opening
 
 - status:
-  - `PLANNED`
+  - `DONE`
 - target:
   - `10_relation_app/` shell opening
+
+### `MM3-295` Expression Follow-On Planning
+
+- status:
+  - `DONE`
+- target:
+  - `활용 표현` later scope와 reopen timing을 roadmapped follow-on으로 등록
+
+### `MM3-296` Relation Navigator Data Wiring
+
+- status:
+  - `DONE`
+- target:
+  - `10_relation_app/` shell에 actual relation data를 연결
+
+### `MM3-297` Relation Compare Detail And Mindmap Wiring
+
+- status:
+  - `DONE`
+- target:
+  - actual compare/detail jump와 mindmap expansion을 연결
+
+### `MM3-298` Relation Explorer Local Preview Launch
+
+- status:
+  - `DONE`
+- target:
+  - local preview를 실행해 current shell을 바로 볼 수 있게 한다
+
+### `MM3-299` Relation Route And Deep Detail Follow-On
+
+- status:
+  - `DONE`
+- target:
+  - route-level jump와 deeper detail fetch를 refinement한다
+
+### `MM3-300` Relation Top Filter Carryover
+
+- status:
+  - `DONE`
+- target:
+  - MM3 top filter carryover와 language/TOPIK rule을 relation explorer shell에 반영
 
 ## Follow-On Non-Goals
 
@@ -197,7 +239,7 @@
 
 ## Next Active Work
 
-- `MM3-291 Relation Explorer IA Canonical`
+- none
 
 ## Revision History
 
@@ -211,3 +253,10 @@
 - `R8` / `2026-03-29 11:10 KST` / `Codex PM` / `MM3-287`, `MM3-288` expression tranche를 같은 turn에 closeout하고 next active work를 `MM3-289`로 갱신
 - `R9` / `2026-03-29 11:15 KST` / `Codex PM` / `MM3-289` dedicated route readiness gate를 closeout하고 follow-on workflow를 current directive 기준으로 모두 닫음
 - `R10` / `2026-03-29 12:40 KST` / `Codex PM` / phase1 closeout과 phase2 separate relation explorer opening을 roadmap에 반영
+- `R11` / `2026-03-29 13:04 KST` / `Codex PM` / `MM3-291` relation explorer IA canonical을 closeout하고 next active work를 `MM3-292`로 갱신
+- `R12` / `2026-03-29 21:50 KST` / `Codex PM` / `MM3-292` relation navigator data contract를 opening하고 `MM3-295` expression follow-on planning을 later roadmap으로 등록
+- `R13` / `2026-03-29 21:50 KST` / `Codex PM` / `MM3-292`, `MM3-293`를 same-turn doc bundle로 closeout하고 next active work를 `MM3-294`로 갱신
+- `R14` / `2026-03-29 22:18 KST` / `Codex PM` / `MM3-294`, `MM3-295`를 same-turn bundle로 closeout하고 next active work를 `MM3-296`으로 갱신
+- `R15` / `2026-03-29 22:18 KST` / `Codex PM` / `MM3-296` actual data wiring을 closeout하고 next active work를 `MM3-297`로 갱신
+- `R16` / `2026-03-29 22:18 KST` / `Codex PM` / `MM3-297`, `MM3-298`를 same-turn bundle로 closeout하고 next active work를 `MM3-299`로 갱신
+- `R17` / `2026-03-29 22:18 KST` / `Codex PM` / `MM3-299`, `MM3-300`를 same-turn bundle로 closeout하고 active queue를 비움

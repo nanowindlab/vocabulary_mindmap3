@@ -65,7 +65,6 @@
 - `MM3-212`에서 runtime/source payload validation과 count reconciliation은 `PASS`로 고정됐다.
 - `MM3-216`에서 TOPIK stats linkage policy를 고정했다.
 - 현재 active execution task는 없다.
-- latest closeout package는 `MM3-290 2026-03-29 Phase 1 Closeout And Phase 2 Relation Explorer Kickoff`이다.
 - current `09_app/`은 Phase 1 frozen baseline이다.
 - Phase 2는 separate `관계 탐색 앱`으로 연다.
 - same workspace / same repo 안에서 `10_relation_app/`를 여는 방식이 current recommendation이다.
@@ -74,7 +73,20 @@
 - current relation tab은 `빠른 비교 -> 확장 관계 -> 형태·문체 변이 -> 관련형 -> 연관 어휘 -> 교차 연결 장면` 순서를 사용한다.
 - current expression tab은 `관용구와 속담` support surface와 `관용구 / 속담` section 구조를 사용한다.
 - `MM3-289` verdict는 same-app dedicated route `NOT_READY_YET`다.
-- Phase 2 planned queue는 `MM3-291 -> MM3-292 -> MM3-293 -> MM3-294`다.
+- latest closeout package는 `MM3-300 2026-03-29 Relation Top Filter Carryover`이다.
+- `MM3-291`에서 separate relation explorer app의 `MM3` theme continuity, relation family direct opening, subgroup tree, relation study card 중심 scenario가 고정됐다.
+- `MM3-292`에서 subgroup split trigger, card minimum field, compare input contract를 current schema 기준으로 고정했다.
+- `MM3-292`에서 branch 기준은 current schema direct use/adapt only로 좁히고, totally new DB schema는 열지 않는 contract를 다룬다.
+- `MM3-293`에서 same repo / separate app / separate Vercel project topology를 고정했다.
+- `MM3-294`에서 `10_relation_app/` shell을 열었고 `npm run build`를 통과했다.
+- `활용 표현` later follow-on planning은 `MM3-295`에서 닫았다.
+- `MM3-296`에서 actual relation bootstrap과 family JSON을 생성했고 shell을 fetched data 기준으로 연결했다.
+- `MM3-297`에서 compare/detail/mindmap interaction을 actual interactive state로 올렸다.
+- `MM3-299`에서 route hash state와 deeper detail metadata refinement를 반영했다.
+- `MM3-300`에서 상단 filter carryover, `영어/몽골어` 제한, `영어` default, `TOPIK 빈도` filter를 반영했다.
+- local preview는 [http://127.0.0.1:4174/](http://127.0.0.1:4174/) 에서 실행 중이다.
+- current queue는 비어 있다.
+- Phase 2 planned queue는 없다.
 - source-ambiguous `related_forms`는 SSOT source에 target이 없으므로 `text-only`로 유지하고, current backlog로 다시 열지 않는다.
 - `분류 밖 항목`은 main nav tab에서는 제거됐고, search result와 search-driven detail route로만 계속 접근한다.
 - current deploy boundary payload는 explicit/manual path로 `npm --prefix 09_app run rebuild:canonical-runtime`로 다시 생성할 수 있다.

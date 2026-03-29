@@ -2,6 +2,193 @@
 
 ## Authoritative Current State
 
+### MM3-300 2026-03-29 Relation Top Filter Carryover
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: MM3 top filter carryover를 relation explorer shell에 반영한다.
+- Input:
+  - `08_planning/reports/20260329_MM3_300_RELATION_TOP_FILTER_CARRYOVER_V1.md`
+  - `10_relation_app/src/App.jsx`
+  - `10_relation_app/scripts/build-relation-bootstrap.mjs`
+- Prior closeout:
+  - `MM3-299` relation route and deep detail follow-on: `DONE`
+- Progress lock:
+  - translation language rule `영어/몽골어`: `DONE`
+  - `영어` default: `DONE`
+  - `TOPIK 빈도` filter: `DONE`
+  - next active substep: `새 directive가 오면 새 task id`
+
+### MM3-299 2026-03-29 Relation Route And Deep Detail Follow-On
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: route state 유지와 deeper detail refinement를 relation explorer shell에 반영한다.
+- Input:
+  - `08_planning/reports/20260329_MM3_299_RELATION_ROUTE_AND_DEEP_DETAIL_FOLLOW_ON_V1.md`
+  - `10_relation_app/src/App.jsx`
+  - `10_relation_app/scripts/build-relation-bootstrap.mjs`
+- Prior closeout:
+  - `MM3-298` relation explorer local preview launch: `DONE`
+- Progress lock:
+  - route hash state: `DONE`
+  - deeper detail metadata: `DONE`
+  - same turn bundle with `MM3-300`: `DONE`
+  - next active substep: `same turn bundle -> MM3-300`
+
+### MM3-298 2026-03-29 Relation Explorer Local Preview Launch
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: local preview를 실행해 현재 relation explorer shape를 바로 볼 수 있게 한다.
+- Input:
+  - `08_planning/reports/20260329_MM3_298_RELATION_EXPLORER_LOCAL_PREVIEW_LAUNCH_V1.md`
+  - `10_relation_app/package.json`
+- Prior closeout:
+  - `MM3-297` relation compare detail and mindmap wiring: `DONE`
+- Progress lock:
+  - local dev server launch: `DONE`
+  - preview url 확보: `DONE`
+  - next active substep: `새 directive가 오면 MM3-299부터 새 task id로 연다`
+
+### MM3-297 2026-03-29 Relation Compare Detail And Mindmap Wiring
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: actual compare detail drilldown과 mindmap expansion을 `10_relation_app/`에 연결한다.
+- Input:
+  - `08_planning/reports/20260329_MM3_297_RELATION_COMPARE_DETAIL_AND_MINDMAP_WIRING_V1.md`
+  - `10_relation_app/src/App.jsx`
+  - `10_relation_app/scripts/build-relation-bootstrap.mjs`
+  - `10_relation_app/src/index.css`
+- Prior closeout:
+  - `MM3-296` relation navigator data wiring: `DONE`
+- Progress lock:
+  - term detail enrichment: `DONE`
+  - detail drilldown wiring: `DONE`
+  - mindmap expansion wiring: `DONE`
+  - build validation: `DONE`
+  - same turn bundle with `MM3-298`: `DONE`
+  - next active substep: `same turn bundle -> MM3-298`
+
+### MM3-296 2026-03-29 Relation Navigator Data Wiring
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: `10_relation_app/` shell에 actual relation data를 연결하고 build까지 통과시킨다.
+- Input:
+  - `08_planning/reports/20260329_MM3_296_RELATION_NAVIGATOR_DATA_WIRING_V1.md`
+  - `10_relation_app/scripts/build-relation-bootstrap.mjs`
+  - `10_relation_app/src/App.jsx`
+  - `10_relation_app/public/data/relation-bootstrap.json`
+- Prior closeout:
+  - `MM3-295` expression follow-on planning: `DONE`
+- Progress lock:
+  - derived bootstrap generation: `DONE`
+  - family payload generation: `DONE`
+  - shell fetch wiring: `DONE`
+  - build validation: `DONE`
+  - new follow-up task need explicit: `DONE`
+  - next active substep: `새 directive가 오면 MM3-297부터 새 task id로 연다`
+
+### MM3-295 2026-03-29 Expression Follow-On Planning
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: `활용 표현` later follow-on planning과 reopen timing을 고정한다.
+- Input:
+  - `08_planning/reports/20260329_MM3_295_EXPRESSION_FOLLOW_ON_PLANNING_V1.md`
+  - `08_planning/reports/20260329_MM3_282_PROJECT_DB_BASELINE_AND_RELATION_EXPRESSION_STRENGTHENING_V1.md`
+  - `08_planning/reports/20260329_MM3_292_RELATION_NAVIGATOR_DATA_CONTRACT_V1.md`
+- Prior closeout:
+  - `MM3-294` relation explorer app shell opening: `DONE`
+- Progress lock:
+  - later roadmap 유지: `DONE`
+  - first-opening exclusion 유지: `DONE`
+  - reopen timing rule: `DONE`
+  - next active substep: `새 directive가 오면 MM3-296부터 새 task id로 연다`
+
+### MM3-294 2026-03-29 Relation Explorer App Shell Opening
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: `10_relation_app/` 안에서 separate relation explorer shell을 열고 build까지 통과시킨다.
+- Input:
+  - `08_planning/reports/20260329_MM3_294_RELATION_EXPLORER_APP_SHELL_OPENING_V1.md`
+  - `10_relation_app/package.json`
+  - `10_relation_app/src/App.jsx`
+  - `10_relation_app/src/index.css`
+- Prior closeout:
+  - `MM3-293` workspace / Vercel multi-project topology: `DONE`
+- Progress lock:
+  - shell scaffold 추가: `DONE`
+  - theme continuity shell 구현: `DONE`
+  - `npm install`: `DONE`
+  - `npm run build`: `DONE`
+  - next active substep: `same turn bundle -> MM3-295`
+
+### MM3-293 2026-03-29 Workspace / Vercel Multi-Project Topology
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: same repo / separate app / separate Vercel project topology를 current repo boundary 기준으로 고정한다.
+- Input:
+  - `08_planning/reports/20260329_MM3_293_WORKSPACE_VERCEL_MULTI_PROJECT_TOPOLOGY_V1.md`
+  - `08_planning/RELATION_EXPLORER_APP_FOUNDATION_V1.md`
+  - `vercel.json`
+  - `09_app/package.json`
+- Prior closeout:
+  - `MM3-292` relation navigator data contract: `DONE`
+- Progress lock:
+  - same repo / separate app rule: `DONE`
+  - current root `vercel.json` Phase 1 boundary rule: `DONE`
+  - separate Vercel project rule: `DONE`
+  - next active substep: `새 directive가 오면 MM3-294부터 새 task id로 연다`
+
+### MM3-292 2026-03-29 Relation Navigator Data Contract
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: relation explorer navigator의 depth, subgroup split trigger, card minimum field, compare input contract를 current schema 기준으로 고정한다.
+- Input:
+  - `08_planning/reports/20260329_MM3_292_RELATION_NAVIGATOR_DATA_CONTRACT_V1.md`
+  - `08_planning/reports/20260329_MM3_291_RELATION_EXPLORER_IA_CANONICAL_V1.md`
+  - `08_planning/reports/20260329_MM3_282_PROJECT_DB_BASELINE_AND_RELATION_EXPRESSION_STRENGTHENING_V1.md`
+  - `08_planning/RELATION_EXPLORER_APP_FOUNDATION_V1.md`
+- Prior closeout:
+  - `MM3-291` relation explorer IA canonical: `DONE`
+- Progress lock:
+  - current schema reuse/adapt only rule: `DONE`
+  - default 3단계 + selective 4단계 rule: `DONE`
+  - scroll budget opening: `DONE`
+  - later expression roadmap registration: `DONE`
+  - subgroup split trigger: `DONE`
+  - card minimum field contract: `DONE`
+  - compare input contract: `DONE`
+  - same-turn bundle with `MM3-293`: `DONE`
+
+### MM3-291 2026-03-29 Relation Explorer IA Canonical
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: separate `관계 탐색 앱`의 `MM3` theme continuity, direct opening 구조, tree navigator layer 기준, relation study scenario를 canonical로 고정한다.
+- Input:
+  - `08_planning/reports/20260329_MM3_291_RELATION_EXPLORER_IA_CANONICAL_V1.md`
+  - `08_planning/RELATION_EXPLORER_APP_FOUNDATION_V1.md`
+  - `08_planning/reports/20260329_MM3_290_PHASE1_CLOSEOUT_AND_PHASE2_RELATION_EXPLORER_KICKOFF_V1.md`
+  - `08_planning/reports/20260329_MM3_281_RELATION_EXPRESSION_DEEP_RESEARCH_AND_APPLICATION_PLAN_V1.md`
+  - `08_planning/reports/20260329_MM3_282_PROJECT_DB_BASELINE_AND_RELATION_EXPRESSION_STRENGTHENING_V1.md`
+  - `08_planning/reports/20260326_MM3_236_MM3_UI_REFINEMENT_ROADMAP_V1.md`
+- Prior closeout:
+  - `MM3-290` phase 1 closeout and phase 2 relation explorer kickoff: `DONE`
+- Progress lock:
+  - `MM3` theme continuity rule: `DONE`
+  - separate app direct opening rule: `DONE`
+  - tree navigator 1st/2nd layer 기준: `DONE`
+  - relation study card / compare scenario rule: `DONE`
+  - mindmap connection rule: `DONE`
+  - next active substep: `새 directive가 오면 MM3-292부터 새 task id로 연다`
+
 ### MM3-290 2026-03-29 Phase 1 Closeout And Phase 2 Relation Explorer Kickoff
 
 - Status: `DONE`
@@ -42,10 +229,7 @@
 
 ## Phase 2 Planned Queue
 
-- `MM3-291` Relation Explorer IA Canonical
-- `MM3-292` Relation Navigator Data Contract
-- `MM3-293` Workspace / Vercel Multi-Project Topology
-- `MM3-294` Relation Explorer App Shell Opening
+- none
 
 ### MM3-288 2026-03-29 Expression Idiom-Proverb Implementation And Validation
 

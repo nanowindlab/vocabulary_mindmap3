@@ -1,0 +1,126 @@
+{
+  "generatedAt": "2026-03-29T15:34:13.773Z",
+  "familyCount": 8,
+  "families": [
+    {
+      "id": "synonym",
+      "label": "비슷한말",
+      "summary": "뜻이 가까운 말을 빠르게 비교합니다.",
+      "tone": "blue",
+      "bucketCount": 28,
+      "groupCount": 156,
+      "cardCount": 2395,
+      "previewGroups": [
+        "가사 행위",
+        "가족 행사",
+        "감각"
+      ],
+      "dataUrl": "/data/relation-family-synonym.json"
+    },
+    {
+      "id": "antonym",
+      "label": "반대말",
+      "summary": "대조가 분명한 말을 나란히 학습합니다.",
+      "tone": "orange",
+      "bucketCount": 17,
+      "groupCount": 109,
+      "cardCount": 1008,
+      "previewGroups": [
+        "감정",
+        "경제 상태",
+        "경제 행위"
+      ],
+      "dataUrl": "/data/relation-family-antonym.json"
+    },
+    {
+      "id": "reference",
+      "label": "참고어",
+      "summary": "완전 같은말은 아니지만 같이 보면 좋은 관계를 묶습니다.",
+      "tone": "green",
+      "bucketCount": 23,
+      "groupCount": 143,
+      "cardCount": 1718,
+      "previewGroups": [
+        "감정",
+        "경제 수단",
+        "경제 행위"
+      ],
+      "dataUrl": "/data/relation-family-reference.json"
+    },
+    {
+      "id": "honorific",
+      "label": "높임말·낮춤말",
+      "summary": "사람과 상황에 따라 달라지는 말의 높낮이를 봅니다.",
+      "tone": "purple",
+      "bucketCount": 9,
+      "groupCount": 19,
+      "cardCount": 49,
+      "previewGroups": [
+        "친족 관계",
+        "미분류",
+        "사회 활동"
+      ],
+      "dataUrl": "/data/relation-family-honorific.json"
+    },
+    {
+      "id": "size",
+      "label": "큰말·작은말",
+      "summary": "크고 작음의 짝을 한 흐름으로 봅니다.",
+      "tone": "purple",
+      "bucketCount": 13,
+      "groupCount": 52,
+      "cardCount": 386,
+      "previewGroups": [
+        "감각",
+        "모양",
+        "미분류"
+      ],
+      "dataUrl": "/data/relation-family-size.json"
+    },
+    {
+      "id": "intensity",
+      "label": "센말·여린말",
+      "summary": "강하고 약한 표현 차이를 비교합니다.",
+      "tone": "purple",
+      "bucketCount": 10,
+      "groupCount": 28,
+      "cardCount": 192,
+      "previewGroups": [
+        "모양",
+        "신체 행위",
+        "소리"
+      ],
+      "dataUrl": "/data/relation-family-intensity.json"
+    },
+    {
+      "id": "shortform",
+      "label": "준말·본말",
+      "summary": "줄인말과 원형을 함께 봅니다.",
+      "tone": "purple",
+      "bucketCount": 13,
+      "groupCount": 60,
+      "cardCount": 316,
+      "previewGroups": [
+        "모양",
+        "미분류",
+        "시간"
+      ],
+      "dataUrl": "/data/relation-family-shortform.json"
+    },
+    {
+      "id": "derived",
+      "label": "파생어·관련형",
+      "summary": "한 단어에서 가지처럼 뻗는 계열을 함께 봅니다.",
+      "tone": "red",
+      "bucketCount": 32,
+      "groupCount": 140,
+      "cardCount": 1822,
+      "previewGroups": [
+        "가사 행위",
+        "감각",
+        "감정"
+      ],
+      "dataUrl": "/data/relation-family-derived.json"
+    }
+  ]
+}

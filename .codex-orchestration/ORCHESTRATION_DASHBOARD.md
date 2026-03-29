@@ -3,7 +3,7 @@
 ## Current Status
 
 - Milestone: `Phase 2 Relation Explorer App Planning`
-- Active Work: `none (latest closeout: MM3-290)`
+- Active Work: `none (latest closeout: MM3-300)`
 - Latest Pilot Capture: `pilot_session_04 / 2026-03-26 01:28 KST / participant 사용자 / facilitator 사용자 / ad-hoc screenshot follow-up`
 - PM Owner: `Codex`
 - User Constraint: external references are read-only
@@ -12,6 +12,16 @@
 
 ## Completed This Turn
 
+- `MM3-300` relation top filter carryover
+- `MM3-299` relation route and deep detail follow-on
+- `MM3-298` relation explorer local preview launch
+- `MM3-297` relation compare detail and mindmap wiring
+- `MM3-296` relation navigator data wiring
+- `MM3-295` expression follow-on planning
+- `MM3-294` relation explorer app shell opening
+- `MM3-293` workspace / Vercel multi-project topology
+- `MM3-292` relation navigator data contract
+- `MM3-291` relation explorer IA canonical
 - `MM3-290` phase 1 closeout and phase 2 relation explorer kickoff
 - `MM3-289` in-app dedicated route readiness gate
 - `MM3-288` expression idiom-proverb implementation and validation
@@ -167,9 +177,20 @@
 ## In Progress
 
 - no active execution package
-- latest closeout: `MM3-290`
+- latest closeout: `MM3-300`
 - current step: `waiting for next directive`
 - just completed:
+  - `MM3-300`에서 상단 filter carryover, `영어/몽골어` 언어 제한, `영어` default, `TOPIK 빈도` filter를 반영했다
+  - `MM3-299`에서 route hash state와 deeper detail metadata refinement를 반영했다
+  - `MM3-298`에서 local preview를 `http://127.0.0.1:4174/`로 띄웠다
+  - `MM3-297`에서 compare/detail/mindmap interaction을 actual interactive state로 올렸다
+  - `MM3-296`에서 actual relation bootstrap과 family JSON을 생성했고 `10_relation_app` shell을 fetched data 기준으로 다시 연결했다
+  - `MM3-296` 검증으로 `relation-bootstrap familyCount=8`, sample family/group/card generation, `vite build PASS`를 확인했다
+  - `MM3-295`에서 `활용 표현` later follow-on planning과 reopen timing을 고정했다
+  - `MM3-294`에서 `10_relation_app/` shell을 열었고 `npm install`, `npm run build`를 통과했다
+  - `MM3-293`에서 same repo / separate app / separate Vercel project topology를 고정했고, current root `vercel.json`은 `10_relation_app` shell opening 전까지 `09_app` boundary로 유지하기로 잠갔다
+  - `MM3-292`에서 subgroup split trigger, card minimum field set, compare input contract를 current schema 기준으로 고정했고 `활용 표현`은 later roadmap item `MM3-295`로 유지했다
+  - `MM3-291`에서 separate `관계 탐색 앱`의 IA canonical을 고정했고, `MM3` theme continuity, relation family direct opening, relation-study subgroup tree, relation study card 중심 scenario, secondary relation mindmap rule을 잠갔다
   - `MM3-290`에서 current vocabulary mindmap app을 `Phase 1` closeout baseline으로 정리하고 separate relation explorer app `Phase 2` kickoff foundation을 만들었다
   - `MM3-289`에서 same-app dedicated route는 current stage에서 `NOT_READY_YET`로 판정하고 workflow C를 닫았다
   - `MM3-288`에서 expression tab을 `관용구 / 속담` 중심 support surface로 재구성하고 targeted expression validation `4 passed`로 닫았다
@@ -237,14 +258,12 @@
 ## Pending
 
 - Phase 2 planned queue:
-  - `MM3-291 Relation Explorer IA Canonical`
-  - `MM3-292 Relation Navigator Data Contract`
-  - `MM3-293 Workspace / Vercel Multi-Project Topology`
-  - `MM3-294 Relation Explorer App Shell Opening`
+  - none
 
 ## Risks
 
 - `P2-R1`: relation study용 하위 분류는 raw category를 그대로 쓰면 어색한 case가 있으므로 curated grouping이 필요하다.
+- `P2-R1A`: subgroup 정리는 current schema direct use/adapt boundary 안에서만 해야 하며, navigator를 위해 별도 DB schema를 만들면 drift risk가 커진다.
 - `P2-R2`: same repo two-app topology는 build / deploy boundary가 흐리면 drift가 생긴다.
 - `P2-R3`: Phase 1 frozen baseline과 Phase 2 active app이 서로 silent cross-edit 되지 않게 guardrail이 필요하다.
 - `R1`: human pilot를 다시 열면 새 feedback wave가 다시 열릴 수 있다.

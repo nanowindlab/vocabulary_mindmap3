@@ -97,6 +97,12 @@
 
 ## Brainstorm
 
+## Canonical IA Note
+
+- `MM3-291`에서 current separate relation explorer app IA canonical을 고정했다.
+- current IA truth가 필요하면 `08_planning/reports/20260329_MM3_291_RELATION_EXPLORER_IA_CANONICAL_V1.md`를 먼저 본다.
+- 아래 `Brainstorm`와 `Phase 2 Immediate Questions`는 foundation/history reference로 유지한다.
+
 ## Core Product Difference
 
 - Phase 1 `어휘 마인드맵`:
@@ -179,4 +185,3 @@
 
 - Vercel Projects overview:
   - [https://vercel.com/docs/projects/](https://vercel.com/docs/projects/)
-

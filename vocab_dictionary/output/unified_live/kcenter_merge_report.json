@@ -53505,9 +53505,1415 @@
       "skipped_grouped_json": 2883,
       "unmatched": 0
     },
+    "related_form_exact_backfill": {
+      "exact_resolved_count": 24484,
+      "multi_resolved_count": 8265,
+      "samples": [
+        {
+          "entry_id": "9471",
+          "entry_word": "요리하다",
+          "related_form": "요리",
+          "resolved_target_code": "30199",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "9471",
+          "entry_word": "요리하다",
+          "related_form": "요리",
+          "resolved_target_code": "89723",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "13957",
+          "entry_word": "시대적",
+          "related_form": "시대",
+          "resolved_target_code": "65119",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13957",
+          "entry_word": "시대적",
+          "related_form": "시대",
+          "resolved_target_code": "65119",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13958",
+          "entry_word": "시대적",
+          "related_form": "시대",
+          "resolved_target_code": "65119",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13958",
+          "entry_word": "시대적",
+          "related_form": "시대",
+          "resolved_target_code": "65119",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13960",
+          "entry_word": "시도",
+          "related_form": "시도되다",
+          "resolved_target_code": "66329",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13960",
+          "entry_word": "시도",
+          "related_form": "시도하다",
+          "resolved_target_code": "71098",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13970",
+          "entry_word": "시위",
+          "related_form": "시위하다",
+          "resolved_target_code": "66036",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13973",
+          "entry_word": "연결",
+          "related_form": "연결되다",
+          "resolved_target_code": "62329",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13973",
+          "entry_word": "연결",
+          "related_form": "연결하다",
+          "resolved_target_code": "67633",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13974",
+          "entry_word": "연관",
+          "related_form": "연관되다",
+          "resolved_target_code": "67437",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13974",
+          "entry_word": "연관",
+          "related_form": "연관시키다",
+          "resolved_target_code": "85497",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13974",
+          "entry_word": "연관",
+          "related_form": "연관하다",
+          "resolved_target_code": "67438",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13977",
+          "entry_word": "연극",
+          "related_form": "연극하다",
+          "resolved_target_code": "67449",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13985",
+          "entry_word": "시합",
+          "related_form": "시합하다",
+          "resolved_target_code": "65748",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13992",
+          "entry_word": "식히다",
+          "related_form": "식다",
+          "resolved_target_code": "30204",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13992",
+          "entry_word": "식히다",
+          "related_form": "식다",
+          "resolved_target_code": "30204",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13993",
+          "entry_word": "신",
+          "related_form": "신적",
+          "resolved_target_code": "91258",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "13993",
+          "entry_word": "신",
+          "related_form": "신적",
+          "resolved_target_code": "91259",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "13995",
+          "entry_word": "신고하다",
+          "related_form": "신고",
+          "resolved_target_code": "65328",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "13995",
+          "entry_word": "신고하다",
+          "related_form": "신고",
+          "resolved_target_code": "65328",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14003",
+          "entry_word": "답",
+          "related_form": "답하다",
+          "resolved_target_code": "64538",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14004",
+          "entry_word": "답변",
+          "related_form": "답변하다",
+          "resolved_target_code": "49441",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14006",
+          "entry_word": "담당",
+          "related_form": "담당하다",
+          "resolved_target_code": "62337",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14007",
+          "entry_word": "당당하다",
+          "related_form": "당당",
+          "resolved_target_code": "49469",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14007",
+          "entry_word": "당당하다",
+          "related_form": "당당",
+          "resolved_target_code": "49469",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14008",
+          "entry_word": "연기",
+          "related_form": "연기되다",
+          "resolved_target_code": "14009",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14008",
+          "entry_word": "연기",
+          "related_form": "연기하다",
+          "resolved_target_code": "14011",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14008",
+          "entry_word": "연기",
+          "related_form": "연기하다",
+          "resolved_target_code": "67480",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14009",
+          "entry_word": "연기되다",
+          "related_form": "연기",
+          "resolved_target_code": "14008",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14009",
+          "entry_word": "연기되다",
+          "related_form": "연기",
+          "resolved_target_code": "67478",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14009",
+          "entry_word": "연기되다",
+          "related_form": "연기",
+          "resolved_target_code": "67479",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14009",
+          "entry_word": "연기되다",
+          "related_form": "연기",
+          "resolved_target_code": "14008",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14009",
+          "entry_word": "연기되다",
+          "related_form": "연기",
+          "resolved_target_code": "67478",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14009",
+          "entry_word": "연기되다",
+          "related_form": "연기",
+          "resolved_target_code": "67479",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14011",
+          "entry_word": "연기하다",
+          "related_form": "연기",
+          "resolved_target_code": "14008",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14011",
+          "entry_word": "연기하다",
+          "related_form": "연기",
+          "resolved_target_code": "67478",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14011",
+          "entry_word": "연기하다",
+          "related_form": "연기",
+          "resolved_target_code": "67479",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14011",
+          "entry_word": "연기하다",
+          "related_form": "연기",
+          "resolved_target_code": "14008",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14011",
+          "entry_word": "연기하다",
+          "related_form": "연기",
+          "resolved_target_code": "67478",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14011",
+          "entry_word": "연기하다",
+          "related_form": "연기",
+          "resolved_target_code": "67479",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14013",
+          "entry_word": "연락",
+          "related_form": "연락하다",
+          "resolved_target_code": "62362",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14016",
+          "entry_word": "연상하다",
+          "related_form": "연상",
+          "resolved_target_code": "67555",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14016",
+          "entry_word": "연상하다",
+          "related_form": "연상",
+          "resolved_target_code": "67556",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14016",
+          "entry_word": "연상하다",
+          "related_form": "연상",
+          "resolved_target_code": "67555",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14016",
+          "entry_word": "연상하다",
+          "related_form": "연상",
+          "resolved_target_code": "67556",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14017",
+          "entry_word": "연설",
+          "related_form": "연설하다",
+          "resolved_target_code": "67528",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14019",
+          "entry_word": "연속",
+          "related_form": "연속되다",
+          "resolved_target_code": "67562",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14019",
+          "entry_word": "연속",
+          "related_form": "연속적",
+          "resolved_target_code": "67564",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14019",
+          "entry_word": "연속",
+          "related_form": "연속적",
+          "resolved_target_code": "67565",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14019",
+          "entry_word": "연속",
+          "related_form": "연속하다",
+          "resolved_target_code": "67566",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14020",
+          "entry_word": "연애",
+          "related_form": "연애하다",
+          "resolved_target_code": "67688",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14023",
+          "entry_word": "연장",
+          "related_form": "연장되다",
+          "resolved_target_code": "67748",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14023",
+          "entry_word": "연장",
+          "related_form": "연장하다",
+          "resolved_target_code": "67751",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14024",
+          "entry_word": "연주",
+          "related_form": "연주되다",
+          "resolved_target_code": "67761",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14024",
+          "entry_word": "연주",
+          "related_form": "연주하다",
+          "resolved_target_code": "67764",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14025",
+          "entry_word": "연출",
+          "related_form": "연출하다",
+          "resolved_target_code": "14026",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14026",
+          "entry_word": "연출하다",
+          "related_form": "연출",
+          "resolved_target_code": "14025",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14026",
+          "entry_word": "연출하다",
+          "related_form": "연출",
+          "resolved_target_code": "14025",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14028",
+          "entry_word": "연합",
+          "related_form": "연합되다",
+          "resolved_target_code": "91854",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14028",
+          "entry_word": "연합",
+          "related_form": "연합하다",
+          "resolved_target_code": "67793",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14039",
+          "entry_word": "간음",
+          "related_form": "간음하다",
+          "resolved_target_code": "14043",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14043",
+          "entry_word": "간음하다",
+          "related_form": "간음",
+          "resolved_target_code": "14039",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14043",
+          "entry_word": "간음하다",
+          "related_form": "간음",
+          "resolved_target_code": "14039",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14057",
+          "entry_word": "간주",
+          "related_form": "간주되다",
+          "resolved_target_code": "14158",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14057",
+          "entry_word": "간주",
+          "related_form": "간주하다",
+          "resolved_target_code": "14159",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14065",
+          "entry_word": "신비",
+          "related_form": "신비하다",
+          "resolved_target_code": "65578",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14066",
+          "entry_word": "신사",
+          "related_form": "신사적",
+          "resolved_target_code": "65585",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14066",
+          "entry_word": "신사",
+          "related_form": "신사적",
+          "resolved_target_code": "65586",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14067",
+          "entry_word": "신설",
+          "related_form": "신설되다",
+          "resolved_target_code": "65627",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14067",
+          "entry_word": "신설",
+          "related_form": "신설하다",
+          "resolved_target_code": "65628",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14069",
+          "entry_word": "신세대",
+          "related_form": "신세대적",
+          "resolved_target_code": "65671",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14069",
+          "entry_word": "신세대",
+          "related_form": "신세대적",
+          "resolved_target_code": "65672",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14070",
+          "entry_word": "신속하다",
+          "related_form": "신속",
+          "resolved_target_code": "65675",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14070",
+          "entry_word": "신속하다",
+          "related_form": "신속",
+          "resolved_target_code": "65675",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14073",
+          "entry_word": "신중하다",
+          "related_form": "신중",
+          "resolved_target_code": "91265",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14073",
+          "entry_word": "신중하다",
+          "related_form": "신중",
+          "resolved_target_code": "91265",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14075",
+          "entry_word": "신청하다",
+          "related_form": "신청",
+          "resolved_target_code": "65346",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14075",
+          "entry_word": "신청하다",
+          "related_form": "신청",
+          "resolved_target_code": "65346",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14076",
+          "entry_word": "신체적",
+          "related_form": "신체",
+          "resolved_target_code": "71282",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14076",
+          "entry_word": "신체적",
+          "related_form": "신체",
+          "resolved_target_code": "71282",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14077",
+          "entry_word": "신체적",
+          "related_form": "신체",
+          "resolved_target_code": "71282",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14077",
+          "entry_word": "신체적",
+          "related_form": "신체",
+          "resolved_target_code": "71282",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14080",
+          "entry_word": "실감",
+          "related_form": "실감되다",
+          "resolved_target_code": "65665",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14080",
+          "entry_word": "실감",
+          "related_form": "실감하다",
+          "resolved_target_code": "65666",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14084",
+          "entry_word": "영업",
+          "related_form": "영업하다",
+          "resolved_target_code": "68419",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14085",
+          "entry_word": "실리다",
+          "related_form": "싣다",
+          "resolved_target_code": "58173",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14085",
+          "entry_word": "실리다",
+          "related_form": "싣다",
+          "resolved_target_code": "58173",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14087",
+          "entry_word": "실망",
+          "related_form": "실망시키다",
+          "resolved_target_code": "85487",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14087",
+          "entry_word": "실망",
+          "related_form": "실망하다",
+          "resolved_target_code": "14090",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14090",
+          "entry_word": "실망하다",
+          "related_form": "실망",
+          "resolved_target_code": "14087",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14090",
+          "entry_word": "실망하다",
+          "related_form": "실망",
+          "resolved_target_code": "14087",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14092",
+          "entry_word": "실수하다",
+          "related_form": "실수",
+          "resolved_target_code": "64947",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14092",
+          "entry_word": "실수하다",
+          "related_form": "실수",
+          "resolved_target_code": "64947",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14094",
+          "entry_word": "실습",
+          "related_form": "실습하다",
+          "resolved_target_code": "91353",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14096",
+          "entry_word": "열정",
+          "related_form": "열정적",
+          "resolved_target_code": "67582",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14096",
+          "entry_word": "열정",
+          "related_form": "열정적",
+          "resolved_target_code": "67583",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14097",
+          "entry_word": "실시",
+          "related_form": "실시되다",
+          "resolved_target_code": "14100",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14097",
+          "entry_word": "실시",
+          "related_form": "실시하다",
+          "resolved_target_code": "14101",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14098",
+          "entry_word": "열중하다",
+          "related_form": "열중",
+          "resolved_target_code": "21775",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14098",
+          "entry_word": "열중하다",
+          "related_form": "열중",
+          "resolved_target_code": "21775",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14099",
+          "entry_word": "영원히",
+          "related_form": "영원",
+          "resolved_target_code": "68423",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14099",
+          "entry_word": "영원히",
+          "related_form": "영원",
+          "resolved_target_code": "68423",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14100",
+          "entry_word": "실시되다",
+          "related_form": "실시",
+          "resolved_target_code": "14097",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14100",
+          "entry_word": "실시되다",
+          "related_form": "실시",
+          "resolved_target_code": "14097",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14101",
+          "entry_word": "실시하다",
+          "related_form": "실시",
+          "resolved_target_code": "14097",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14101",
+          "entry_word": "실시하다",
+          "related_form": "실시",
+          "resolved_target_code": "14097",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14111",
+          "entry_word": "염려",
+          "related_form": "염려되다",
+          "resolved_target_code": "67617",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14111",
+          "entry_word": "염려",
+          "related_form": "염려하다",
+          "resolved_target_code": "66575",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14114",
+          "entry_word": "실질적",
+          "related_form": "실질",
+          "resolved_target_code": "65964",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14114",
+          "entry_word": "실질적",
+          "related_form": "실질",
+          "resolved_target_code": "65964",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14116",
+          "entry_word": "엿보다",
+          "related_form": "엿보이다",
+          "resolved_target_code": "67667",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14117",
+          "entry_word": "실질적",
+          "related_form": "실질",
+          "resolved_target_code": "65964",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14117",
+          "entry_word": "실질적",
+          "related_form": "실질",
+          "resolved_target_code": "65964",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14120",
+          "entry_word": "실천",
+          "related_form": "실천되다",
+          "resolved_target_code": "65968",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14120",
+          "entry_word": "실천",
+          "related_form": "실천하다",
+          "resolved_target_code": "14122",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14120",
+          "entry_word": "실천",
+          "related_form": "실천적",
+          "resolved_target_code": "66207",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14120",
+          "entry_word": "실천",
+          "related_form": "실천적",
+          "resolved_target_code": "66208",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14122",
+          "entry_word": "실천하다",
+          "related_form": "실천",
+          "resolved_target_code": "14120",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14122",
+          "entry_word": "실천하다",
+          "related_form": "실천",
+          "resolved_target_code": "14120",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14124",
+          "entry_word": "실체",
+          "related_form": "실체적",
+          "resolved_target_code": "600463",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14124",
+          "entry_word": "실체",
+          "related_form": "실체적",
+          "resolved_target_code": "600464",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14130",
+          "entry_word": "예감",
+          "related_form": "예감하다",
+          "resolved_target_code": "68564",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14132",
+          "entry_word": "실험",
+          "related_form": "실험적",
+          "resolved_target_code": "66272",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14132",
+          "entry_word": "실험",
+          "related_form": "실험적",
+          "resolved_target_code": "91959",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14132",
+          "entry_word": "실험",
+          "related_form": "실험하다",
+          "resolved_target_code": "66260",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14133",
+          "entry_word": "예고하다",
+          "related_form": "예고",
+          "resolved_target_code": "68569",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14133",
+          "entry_word": "예고하다",
+          "related_form": "예고",
+          "resolved_target_code": "68569",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14135",
+          "entry_word": "예매하다",
+          "related_form": "예매",
+          "resolved_target_code": "22045",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14135",
+          "entry_word": "예매하다",
+          "related_form": "예매",
+          "resolved_target_code": "22045",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14136",
+          "entry_word": "실현",
+          "related_form": "실현되다",
+          "resolved_target_code": "16239",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14136",
+          "entry_word": "실현",
+          "related_form": "실현시키다",
+          "resolved_target_code": "85488",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14136",
+          "entry_word": "실현",
+          "related_form": "실현하다",
+          "resolved_target_code": "16242",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14137",
+          "entry_word": "예방",
+          "related_form": "예방되다",
+          "resolved_target_code": "91707",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14137",
+          "entry_word": "예방",
+          "related_form": "예방하다",
+          "resolved_target_code": "14139",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14139",
+          "entry_word": "예방하다",
+          "related_form": "예방",
+          "resolved_target_code": "14137",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14139",
+          "entry_word": "예방하다",
+          "related_form": "예방",
+          "resolved_target_code": "14137",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14141",
+          "entry_word": "예보",
+          "related_form": "예보되다",
+          "resolved_target_code": "91708",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14141",
+          "entry_word": "예보",
+          "related_form": "예보하다",
+          "resolved_target_code": "68455",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14143",
+          "entry_word": "예비",
+          "related_form": "예비하다",
+          "resolved_target_code": "68458",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14146",
+          "entry_word": "예상되다",
+          "related_form": "예상",
+          "resolved_target_code": "70522",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14146",
+          "entry_word": "예상되다",
+          "related_form": "예상",
+          "resolved_target_code": "70522",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14147",
+          "entry_word": "예상하다",
+          "related_form": "예상",
+          "resolved_target_code": "70522",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14147",
+          "entry_word": "예상하다",
+          "related_form": "예상",
+          "resolved_target_code": "70522",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14149",
+          "entry_word": "예술적",
+          "related_form": "예술",
+          "resolved_target_code": "70565",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14149",
+          "entry_word": "예술적",
+          "related_form": "예술",
+          "resolved_target_code": "70565",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14150",
+          "entry_word": "예술적",
+          "related_form": "예술",
+          "resolved_target_code": "70565",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14150",
+          "entry_word": "예술적",
+          "related_form": "예술",
+          "resolved_target_code": "70565",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14151",
+          "entry_word": "예습",
+          "related_form": "예습하다",
+          "resolved_target_code": "14152",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14152",
+          "entry_word": "예습하다",
+          "related_form": "예습",
+          "resolved_target_code": "14151",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14152",
+          "entry_word": "예습하다",
+          "related_form": "예습",
+          "resolved_target_code": "14151",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14154",
+          "entry_word": "예약하다",
+          "related_form": "예약",
+          "resolved_target_code": "70599",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14154",
+          "entry_word": "예약하다",
+          "related_form": "예약",
+          "resolved_target_code": "70599",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14155",
+          "entry_word": "예외",
+          "related_form": "예외적",
+          "resolved_target_code": "70622",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14155",
+          "entry_word": "예외",
+          "related_form": "예외적",
+          "resolved_target_code": "70624",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14158",
+          "entry_word": "간주되다",
+          "related_form": "간주",
+          "resolved_target_code": "14057",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14158",
+          "entry_word": "간주되다",
+          "related_form": "간주",
+          "resolved_target_code": "14156",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14158",
+          "entry_word": "간주되다",
+          "related_form": "간주",
+          "resolved_target_code": "14057",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14158",
+          "entry_word": "간주되다",
+          "related_form": "간주",
+          "resolved_target_code": "14156",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14159",
+          "entry_word": "간주하다",
+          "related_form": "간주",
+          "resolved_target_code": "14057",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14159",
+          "entry_word": "간주하다",
+          "related_form": "간주",
+          "resolved_target_code": "14156",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14169",
+          "entry_word": "간질간질",
+          "related_form": "간질간질하다",
+          "resolved_target_code": "14170",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14169",
+          "entry_word": "간질간질",
+          "related_form": "간질간질하다",
+          "resolved_target_code": "91432",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14170",
+          "entry_word": "간질간질하다",
+          "related_form": "간질간질",
+          "resolved_target_code": "14169",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14170",
+          "entry_word": "간질간질하다",
+          "related_form": "간질간질",
+          "resolved_target_code": "14169",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14173",
+          "entry_word": "간척",
+          "related_form": "간척하다",
+          "resolved_target_code": "19904",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14183",
+          "entry_word": "꼼짝",
+          "related_form": "꼼짝하다",
+          "resolved_target_code": "38213",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14186",
+          "entry_word": "예정되다",
+          "related_form": "예정",
+          "resolved_target_code": "66576",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14186",
+          "entry_word": "예정되다",
+          "related_form": "예정",
+          "resolved_target_code": "66576",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14187",
+          "entry_word": "예측하다",
+          "related_form": "예측",
+          "resolved_target_code": "70100",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14187",
+          "entry_word": "예측하다",
+          "related_form": "예측",
+          "resolved_target_code": "70100",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14196",
+          "entry_word": "가지치기",
+          "related_form": "가지치기하다",
+          "resolved_target_code": "14207",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14199",
+          "entry_word": "감별",
+          "related_form": "감별되다",
+          "resolved_target_code": "14201",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14199",
+          "entry_word": "감별",
+          "related_form": "감별하다",
+          "resolved_target_code": "14202",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14201",
+          "entry_word": "감별되다",
+          "related_form": "감별",
+          "resolved_target_code": "14199",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14201",
+          "entry_word": "감별되다",
+          "related_form": "감별",
+          "resolved_target_code": "14199",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14202",
+          "entry_word": "감별하다",
+          "related_form": "감별",
+          "resolved_target_code": "14199",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14202",
+          "entry_word": "감별하다",
+          "related_form": "감별",
+          "resolved_target_code": "14199",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14203",
+          "entry_word": "감복",
+          "related_form": "감복하다",
+          "resolved_target_code": "14204",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14204",
+          "entry_word": "감복하다",
+          "related_form": "감복",
+          "resolved_target_code": "14203",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14204",
+          "entry_word": "감복하다",
+          "related_form": "감복",
+          "resolved_target_code": "14203",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14205",
+          "entry_word": "감봉",
+          "related_form": "감봉되다",
+          "resolved_target_code": "14206",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14205",
+          "entry_word": "감봉",
+          "related_form": "감봉하다",
+          "resolved_target_code": "14208",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14206",
+          "entry_word": "감봉되다",
+          "related_form": "감봉",
+          "resolved_target_code": "14205",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14206",
+          "entry_word": "감봉되다",
+          "related_form": "감봉",
+          "resolved_target_code": "14205",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14207",
+          "entry_word": "가지치기하다",
+          "related_form": "가지치기",
+          "resolved_target_code": "14196",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14207",
+          "entry_word": "가지치기하다",
+          "related_form": "가지치기",
+          "resolved_target_code": "14196",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14208",
+          "entry_word": "감봉하다",
+          "related_form": "감봉",
+          "resolved_target_code": "14205",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14208",
+          "entry_word": "감봉하다",
+          "related_form": "감봉",
+          "resolved_target_code": "14205",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14210",
+          "entry_word": "감사",
+          "related_form": "감사하다",
+          "resolved_target_code": "14229",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14210",
+          "entry_word": "감사",
+          "related_form": "감사하다",
+          "resolved_target_code": "63820",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14210",
+          "entry_word": "감사",
+          "related_form": "감사하다",
+          "resolved_target_code": "71728",
+          "mode": "reverse_unclaimed_multi"
+        },
+        {
+          "entry_id": "14215",
+          "entry_word": "가책",
+          "related_form": "가책되다",
+          "resolved_target_code": "14219",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14215",
+          "entry_word": "가책",
+          "related_form": "가책하다",
+          "resolved_target_code": "14220",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14219",
+          "entry_word": "가책되다",
+          "related_form": "가책",
+          "resolved_target_code": "14215",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14219",
+          "entry_word": "가책되다",
+          "related_form": "가책",
+          "resolved_target_code": "14215",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14220",
+          "entry_word": "가책하다",
+          "related_form": "가책",
+          "resolved_target_code": "14215",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14220",
+          "entry_word": "가책하다",
+          "related_form": "가책",
+          "resolved_target_code": "14215",
+          "mode": "exact_single"
+        },
+        {
+          "entry_id": "14224",
+          "entry_word": "가출",
+          "related_form": "가출하다",
+          "resolved_target_code": "14227",
+          "mode": "exact_single"
+        }
+      ]
+    },
     "dangling": {
       "related_terms": 811,
-      "related_forms": 1085
+      "related_forms": 1017
     },
     "link_status_counts": {
       "related_terms": {
@@ -53517,14 +54923,14 @@
         "unresolved_missing_entry": 32
       },
       "related_forms": {
-        "resolved_internal": 30419,
-        "unresolved_no_target_code": 3478,
-        "unresolved_zero_code": 1084,
+        "resolved_internal": 34608,
+        "unresolved_no_target_code": 3281,
+        "unresolved_zero_code": 1016,
         "unresolved_missing_entry": 1
       }
     },
     "entry_count": 53480
   },
-  "generated_at": "2026-03-23T08:13:17.396554+00:00",
+  "generated_at": "2026-03-29T14:50:33.440809+00:00",
   "schema_version": "v2.3"
 }

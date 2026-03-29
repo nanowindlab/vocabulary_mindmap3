@@ -4,7 +4,7 @@
 
 - `mindmap3` workspace는 현재 `Phase 2 Relation Explorer App Planning` phase다.
 - current active work는 `none`이다.
-- latest closeout package는 `MM3-290 2026-03-29 Phase 1 Closeout And Phase 2 Relation Explorer Kickoff`이다.
+- latest closeout package는 `MM3-300 2026-03-29 Relation Top Filter Carryover`이다.
 - current exit condition은 다음 active work가 생기면 그 task id 기준으로 새 packet을 연다.
 - current gate는 overall `PARTIAL_OPEN`, core explorer slice `OPEN`이다.
 - deploy/runtime truth는 `runtime_payloads/*.json.gz -> prepare:live -> verify:live -> build` 체인이다.
@@ -12,7 +12,7 @@
 - current learner-facing `search + facets only` builder surface는 package/build-chain에 **non-authoritative sidecar gate**로 편입됐다.
 - current builder contract is authoritative for `search semantic fields + facets` when executed through the approved promote path.
 - current sidecar output is **comparison / validation only**.
-- latest closeout report는 `08_planning/reports/20260329_MM3_290_PHASE1_CLOSEOUT_AND_PHASE2_RELATION_EXPLORER_KICKOFF_V1.md`다.
+- latest closeout report는 `08_planning/reports/20260329_MM3_300_RELATION_TOP_FILTER_CARRYOVER_V1.md`다.
 
 ## Verified Now
 
@@ -75,6 +75,25 @@
 - `MM3-289`는 single gate라 same-turn bundle candidate가 없고, verdict-only closeout으로 닫았다.
 - `MM3-290`에서 current vocabulary mindmap app은 `Phase 1` closeout baseline으로 정리됐다.
 - `MM3-290`에서 `관계 탐색 앱`은 separate app `Phase 2`로 여는 것으로 잠갔다.
+- `MM3-291`에서 separate `관계 탐색 앱` IA canonical을 고정했다.
+- `MM3-291`에서 separate app 자체가 relation explorer라는 rule을 반영해 app-inside `관계 탐색` first layer는 제거됐다.
+- `MM3-291` tree navigator 1st layer는 relation family, 2nd layer는 current `의미 범주 / 주제 및 상황` vocabulary를 relation-study용으로 다시 정리한 subgroup으로 잠겼다.
+- `MM3-291` result unit은 single word list가 아니라 `관계 학습 카드`, default flow는 `relation family -> subgroup -> 관계 학습 카드 -> compare -> optional detail/mindmap`으로 잠겼다.
+- `MM3-292`에서 subgroup split trigger는 `30+` card risk로 고정했고, card minimum field set은 `family / subgroup / representative terms 2~4 / 대표 뜻 한 줄 / example 1 / compare jump target`으로 잠겼다.
+- `MM3-292` compare input contract는 current search projection key reuse 기준으로 닫혔다.
+- `MM3-292`에서 branch 기준은 current schema direct use 또는 adapted grouping만 허용하고, totally new DB schema는 열지 않기로 했다.
+- `MM3-292`에서 `활용 표현`은 later roadmap item `MM3-295`로 등록했고 first opening scope에서는 제외했다.
+- `MM3-293`에서 same repo / separate app / separate Vercel project topology를 고정했다.
+- current root `vercel.json`은 `09_app` boundary로 유지하고, `10_relation_app` shell opening 후 separate project attach로 가기로 잠겼다.
+- `MM3-294`에서 `10_relation_app/` shell을 열었고 `npm install`, `npm run build`가 통과했다.
+- `MM3-295`에서 `활용 표현` later follow-on planning과 reopen timing을 고정했다.
+- `MM3-296`에서 actual relation bootstrap과 family JSON을 생성했고 `10_relation_app` shell을 fetched data 기준으로 다시 연결했다.
+- `MM3-296`에서 `relation-bootstrap familyCount=8`과 sample family/group/card generation을 확인했다.
+- `MM3-297`에서 compare/detail/mindmap interaction을 actual interactive state로 올렸다.
+- `MM3-298`에서 local preview를 `http://127.0.0.1:4174/`로 띄웠다.
+- `MM3-299`에서 route hash state와 deeper detail metadata refinement를 반영했다.
+- `MM3-300`에서 상단 filter carryover, `영어/몽골어` 제한, `영어` default, `TOPIK 빈도` filter를 반영했다.
+- current queue는 비어 있다.
 - current recommendation is:
   - `09_app/` keep as frozen Phase 1 baseline
   - `10_relation_app/` open as new app in same workspace/repo
@@ -185,14 +204,14 @@
 1. `pm-operating-guide.md`
 2. `08_planning/TASKLIST_V1.md`
 3. `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`
-4. `08_planning/reports/20260328_MM3_268_NEXT_PM_HANDOFF_PACKET_V1.md`
+4. `08_planning/reports/20260329_MM3_300_RELATION_TOP_FILTER_CARRYOVER_V1.md`
 
 ## Tier 2 Reads
 
-1. `08_planning/reports/20260328_MM3_268_FEEDBACK_INTAKE_AND_EXECUTION_PLAN_V1.md`
-2. `08_planning/reports/20260328_MM3_268_NEXT_PM_HANDOFF_PACKET_V1.md`
-3. `08_planning/reports/20260328_MM3_268A_EXAMPLE_TYPE_PRIORITY_DECISION_DRAFT_V1.md`
-4. `08_planning/reports/20260328_MM3_268B_UNCLASSIFIED_FLOATING_NODE_ANALYSIS_V1.md`
+1. `08_planning/reports/20260329_MM3_299_RELATION_ROUTE_AND_DEEP_DETAIL_FOLLOW_ON_V1.md`
+2. `08_planning/reports/20260329_MM3_298_RELATION_EXPLORER_LOCAL_PREVIEW_LAUNCH_V1.md`
+3. `08_planning/reports/20260329_MM3_297_RELATION_COMPARE_DETAIL_AND_MINDMAP_WIRING_V1.md`
+4. `08_planning/reports/20260329_MM3_296_RELATION_NAVIGATOR_DATA_WIRING_V1.md`
 
 ## Tier 3 Reference On Demand
 
@@ -218,6 +237,6 @@
 ## Next PM Actions
 
 1. current active execution package는 `none`이다.
-2. `08_planning/reports/20260326_MM3_236_MM3_UI_REFINEMENT_ROADMAP_V1.md`가 current roadmap/workflow/task-order reference다.
+2. current queue는 비어 있다.
 3. current review-driven remediation cycle은 닫혔다. broader parity / provenance completion은 parked backlog다.
-4. next PM이 execution을 다시 열면 `MM3-290`를 재사용하지 말고 `MM3-291 Relation Explorer IA Canonical`부터 새 task id를 연다.
+4. local preview is live at `http://127.0.0.1:4174/`.

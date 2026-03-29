@@ -1,10 +1,10 @@
 {
   "schema_version": "v2.3",
-  "generated_at": "2026-03-23T08:13:17.457456+00:00",
+  "generated_at": "2026-03-29T14:50:33.507104+00:00",
   "summary": {
     "unmatched_api_subwords": 0,
     "dangling_related_terms": 811,
-    "dangling_related_forms": 1019
+    "dangling_related_forms": 1017
   },
   "policy": {
     "unmatched_api_subwords": "Keep visible as subwords but disable deep link unless a target_code is resolved.",
@@ -12,7 +12,7 @@
     "dangling_related_forms": "Treat as unresolved related forms; display text but guard navigation.",
     "unresolved_zero_code": "Source provided target_code=0, so this relation should be handled as text-only and not as a resolvable internal link.",
     "resolved_exact_word_backfill": "If a related form word maps to exactly one different internal entry, backfill the target_code conservatively.",
-    "resolved_multi_exact_word_backfill": "If a related form word maps to multiple internal entries with the same surface, keep all internal targets so the UI can disambiguate by POS and definition."
+    "resolved_multi_exact_word_backfill": "If multiple exact word matches exist, only keep source-consistent candidates: explicit reverse matches first, then uniquely unclaimed candidates, then truly unclaimed multi-targets for UI disambiguation."
   },
   "dangling_link_type_counts": {
     "related_terms": {
@@ -20,7 +20,7 @@
       "C": 32
     },
     "related_forms": {
-      "None": 1085
+      "None": 1017
     }
   },
   "link_status_counts": {
@@ -31,11 +31,9 @@
       "unresolved_missing_entry": 32
     },
     "related_forms": {
-      "resolved_internal": 30418,
-      "unresolved_no_target_code": 3284,
-      "unresolved_zero_code": 1018,
-      "resolved_multi_exact_word_backfill": 95,
-      "resolved_exact_word_backfill": 130,
+      "resolved_internal": 34608,
+      "unresolved_no_target_code": 3281,
+      "unresolved_zero_code": 1016,
       "unresolved_missing_entry": 1
     }
   },
@@ -4816,14 +4814,6 @@
       "link_type": null
     },
     {
-      "entry_id": "15232",
-      "entry_word": "감정",
-      "type": "파생어",
-      "word": "감정적",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
       "entry_id": "15299",
       "entry_word": "가만",
       "type": "파생어",
@@ -4916,14 +4906,6 @@
       "entry_word": "비추다",
       "type": "파생어",
       "word": "비추이다",
-      "target_code": "0",
-      "link_type": null
-    },
-    {
-      "entry_id": "16336",
-      "entry_word": "가정",
-      "type": "파생어",
-      "word": "가정적",
       "target_code": "0",
       "link_type": null
     },
@@ -8540,6 +8522,22 @@
       "entry_word": "불편스럽다",
       "type": "파생어",
       "word": "불편스레",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61010",
+      "entry_word": "빤짝",
+      "type": "파생어",
+      "word": "빤짝이다",
+      "target_code": "0",
+      "link_type": null
+    },
+    {
+      "entry_id": "61030",
+      "entry_word": "불혹",
+      "type": "파생어",
+      "word": "불혹하다",
       "target_code": "0",
       "link_type": null
     }

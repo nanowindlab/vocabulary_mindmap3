@@ -330,6 +330,48 @@
 - Decision: internal pilot checklist와 feedback intake protocol까지 PM 문서로 정리하고, 실제 human pilot session 여부는 사용자/운영 판단 경계로 둔다.
 - Why: 여기서부터는 코드/문서 작업이 아니라 실제 사람을 대상으로 pilot를 실행할지의 운영 결정이기 때문이다.
 
+## D-104
+
+- Date: `2026-03-29`
+- Decision: relation navigator compare input은 current `APP_READY_SEARCH_INDEX` projection key를 재사용하고, compare card 기본 term count는 `2~4`로 제한한다.
+- Why: current search projection이 이미 `id`, `chunk_id`, `representative_sense_id`, `routing`, `categories`를 제공하므로 separate compare schema를 만들 필요가 없고, 한 카드에 term이 너무 많아지면 learner 읽기 cost가 급격히 올라가기 때문이다.
+
+## D-105
+
+- Date: `2026-03-29`
+- Decision: Phase 2 topology는 `same repo / separate app / separate Vercel project`로 고정하고, current root `vercel.json`은 `10_relation_app` shell opening 전까지 `09_app` boundary로 유지한다.
+- Why: current root deploy assumption이 이미 `09_app`에 묶여 있으므로 shell opening 전부터 repo-root build boundary를 흔들면 drift risk가 커지고, separate project attach를 shell 이후로 미루는 편이 운영상 가장 안전하기 때문이다.
+
+## D-104
+
+- Date: `2026-03-29`
+- Decision: relation explorer navigator의 branch 기준은 current dictionary schema direct use 또는 adapted grouping으로만 정리하고, navigator를 위해 totally new DB schema를 만들지 않는다.
+- Why: current source truth와 drift 없이 relation navigator를 열려면 relation type, category/scene vocabulary, source-linked relation field를 그대로 쓰거나 최소 적응만 해야 하며, 별도 schema를 만들면 운영 경계가 불필요하게 커지기 때문이다.
+
+## D-105
+
+- Date: `2026-03-29`
+- Decision: `활용 표현`은 relation explorer first opening scope에서 제외하고 later roadmap item `MM3-295 Expression Follow-On Planning`으로 등록한다.
+- Why: current relation surface가 Phase 2 first opening의 더 직접적인 핵심이고, expression은 current DB reality상 later tranche로 다루는 편이 scope와 읽기 흐름을 더 안정적으로 유지할 수 있기 때문이다.
+
+## D-090
+
+- Date: `2026-03-29`
+- Decision: `Phase 2 관계 탐색 앱` opening에서는 current `MM3` screen composition을 theme baseline으로 계승한다.
+- Why: separate app의 primary entry rule과 study flow는 바뀌지만, visual familiarity와 shell readability는 current `MM3` baseline을 이어가는 편이 Phase 2 first opening에 더 안정적이기 때문이다.
+
+## D-091
+
+- Date: `2026-03-29`
+- Decision: `Phase 2 관계 탐색 앱` IA canonical은 relation family first selectable layer, relation-study subgroup second layer, `관계 학습 카드 -> compare -> optional detail/mindmap` 흐름으로 고정한다.
+- Why: separate app 자체가 relation explorer이므로 `관계 탐색`을 다시 누르게 할 이유가 없고, current relation coverage도 relation family direct opening을 지지하며, existing category vocabulary는 relation-study subgroup으로 재사용하는 편이 drift와 학습 비용을 함께 줄이기 때문이다.
+
+## D-092
+
+- Date: `2026-03-29`
+- Decision: separate `관계 탐색 앱` 자체가 relation explorer이므로 app inside first layer에 `관계 탐색`을 다시 두지 않고, app open 시 relation family를 first selectable layer로 연다.
+- Why: separate app 정체성이 이미 relation-first이므로 `관계 탐색`을 한 번 더 누르게 하면 불필요한 한 단계를 추가하고, learner flow도 `관계 종류 바로 선택 -> subgroup -> 관계 학습 카드`가 더 직접적이기 때문이다.
+
 ## D-086
 
 - Date: `2026-03-28`
