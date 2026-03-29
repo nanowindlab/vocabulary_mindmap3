@@ -210,6 +210,30 @@ const isUnresolvedRelation = (item) => {
   return status.startsWith("unresolved") || targetCode === 0 || targetCode === "0" || targetCode === null || targetCode === undefined;
 };
 
+const PRIMARY_COMPARE_RELATION_TYPES = new Set(["유의어", "반대말", "참고어"]);
+const FORM_STYLE_VARIANT_RELATION_TYPES = new Set(["큰말", "작은말", "센말", "여린말", "준말", "본말", "높임말", "낮춤말"]);
+
+const splitRelatedTermsForCompare = (items = []) => {
+  const primary = [];
+  const extended = [];
+  const variants = [];
+
+  items.forEach((item) => {
+    const typeLabel = item?.type || "";
+    if (PRIMARY_COMPARE_RELATION_TYPES.has(typeLabel)) {
+      primary.push(item);
+      return;
+    }
+    if (FORM_STYLE_VARIANT_RELATION_TYPES.has(typeLabel)) {
+      variants.push(item);
+      return;
+    }
+    extended.push(item);
+  });
+
+  return { primary, extended, variants };
+};
+
 // ── 컴포넌트 ─────────────────────────────────────────────────────
 export const TermDetail = ({
   term,
@@ -262,6 +286,11 @@ export const TermDetail = ({
         ? `${item?.type || ""}|${item?.word || ""}|unresolved`
         : `${item?.type || ""}|${item?.word || ""}|${item?.target_code || item?.homonym_no || item?.link_type || item?.link_status || "na"}`,
   );
+  const {
+    primary: compareRelatedTerms,
+    extended: extendedRelatedTerms,
+    variants: variantRelatedTerms,
+  } = splitRelatedTermsForCompare(currentRelatedTerms);
   const dedupedRelatedForms = dedupeRelatedFormsByTarget(dedupeDisplayItems(
     relatedForms,
     (item) => `${item?.type || ""}|${item?.word || ""}|${item?.target_code || item?.link_type || item?.link_status || "na"}`,
@@ -307,6 +336,9 @@ export const TermDetail = ({
   const pos = Array.isArray(term.pos) ? term.pos.join(", ") : term.pos || term.part_of_speech || "";
   const jumpableSubwords = subwords.filter((item) => isSearchWordAvailable?.(item.text));
   const previewOnlySubwords = subwords.filter((item) => !isSearchWordAvailable?.(item.text));
+  const proverbSubwords = subwords.filter((item) => item?.unit === "속담");
+  const idiomSubwords = subwords.filter((item) => item?.unit === "관용구");
+  const otherExpressionSubwords = subwords.filter((item) => item?.unit !== "관용구" && item?.unit !== "속담");
   const visibleSenses = showAllSenses ? senses : senses.slice(0, 8);
   const contextKind = term.hierarchy?.context_kind || null;
   const helperTitle = term.hierarchy?.helper_title || null;
@@ -1160,26 +1192,45 @@ const renderSectionTitle = (icon, label, color, count = null) => (
         {/* 관계 탭 */}
         {activeTab === "relations" && (
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            {term.related_vocab && term.related_vocab.length > 0 && (
+            {compareRelatedTerms.length > 0 && (
               renderRelationSection(
-                "relation-related-vocab",
-                "연관 어휘",
-                null,
-                term.related_vocab.length,
-                "var(--text-secondary)",
-                renderRelatedChips(term.related_vocab, onRelatedVocabClick),
+                "relation-quick-compare",
+                "빠른 비교",
+                "비슷한말, 반대말, 참고어를 먼저 비교합니다.",
+                compareRelatedTerms.length,
+                "var(--accent-blue)",
+                renderRelationCards(compareRelatedTerms, {
+                  accentColor: "var(--accent-blue)",
+                  testPrefix: "sense-relation-card",
+                  onItemClick: (item) => onSenseRelationClick && onSenseRelationClick(item),
+                }),
               )
             )}
 
-            {currentRelatedTerms.length > 0 && (
+            {extendedRelatedTerms.length > 0 && (
               renderRelationSection(
-                "relation-sense-relations",
-                "의미 관계어",
-                null,
-                currentRelatedTerms.length,
+                "relation-extended-relations",
+                "확장 관계",
+                "비교 뒤에 이어 볼 의미 관계를 모았습니다.",
+                extendedRelatedTerms.length,
                 "var(--accent-blue)",
-                renderRelationCards(currentRelatedTerms, {
+                renderRelationCards(extendedRelatedTerms, {
                   accentColor: "var(--accent-blue)",
+                  testPrefix: "sense-relation-card",
+                  onItemClick: (item) => onSenseRelationClick && onSenseRelationClick(item),
+                }),
+              )
+            )}
+
+            {variantRelatedTerms.length > 0 && (
+              renderRelationSection(
+                "relation-form-variants",
+                "형태·문체 변이",
+                "큰말, 작은말, 센말, 준말 같은 표현 변이를 따로 봅니다.",
+                variantRelatedTerms.length,
+                "var(--accent-purple)",
+                renderRelationCards(variantRelatedTerms, {
+                  accentColor: "var(--accent-purple)",
                   testPrefix: "sense-relation-card",
                   onItemClick: (item) => onSenseRelationClick && onSenseRelationClick(item),
                 }),
@@ -1190,7 +1241,7 @@ const renderSectionTitle = (icon, label, color, count = null) => (
               renderRelationSection(
                 "relation-related-forms",
                 "관련형",
-                null,
+                "파생어와 source-explicit related form만 이동 대상으로 보여 줍니다.",
                 countUniqueRelationGroups(jumpableRelatedForms),
                 "var(--accent-purple)",
                 renderRelationCards(jumpableRelatedForms, {
@@ -1199,6 +1250,17 @@ const renderSectionTitle = (icon, label, color, count = null) => (
                   onItemClick: (item) => onRelatedFormClick && onRelatedFormClick(item),
                   groupBySurface: true,
                 }),
+              )
+            )}
+
+            {term.related_vocab && term.related_vocab.length > 0 && (
+              renderRelationSection(
+                "relation-related-vocab",
+                "연관 어휘",
+                "핵심 비교 뒤에 넓은 주변 어휘를 더 탐색합니다.",
+                term.related_vocab.length,
+                "var(--text-secondary)",
+                renderRelatedChips(term.related_vocab, onRelatedVocabClick),
               )
             )}
 
@@ -1242,19 +1304,40 @@ const renderSectionTitle = (icon, label, color, count = null) => (
           <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             {subwords.length > 0 ? (
               <div>
-                {renderSectionTitle(<BookOpen size={13} />, "표현층", "var(--accent-orange)", subwords.length)}
-                {jumpableSubwords.length > 0 && (
-                  <div style={{ marginBottom: 18 }}>
-                    {renderWorkflowTitle("바로 이동", jumpableSubwords.length)}
-                    {renderSubwordCards(jumpableSubwords)}
+                {renderSectionTitle(<BookOpen size={13} />, "관용구와 속담", "var(--accent-orange)", subwords.length)}
+                <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: 14 }}>
+                  현재 단어에 연결된 관용구와 속담을 뜻과 예문 중심으로 먼저 봅니다.
+                </div>
+
+                {idiomSubwords.length > 0 && (
+                  <div data-testid="expression-idioms" style={{ marginBottom: 18 }}>
+                    {renderWorkflowTitle("관용구", idiomSubwords.length)}
+                    <div style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: 10 }}>
+                      현재 단어와 함께 자주 배우는 관용구를 먼저 확인합니다.
+                    </div>
+                    {renderSubwordCards(idiomSubwords)}
                   </div>
                 )}
-                {previewOnlySubwords.length > 0 && (
-                  renderSubwordCards(previewOnlySubwords)
+
+                {proverbSubwords.length > 0 && (
+                  <div data-testid="expression-proverbs" style={{ marginBottom: 18 }}>
+                    {renderWorkflowTitle("속담", proverbSubwords.length)}
+                    <div style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: 10 }}>
+                      현재 단어에 연결된 속담을 뜻과 예문 중심으로 읽습니다.
+                    </div>
+                    {renderSubwordCards(proverbSubwords)}
+                  </div>
+                )}
+
+                {otherExpressionSubwords.length > 0 && (
+                  <div style={{ marginBottom: 18 }}>
+                    {renderWorkflowTitle("기타 표현", otherExpressionSubwords.length)}
+                    {renderSubwordCards(otherExpressionSubwords)}
+                  </div>
                 )}
               </div>
             ) : (
-              renderEmptyState("표현층 데이터가 없습니다.")
+              renderEmptyState("관용구·속담 데이터가 없습니다.")
             )}
           </div>
         )}

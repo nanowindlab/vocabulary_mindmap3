@@ -2,9 +2,9 @@
 
 ## Current State
 
-- `mindmap3`는 현재 `M1 Runtime Wiring / Core Explorer` phase다.
+- `mindmap3` workspace는 현재 `Phase 2 Relation Explorer App Planning` phase다.
 - current active work는 `none`이다.
-- latest closeout package는 `MM3-279 2026-03-29 Deploy Path Revert To Committed Runtime Payloads`이다.
+- latest closeout package는 `MM3-290 2026-03-29 Phase 1 Closeout And Phase 2 Relation Explorer Kickoff`이다.
 - current exit condition은 다음 active work가 생기면 그 task id 기준으로 새 packet을 연다.
 - current gate는 overall `PARTIAL_OPEN`, core explorer slice `OPEN`이다.
 - deploy/runtime truth는 `runtime_payloads/*.json.gz -> prepare:live -> verify:live -> build` 체인이다.
@@ -12,6 +12,7 @@
 - current learner-facing `search + facets only` builder surface는 package/build-chain에 **non-authoritative sidecar gate**로 편입됐다.
 - current builder contract is authoritative for `search semantic fields + facets` when executed through the approved promote path.
 - current sidecar output is **comparison / validation only**.
+- latest closeout report는 `08_planning/reports/20260329_MM3_290_PHASE1_CLOSEOUT_AND_PHASE2_RELATION_EXPLORER_KICKOFF_V1.md`다.
 
 ## Verified Now
 
@@ -24,8 +25,9 @@
 - `MM3-216`에서 TOPIK stats linkage policy를 고정했다.
 - `MM3-213`은 current learner-facing search scope 기준으로 closeout됐다.
 - `original_language_type`는 learner-facing scope에서 사용하지 않기로 정리됐다.
-- `probe:search-recovery` 기준 current learner-facing runtime search row는 `53,480 / 53,480` exact match다.
+- `probe:runtime-surface-recovery` 기준 current learner-facing runtime search row는 `53,012 / 53,012` exact match다.
 - `build:search-recovery`로 local rebuild artifact도 생성 가능하다.
+- current live/base entry count는 `53,012`이고, `53,480`은 historical `api_xml_merged` total이다.
 - `MM3-217` formal validation / review / hardening / revalidation packets이 추가됐다.
 - current learner-facing `search + facets` builder surface는 local canonical builder로 exact recovery 가능하다.
 - `MM3-223`에서 current learner-facing `search + facets only` surface의 package/build-chain sidecar promotion이 승인됐다.
@@ -56,6 +58,28 @@
 - `MM3-277`에서 `kcenter_chunk_id_mapping.json.gz` ownership을 current boundary에서 `09_app` build tooling이 관리하는 derived canonical runtime build artifact로 명시했다.
 - `MM3-278`에서 filter panel label을 `TOPIK빈도`로 바꾸고 순서를 `난이도 -> 품사 -> TOPIK빈도 -> 번역 언어`로 조정했다.
 - `MM3-279`에서 default deploy path는 committed `runtime_payloads/*.json.gz`를 복원해서 쓰는 방식으로 되돌렸다.
+- `MM3-281`에서 relation/expression next application plan을 official dictionary + research basis + local MM3 baseline에 맞춰 고정했다.
+- `MM3-281` recommendation은 `의미 관계` compare 강화, `활용 정보` / `표현 정보` 분리, provenance tier, phased rollout 유지다.
+- `MM3-282`에서 current DB reality를 actual artifact로 재확인했고, current live/base entry count는 `53,012`, historical `api_xml_merged` total은 `53,480`로 정리했다.
+- `MM3-282`에서 relation surface는 immediate candidate, expression surface는 idiom/proverb-heavy preview layer라는 점을 고정했다.
+- `MM3-283`에서 separate app split은 current stage에선 비추천으로 정리했고, recommendation은 `current MM3 통합 보강 -> 필요 시 same app dedicated route later`다.
+- `MM3-284`에서 next roadmap을 `MM3-285 relation compare contract -> MM3-286 relation implementation -> MM3-287 expression contract -> MM3-288 expression implementation -> MM3-289 dedicated-route readiness gate` 순서로 잠갔다.
+- `MM3-284` workset plan은 `.codex-orchestration/WORK_ORCHESTRATION_HUB_V1.md` `Planned Workset` section에 고정했다.
+- `MM3-285`에서 relation compare contract를 고정했고, same-turn bundle로 `MM3-286`까지 바로 진행하기로 잠갔다.
+- `MM3-286`에서 relation tab order를 `빠른 비교 -> 확장 관계 -> 형태·문체 변이 -> 관련형 -> 연관 어휘 -> 교차 연결 장면`으로 바꿨다.
+- `MM3-286` relation targeted validation은 `7 passed`다.
+- `MM3-287`에서 expression idiom/proverb contract를 고정했고, same-turn bundle로 `MM3-288`까지 바로 진행하기로 잠갔다.
+- `MM3-288`에서 expression tab을 `관용구와 속담` support surface로 바꾸고 `관용구 / 속담` section으로 재구성했다.
+- `MM3-288` expression targeted validation은 `4 passed`다.
+- `MM3-289`에서 same-app dedicated route는 current stage에서 `NOT_READY_YET`로 판정했다.
+- `MM3-289`는 single gate라 same-turn bundle candidate가 없고, verdict-only closeout으로 닫았다.
+- `MM3-290`에서 current vocabulary mindmap app은 `Phase 1` closeout baseline으로 정리됐다.
+- `MM3-290`에서 `관계 탐색 앱`은 separate app `Phase 2`로 여는 것으로 잠갔다.
+- current recommendation is:
+  - `09_app/` keep as frozen Phase 1 baseline
+  - `10_relation_app/` open as new app in same workspace/repo
+- foundation doc is:
+  - `08_planning/RELATION_EXPLORER_APP_FOUNDATION_V1.md`
 - 이후 broader parity나 future generator boundary expansion이 reopen되면, same tranche에서 canonical generator contract와 verification set도 함께 갱신해야 한다.
 - `MM3-236`에서 MM3 UI refinement roadmap를 열었고, first slice를 relation tab information hierarchy로 고정했다.
 - `MM3-237`에서 relation tab hierarchy refinement를 구현했고 targeted Playwright `4 passed`로 `MM3-236B`를 닫았다.
@@ -193,6 +217,7 @@
 
 ## Next PM Actions
 
-1. `MM3-268A`~`MM3-268H`, `MM3-269A`, `MM3-270A`, `MM3-271A`, `MM3-272A`, `MM3-272B`, `MM3-273A`, `MM3-273B`는 `DONE`이다.
-2. current active execution package는 `none`이다.
+1. current active execution package는 `none`이다.
+2. `08_planning/reports/20260326_MM3_236_MM3_UI_REFINEMENT_ROADMAP_V1.md`가 current roadmap/workflow/task-order reference다.
 3. current review-driven remediation cycle은 닫혔다. broader parity / provenance completion은 parked backlog다.
+4. next PM이 execution을 다시 열면 `MM3-290`를 재사용하지 말고 `MM3-291 Relation Explorer IA Canonical`부터 새 task id를 연다.

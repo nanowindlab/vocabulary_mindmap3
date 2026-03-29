@@ -25,20 +25,67 @@
 - 업무지시와 보고서는 한국어를 기본으로 한다.
 - `mindmap2`에서 가져오는 것은 운영 참고, UI rhythm, TOPIK stats뿐이며 taxonomy 개념은 그대로 가져오지 않는다.
 - 문서 요약보다 실제 artifact를 우선한다.
-- 현재 확인된 `entry_count` drift (`53,480` vs `53,439`)는 해소 전까지 unresolved risk로 유지한다.
+- active state source of truth는 `08_planning/TASKLIST_V1.md`, `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`, `.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md`, `08_planning/reports/20260329_MM3_290_PHASE1_CLOSEOUT_AND_PHASE2_RELATION_EXPLORER_KICKOFF_V1.md`다.
 - 스크립트/앱 작업은 사용자가 별도로 다시 열기 전까지 parked backlog다.
 - 모든 agent lane은 기본적으로 `작업 -> 검증 -> learner 포함 3인 전문가 비판 검토 -> 개선 -> 재검증` 루프를 거친다.
 
 ## Active Work Package
 
 - none
-- latest closeout: `MM3-268`
+- latest closeout: `MM3-290`
 
 ## Immediate Next Outcomes
 
 1. no active execution package
 2. wait for next user directive
-3. when reopened, open a new task id instead of reusing `MM3-268`
+3. when reopened, open a new task id instead of reusing `MM3-290`
+
+## Planned Workset
+
+- Phase 2 Workflow A:
+  - `MM3-291 -> MM3-292`
+- Phase 2 Workflow B:
+  - `MM3-293 -> MM3-294`
+
+- `WS1 / MM3-285` `DONE`
+  - relation compare contract
+  - write boundary: PM packet + tasklist/control-plane if task state changes
+  - expected output: relation contract packet + implementation checklist
+
+- `WS2 / MM3-286` `DONE`
+  - relation compare implementation
+  - write boundary: `09_app/src/components/TermDetail.jsx` + relation tests + PM packet
+  - expected output: relation compare implementation + validation evidence
+
+- `WS3 / MM3-287` `DONE`
+  - expression idiom/proverb contract
+  - write boundary: PM packet + planning/control-plane docs only as needed
+  - expected output: expression contract packet + implementation checklist
+
+- `WS4 / MM3-288` `DONE`
+  - expression idiom/proverb implementation
+  - write boundary: `09_app/src/components/TermDetail.jsx` + expression tests + PM packet
+  - expected output: expression redesign implementation + validation evidence
+
+- `WS5 / MM3-291`
+  - relation explorer IA canonical
+  - write boundary: PM packet + planning docs
+  - expected output: IA canonical + study unit definition
+
+- `WS6 / MM3-292`
+  - relation navigator data contract
+  - write boundary: PM packet + data/architecture docs only
+  - expected output: shared data contract + derived relation navigator rule
+
+- `WS7 / MM3-293`
+  - workspace / Vercel multi-project topology
+  - write boundary: PM packet + foundation / deploy docs
+  - expected output: build/deploy topology rule
+
+- `WS8 / MM3-294`
+  - relation explorer shell opening
+  - write boundary: `10_relation_app/` only
+  - expected output: app shell opening
 
 ## Active Agents
 

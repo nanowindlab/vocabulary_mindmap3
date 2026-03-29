@@ -12,6 +12,8 @@
 3. `DATA_ARCHITECTURE_V1.md`
 4. `PRODUCT_SCENARIO_SPEC_V1.md`
 5. `PROJECT_DECISION_LOG_V1.md`
+6. `reports/20260326_MM3_236_MM3_UI_REFINEMENT_ROADMAP_V1.md`
+7. `RELATION_EXPLORER_APP_FOUNDATION_V1.md`
 
 ## Files
 
@@ -20,4 +22,6 @@
 - `DATA_ARCHITECTURE_V1.md`: source/data surface planning note
 - `PRODUCT_SCENARIO_SPEC_V1.md`: source review 이후 확장될 scenario scaffold
 - `PROJECT_DECISION_LOG_V1.md`: durable policy
+- `reports/20260326_MM3_236_MM3_UI_REFINEMENT_ROADMAP_V1.md`: current roadmap surface, now including relation/expression follow-on tranches
+- `RELATION_EXPLORER_APP_FOUNDATION_V1.md`: phase2 separate relation explorer app foundation, guideline, guardrail, brainstorming
 - `reports/`: phase별 PM 보고서

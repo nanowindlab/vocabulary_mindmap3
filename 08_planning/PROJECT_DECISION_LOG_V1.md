@@ -768,6 +768,30 @@
 - Decision: git/Vercel 연동에서는 `09_app/public/data/live/*.json`를 직접 추적하지 않고, `09_app/public/data/internal/runtime_payloads/*.json.gz`를 git에 두고 build 전에 복원한다.
 - Why: live runtime JSON은 너무 커서 git push와 Vercel 연동에 부담이 크지만, 압축 payload 묶음은 추적 가능한 크기이며 현재 build chain에 안전하게 연결할 수 있기 때문이다.
 
+## D-086
+
+- Date: `2026-03-29`
+- Decision: current `어휘 마인드맵` app (`09_app/`)은 현 단계로 `Phase 1` closeout 대상으로 본다.
+- Why: current app의 `word-first + dual category + sense core` baseline과 relation/expression refinement tranche가 모두 닫혔고, 다음 구조 변화는 현 앱의 연장보다 separate product direction에 가깝기 때문이다.
+
+## D-087
+
+- Date: `2026-03-29`
+- Decision: `관계 탐색`은 same-app dedicated route가 아니라 separate app (`Phase 2`)로 연다.
+- Why: relation-first study는 current MM3의 word-first dictionary explorer와 기본 entry rule이 다르며, separate app 쪽이 relation navigator / compare study / relation map을 더 자연스럽게 담을 수 있기 때문이다.
+
+## D-088
+
+- Date: `2026-03-29`
+- Decision: `Phase 2 관계 탐색 앱`은 same workspace / same repository 안에서 separate app directory 방식으로 시작한다.
+- Why: dictionary SSOT를 공유하고 handoff / review / validation trace를 하나의 repo에서 유지하는 편이 drift를 줄이기 때문이다.
+
+## D-089
+
+- Date: `2026-03-29`
+- Decision: recommended workspace shape is `09_app/` for Phase 1 frozen baseline and `10_relation_app/` for Phase 2 new app, with separate Vercel projects pointing to separate app directories.
+- Why: current root deploy path is tied to `09_app`, and new app도 same repo에서 separately build/deploy 하려면 app boundary와 deploy boundary를 먼저 명확히 나누는 편이 가장 안전하기 때문이다.
+
 ## D-054
 
 - Date: `2026-03-24`

@@ -66,7 +66,7 @@ test("expression non-standalone messaging", async ({ page }) => {
   await pickSearchResult(page, "밥", (text) => text.includes("밥"));
   await expect(page.getByTestId("detail-word")).toHaveText("밥");
   await page.getByTestId("detail-tab-expressions").click();
-  await expect(page.getByRole("heading", { name: "표현층" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "관용구와 속담" })).toBeVisible();
   await expect(page.getByText("상세 연결 없음")).toHaveCount(0);
   await expect(page.getByText("현재 표제어 안에서 먼저 보는 표현입니다.")).toHaveCount(0);
   await expect(page.locator("[data-testid^='subword-card-']").first()).toBeVisible();
@@ -330,6 +330,18 @@ test("relation labels disambiguate same surface targets", async ({ page }) => {
   await expect(page.getByTestId("relation-related-forms")).toContainText("눈으로 대상의 존재나 겉모습을 알게 되다.");
 });
 
+test("relation compare groups quick compare before form variants", async ({ page }) => {
+  await page.goto("/");
+
+  await pickSearchResult(page, "간지럽다", (text) => text.includes("간지럽다"));
+  await expect(page.getByTestId("detail-word")).toHaveText("간지럽다");
+  await page.getByRole("button", { name: /^의미 관계/ }).click();
+  await expect(page.getByTestId("relation-quick-compare")).toBeVisible();
+  await expect(page.getByTestId("relation-quick-compare")).toContainText("가렵다");
+  await expect(page.getByTestId("relation-form-variants")).toBeVisible();
+  await expect(page.getByTestId("relation-form-variants")).toContainText("근지럽다");
+});
+
 test("relations tab does not render original-language section", async ({ page }) => {
   await page.goto("/");
 
@@ -520,6 +532,18 @@ test("expression cards hide translation when translation is off", async ({ page 
   await page.getByRole("button", { name: /번역 ON/ }).click();
   await page.getByTestId("detail-tab-expressions").click();
   await expect(page.getByTestId("subword-translation-돈을 굴리다")).toHaveCount(0);
+});
+
+test("expression tab groups idioms and proverbs separately", async ({ page }) => {
+  await page.goto("/");
+
+  await pickSearchResult(page, "돈", (text) => text.includes("돈"));
+  await expect(page.getByTestId("detail-word")).toHaveText("돈");
+  await page.getByTestId("detail-tab-expressions").click();
+  await expect(page.getByRole("heading", { name: "관용구와 속담" })).toBeVisible();
+  await expect(page.getByTestId("expression-idioms")).toContainText("관용구");
+  await expect(page.getByTestId("expression-proverbs")).toContainText("속담");
+  await expect(page.locator("[data-testid^='subword-card-']").first()).toBeVisible();
 });
 
 test("list surface keeps expression next-step signal", async ({ page }) => {

@@ -2,6 +2,223 @@
 
 ## Authoritative Current State
 
+### MM3-290 2026-03-29 Phase 1 Closeout And Phase 2 Relation Explorer Kickoff
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: current vocabulary mindmap app을 `Phase 1` closeout으로 정리하고, separate `관계 탐색 앱`을 `Phase 2`로 여는 기반 문서를 만든다.
+- Input:
+  - `08_planning/reports/20260329_MM3_290_PHASE1_CLOSEOUT_AND_PHASE2_RELATION_EXPLORER_KICKOFF_V1.md`
+  - `08_planning/RELATION_EXPLORER_APP_FOUNDATION_V1.md`
+  - `08_planning/PROJECT_DECISION_LOG_V1.md`
+  - `08_planning/reports/20260326_MM3_236_MM3_UI_REFINEMENT_ROADMAP_V1.md`
+- Prior closeout:
+  - `MM3-289` in-app dedicated route readiness gate: `DONE`
+- Progress lock:
+  - phase1 closeout note: `DONE`
+  - phase2 separate app decision: `DONE`
+  - same workspace feasibility note: `DONE`
+  - guideline / guardrail / brainstorming foundation: `DONE`
+  - handoff sync: `DONE`
+  - next active substep: `새 directive가 오면 MM3-291부터 새 task id로 연다`
+
+### MM3-289 2026-03-29 In-App Dedicated Route Readiness Gate
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: same-app dedicated route를 지금 열 가치가 있는지 evidence 기준으로 평가하고 verdict를 고정한다.
+- Input:
+  - `08_planning/reports/20260329_MM3_289_IN_APP_DEDICATED_ROUTE_READINESS_GATE_V1.md`
+  - `08_planning/reports/20260326_MM3_236_MM3_UI_REFINEMENT_ROADMAP_V1.md`
+  - `08_planning/reports/20260329_MM3_282_PROJECT_DB_BASELINE_AND_RELATION_EXPRESSION_STRENGTHENING_V1.md`
+  - `08_planning/reports/20260329_MM3_283_INTEGRATED_REINFORCEMENT_VS_SEPARATE_APP_REVIEW_V1.md`
+- Prior closeout:
+  - `MM3-288` expression idiom-proverb implementation and validation: `DONE`
+- Progress lock:
+  - bundle candidate review: `DONE`
+  - readiness criteria review: `DONE`
+  - verdict lock: `DONE`
+  - next active substep: `phase transition review`
+
+## Phase 2 Planned Queue
+
+- `MM3-291` Relation Explorer IA Canonical
+- `MM3-292` Relation Navigator Data Contract
+- `MM3-293` Workspace / Vercel Multi-Project Topology
+- `MM3-294` Relation Explorer App Shell Opening
+
+### MM3-288 2026-03-29 Expression Idiom-Proverb Implementation And Validation
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: `MM3-287` expression idiom/proverb contract를 actual expression surface에 반영하고 validation까지 같은 turn에 닫는다.
+- Input:
+  - `08_planning/reports/20260329_MM3_288_EXPRESSION_IDIOM_PROVERB_IMPLEMENTATION_AND_VALIDATION_V1.md`
+  - `08_planning/reports/20260329_MM3_287_EXPRESSION_IDIOM_PROVERB_CONTRACT_V1.md`
+  - `09_app/src/components/TermDetail.jsx`
+  - `09_app/tests/residual.spec.js`
+- Prior closeout:
+  - `MM3-287` expression idiom/proverb contract: `DONE`
+- Progress lock:
+  - section grouping implementation: `DONE`
+  - helper copy update: `DONE`
+  - targeted validation: `DONE`
+  - next active substep: `새 directive가 오면 MM3-289부터 새 task id로 연다`
+
+### MM3-287 2026-03-29 Expression Idiom-Proverb Contract
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: `활용 표현`을 current data reality에 맞게 `관용구 / 속담` 중심 support surface로 재정의하고, section order / helper copy / navigation emphasis rule을 먼저 고정한다.
+- Input:
+  - `08_planning/reports/20260329_MM3_287_EXPRESSION_IDIOM_PROVERB_CONTRACT_V1.md`
+  - `08_planning/reports/20260326_MM3_236_MM3_UI_REFINEMENT_ROADMAP_V1.md`
+  - `08_planning/reports/20260329_MM3_282_PROJECT_DB_BASELINE_AND_RELATION_EXPRESSION_STRENGTHENING_V1.md`
+  - `09_app/src/components/TermDetail.jsx`
+- Prior closeout:
+  - `MM3-286` relation compare implementation and validation: `DONE`
+- Progress lock:
+  - expression grouping contract: `DONE`
+  - support-first copy rule: `DONE`
+  - bundle decision: `DONE`
+  - next active substep: `same turn bundle -> MM3-288`
+
+### MM3-286 2026-03-29 Relation Compare Implementation And Validation
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: `MM3-285` relation compare contract를 actual relation surface에 반영하고 validation까지 같은 turn에 닫는다.
+- Input:
+  - `08_planning/reports/20260329_MM3_286_RELATION_COMPARE_IMPLEMENTATION_AND_VALIDATION_V1.md`
+  - `08_planning/reports/20260329_MM3_285_RELATION_COMPARE_CONTRACT_V1.md`
+  - `09_app/src/components/TermDetail.jsx`
+  - `09_app/tests/residual.spec.js`
+- Prior closeout:
+  - `MM3-285` relation compare contract: `DONE`
+- Progress lock:
+  - relation grouping implementation: `DONE`
+  - helper copy update: `DONE`
+  - targeted validation: `DONE`
+  - next active substep: `새 directive가 오면 MM3-287부터 새 task id로 연다`
+
+### MM3-285 2026-03-29 Relation Compare Contract
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: `의미 관계`를 quick compare surface로 재정의하고, relation type grouping / first-read order / text-only guardrail / compare note rule을 먼저 고정한다.
+- Input:
+  - `08_planning/reports/20260329_MM3_285_RELATION_COMPARE_CONTRACT_V1.md`
+  - `08_planning/reports/20260326_MM3_236_MM3_UI_REFINEMENT_ROADMAP_V1.md`
+  - `08_planning/reports/20260329_MM3_282_PROJECT_DB_BASELINE_AND_RELATION_EXPRESSION_STRENGTHENING_V1.md`
+  - `09_app/src/components/TermDetail.jsx`
+- Prior closeout:
+  - `MM3-284` relation / expression roadmap workflow and workset plan: `DONE`
+- Progress lock:
+  - control-plane task opening: `DONE`
+  - relation type grouping plan: `DONE`
+  - compare order contract: `DONE`
+  - unresolved/text-only copy rule: `DONE`
+  - next active substep: `same turn bundle -> MM3-286`
+
+### MM3-284 2026-03-29 Relation / Expression Roadmap Workflow And Workset Plan
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: relation/expression 통합 보강의 next roadmap을 업데이트하고, workflow 기준으로 future tasklist / packet / workset plan을 먼저 고정한다.
+- Input:
+  - `08_planning/reports/20260326_MM3_236_MM3_UI_REFINEMENT_ROADMAP_V1.md`
+  - `08_planning/reports/20260326_MM3_236_MM3_UI_REFINEMENT_ROADMAP_V1.md`
+  - `.codex-orchestration/WORK_ORCHESTRATION_HUB_V1.md`
+  - `08_planning/reports/20260329_MM3_282_PROJECT_DB_BASELINE_AND_RELATION_EXPRESSION_STRENGTHENING_V1.md`
+  - `08_planning/reports/20260329_MM3_283_INTEGRATED_REINFORCEMENT_VS_SEPARATE_APP_REVIEW_V1.md`
+- Prior closeout:
+  - `MM3-283` integrated reinforcement vs separate app review: `DONE`
+- Progress lock:
+  - roadmap update: `DONE`
+  - workflow lock: `DONE`
+  - task order plan: `DONE`
+  - packet plan: `DONE`
+  - workset plan: `DONE`
+  - next active substep: `새 directive가 오면 MM3-285부터 새 task id로 연다`
+
+### MM3-283 2026-03-29 Integrated Reinforcement Vs Separate App Review
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: relation/expression 확장을 current MM3 안에서 통합 보강할지, 별도 앱으로 분리할지 비교 검토하고 3인의 전문가 review 후 개선 recommendation을 고정한다.
+- Input:
+  - `08_planning/reports/20260329_MM3_283_INTEGRATED_REINFORCEMENT_VS_SEPARATE_APP_REVIEW_V1.md`
+  - `08_planning/reports/20260329_MM3_282_PROJECT_DB_BASELINE_AND_RELATION_EXPRESSION_STRENGTHENING_V1.md`
+  - `09_app/src/App.jsx`
+  - `09_app/src/components/TermDetail.jsx`
+  - `09_app/public/data/live/*`
+- Prior closeout:
+  - `MM3-282` project / DB baseline review and relation-expression proposal strengthening: `DONE`
+- Progress lock:
+  - control-plane task opening: `DONE`
+  - option comparison evidence collection: `DONE`
+  - 3인의 전문가 review: `DONE`
+  - improved recommendation: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
+
+### MM3-282 2026-03-29 Project / DB Baseline Review And Relation-Expression Proposal Strengthening
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: 현재 프로젝트 현황과 실제 DB 구조/양/검증 근거를 확인한 뒤, `MM3-281` relation/expression 제안을 MM3 현실에 맞게 더 구체적이고 실행 가능한 형태로 보강한다.
+- Input:
+  - `08_planning/reports/20260329_MM3_282_PROJECT_DB_BASELINE_AND_RELATION_EXPRESSION_STRENGTHENING_V1.md`
+  - `08_planning/reports/20260329_MM3_281_RELATION_EXPRESSION_DEEP_RESEARCH_AND_APPLICATION_PLAN_V1.md`
+  - `vocab_dictionary/output/unified_live/*`
+  - `09_app/public/data/live/*`
+  - `09_app/public/data/internal/runtime_payloads/*`
+- Prior closeout:
+  - `MM3-281` relation / expression deep research and application planning: `DONE`
+- Progress lock:
+  - control-plane task opening: `DONE`
+  - local DB artifact inspection: `DONE`
+  - proposal strengthening packet: `DONE`
+  - validation: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
+
+### MM3-281 2026-03-29 Relation / Expression Deep Research And Application Planning
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: `의미 관계`와 `활용 표현`을 다음 응용 축으로 볼 수 있는지 판단하기 위해 한국어 사전/관계 정보/표현 정보에 대한 deep research를 수행하고 learner-facing application plan으로 정리한다.
+- Input:
+  - `08_planning/reports/20260329_MM3_281_RELATION_EXPRESSION_DEEP_RESEARCH_AND_APPLICATION_PLAN_V1.md`
+  - `09_app/src/components/TermDetail.jsx`
+  - `08_planning/reports/20260326_MM3_237_RELATION_TAB_INFORMATION_HIERARCHY_REFINEMENT_V1.md`
+  - `08_planning/reports/20260324_MM3_158_EXPRESSION_SCENARIO_WORKFLOW_ACCEPTANCE_V1.md`
+  - `08_planning/reports/20260326_MM3_235_RELATED_FORM_AUDIT_AUTOMATION_V1.md`
+- Prior closeout:
+  - `MM3-280` next PM handoff package: `DONE`
+- Progress lock:
+  - planning packet opening: `DONE`
+  - 3인의 전문가 review: `DONE`
+  - deep research rerun + improvement: `DONE`
+  - validation: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
+
+### MM3-280 2026-03-29 Next PM Handoff Package
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: next PM이 current truth만 읽고 바로 이어받을 수 있게 handoff packet과 bootstrap message를 current state로 재정렬한다.
+- Input:
+  - `08_planning/reports/20260329_MM3_280_NEXT_PM_HANDOFF_PACKET_V1.md`
+  - `.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md`
+  - `.codex-orchestration/HANDOFF_MESSAGE_TO_NEW_PM_V1.md`
+- Prior closeout:
+  - `MM3-279` deploy path revert to committed runtime payloads: `DONE`
+- Progress lock:
+  - handoff packet 생성: `DONE`
+  - handoff doc sync: `DONE`
+  - handoff message sync: `DONE`
+  - control-plane no-active-package state 재정렬: `DONE`
+  - next active substep: `새 directive가 오면 새 task id를 연다`
+
 ### MM3-279 2026-03-29 Deploy Path Revert To Committed Runtime Payloads
 
 - Status: `DONE`

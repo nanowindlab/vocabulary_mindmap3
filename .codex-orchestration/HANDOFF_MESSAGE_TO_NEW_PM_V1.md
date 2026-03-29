@@ -9,18 +9,23 @@ Source of truth:
 - /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/TASKLIST_V1.md
 - /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/ORCHESTRATION_DASHBOARD.md
 - /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md
-- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260329_MM3_277_BOUNDARY_CLEANUP_CLOSEOUT_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260329_MM3_290_PHASE1_CLOSEOUT_AND_PHASE2_RELATION_EXPLORER_KICKOFF_V1.md
 
 Active work:
-- pipeline: M1 Runtime Wiring / Core Explorer
+- pipeline: Phase 2 Relation Explorer App Planning
 - workflow: none
 - step: waiting for next directive
 - task id: none
 
 What is already done:
-- latest closeout package is MM3-279
+- latest closeout package is MM3-290
 - deployment preflight check set completed
 - there is no current runtime or product blocker
+- Phase 1 vocabulary mindmap app is now treated as frozen baseline
+- separate relation explorer app is Phase 2 direction
+- current live/base entry count is 53,012 and historical api_xml_merged total is 53,480
+- same workspace / same repo kickoff is considered feasible
+- foundation doc is ready
 - source-ambiguous related forms are closed as text-only because SSOT source has no target
 - unclassified entries are no longer exposed as a permanent nav tab, but remain searchable
 - current deploy boundary can be rebuilt from canonical source with `npm run rebuild:canonical-runtime`, but that path is explicit/manual only
@@ -46,12 +51,15 @@ Exit condition:
 Read first:
 - /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/TASKLIST_V1.md
 - /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/ORCHESTRATION_DASHBOARD.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260329_MM3_290_PHASE1_CLOSEOUT_AND_PHASE2_RELATION_EXPLORER_KICKOFF_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/RELATION_EXPLORER_APP_FOUNDATION_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260326_MM3_236_MM3_UI_REFINEMENT_ROADMAP_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/WORK_ORCHESTRATION_HUB_V1.md
 - /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260329_MM3_272_INTEGRATED_REVIEW_REGISTRATION_AND_VALID_REMEDIATION_PLAN_V1.md
-- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260329_MM3_273_BUILD_GRAPH_CLOSURE_CLOSEOUT_V1.md
 
 Immediate next action:
 - hold this state until the next active work is opened
-- if a new directive arrives, open a new task id instead of reusing MM3-278
+- if a new directive arrives, open a new task id instead of reusing MM3-290
 
 Constraints:
 - do not change the active task id unless control-plane truth changes

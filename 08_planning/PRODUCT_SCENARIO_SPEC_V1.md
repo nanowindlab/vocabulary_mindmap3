@@ -1,8 +1,8 @@
 # PRODUCT_SCENARIO_SPEC_V1
 
-> 상태: `Final Canonical`
-> Last Updated: `2026-03-26 16:00 KST`
-> Role: current learner-facing scenario canonical
+> 상태: `Phase 1 Final Canonical`
+> Last Updated: `2026-03-29 12:40 KST`
+> Role: Phase 1 learner-facing scenario canonical (`09_app/` frozen baseline)
 
 ## Product Intent
 

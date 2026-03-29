@@ -2,8 +2,8 @@
 
 ## Current Status
 
-- Milestone: `M1 Runtime Wiring / Core Explorer`
-- Active Work: `none (latest closeout: MM3-279)`
+- Milestone: `Phase 2 Relation Explorer App Planning`
+- Active Work: `none (latest closeout: MM3-290)`
 - Latest Pilot Capture: `pilot_session_04 / 2026-03-26 01:28 KST / participant 사용자 / facilitator 사용자 / ad-hoc screenshot follow-up`
 - PM Owner: `Codex`
 - User Constraint: external references are read-only
@@ -12,6 +12,17 @@
 
 ## Completed This Turn
 
+- `MM3-290` phase 1 closeout and phase 2 relation explorer kickoff
+- `MM3-289` in-app dedicated route readiness gate
+- `MM3-288` expression idiom-proverb implementation and validation
+- `MM3-287` expression idiom-proverb contract
+- `MM3-286` relation compare implementation and validation
+- `MM3-285` relation compare contract
+- `MM3-284` relation/expression roadmap workflow and workset plan
+- `MM3-283` integrated reinforcement vs separate app review
+- `MM3-282` project/db baseline review + relation/expression proposal strengthening
+- `MM3-281` relation/expression deep research + application planning
+- `MM3-280` next PM handoff package
 - `MM3-279` deploy path revert to committed runtime payloads
 - `MM3-278` filter label/order update closeout
 - `MM3-277` boundary cleanup closeout
@@ -156,9 +167,20 @@
 ## In Progress
 
 - no active execution package
-- latest closeout: `MM3-279`
+- latest closeout: `MM3-290`
 - current step: `waiting for next directive`
 - just completed:
+  - `MM3-290`에서 current vocabulary mindmap app을 `Phase 1` closeout baseline으로 정리하고 separate relation explorer app `Phase 2` kickoff foundation을 만들었다
+  - `MM3-289`에서 same-app dedicated route는 current stage에서 `NOT_READY_YET`로 판정하고 workflow C를 닫았다
+  - `MM3-288`에서 expression tab을 `관용구 / 속담` 중심 support surface로 재구성하고 targeted expression validation `4 passed`로 닫았다
+  - `MM3-287`에서 expression idiom/proverb contract와 same-turn bundle rule을 고정했다
+  - `MM3-286`에서 relation compare quick-compare/variant grouping을 relation tab에 반영하고 targeted relation validation `7 passed`로 닫았다
+  - `MM3-285`에서 relation compare contract와 same-turn bundle rule을 고정했다
+  - `MM3-284`에서 relation/expression integrated reinforcement roadmap, workflow, task order, packet plan, workset plan을 고정했다
+  - `MM3-283`에서 integrated reinforcement, separate app split, in-app dedicated route를 비교했고, current recommendation을 `통합 우선 / separate app 보류`로 고정했다
+  - `MM3-282`에서 current DB structure, quantity, validation status를 actual artifact 기준으로 재확인했고 relation/expression proposal을 현실 데이터에 맞게 sharpen했다
+  - `MM3-281`에서 relation/expression next application research를 official source, learner-dictionary research, local MM3 baseline 기준으로 정리했고 phased roadmap까지 고정했다
+  - `MM3-280`에서 current state 기준 next PM handoff packet과 bootstrap message를 재정렬했다
   - `MM3-279`에서 default deploy path를 committed `runtime_payloads` usage로 되돌렸다
   - `MM3-278`에서 filter panel label을 `TOPIK빈도`로 바꾸고 순서를 `난이도 -> 품사 -> TOPIK빈도 -> 번역 언어`로 조정했다
   - `MM3-277`에서 current boundary source artifact ownership을 `09_app` build tooling 기준으로 명시하고 review-driven remediation cycle을 닫았다
@@ -194,7 +216,8 @@
 
 ## Current Runtime Baseline
 
-- canonical count: `53,480`
+- current live/base entry count: `53,012`
+- historical merged total (`api_xml_merged`): `53,480`
 - runtime payload format: `JSON`
 - deploy payload source: `runtime_payloads/*.json.gz`
 - build chain: `prepare:live -> verify:live -> check:runtime-surface-sidecar -> build`
@@ -213,12 +236,17 @@
 
 ## Pending
 
-- `MM3-168`~`MM3-173`: additional human feedback residual follow-up queue recorded
-- queue order: `W1 MM3-172 -> W2 MM3-170/MM3-171 -> W3 MM3-168/MM3-169 -> W4 MM3-173`
-- current pipeline state: `W1 done`, `W2 done`, `W3 done`, `W4 done`
+- Phase 2 planned queue:
+  - `MM3-291 Relation Explorer IA Canonical`
+  - `MM3-292 Relation Navigator Data Contract`
+  - `MM3-293 Workspace / Vercel Multi-Project Topology`
+  - `MM3-294 Relation Explorer App Shell Opening`
 
 ## Risks
 
+- `P2-R1`: relation study용 하위 분류는 raw category를 그대로 쓰면 어색한 case가 있으므로 curated grouping이 필요하다.
+- `P2-R2`: same repo two-app topology는 build / deploy boundary가 흐리면 drift가 생긴다.
+- `P2-R3`: Phase 1 frozen baseline과 Phase 2 active app이 서로 silent cross-edit 되지 않게 guardrail이 필요하다.
 - `R1`: human pilot를 다시 열면 새 feedback wave가 다시 열릴 수 있다.
 - `R2`: current deploy boundary canonical generator는 복구됐다. 남은 재현성 technical debt는 broader parity와 source provenance completion 쪽으로만 좁혀졌다.
 - `R2A`: broader parity나 future generator boundary expansion을 다시 열면 `rebuild:canonical-runtime`와 verification set도 같은 tranche에서 같이 갱신해야 한다.
@@ -237,8 +265,8 @@
 - `R17`: current related-form unresolved 대부분은 source ambiguity다. `audit_related_form_targets.py` 기준 `4,302 / 4,303`이 source-ambiguous다.
 - `R18`: situation tree repeated label redundancy는 source-shaped issue로 고정됐고, resolution choice는 `MM3-258B`로 남아 있다.
 - `R19`: top architecture consolidation은 구현됐지만, theme continuity art-direction polish는 `MM3-261B`로 남아 있다.
-- Latest handoff packet: `08_planning/reports/20260328_MM3_268_NEXT_PM_HANDOFF_PACKET_V1.md`
-- Latest PM decision: `08_planning/reports/20260329_MM3_279_DEPLOY_PATH_REVERT_TO_COMMITTED_RUNTIME_PAYLOADS_V1.md`
+- Latest handoff packet: `08_planning/reports/20260329_MM3_280_NEXT_PM_HANDOFF_PACKET_V1.md`
+- Latest PM decision: `08_planning/reports/20260329_MM3_290_PHASE1_CLOSEOUT_AND_PHASE2_RELATION_EXPLORER_KICKOFF_V1.md`
 - `R13`: TOPIK stats는 계속 쓰되 learner-facing definition source는 MM3로 고정했고, `level`은 폐기, `미산출`은 main filter에서 제거하는 정책이 승인됐다.
 
 ## Canonical Pointers

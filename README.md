@@ -4,7 +4,8 @@
 
 ## 현재 phase 목표
 
-- 이번 phase는 `core explorer runtime wiring`을 안정화하고 learner flow QA로 넘길 기준을 고정하는 것이다.
+- current `09_app/` vocabulary mindmap app은 `Phase 1` closeout baseline으로 본다.
+- current active planning은 `Phase 2 separate relation explorer app` kickoff다.
 - 운영 강도는 `엄격`으로 고정한다.
 - 현재 문서의 역할은 다음 PM 스레드가 문서와 현재 runtime baseline만 읽고도 같은 상태를 재현할 수 있게 만드는 것이다.
 
@@ -18,7 +19,7 @@
 ## 현재 운영 기준
 
 - Main PM: Codex
-- 현재 phase: `M1 Runtime Wiring / Core Explorer`
+- 현재 phase: `Phase 2 Relation Explorer App Planning`
 - current PM operating guide: `pm-operating-guide.md`
 - 현재 authoritative todo: `08_planning/TASKLIST_V1.md`
 - 현재 control plane: `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`
@@ -49,10 +50,12 @@
 
 ## 현재 상태 메모
 
-- current artifact truth는 `53,480` 기준이다.
+- current artifact truth는 `53,012` entry 기준이다.
+- `53,480`은 current live/runtime entry count가 아니라 historical `api_xml_merged` total이다.
 - `word-first + dual category + sense core`가 현재 구조 기준이다.
 - search + facet, tree shell, detail, expression 보조 진입이 앱에 연결돼 있다.
-- `의미 관계어`, `관련형`, `subword` 카드 점프까지 detail panel에서 동작한다.
+- `의미 관계어`, `관련형`은 detail panel 탐색 경로로 동작한다.
+- `subword`는 현재 대부분 preview 중심이며, exact jumpable item은 매우 드물다.
 - `MM3-187F3`~`MM3-187I`, `MM3-196`, `MM3-197` 기준으로 direct learner-facing feedback과 guide 작성은 닫혔다.
 - `MM3-171B Render-Side Performance Optimization`은 `MM3-199 R7` 기준으로 closeout됐다.
 - terminology note: raw/internal `미분류` bucket을 learner-facing UI에서는 `분류 밖 항목`으로 보여 준다. 둘은 다른 bucket이 아니다.
@@ -62,7 +65,16 @@
 - `MM3-212`에서 runtime/source payload validation과 count reconciliation은 `PASS`로 고정됐다.
 - `MM3-216`에서 TOPIK stats linkage policy를 고정했다.
 - 현재 active execution task는 없다.
-- latest closeout package는 `MM3-279 2026-03-29 Deploy Path Revert To Committed Runtime Payloads`이다.
+- latest closeout package는 `MM3-290 2026-03-29 Phase 1 Closeout And Phase 2 Relation Explorer Kickoff`이다.
+- current `09_app/`은 Phase 1 frozen baseline이다.
+- Phase 2는 separate `관계 탐색 앱`으로 연다.
+- same workspace / same repo 안에서 `10_relation_app/`를 여는 방식이 current recommendation이다.
+- `MM3-285`, `MM3-286`을 같은 turn bundle로 닫아 relation compare contract와 implementation을 완료했다.
+- `MM3-287`, `MM3-288`을 같은 turn bundle로 닫아 expression idiom/proverb contract와 implementation을 완료했다.
+- current relation tab은 `빠른 비교 -> 확장 관계 -> 형태·문체 변이 -> 관련형 -> 연관 어휘 -> 교차 연결 장면` 순서를 사용한다.
+- current expression tab은 `관용구와 속담` support surface와 `관용구 / 속담` section 구조를 사용한다.
+- `MM3-289` verdict는 same-app dedicated route `NOT_READY_YET`다.
+- Phase 2 planned queue는 `MM3-291 -> MM3-292 -> MM3-293 -> MM3-294`다.
 - source-ambiguous `related_forms`는 SSOT source에 target이 없으므로 `text-only`로 유지하고, current backlog로 다시 열지 않는다.
 - `분류 밖 항목`은 main nav tab에서는 제거됐고, search result와 search-driven detail route로만 계속 접근한다.
 - current deploy boundary payload는 explicit/manual path로 `npm --prefix 09_app run rebuild:canonical-runtime`로 다시 생성할 수 있다.
