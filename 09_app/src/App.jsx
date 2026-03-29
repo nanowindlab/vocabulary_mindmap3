@@ -248,6 +248,33 @@ function buildTreeFromList(list, surface, contextMode) {
   return tree;
 }
 
+function matchesTreeNode(item, node) {
+  if (!item || !node || node.type === "term") return true;
+
+  const hierarchy = item.hierarchy || {};
+  const itemRootId = hierarchy.root_id || null;
+  const itemSceneId = hierarchy.display_scene || hierarchy.scene || "일반";
+  const itemCategoryId = hierarchy.display_category || hierarchy.category || item.pos || "기타";
+
+  if (node.type === "root") {
+    return itemRootId === node.id;
+  }
+
+  if (node.type === "scene") {
+    return (!node.rootId || itemRootId === node.rootId) && itemSceneId === node.id;
+  }
+
+  if (node.type === "category") {
+    return (
+      (!node.rootId || itemRootId === node.rootId) &&
+      (!node.sceneId || itemSceneId === node.sceneId) &&
+      itemCategoryId === node.id
+    );
+  }
+
+  return true;
+}
+
 // ── 필터 함수 ────────────────────────────────────────────────────
 function applyFilters(list, filters) {
   let result = list;
@@ -629,9 +656,15 @@ function App() {
   }, [activeTab, projectedTabLists]);
 
   const filteredList = useMemo(() => applyFilters(activeList, filters), [activeList, filters]);
+  const listScopedList = useMemo(() => {
+    if (!selectedTreeNode || selectedTreeNode.type === "term") return filteredList;
+    return filteredList.filter((item) => matchesTreeNode(item, selectedTreeNode));
+  }, [filteredList, selectedTreeNode]);
   const filteredSearchIndex = useMemo(() => applyFilters(searchIndex, filters), [searchIndex, filters]);
   const filterBaseList = activeList.length > 0 ? activeList : searchIndex;
-  const filterVisibleList = activeList.length > 0 ? filteredList : filteredSearchIndex;
+  const filterVisibleList = activeList.length > 0
+    ? (viewMode === "list" ? listScopedList : filteredList)
+    : filteredSearchIndex;
   const searchIndexById = useMemo(() => {
     const map = new Map();
     searchIndex.forEach((item) => {
@@ -657,9 +690,8 @@ function App() {
 
   const activeSurface = "mindmap_core";
   const activeTree = useMemo(() => {
-    if (viewMode !== "mindmap") return {};
     return buildTreeFromList(filteredList, activeSurface, activeTab);
-  }, [viewMode, filteredList, activeSurface, activeTab]);
+  }, [filteredList, activeSurface, activeTab]);
   const isActiveTabLoading = tabLoadState[activeTab] === "loading" || tabLoadState[activeTab] === "queued";
   const isActiveTabReady = tabLoadState[activeTab] === "ready";
 
@@ -670,7 +702,9 @@ function App() {
     const chunkTrace = [];
     const currentDetail = selectedTermDetailRef.current;
     const alreadyLoadedSameTerm = currentDetail?.id === term.id && hasLoadedDetailPayload(currentDetail);
-    setSelectedTreeNode(null);
+    setSelectedTreeNode((prev) => (
+      prev && prev.type !== "term" && matchesTreeNode(term, prev) ? prev : null
+    ));
     setSelectedTermId((prev) => (prev === term.id ? prev : term.id));
     setSelectedTermDetail((prev) => (prev?.id === term.id ? prev : term));
 
@@ -791,6 +825,7 @@ function App() {
 
     // 탭 전환 + focusedRootId 를 먼저 설정
     setActiveTab(targetTab);
+    setSelectedTreeNode(null);
     if (targetTab === "unclassified") {
       setViewMode("list");
     }
@@ -958,7 +993,9 @@ function App() {
 
   const handleTreeNodeSelect = useCallback((node, source = "sidebar") => {
     if (!node || node.type === "term") return;
-    setViewMode("mindmap");
+    if (source === "mindmap") {
+      setViewMode("mindmap");
+    }
     setSelectedTermId(null);
     setSelectedTermDetail(null);
     if (node.rootId) {
@@ -1020,6 +1057,7 @@ function App() {
                   setActiveTab(tab.id);
                   setSelectedTermDetail(null);
                   setSelectedTermId(null);
+                  setSelectedTreeNode(null);
                   setFocusedRootId(null);
                   if (tab.id === "unclassified") {
                     setViewMode("list");
@@ -1233,7 +1271,7 @@ function App() {
                 />
               ) : (
                 <ListView
-                  list={filteredList}
+                  list={listScopedList}
                   selectedTermId={selectedTermId}
                   onSelectTerm={handleSelectTerm}
                   showEnglish={showEnglish}

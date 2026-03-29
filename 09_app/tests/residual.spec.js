@@ -28,6 +28,26 @@ async function readVisibleCount(page) {
   return match ? Number(match[1].replaceAll(",", "")) : null;
 }
 
+async function narrowToListBranch(page) {
+  await page.getByRole("button", { name: /리스트/ }).click();
+  await expect(page.locator("[data-list-term-id]").first()).toBeVisible();
+
+  const initialCount = await readVisibleCount(page);
+  const firstScene = page.locator("[data-sidebar-node-type='scene']").first();
+  await expect(firstScene).toBeVisible();
+  await firstScene.click();
+
+  const firstCategory = page.locator("[data-sidebar-node-type='category']").first();
+  await expect(firstCategory).toBeVisible();
+  const sceneCount = await readVisibleCount(page);
+
+  await firstCategory.click();
+  await expect(page.locator("[data-list-term-id]").first()).toBeVisible();
+  const categoryCount = await readVisibleCount(page);
+
+  return { initialCount, sceneCount, categoryCount };
+}
+
 test("filter persistence across list and mindmap view", async ({ page }) => {
   await page.goto("/");
   await page.screenshot({ path: path.join(guideAssetDir, "01_main_explorer.png"), fullPage: true });
@@ -42,10 +62,65 @@ test("filter persistence across list and mindmap view", async ({ page }) => {
   await page.getByRole("button", { name: /리스트/ }).click();
   const listCount = await readVisibleCount(page);
   expect(listCount).toBe(afterFilter);
+  await expect(page.locator("[data-sidebar-node-type='scene']").first()).toBeVisible();
 
   await page.getByRole("button", { name: /마인드맵/ }).click();
   const mapCount = await readVisibleCount(page);
   expect(mapCount).toBe(afterFilter);
+});
+
+test("list view stays synced with tree navigator across scene category and row selection", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByTestId("filter-toggle-난이도").click();
+  await page.getByTestId("filter-option-난이도-초급").click();
+
+  const { initialCount, sceneCount, categoryCount } = await narrowToListBranch(page);
+  expect(sceneCount).not.toBeNull();
+  expect(categoryCount).not.toBeNull();
+  expect(sceneCount).toBeLessThan(initialCount);
+  expect(categoryCount).toBeLessThanOrEqual(sceneCount);
+
+  await expect(page.locator("[data-sidebar-node-type='category'][data-sidebar-selected='true']").first()).toBeVisible();
+
+  const firstRow = page.locator("[data-list-term-id]").first();
+  const termId = await firstRow.getAttribute("data-list-term-id");
+  await firstRow.click();
+
+  await expect(page.getByTestId("detail-word")).toBeVisible();
+  await expect(page.locator(`[data-term-id="${termId}"][data-sidebar-selected="true"]`)).toBeVisible();
+  expect(await readVisibleCount(page)).toBe(categoryCount);
+});
+
+test("list view stays synced when selecting a term from tree navigator", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByTestId("filter-toggle-난이도").click();
+  await page.getByTestId("filter-option-난이도-초급").click();
+
+  const { categoryCount } = await narrowToListBranch(page);
+  const firstSidebarTerm = page.locator("[data-sidebar-node-type='term']").first();
+  await expect(firstSidebarTerm).toBeVisible();
+  const sidebarTermLabel = (await firstSidebarTerm.textContent())?.trim() || "";
+
+  await firstSidebarTerm.click();
+
+  await expect(page.getByRole("button", { name: /리스트/ })).toBeVisible();
+  await expect(page.locator("[data-list-term-id]").first()).toBeVisible();
+  await expect(page.getByTestId("detail-word")).toHaveText(sidebarTermLabel);
+  expect(await readVisibleCount(page)).toBe(categoryCount);
+});
+
+test("situation list view stays synced with tree navigator branch selection", async ({ page }) => {
+  await page.goto("/");
+
+  await page.getByRole("button", { name: /주제 및 상황/ }).click();
+
+  const { initialCount, sceneCount, categoryCount } = await narrowToListBranch(page);
+  expect(sceneCount).not.toBeNull();
+  expect(categoryCount).not.toBeNull();
+  expect(sceneCount).toBeLessThan(initialCount);
+  expect(categoryCount).toBeLessThanOrEqual(sceneCount);
 });
 
 test("unclassified surface uses learner-facing label consistently", async ({ page }) => {
