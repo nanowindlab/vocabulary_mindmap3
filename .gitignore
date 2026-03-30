@@ -1,45 +1,14 @@
-# macOS
 .DS_Store
-__pycache__/
-*.pyc
+.vercel
+.wrangler
 
-# frontend local/build artifacts
 09_app/node_modules/
 09_app/dist/
-09_app/test-results/
-09_app/playwright-report/
-10_relation_app/node_modules/
-10_relation_app/dist/
-10_relation_app.zip
-.wrangler/
 
-# generated app runtime payloads
-09_app/public/data/live/*.json
-!09_app/public/data/live/README.md
+09_app/public/data/live/
+!09_app/public/data/live/.gitkeep
 
-# 원천 다운로드본 제외
-vocab_dictionary/dict_download_json/
-vocab_dictionary/dict_download_json.zip
+09_app/public/data/internal/runtime_payloads/
+!09_app/public/data/internal/runtime_payloads/.gitkeep
 
-# API 원시 XML dump 제외
-vocab_dictionary/output/api_xml_live/
-
-# output 하위 기본 제외
-vocab_dictionary/output/**/*.json
-vocab_dictionary/output/**/*.sqlite
-vocab_dictionary/output/**/*.zip
-
-# 배포용 압축본만 포함
-!vocab_dictionary/output/unified_live/*.json.gz
-
-# 소형 메타/리포트는 포함
-!vocab_dictionary/output/unified_live/kcenter_link_integrity.json
-!vocab_dictionary/output/unified_live/kcenter_merge_report.json
-!vocab_dictionary/output/unified_live/kcenter_review_queue.json
-!vocab_dictionary/output/unified_live/dangling_code_fetch_report.json
-
-# oversized tmp report snapshots
-tmp_reports/**/APP_READY_SEARCH_INDEX.json
-tmp_reports/recovered_APP_READY_SEARCH_INDEX.json
-tmp_reports/authoritative_runtime_rollbacks/
-.vercel
+tmp/

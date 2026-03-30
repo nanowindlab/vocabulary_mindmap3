@@ -1,0 +1,7 @@
+{
+  "title": "MM3 Runtime Seed",
+  "description": "Initial runtime payload restored from Cloudflare R2 during Vercel build.",
+  "generatedAt": "2026-03-31T00:00:00.000Z",
+  "entryCount": 1,
+  "source": "cloudflare-r2"
+}

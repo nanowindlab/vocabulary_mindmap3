@@ -1,63 +1,21 @@
 {
   "name": "09_app",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "apply:subject-none-policy": "python3 ../vocab_dictionary/scripts/apply_subject_none_policy.py",
-    "repair:runtime-detail-fidelity": "python3 ../vocab_dictionary/scripts/repair_runtime_detail_fidelity.py",
-    "build:examples": "node scripts/build-example-chunks.mjs",
-    "build:canonical-chunk-mapping": "node scripts/build-canonical-chunk-mapping.mjs",
-    "capture:guide": "playwright test tests/residual.spec.js tests/pilot-rehearsal.spec.js -g \"filter persistence across list and mindmap view|search helper explains ordering and basic-item label|built example chunks surface topik examples before dictionary examples|expression cards follow selected translation language when available|unclassified helper splits grammatical items from uncategorized vocabulary|pilot rehearsal path: 요리하다 translation selector and examples|pilot rehearsal path: 보다 and 버리다 semantics surfaces\" --workers=1",
-    "package:live": "node scripts/package-live-payloads.mjs",
-    "publish:r2-runtime": "node scripts/publish-r2-runtime-bundle.mjs",
-    "prune:dist-runtime": "node scripts/prune-dist-runtime-files.mjs",
     "prepare:live": "node scripts/prepare-live-payloads.mjs",
     "verify:live": "node scripts/verify-runtime-payloads.mjs",
-    "validate:chunk-contract": "node scripts/validate-chunk-contract.mjs",
-    "validate:source-alignment": "node scripts/validate-runtime-source-alignment.mjs",
-    "audit:authoritative-promotion": "node scripts/audit-authoritative-promotion-readiness.mjs",
-    "probe:search-recovery": "node scripts/probe-runtime-search-recovery.mjs",
-    "build:search-recovery": "node scripts/build-runtime-search-index-recovery.mjs",
-    "build:runtime-surface-recovery": "node scripts/build-runtime-surface-recovery.mjs",
-    "rebuild:canonical-runtime": "node scripts/rebuild-canonical-runtime.mjs",
-    "probe:runtime-surface-recovery": "node scripts/probe-runtime-surface-recovery.mjs",
-    "check:runtime-surface-sidecar": "npm run validate:source-alignment && npm run build:runtime-surface-recovery && npm run probe:runtime-surface-recovery && npm run validate:chunk-contract",
-    "diff:authoritative-runtime": "node scripts/diff-authoritative-runtime-candidate.mjs",
-    "check:authoritative-runtime-boundary": "npm run prepackage:live && npm run diff:authoritative-runtime && npm run build",
-    "plan:authoritative-runtime": "node scripts/promote-authoritative-runtime-candidate.mjs --dry-run",
-    "promote:authoritative-runtime:execute": "node scripts/promote-authoritative-runtime-candidate.mjs --execute",
-    "rollback:authoritative-runtime": "node scripts/rollback-authoritative-runtime-candidate.mjs --dry-run",
-    "rollback:authoritative-runtime:execute": "node scripts/rollback-authoritative-runtime-candidate.mjs --execute",
+    "build": "npm run prepare:live && npm run verify:live && vite build",
     "dev": "vite",
-    "prepackage:live": "npm run apply:subject-none-policy && npm run repair:runtime-detail-fidelity && npm run check:runtime-surface-sidecar",
-    "prebuild": "npm run prepare:live && npm run verify:live && npm run check:runtime-surface-sidecar",
-    "build": "vite build && npm run prune:dist-runtime",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "test:contracts": "node --test test-contracts/*.test.mjs",
-    "test:smoke": "playwright test"
+    "publish:r2-runtime": "node scripts/publish-r2-runtime-bundle.mjs"
   },
   "dependencies": {
-    "d3": "^7.9.0",
-    "lucide-react": "^0.577.0",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-zoom-pan-pinch": "^3.7.0"
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@playwright/test": "^1.58.2",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
-    "eslint": "^9.39.1",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.4.24",
-    "globals": "^16.5.0",
-    "vite": "^8.0.0-beta.13"
-  },
-  "overrides": {
-    "vite": "^8.0.0-beta.13"
+    "vite": "^8.0.2"
   }
 }

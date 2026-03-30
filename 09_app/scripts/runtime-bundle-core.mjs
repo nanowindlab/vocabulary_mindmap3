@@ -2,51 +2,23 @@ import { createHash } from "node:crypto";
 import { createReadStream, existsSync, readdirSync, readFileSync, rmSync } from "node:fs";
 import path from "node:path";
 
-export const TOP_LEVEL_RUNTIME_FILES = [
-  "APP_READY_SEARCH_INDEX.json",
-  "APP_READY_MEANING_TREE.json",
-  "APP_READY_SITUATION_TREE.json",
-  "APP_READY_UNCLASSIFIED_TREE.json",
-  "APP_READY_FACETS.json",
-  "CHUNK_MANIFEST_V1.json",
-];
-
 export const R2_RUNTIME_MANIFEST_FILE = "runtime-bundle-manifest.json";
-
-export function chunkFilesFromManifest(manifest) {
-  return (manifest?.chunks || []).flatMap((chunk) => [
-    `APP_READY_CHUNK_RICH_${chunk.chunk_id}.json`,
-    `APP_READY_CHUNK_EXAMPLES_${chunk.chunk_id}.json`,
-  ]);
-}
-
-export function loadChunkManifest(dirPath) {
-  const manifestPath = path.join(dirPath, "CHUNK_MANIFEST_V1.json");
-  if (!existsSync(manifestPath)) {
-    throw new Error(`Missing chunk manifest: ${manifestPath}`);
-  }
-  return JSON.parse(readFileSync(manifestPath, "utf-8"));
-}
+export const RUNTIME_FILE = "app-runtime.json";
 
 export function listRuntimeBundleFiles(dirPath) {
-  const manifest = loadChunkManifest(dirPath);
-  return [...TOP_LEVEL_RUNTIME_FILES, ...chunkFilesFromManifest(manifest)];
+  return existsSync(path.join(dirPath, RUNTIME_FILE)) ? [RUNTIME_FILE] : [];
 }
 
 export function clearPreparedRuntimeFiles(dirPath) {
   if (!existsSync(dirPath)) return;
-
-  const fileNames = readdirSync(dirPath);
-  for (const fileName of fileNames) {
-    const shouldRemove =
-      TOP_LEVEL_RUNTIME_FILES.includes(fileName) ||
-      fileName.startsWith("APP_READY_CHUNK_RICH_") ||
-      fileName.startsWith("APP_READY_CHUNK_EXAMPLES_");
-
-    if (shouldRemove) {
-      rmSync(path.join(dirPath, fileName), { force: true });
-    }
+  for (const fileName of readdirSync(dirPath)) {
+    if (fileName === ".gitkeep") continue;
+    rmSync(path.join(dirPath, fileName), { recursive: true, force: true });
   }
+}
+
+export function loadRuntimeManifest(dirPath) {
+  return JSON.parse(readFileSync(path.join(dirPath, R2_RUNTIME_MANIFEST_FILE), "utf8"));
 }
 
 export async function sha256(filePath) {

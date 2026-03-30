@@ -1,0 +1,12 @@
+{
+  "$schema": "../09_app/node_modules/wrangler/config-schema.json",
+  "name": "mm3-runtime-gateway",
+  "main": "src/index.js",
+  "compatibility_date": "2026-03-30",
+  "r2_buckets": [
+    {
+      "binding": "MM3_BUCKET",
+      "bucket_name": "vocabulary-mindmap3-runtime"
+    }
+  ]
+}
