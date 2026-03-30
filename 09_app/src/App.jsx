@@ -68,9 +68,37 @@ export default function App() {
               <dt>Source</dt>
               <dd>{state.payload.source}</dd>
             </div>
+            <div>
+              <dt>Payload Count</dt>
+              <dd>{state.payload.payloadCount ?? "-"}</dd>
+            </div>
+            <div>
+              <dt>Bundle Size</dt>
+              <dd>{formatBytes(state.payload.bundleBytes)}</dd>
+            </div>
+            <div>
+              <dt>Compressed Size</dt>
+              <dd>{formatBytes(state.payload.compressedBytes)}</dd>
+            </div>
+            <div>
+              <dt>Legacy Commit</dt>
+              <dd>{state.payload.legacyCommit ?? "-"}</dd>
+            </div>
           </dl>
         </section>
       )}
     </main>
   );
+}
+
+function formatBytes(value) {
+  if (!Number.isFinite(value)) return "-";
+  const units = ["B", "KB", "MB", "GB"];
+  let amount = value;
+  let index = 0;
+  while (amount >= 1024 && index < units.length - 1) {
+    amount /= 1024;
+    index += 1;
+  }
+  return `${amount.toFixed(index === 0 ? 0 : 2)} ${units[index]}`;
 }

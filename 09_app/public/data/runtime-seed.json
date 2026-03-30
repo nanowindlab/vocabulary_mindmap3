@@ -1,7 +1,11 @@
 {
-  "title": "MM3 Runtime Seed",
-  "description": "Initial runtime payload restored from Cloudflare R2 during Vercel build.",
+  "title": "MM3 Runtime Bundle",
+  "description": "Actual MM3 runtime metadata restored from Cloudflare R2 during the Vercel build.",
   "generatedAt": "2026-03-31T00:00:00.000Z",
-  "entryCount": 1,
-  "source": "cloudflare-r2"
+  "entryCount": 53012,
+  "payloadCount": 220,
+  "bundleBytes": 903260288,
+  "compressedBytes": 158584758,
+  "source": "cloudflare-r2",
+  "legacyCommit": "cc797a2"
 }
