@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "npm --prefix 09_app install",
-  "buildCommand": "npm --prefix 09_app run build",
+  "buildCommand": "MM3_RUNTIME_BUNDLE_BASE_URL=https://mm3-runtime-gateway.nanowind.workers.dev npm --prefix 09_app run build",
   "outputDirectory": "09_app/dist"
 }
