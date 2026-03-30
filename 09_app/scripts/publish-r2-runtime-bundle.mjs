@@ -3,7 +3,7 @@ import { mkdtempSync, statSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { R2_RUNTIME_MANIFEST_FILE, RUNTIME_FILE, sha256 } from "./runtime-bundle-core.mjs";
+import { listRuntimeBundleFiles, R2_RUNTIME_MANIFEST_FILE, sha256 } from "./runtime-bundle-core.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,21 +28,23 @@ function putObject(fileName, filePath) {
 }
 
 async function main() {
-  const filePath = path.join(liveDir, RUNTIME_FILE);
+  const fileNames = listRuntimeBundleFiles(liveDir);
   const manifest = {
     version: "v1",
     generated_at: new Date().toISOString(),
-    entries: [
-      {
-        file: RUNTIME_FILE,
-        remote_path: remotePath(RUNTIME_FILE),
-        bytes: statSync(filePath).size,
-        sha256: await sha256(filePath),
-      },
-    ],
+    entries: [],
   };
 
-  putObject(RUNTIME_FILE, filePath);
+  for (const fileName of fileNames) {
+    const filePath = path.join(liveDir, fileName);
+    manifest.entries.push({
+      file: fileName,
+      remote_path: remotePath(fileName),
+      bytes: statSync(filePath).size,
+      sha256: await sha256(filePath),
+    });
+    putObject(fileName, filePath);
+  }
 
   const tempDir = mkdtempSync(path.join(tmpdir(), "mm3-r2-manifest-"));
   const manifestPath = path.join(tempDir, R2_RUNTIME_MANIFEST_FILE);
@@ -50,7 +52,7 @@ async function main() {
   putObject(R2_RUNTIME_MANIFEST_FILE, manifestPath);
   rmSync(tempDir, { recursive: true, force: true });
 
-  console.log(JSON.stringify({ status: "PUBLISHED", bucket, prefix }, null, 2));
+  console.log(JSON.stringify({ status: "PUBLISHED", bucket, prefix, fileCount: fileNames.length }, null, 2));
 }
 
 main().catch((error) => {
