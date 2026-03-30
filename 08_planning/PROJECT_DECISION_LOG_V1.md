@@ -330,6 +330,18 @@
 - Decision: internal pilot checklist와 feedback intake protocol까지 PM 문서로 정리하고, 실제 human pilot session 여부는 사용자/운영 판단 경계로 둔다.
 - Why: 여기서부터는 코드/문서 작업이 아니라 실제 사람을 대상으로 pilot를 실행할지의 운영 결정이기 때문이다.
 
+## D-106
+
+- Date: `2026-03-30`
+- Decision: relation explorer의 번역 언어 selector는 source가 제공하는 전체 translation language를 노출하고, default는 `영어`로 둔다.
+- Why: current MM3 payload가 여러 언어를 이미 제공하고 있으므로 relation app이 이를 임의로 줄일 이유가 없고, default만 `영어`로 두는 편이 learner-facing 기본값으로 가장 안정적이기 때문이다.
+
+## D-107
+
+- Date: `2026-03-30`
+- Decision: relation explorer `TOPIK 빈도` filter는 `전체` 외에 `1~5` band 전부를 노출한다.
+- Why: current search projection `stats.band`에 1~5 값이 실제로 존재하므로 filter 옵션에서 이를 숨기면 source-backed narrowing capability를 불필요하게 잃게 되기 때문이다.
+
 ## D-104
 
 - Date: `2026-03-29`
@@ -833,6 +845,12 @@
 - Date: `2026-03-29`
 - Decision: recommended workspace shape is `09_app/` for Phase 1 frozen baseline and `10_relation_app/` for Phase 2 new app, with separate Vercel projects pointing to separate app directories.
 - Why: current root deploy path is tied to `09_app`, and new app도 same repo에서 separately build/deploy 하려면 app boundary와 deploy boundary를 먼저 명확히 나누는 편이 가장 안전하기 때문이다.
+
+## D-090
+
+- Date: `2026-03-30`
+- Decision: `GitHub/Vercel/R2` cutover의 first safe unit은 `100MB 초과 파일만`이 아니라 `full build-side runtime bundle`로 본다.
+- Why: current `09_app` build/runtime는 top-level payload만이 아니라 `CHUNK_MANIFEST_V1`, `APP_READY_CHUNK_RICH_*`, `APP_READY_CHUNK_EXAMPLES_*`까지 함께 맞아야 하고, 일부만 `R2`로 보내는 mixed split은 restore/verify/source-of-truth를 다시 갈라놓을 가능성이 높기 때문이다.
 
 ## D-054
 

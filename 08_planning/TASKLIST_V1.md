@@ -2,6 +2,140 @@
 
 ## Authoritative Current State
 
+### MM3-307 2026-03-30 R2 Ready Deploy Chain And Storage Cleanup
+
+- Status: `BLOCKED`
+- Current execution state: `blocked on Cloudflare R2 enablement after local prep done`
+- Goal: current repo/build chain을 `R2`-ready 상태로 정리하고 immediate tracked/deploy waste를 제거한다.
+- Input:
+  - `08_planning/reports/20260330_MM3_307_R2_READY_DEPLOY_CHAIN_AND_STORAGE_CLEANUP_V1.md`
+  - `09_app/package.json`
+  - `09_app/scripts/prepare-live-payloads.mjs`
+  - `09_app/scripts/package-live-payloads.mjs`
+  - `09_app/public/data/internal/runtime_payloads/`
+  - `.gitignore`
+- Prior closeout:
+  - `MM3-306` GitHub Vercel R2 cutover review and preparation: `BLOCKED`
+- Progress lock:
+  - control-plane opening: `DONE`
+  - build-chain change: `DONE`
+  - tracked/deploy waste cleanup: `DONE`
+  - actual `R2` upload attempt: `DONE`
+  - next active substep: `Cloudflare Dashboard에서 R2 enable 후 bucket create / upload / clean regeneration execution`
+
+### MM3-306 2026-03-30 GitHub Vercel R2 Cutover Review And Preparation
+
+- Status: `BLOCKED`
+- Current execution state: `blocked on Cloudflare R2 enablement`
+- Goal: current `GitHub -> Vercel -> app build` chain을 audit하고 `R2` cutover shape를 simulation으로 검토한 뒤 actual execution unlock 조건을 고정한다.
+- Input:
+  - `08_planning/reports/20260330_MM3_306_GITHUB_VERCEL_R2_CUTOVER_REVIEW_AND_BLOCKER_V1.md`
+  - `vercel.json`
+  - `.vercel/project.json`
+  - `09_app/package.json`
+  - `09_app/scripts/prepare-live-payloads.mjs`
+  - `09_app/scripts/package-live-payloads.mjs`
+  - `09_app/scripts/verify-runtime-payloads.mjs`
+- Prior closeout:
+  - `MM3-305` relation family top nav and bucket left rail relayout: `DONE`
+- Progress lock:
+  - current deploy chain audit: `DONE`
+  - `R2` cutover simulation verdict: `DONE`
+  - actual blocker 확인: `DONE`
+  - next active substep: `Cloudflare Dashboard에서 R2 enable 후 actual cutover execution package를 새로 연다`
+
+### MM3-305 2026-03-30 Relation Family Top Nav And Bucket Left Rail Relayout
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: `family`를 top navigation으로 올리고 `bucket`을 left rail로 옮겨 center flow를 단순화한다.
+- Input:
+  - `10_relation_app/src/App.jsx`
+  - `10_relation_app/src/index.css`
+  - `08_planning/reports/20260330_MM3_305_RELATION_FAMILY_TOP_NAV_AND_BUCKET_LEFT_RAIL_RELAYOUT_V1.md`
+- Prior closeout:
+  - `MM3-304` relation family badge readability fix: `DONE`
+- Progress lock:
+  - family top navigation 이동: `DONE`
+  - bucket left rail 이동: `DONE`
+  - `npm run build`: `DONE`
+  - next active substep: `새 directive가 오면 새 task id`
+
+### MM3-304 2026-03-30 Relation Family Badge Readability Fix
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: study card 안에 반복 노출되는 relation family badge 가독성을 개선한다.
+- Input:
+  - `10_relation_app/src/index.css`
+  - `08_planning/reports/20260330_MM3_304_RELATION_FAMILY_BADGE_READABILITY_FIX_V1.md`
+- Prior closeout:
+  - `MM3-303` relation explorer learner mode implementation plan: `DONE`
+- Progress lock:
+  - badge contrast 개선: `DONE`
+  - `npm run build`: `DONE`
+  - next active substep: `새 directive가 오면 새 task id`
+
+### MM3-303 2026-03-30 Relation Explorer Learner Mode Implementation Plan
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: `MM3-302` verdict를 actual learner-mode redesign workflow와 task/workset으로 내리고 implementation package를 연다.
+- Input:
+  - `08_planning/reports/20260330_MM3_302_RELATION_EXPLORER_LEARNER_JOURNEY_DEEP_RESEARCH_AND_UX_REVIEW_V1.md`
+  - `08_planning/reports/20260330_MM3_303_RELATION_EXPLORER_LEARNER_MODE_IMPLEMENTATION_PLAN_V1.md`
+  - `10_relation_app/src/App.jsx`
+  - `10_relation_app/src/index.css`
+- Prior closeout:
+  - `MM3-302` relation explorer learner journey deep research and UX review: `DONE`
+- Progress lock:
+  - implementation workflow lock: `DONE`
+  - workset/task family 등록: `DONE`
+  - review queue 등록: `DONE`
+  - `MM3-303A` shell simplification and entry reset: `DONE`
+  - `MM3-303B` relation layer compression and progressive disclosure: `DONE`
+  - `MM3-303C` learner compare/detail copy split: `DONE`
+  - `MM3-303D` type scale and responsive layout pass: `DONE`
+  - `MM3-303E` learner mode validation and acceptance: `DONE`
+  - next active substep: `새 directive가 오면 새 task id`
+
+### MM3-302 2026-03-30 Relation Explorer Learner Journey Deep Research And UX Review
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: relation explorer shell을 learner journey 기준으로 분석하고, 유사 사전/학습 UX deep research와 3인 전문가 리뷰를 거쳐 통합 개선 의견을 PM report packet으로 남긴다.
+- Input:
+  - `10_relation_app/src/App.jsx`
+  - `10_relation_app/src/index.css`
+  - `10_relation_app/public/data/relation-bootstrap.json`
+  - `08_planning/reports/20260330_MM3_302_RELATION_EXPLORER_LEARNER_JOURNEY_DEEP_RESEARCH_AND_UX_REVIEW_V1.md`
+  - web research sources
+- Prior closeout:
+  - `MM3-301` next PM handoff package: `DONE`
+- Progress lock:
+  - current shell learner-journey 분석: `DONE`
+  - comparable product/web research: `DONE`
+  - 3-expert review and improvement loop: `DONE`
+  - PM report packet 작성: `DONE`
+  - next active substep: `새 directive가 오면 새 task id`
+
+### MM3-301 2026-03-30 Next PM Handoff Package
+
+- Status: `DONE`
+- Current execution state: `no active task`
+- Goal: current truth 기준 next PM handoff package와 bootstrap message를 갱신한다.
+- Input:
+  - `08_planning/reports/20260330_MM3_301_NEXT_PM_HANDOFF_PACKET_V1.md`
+  - `.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md`
+  - `.codex-orchestration/HANDOFF_MESSAGE_TO_NEW_PM_V1.md`
+- Prior closeout:
+  - `MM3-300` relation top filter carryover: `DONE`
+- Progress lock:
+  - drift recheck: `DONE`
+  - handoff packet 갱신: `DONE`
+  - handoff doc/message 갱신: `DONE`
+  - next active substep: `새 directive가 오면 새 task id`
+
 ### MM3-300 2026-03-29 Relation Top Filter Carryover
 
 - Status: `DONE`
@@ -14,9 +148,9 @@
 - Prior closeout:
   - `MM3-299` relation route and deep detail follow-on: `DONE`
 - Progress lock:
-  - translation language rule `영어/몽골어`: `DONE`
+  - translation language rule `source 전체 노출 + 영어 기본`: `DONE`
   - `영어` default: `DONE`
-  - `TOPIK 빈도` filter: `DONE`
+  - `TOPIK 빈도 1~5` options: `DONE`
   - next active substep: `새 directive가 오면 새 task id`
 
 ### MM3-299 2026-03-29 Relation Route And Deep Detail Follow-On

@@ -3,18 +3,18 @@
 ## Project
 
 - Name: 어휘 마인드맵 3
-- Current Phase: `M1 Runtime Wiring / Core Explorer`
+- Current Phase: `Phase 2 Relation Explorer App Planning`
 - Main PM: `Codex`
 - PM Canonical Docs: `08_planning/`
 
 ## Read Order
 
-1. `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`
-2. `08_planning/TASKLIST_V1.md`
-3. `pm-operating-guide.md`
-4. `08_planning/DOCUMENT_SYSTEM_POLICY_V1.md`
-5. `08_planning/PRODUCT_SCENARIO_SPEC_V1.md`
-6. `.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md`
+1. `08_planning/TASKLIST_V1.md`
+2. `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`
+3. `.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md`
+4. `08_planning/reports/20260330_MM3_303_RELATION_EXPLORER_LEARNER_MODE_IMPLEMENTATION_PLAN_V1.md`
+5. `pm-operating-guide.md`
+6. `08_planning/RELATION_EXPLORER_APP_FOUNDATION_V1.md`
 
 ## Guardrails
 
@@ -25,25 +25,50 @@
 - 업무지시와 보고서는 한국어를 기본으로 한다.
 - `mindmap2`에서 가져오는 것은 운영 참고, UI rhythm, TOPIK stats뿐이며 taxonomy 개념은 그대로 가져오지 않는다.
 - 문서 요약보다 실제 artifact를 우선한다.
-- active state source of truth는 `08_planning/TASKLIST_V1.md`, `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`, `.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md`, `08_planning/reports/20260329_MM3_300_RELATION_TOP_FILTER_CARRYOVER_V1.md`다.
+- active state source of truth는 `08_planning/TASKLIST_V1.md`, `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`, `.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md`, `08_planning/reports/20260330_MM3_303_RELATION_EXPLORER_LEARNER_MODE_IMPLEMENTATION_PLAN_V1.md`다.
 - 스크립트/앱 작업은 사용자가 별도로 다시 열기 전까지 parked backlog다.
 - 모든 agent lane은 기본적으로 `작업 -> 검증 -> learner 포함 3인 전문가 비판 검토 -> 개선 -> 재검증` 루프를 거친다.
 
 ## Active Work Package
 
-- none
-- latest closeout: `MM3-300`
+- `MM3-307`
+- latest closeout: `MM3-305`
+- blocker: `Cloudflare R2 not enabled`
 
 ## Immediate Next Outcomes
 
-1. no active execution package
-2. current queue is empty
-3. local preview is live
+1. current active execution package는 `MM3-307 R2 Ready Deploy Chain And Storage Cleanup`
+2. local prep/workspace cleanup은 완료됐고 actual external cutover만 남아 있다
+3. first actual cutover unit은 `full build-side runtime bundle -> R2`다
 
 ## Planned Workset
 
 - Phase 2 Workflow A:
-  - none
+  - `WS15 / MM3-303A`
+    - `DONE`
+    - learner entry and shell simplification
+    - write boundary: `10_relation_app/src/App.jsx`, `10_relation_app/src/index.css`
+    - expected output: first-screen intent reset + dev-facing shell copy removal + packet `20260330_MM3_303A_RELATION_ENTRY_AND_SHELL_SIMPLIFICATION_V1.md`
+  - `WS16 / MM3-303B`
+    - `DONE`
+    - layer compression and progressive disclosure
+    - write boundary: `10_relation_app/src/App.jsx`, `10_relation_app/src/index.css`
+    - expected output: filter collapse + right-rail reduction + packet `20260330_MM3_303B_RELATION_LAYER_COMPRESSION_AND_DISCLOSURE_V1.md`
+  - `WS17 / MM3-303C`
+    - `DONE`
+    - learner compare/detail copy split
+    - write boundary: `10_relation_app/src/App.jsx`
+    - expected output: learner copy hierarchy + debug/detail separation + packet `20260330_MM3_303C_COMPARE_AND_DETAIL_LEARNER_COPY_REFRAME_V1.md`
+  - `WS18 / MM3-303D`
+    - `DONE`
+    - type scale and responsive layout pass
+    - write boundary: `10_relation_app/src/index.css`, `10_relation_app/src/App.jsx`
+    - expected output: readability-first hierarchy + mobile order pass + packet `20260330_MM3_303D_TYPE_SCALE_AND_RESPONSIVE_LAYOUT_PASS_V1.md`
+  - `WS19 / MM3-303E`
+    - `DONE`
+    - validation and PM acceptance loop
+    - write boundary: PM packet/control-plane + validation rerun as needed
+    - expected output: acceptance packet `20260330_MM3_303E_LEARNER_MODE_VALIDATION_AND_ACCEPTANCE_V1.md`
 - Phase 2 Workflow B:
   - parked follow-on only
 - Phase 2 Workflow C:

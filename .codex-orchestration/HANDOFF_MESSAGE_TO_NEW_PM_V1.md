@@ -4,79 +4,80 @@
 
 ```text
 이 프로젝트는 `pm-operating-guide.md`와 `$pm-operating-orchestrator` 기준으로 진행한다.
-현재 control-plane docs를 source of truth로 사용한다.
+먼저 읽고 active `pipeline/workflow/step`과 `exit condition`을 정한 뒤 그 기준대로 실행한다.
 
 Source of truth:
 - /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/TASKLIST_V1.md
 - /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/ORCHESTRATION_DASHBOARD.md
 - /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md
-- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260329_MM3_300_RELATION_TOP_FILTER_CARRYOVER_V1.md
-- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/RELATION_EXPLORER_APP_FOUNDATION_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260330_MM3_303_RELATION_EXPLORER_LEARNER_MODE_IMPLEMENTATION_PLAN_V1.md
 
-Active work:
-- pipeline: Phase 2 Relation Explorer App Planning
-- workflow: Workflow A
-- step: waiting for next directive
-- task id: none
-- latest closeout: MM3-300 Relation Top Filter Carryover
+Active package:
+- pipeline: `Phase 2 Relation Explorer App Planning`
+- workflow: `Deploy Chain Change / Storage Cleanup`
+- step: `build-chain implementation and waste cleanup`
+- task id: `MM3-307`
+- latest closeout: `MM3-305 Relation Family Top Nav And Bucket Left Rail Relayout`
 
-What is already done:
-- Phase 1 vocabulary mindmap app is frozen baseline
-- separate relation explorer app direction is locked
-- current live/base entry count is 53,012 and historical api_xml_merged total is 53,480
-- same workspace / same repo kickoff is feasible
-- current `MM3` screen composition is the theme baseline for Phase 2
-- separate app itself is the relation explorer, so there is no app-inside `관계 탐색` first layer
-- first selectable layer is the relation family set
-- 2nd layer uses learner-readable subgroups derived from current meaning/situation vocabulary, not raw copy
-- branch rule is current schema direct use or adapted grouping only
-- do not open a totally new DB schema for navigator
-- subgroup split trigger is `30+` card risk
-- card minimum field is `family / subgroup / representative terms 2~4 / 대표 뜻 한 줄 / example 1 / compare jump target`
-- compare input reuses current search projection keys
-- default result unit is `관계 학습 카드`, not a flat word list
-- default learning flow is `relation family -> subgroup -> 관계 학습 카드 -> compare -> optional detail`
-- relation mindmap is a secondary expansion mode, not the first result
-- `활용 표현` is registered as later roadmap item `MM3-295`, not first-opening scope
-- topology is `same repo / separate app / separate Vercel project`
-- current root `vercel.json` remains Phase 1 `09_app` boundary until `10_relation_app` shell exists
-- `10_relation_app` shell exists and `npm run build` has passed
-- actual relation bootstrap and family JSON are generated
-- compare/detail/mindmap interaction is wired
-- local preview is live at `http://127.0.0.1:4174/`
-- route hash state is wired
-- top filter carryover is wired
-- language filter is `영어/몽골어` only and default is `영어`
-- `TOPIK 빈도` filter is available
-- current queue is empty
+이번 handoff 기준 핵심 사실:
+- `09_app/`은 `Phase 1` frozen baseline이다.
+- `10_relation_app/`은 separate relation explorer app shell이다.
+- topology는 `same repo / separate app / separate Vercel project`다.
+- current `Vercel` linked project는 main push마다 auto production deployment를 생성한다.
+- current build input은 `runtime_payloads/*.json.gz -> prepare:live -> verify:live -> build` 체인이다.
+- recent production deployment `864e954`는 `READY`였고 clone completed는 `56.095s`였다.
+- current `09_app/dist/data`에는 `live 1269.00 MB`와 `internal/runtime_payloads 151.28 MB`가 함께 들어가 duplicate deploy cost가 있다.
+- current git tracked pack size는 `997.51 MiB`다.
+- mixed split (`100MB 초과 파일만 R2`)은 insufficient verdict다.
+- safe cutover unit은 `full build-side runtime bundle`이다.
+- actual blocker는 `Cloudflare R2 not enabled`다.
+- evidence는 `wrangler r2 bucket list -> Please enable R2 through the Cloudflare Dashboard. [code: 10042]`다.
+- current implementation task는 `R2`-ready build chain 추가, deploy duplicate 제거, tracked waste cleanup까지 직접 진행하는 것이다.
+- `MM3-307` local 결과로 `dist/data/internal/runtime_payloads` duplicate는 제거됐고 shipped `dist/data/live`는 `861.42 MB`로 줄었다.
+- `MM3-307`에서 `10_relation_app/node_modules`, `10_relation_app/dist`, `tmp_reports/authoritative_runtime_rollbacks`는 git index에서 제거했다.
+- relation bootstrap과 family JSON이 생성되어 있다.
+- `10_relation_app` build는 통과했다.
+- compare/detail/mindmap interaction이 연결되어 있다.
+- route hash state와 top filter carryover가 반영되어 있다.
+- 번역 언어 filter는 source 지원 언어 전체를 노출하고 default는 `영어`다.
+- `TOPIK 빈도` filter는 `1~5`와 `전체`를 노출한다.
+- current live/base entry count는 `53,012`이고 historical `api_xml_merged` total은 `53,480`이다.
+- current learner-mode redesign verdict는 `PARTIAL_ACCEPT`다.
+- `MM3-303A` shell simplification은 완료됐고 `npm run build`를 통과했다.
+- `MM3-303B` layer compression은 완료됐고 `npm run build`를 통과했다.
+- `MM3-303C` compare/detail learner copy reframe은 완료됐고 `npm run build`를 통과했다.
+- `MM3-303D` type scale and responsive layout pass는 완료됐고 `npm run build`를 통과했다.
+- `MM3-303E` PM validation verdict는 `PARTIAL_ACCEPT`다.
+- `MM3-304` family badge readability fix는 완료됐고 `npm run build`를 통과했다.
+- `MM3-305` family top nav / bucket left rail relayout은 완료됐고 `npm run build`를 통과했다.
+- subgroup chip density와 browser visual gut-check는 residual risk로 남아 있다.
+- active preview는 없다. 필요하면 next PM이 다시 띄워야 한다.
 
-Current blocker or mismatch:
-- no blocker
-- no active execution package is open
+Blocker:
+- `Cloudflare R2`가 current account에서 아직 enable되지 않았다.
 
 Exit condition:
-- open a new task only when the next directive is actually given
+- `Cloudflare R2 enablement` 후 actual bucket create / upload / clean regeneration execution을 여는 것이다.
 
 Read first:
 - /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/TASKLIST_V1.md
 - /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/ORCHESTRATION_DASHBOARD.md
-- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260329_MM3_300_RELATION_TOP_FILTER_CARRYOVER_V1.md
-- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260329_MM3_299_RELATION_ROUTE_AND_DEEP_DETAIL_FOLLOW_ON_V1.md
-- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260329_MM3_298_RELATION_EXPLORER_LOCAL_PREVIEW_LAUNCH_V1.md
-- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260329_MM3_297_RELATION_COMPARE_DETAIL_AND_MINDMAP_WIRING_V1.md
-- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260329_MM3_296_RELATION_NAVIGATOR_DATA_WIRING_V1.md
-- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260329_MM3_294_RELATION_EXPLORER_APP_SHELL_OPENING_V1.md
-- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260329_MM3_292_RELATION_NAVIGATOR_DATA_CONTRACT_V1.md
-- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260329_MM3_291_RELATION_EXPLORER_IA_CANONICAL_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260330_MM3_306_GITHUB_VERCEL_R2_CUTOVER_REVIEW_AND_BLOCKER_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260330_MM3_307_R2_READY_DEPLOY_CHAIN_AND_STORAGE_CLEANUP_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260330_MM3_305_RELATION_FAMILY_TOP_NAV_AND_BUCKET_LEFT_RAIL_RELAYOUT_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260330_MM3_303E_LEARNER_MODE_VALIDATION_AND_ACCEPTANCE_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260330_MM3_303_RELATION_EXPLORER_LEARNER_MODE_IMPLEMENTATION_PLAN_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260330_MM3_303C_COMPARE_AND_DETAIL_LEARNER_COPY_REFRAME_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260330_MM3_303B_RELATION_LAYER_COMPRESSION_AND_DISCLOSURE_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260330_MM3_303A_RELATION_ENTRY_AND_SHELL_SIMPLIFICATION_V1.md
+- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260330_MM3_302_RELATION_EXPLORER_LEARNER_JOURNEY_DEEP_RESEARCH_AND_UX_REVIEW_V1.md
 - /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/RELATION_EXPLORER_APP_FOUNDATION_V1.md
-- /Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/08_planning/reports/20260329_MM3_290_PHASE1_CLOSEOUT_AND_PHASE2_RELATION_EXPLORER_KICKOFF_V1.md
 
 Immediate next action:
-- hold this state until the next active work is opened
-- if a new directive arrives, open a new task from current preview feedback or next directive
+- `Cloudflare Dashboard`에서 `R2`를 enable한 뒤 `vocabulary-mindmap3-runtime` bucket create를 다시 시도한다.
 
 Constraints:
-- do not change the active task id unless control-plane truth changes
-- preserve `09_app/` as frozen Phase 1 baseline
-- keep replies concise and fact-only unless the user asks for depth
+- control-plane truth가 바뀌기 전에는 active `task id`를 바꾸지 않는다.
+- `09_app/`은 frozen Phase 1 baseline으로 유지한다.
+- 보고와 응답은 간결한 fact 위주로 유지한다.
 ```

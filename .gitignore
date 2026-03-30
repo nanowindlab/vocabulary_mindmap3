@@ -8,6 +8,10 @@ __pycache__/
 09_app/dist/
 09_app/test-results/
 09_app/playwright-report/
+10_relation_app/node_modules/
+10_relation_app/dist/
+10_relation_app.zip
+.wrangler/
 
 # generated app runtime payloads
 09_app/public/data/live/*.json
@@ -37,4 +41,5 @@ vocab_dictionary/output/**/*.zip
 # oversized tmp report snapshots
 tmp_reports/**/APP_READY_SEARCH_INDEX.json
 tmp_reports/recovered_APP_READY_SEARCH_INDEX.json
+tmp_reports/authoritative_runtime_rollbacks/
 .vercel

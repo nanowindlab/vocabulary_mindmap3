@@ -27,14 +27,12 @@
 
 ## 우선 읽기 순서
 
-1. `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`
-2. `.codex-orchestration/WORK_ORCHESTRATION_HUB_V1.md`
-3. `08_planning/TASKLIST_V1.md`
-4. `pm-operating-guide.md`
-5. `08_planning/DOCUMENT_SYSTEM_POLICY_V1.md`
-6. `08_planning/DATA_ARCHITECTURE_V1.md`
-7. `08_planning/PRODUCT_SCENARIO_SPEC_V1.md`
-8. `08_planning/PROJECT_DECISION_LOG_V1.md`
+1. `08_planning/TASKLIST_V1.md`
+2. `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`
+3. `.codex-orchestration/NEXT_MAIN_PM_HANDOFF_V1.md`
+4. `08_planning/reports/20260330_MM3_303_RELATION_EXPLORER_LEARNER_MODE_IMPLEMENTATION_PLAN_V1.md`
+5. `pm-operating-guide.md`
+6. `.codex-orchestration/WORK_ORCHESTRATION_HUB_V1.md`
 
 ## 핵심 SSOT / 참고 경계
 
@@ -64,7 +62,19 @@
 - `MM3-210`은 closeout됐다.
 - `MM3-212`에서 runtime/source payload validation과 count reconciliation은 `PASS`로 고정됐다.
 - `MM3-216`에서 TOPIK stats linkage policy를 고정했다.
-- 현재 active execution task는 없다.
+- current active execution task는 `MM3-307 R2 Ready Deploy Chain And Storage Cleanup`이다.
+- latest closeout packet은 `08_planning/reports/20260330_MM3_305_RELATION_FAMILY_TOP_NAV_AND_BUCKET_LEFT_RAIL_RELAYOUT_V1.md`다.
+- current review/blocker packet은 `08_planning/reports/20260330_MM3_306_GITHUB_VERCEL_R2_CUTOVER_REVIEW_AND_BLOCKER_V1.md`다.
+- current implementation packet은 `08_planning/reports/20260330_MM3_307_R2_READY_DEPLOY_CHAIN_AND_STORAGE_CLEANUP_V1.md`다.
+- current blocker는 `Cloudflare R2 not enabled`이고, evidence는 `wrangler r2 bucket list -> Please enable R2 through the Cloudflare Dashboard. [code: 10042]`다.
+- current review verdict는 mixed split (`100MB 초과 파일만 R2`)이 insufficient이며, safe cutover unit은 `full build-side runtime bundle`이다.
+- `MM3-307`에서 `R2`-ready build chain, dist prune, tracked waste cleanup을 반영했다.
+- shipped `09_app/dist/data/internal/runtime_payloads` duplicate는 제거됐고 `dist/data/live`는 `861.42 MB` 기준으로 줄었다.
+- latest implementation packet은 `08_planning/reports/20260330_MM3_303A_RELATION_ENTRY_AND_SHELL_SIMPLIFICATION_V1.md`다.
+- latest implementation packet 2는 `08_planning/reports/20260330_MM3_303B_RELATION_LAYER_COMPRESSION_AND_DISCLOSURE_V1.md`다.
+- latest implementation packet 3는 `08_planning/reports/20260330_MM3_303C_COMPARE_AND_DETAIL_LEARNER_COPY_REFRAME_V1.md`다.
+- latest implementation packet 4는 `08_planning/reports/20260330_MM3_303D_TYPE_SCALE_AND_RESPONSIVE_LAYOUT_PASS_V1.md`다.
+- current learner-mode redesign verdict는 `PARTIAL_ACCEPT`다.
 - current `09_app/`은 Phase 1 frozen baseline이다.
 - Phase 2는 separate `관계 탐색 앱`으로 연다.
 - same workspace / same repo 안에서 `10_relation_app/`를 여는 방식이 current recommendation이다.
@@ -73,18 +83,19 @@
 - current relation tab은 `빠른 비교 -> 확장 관계 -> 형태·문체 변이 -> 관련형 -> 연관 어휘 -> 교차 연결 장면` 순서를 사용한다.
 - current expression tab은 `관용구와 속담` support surface와 `관용구 / 속담` section 구조를 사용한다.
 - `MM3-289` verdict는 same-app dedicated route `NOT_READY_YET`다.
-- latest closeout package는 `MM3-300 2026-03-29 Relation Top Filter Carryover`이다.
+- latest closeout report는 `MM3-302 2026-03-30 Relation Explorer Learner Journey Deep Research And UX Review`다.
+- `MM3-302` verdict는 relation-first concept `ACCEPT`, current learner-facing UI readiness `REJECT`, redesign direction `ACCEPT_FOR_IMPLEMENTATION`이다.
 - `MM3-291`에서 separate relation explorer app의 `MM3` theme continuity, relation family direct opening, subgroup tree, relation study card 중심 scenario가 고정됐다.
 - `MM3-292`에서 subgroup split trigger, card minimum field, compare input contract를 current schema 기준으로 고정했다.
 - `MM3-292`에서 branch 기준은 current schema direct use/adapt only로 좁히고, totally new DB schema는 열지 않는 contract를 다룬다.
 - `MM3-293`에서 same repo / separate app / separate Vercel project topology를 고정했다.
 - `MM3-294`에서 `10_relation_app/` shell을 열었고 `npm run build`를 통과했다.
 - `활용 표현` later follow-on planning은 `MM3-295`에서 닫았다.
-- `MM3-296`에서 actual relation bootstrap과 family JSON을 생성했고 shell을 fetched data 기준으로 연결했다.
+- `MM3-296`에서 actual relation bootstrap과 family JSON을 생성했고 shell을 fetched data 기준으로 연결했으며, updated XML / MM3 payload 기준 재생성도 반영했다.
 - `MM3-297`에서 compare/detail/mindmap interaction을 actual interactive state로 올렸다.
 - `MM3-299`에서 route hash state와 deeper detail metadata refinement를 반영했다.
-- `MM3-300`에서 상단 filter carryover, `영어/몽골어` 제한, `영어` default, `TOPIK 빈도` filter를 반영했다.
-- local preview는 [http://127.0.0.1:4174/](http://127.0.0.1:4174/) 에서 실행 중이다.
+- `MM3-300`에서 상단 filter carryover, source 전체 번역 언어 노출, `영어` default, `TOPIK 빈도 1~5` options를 반영했다.
+- handoff 시점에는 active preview를 고정하지 않는다.
 - current queue는 비어 있다.
 - Phase 2 planned queue는 없다.
 - source-ambiguous `related_forms`는 SSOT source에 target이 없으므로 `text-only`로 유지하고, current backlog로 다시 열지 않는다.

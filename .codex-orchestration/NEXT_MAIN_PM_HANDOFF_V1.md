@@ -3,19 +3,52 @@
 ## Current State
 
 - `mindmap3` workspace는 현재 `Phase 2 Relation Explorer App Planning` phase다.
-- current active work는 `none`이다.
-- latest closeout package는 `MM3-300 2026-03-29 Relation Top Filter Carryover`이다.
-- current exit condition은 다음 active work가 생기면 그 task id 기준으로 새 packet을 연다.
-- current gate는 overall `PARTIAL_OPEN`, core explorer slice `OPEN`이다.
+- current active work는 `MM3-307 R2 Ready Deploy Chain And Storage Cleanup`이다.
+- latest closeout report는 `MM3-305 2026-03-30 Relation Family Top Nav And Bucket Left Rail Relayout`이다.
+- current exit condition은 `Cloudflare R2 enablement` 후 actual bucket create / upload / clean regeneration execution을 여는 것이다.
+- current gate는 `BLOCKED_ON_R2_ENABLEMENT`다.
 - deploy/runtime truth는 `runtime_payloads/*.json.gz -> prepare:live -> verify:live -> build` 체인이다.
 - current deploy boundary canonical regenerate command는 explicit/manual path로만 유지한다: `npm --prefix 09_app run rebuild:canonical-runtime`
 - current learner-facing `search + facets only` builder surface는 package/build-chain에 **non-authoritative sidecar gate**로 편입됐다.
 - current builder contract is authoritative for `search semantic fields + facets` when executed through the approved promote path.
 - current sidecar output is **comparison / validation only**.
-- latest closeout report는 `08_planning/reports/20260329_MM3_300_RELATION_TOP_FILTER_CARRYOVER_V1.md`다.
+- latest closeout packet은 `08_planning/reports/20260330_MM3_305_RELATION_FAMILY_TOP_NAV_AND_BUCKET_LEFT_RAIL_RELAYOUT_V1.md`다.
+- current review/blocker packet은 `08_planning/reports/20260330_MM3_306_GITHUB_VERCEL_R2_CUTOVER_REVIEW_AND_BLOCKER_V1.md`다.
+- current implementation packet은 `08_planning/reports/20260330_MM3_307_R2_READY_DEPLOY_CHAIN_AND_STORAGE_CLEANUP_V1.md`다.
+- latest implementation packet은 `08_planning/reports/20260330_MM3_303A_RELATION_ENTRY_AND_SHELL_SIMPLIFICATION_V1.md`다.
+- latest implementation packet 2는 `08_planning/reports/20260330_MM3_303B_RELATION_LAYER_COMPRESSION_AND_DISCLOSURE_V1.md`다.
+- latest implementation packet 3는 `08_planning/reports/20260330_MM3_303C_COMPARE_AND_DETAIL_LEARNER_COPY_REFRAME_V1.md`다.
+- latest implementation packet 4는 `08_planning/reports/20260330_MM3_303D_TYPE_SCALE_AND_RESPONSIVE_LAYOUT_PASS_V1.md`다.
 
 ## Verified Now
 
+- `MM3-307`에서 actual implementation package를 열었고 scope를 `R2`-ready build chain + immediate tracked/deploy waste cleanup으로 잠갔다.
+- `MM3-307`에서 `R2`-ready prepare path, `R2` publish script, dist prune script를 추가했다.
+- `MM3-307`에서 `.gitignore`를 보강했고 `10_relation_app/node_modules`, `10_relation_app/dist`, `tmp_reports/authoritative_runtime_rollbacks`를 git index에서 제거했다.
+- `MM3-307` local `gz` build는 `PASS`였고, local fixture server 기준 remote-restore build도 `PASS`였다.
+- `MM3-307` 결과 shipped `dist/data/internal/runtime_payloads` duplicate는 제거됐고, `dist/data/live`는 `861.42 MB`로 줄었다.
+- `MM3-307` actual external attempt로 `wrangler r2 bucket create vocabulary-mindmap3-runtime`를 실행했지만 `Please enable R2 through the Cloudflare Dashboard. [code: 10042]`로 막혔다.
+- `MM3-306`에서 current `GitHub -> Vercel -> app build` chain을 artifact 기준으로 다시 확인했다.
+- current linked `Vercel` project는 main push마다 auto production deployment를 생성하고, commit `864e954` deployment는 `READY`였다.
+- current `Vercel` build log 기준 clone completed는 `56.095s`였다.
+- current build input은 여전히 `runtime_payloads/*.json.gz -> prepare:live -> verify:live -> build` 체인이다.
+- current `09_app/dist/data`에는 `live 1269.00 MB`와 `internal/runtime_payloads 151.28 MB`가 함께 들어가 duplicate deploy cost가 있다.
+- current git tracked pack size는 `997.51 MiB`다.
+- tracked waste로 `10_relation_app/node_modules`, `10_relation_app/dist`, raw `unified_live` JSON, old rollback snapshot large artifact가 남아 있다.
+- mixed split (`100MB 초과 파일만 R2`)은 current bundle completeness 기준으로 insufficient verdict다.
+- safe cutover unit은 `full build-side runtime bundle`이다.
+- `wrangler whoami`는 통과했지만 `wrangler r2 bucket list`는 `Please enable R2 through the Cloudflare Dashboard. [code: 10042]`로 막혔다.
+- `MM3-303`에서 learner-mode redesign implementation workflow를 `MM3-303A -> MM3-303B -> MM3-303C -> MM3-303D -> MM3-303E` 순서로 잠갔다.
+- `MM3-303A`에서 learner-facing shell copy 전환, dev-facing block 제거, Korean UI copy 정리, `npm run build PASS`를 반영했다.
+- `MM3-303B`에서 top filter와 center refine layer를 disclosure 구조로 바꾸고 summary chip row를 추가했으며 `npm run build PASS`를 반영했다.
+- `MM3-303C`에서 compare 3-block learner explanation, detail learner sheet 전환, internal field 제거, `npm run build PASS`를 반영했다.
+- `MM3-303D`에서 type scale 상향, center emphasis 조정, mobile overflow/readability pass, `npm run build PASS`를 반영했다.
+- `MM3-303E`에서 build/source 기준 validation과 3-expert PM review를 수행했고 verdict를 `PARTIAL_ACCEPT`로 기록했다.
+- `MM3-304`에서 study card family badge contrast를 dark translucent tone + brighter text 조합으로 보정했고 `npm run build PASS`를 반영했다.
+- `MM3-305`에서 family를 top navigation으로 올리고 bucket을 left rail로 옮겼으며 center flow를 `group / subgroup search / study card` 중심으로 재배치했고 `npm run build PASS`를 반영했다.
+- `MM3-302`에서 current `10_relation_app` shell의 learner journey 문제를 layer/layout/typography/developer memo exposure 기준으로 정리했다.
+- `MM3-302` deep research로 Visual Thesaurus, Cambridge Dictionary, Merriam-Webster Thesaurus, Reverso Context, 한국어기초사전의 current UX pattern을 official source 기준으로 검토했다.
+- `MM3-302` 3-expert review 결과 relation-first concept은 `ACCEPT`, current learner-facing UI readiness는 `REJECT`, redesign direction은 `ACCEPT_FOR_IMPLEMENTATION`으로 고정했다.
 - second human pilot feedback pipeline은 `ACCEPT`로 닫혔다.
 - screenshot-inclusive actual in-app guide가 작성됐다.
 - example chunk는 live `107 files`, compressed `107 files`로 복구됐다.
@@ -88,12 +121,13 @@
 - `MM3-294`에서 `10_relation_app/` shell을 열었고 `npm install`, `npm run build`가 통과했다.
 - `MM3-295`에서 `활용 표현` later follow-on planning과 reopen timing을 고정했다.
 - `MM3-296`에서 actual relation bootstrap과 family JSON을 생성했고 `10_relation_app` shell을 fetched data 기준으로 다시 연결했다.
-- `MM3-296`에서 `relation-bootstrap familyCount=8`과 sample family/group/card generation을 확인했다.
+- `MM3-296`에서 `relation-bootstrap familyCount=8`, sample family/group/card generation, updated XML / MM3 payload 반영을 확인했다.
 - `MM3-297`에서 compare/detail/mindmap interaction을 actual interactive state로 올렸다.
-- `MM3-298`에서 local preview를 `http://127.0.0.1:4174/`로 띄웠다.
+- `MM3-298` local preview launch packet은 남아 있지만, current handoff 시점에서 active reachable preview로 고정하지 않는다.
 - `MM3-299`에서 route hash state와 deeper detail metadata refinement를 반영했다.
-- `MM3-300`에서 상단 filter carryover, `영어/몽골어` 제한, `영어` default, `TOPIK 빈도` filter를 반영했다.
+- `MM3-300`에서 상단 filter carryover, source 전체 번역 언어 노출, `영어` default, `TOPIK 빈도 1~5` options를 반영했다.
 - current queue는 비어 있다.
+- next PM이 preview가 필요하면 `10_relation_app/`에서 다시 `npm run dev -- --host 127.0.0.1 --port <port>`로 열어야 한다.
 - current recommendation is:
   - `09_app/` keep as frozen Phase 1 baseline
   - `10_relation_app/` open as new app in same workspace/repo
@@ -204,14 +238,15 @@
 1. `pm-operating-guide.md`
 2. `08_planning/TASKLIST_V1.md`
 3. `.codex-orchestration/ORCHESTRATION_DASHBOARD.md`
-4. `08_planning/reports/20260329_MM3_300_RELATION_TOP_FILTER_CARRYOVER_V1.md`
+4. `08_planning/reports/20260330_MM3_304_RELATION_FAMILY_BADGE_READABILITY_FIX_V1.md`
 
 ## Tier 2 Reads
 
-1. `08_planning/reports/20260329_MM3_299_RELATION_ROUTE_AND_DEEP_DETAIL_FOLLOW_ON_V1.md`
-2. `08_planning/reports/20260329_MM3_298_RELATION_EXPLORER_LOCAL_PREVIEW_LAUNCH_V1.md`
-3. `08_planning/reports/20260329_MM3_297_RELATION_COMPARE_DETAIL_AND_MINDMAP_WIRING_V1.md`
-4. `08_planning/reports/20260329_MM3_296_RELATION_NAVIGATOR_DATA_WIRING_V1.md`
+1. `08_planning/reports/20260330_MM3_303D_TYPE_SCALE_AND_RESPONSIVE_LAYOUT_PASS_V1.md`
+2. `08_planning/reports/20260330_MM3_303C_COMPARE_AND_DETAIL_LEARNER_COPY_REFRAME_V1.md`
+3. `08_planning/reports/20260330_MM3_303B_RELATION_LAYER_COMPRESSION_AND_DISCLOSURE_V1.md`
+4. `08_planning/reports/20260330_MM3_303A_RELATION_ENTRY_AND_SHELL_SIMPLIFICATION_V1.md`
+5. `08_planning/reports/20260330_MM3_302_RELATION_EXPLORER_LEARNER_JOURNEY_DEEP_RESEARCH_AND_UX_REVIEW_V1.md`
 
 ## Tier 3 Reference On Demand
 
@@ -227,7 +262,8 @@
 
 ## Open Blocker
 
-- current blocker는 current limited authoritative boundary 안에서는 없다.
+- current blocker는 `Cloudflare R2 not enabled on the current account`다.
+- evidence: `wrangler r2 bucket list` -> `Please enable R2 through the Cloudflare Dashboard. [code: 10042]`
 - `chunk_id`는 current semantic authority gate 밖의 runtime-enrichment로 고정됐다.
 - canonical `chunk_id` mapping artifact는 current source truth에 반영됐다.
 - TOPIK stats policy 자체는 승인 완료 상태다.
@@ -236,7 +272,7 @@
 
 ## Next PM Actions
 
-1. current active execution package는 `none`이다.
-2. current queue는 비어 있다.
-3. current review-driven remediation cycle은 닫혔다. broader parity / provenance completion은 parked backlog다.
-4. local preview is live at `http://127.0.0.1:4174/`.
+1. `Cloudflare Dashboard`에서 `R2`를 enable한다.
+2. enable 후 actual cutover execution package를 새 task id로 연다.
+3. first cutover는 `full build-side runtime bundle -> R2`, `public/data/internal/runtime_payloads` deploy duplicate 제거, clean rebuild 기준으로 진행한다.
+4. push 후 `Vercel` auto deployment가 실제로 `R2` restore path를 타는지 re-verify한다.

@@ -3,15 +3,23 @@
 ## Current Status
 
 - Milestone: `Phase 2 Relation Explorer App Planning`
-- Active Work: `none (latest closeout: MM3-300)`
+- Active Work: `MM3-307 R2 Ready Deploy Chain And Storage Cleanup`
 - Latest Pilot Capture: `pilot_session_04 / 2026-03-26 01:28 KST / participant 사용자 / facilitator 사용자 / ad-hoc screenshot follow-up`
 - PM Owner: `Codex`
 - User Constraint: external references are read-only
 - Operating Mode: `Strict`
-- Current Gate: `PARTIAL_OPEN`
+- Current Gate: `BLOCKED_ON_R2_ENABLEMENT`
 
 ## Completed This Turn
 
+- `MM3-307` R2-ready deploy chain and storage cleanup opening
+- `MM3-306` GitHub/Vercel/R2 cutover review and blocker confirmation
+- `MM3-305` relation family top nav and bucket left rail relayout
+- `MM3-304` relation family badge readability fix
+- `MM3-303E` learner mode validation and acceptance
+- `MM3-303D` type scale and responsive layout pass
+- `MM3-302` relation explorer learner journey deep research and UX review
+- `MM3-301` next PM handoff package
 - `MM3-300` relation top filter carryover
 - `MM3-299` relation route and deep detail follow-on
 - `MM3-298` relation explorer local preview launch
@@ -176,16 +184,39 @@
 
 ## In Progress
 
-- no active execution package
-- latest closeout: `MM3-300`
-- current step: `waiting for next directive`
+- active execution package: `MM3-307`
+- latest closeout: `MM3-305`
+- current step: `local prep done / external cutover blocked`
 - just completed:
-  - `MM3-300`에서 상단 filter carryover, `영어/몽골어` 언어 제한, `영어` default, `TOPIK 빈도` filter를 반영했다
+  - `MM3-307`에서 `R2`-ready build chain, dist prune, tracked waste cleanup을 반영했다
+  - `MM3-307` validation으로 local `gz` build `PASS`, remote-restore fixture build `PASS`를 확인했다
+  - `MM3-307`에서 `10_relation_app/node_modules`, `10_relation_app/dist`, `tmp_reports/authoritative_runtime_rollbacks`를 git index에서 제거했다
+  - `MM3-307`에서 `dist/data/internal/runtime_payloads` duplicate를 제거했고 shipped `dist/data/live`는 `1269.00 MB -> 861.42 MB`로 줄었다
+  - `MM3-307` actual external attempt에서 `wrangler r2 bucket create vocabulary-mindmap3-runtime`는 `Please enable R2 through the Cloudflare Dashboard. [code: 10042]`로 막혔다
+  - `MM3-307` verdict는 `local prep/workspace cleanup DONE`, `actual external cutover BLOCKED_ON_R2_ENABLEMENT`이다
+  - `MM3-306`에서 current `GitHub -> Vercel -> app build` chain audit, `R2` cutover simulation, deploy/storage waste check를 완료했다
+  - current `Vercel` build는 `runtime_payloads/*.json.gz -> prepare:live -> verify:live -> build` 체인임을 다시 확인했다
+  - recent production deployment `864e954`는 auto build로 `READY`까지 갔고 clone completed는 `56.095s`였다
+  - current `09_app/dist/data`에는 `live 1269.00 MB`와 `internal/runtime_payloads 151.28 MB`가 함께 들어가 duplicate deploy cost가 있음을 확인했다
+  - current git tracked pack size는 `997.51 MiB`이고, `10_relation_app/node_modules`, `10_relation_app/dist`, raw `unified_live` JSON tracked waste가 남아 있음을 확인했다
+  - mixed split (`100MB 초과 파일만 R2`)은 current bundle completeness 기준으로 부족하고, safe cutover unit은 `full build-side runtime bundle`이라는 verdict를 고정했다
+  - `wrangler whoami`는 통과했지만 `wrangler r2 bucket list`는 `Please enable R2 through the Cloudflare Dashboard. [code: 10042]`로 막혔다
+  - `MM3-305`에서 family를 top navigation으로 올리고 bucket을 left rail로 옮겼으며 `npm run build PASS`를 확인했다
+  - `MM3-304`에서 study card family badge를 dark translucent tone + brighter text 조합으로 바꾸고 `npm run build PASS`를 확인했다
+  - `MM3-303E`에서 build/source 기반 validation과 3-expert PM review를 수행했고 verdict를 `PARTIAL_ACCEPT`로 기록했다
+  - `MM3-303D`에서 type scale 상향, center emphasis 조정, mobile overflow/readability pass를 반영했고 `npm run build PASS`를 확인했다
+  - `MM3-303C`에서 compare 3-block learner explanation, detail learner sheet 전환, internal field 제거를 반영했고 `npm run build PASS`를 확인했다
+  - `MM3-303B`에서 top filter와 center refine layer를 default disclosure로 바꾸고 summary chip row를 추가했으며 `npm run build PASS`를 확인했다
+  - `MM3-303A`에서 learner-facing shell copy 전환, dev-facing 규칙/상태 block 제거, Korean UI copy 정리, `npm run build PASS`를 반영했다
+  - `MM3-303`에서 learner-mode redesign implementation workflow, task family, workset, packet family, review queue를 current control-plane에 등록했다
+  - `MM3-302`에서 current shell learner journey 분석, official web deep research, 3인 전문가 review, 개선 방향, 재검증, 통합 verdict를 PM packet으로 고정했다
+  - `MM3-301`에서 control-plane drift를 다시 확인했고 handoff packet / handoff doc / handoff message를 current truth 기준으로 갱신했다
+  - `MM3-300`에서 상단 filter carryover, source 전체 번역 언어 노출, `영어` default, `TOPIK 빈도 1~5` options를 반영했다
   - `MM3-299`에서 route hash state와 deeper detail metadata refinement를 반영했다
-  - `MM3-298`에서 local preview를 `http://127.0.0.1:4174/`로 띄웠다
+  - `MM3-298`에서 local preview를 `http://127.0.0.1:4175/`로 띄웠다
   - `MM3-297`에서 compare/detail/mindmap interaction을 actual interactive state로 올렸다
   - `MM3-296`에서 actual relation bootstrap과 family JSON을 생성했고 `10_relation_app` shell을 fetched data 기준으로 다시 연결했다
-  - `MM3-296` 검증으로 `relation-bootstrap familyCount=8`, sample family/group/card generation, `vite build PASS`를 확인했다
+  - `MM3-296` 검증으로 `relation-bootstrap familyCount=8`, sample family/group/card generation, updated XML / MM3 payload 반영, `vite build PASS`를 확인했다
   - `MM3-295`에서 `활용 표현` later follow-on planning과 reopen timing을 고정했다
   - `MM3-294`에서 `10_relation_app/` shell을 열었고 `npm install`, `npm run build`를 통과했다
   - `MM3-293`에서 same repo / separate app / separate Vercel project topology를 고정했고, current root `vercel.json`은 `10_relation_app` shell opening 전까지 `09_app` boundary로 유지하기로 잠갔다
