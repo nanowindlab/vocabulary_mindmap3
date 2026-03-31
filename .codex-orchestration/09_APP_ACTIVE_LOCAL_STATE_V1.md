@@ -2,7 +2,7 @@
 
 ## Current Revision
 
-- `R2`
+- `R6`
 
 ## Last Updated
 
@@ -10,7 +10,7 @@
 
 ## Last Updated By
 
-- `Codex PM`
+- `MM_09_APP_PM`
 
 ## App Owner
 
@@ -42,6 +42,36 @@
 - `09_app` runtime / deploy / restore / verification surface only
 - shared truth 문서는 직접 소유하지 않고 reference만 한다
 
+## Cross-Lane Review Rule
+
+- `10_relation_app PM`은 `09_app` lane에 대해 first sanity check 또는 drift detection 목적의 read-only spot-check만 수행할 수 있다.
+- non-owner PM의 finding은 advisory이며, `09_app PM` 또는 `Main PM`이 받아들일 때만 current truth가 된다.
+- non-owner PM은 이 문서와 `09_app` handoff packet을 authoritative truth로 직접 확정하지 않는다.
+
+## Commit/Push Ownership
+
+- `09_app` lane commit/push는 `09_app PM` 또는 `Main PM`만 수행한다.
+- shared/control-plane doc-only push는 별도 boundary다.
+- shared/control-plane doc-only push가 존재하더라도 `09_app` runtime acceptance push로 간주하지 않는다.
+
+## Git Command Boundary
+
+- `09_app PM`의 `git` command 사용 범위는 자기 lane/project boundary로 제한한다.
+- allowed:
+  - `09_app/**`
+  - `09_app` lane packet/state docs
+- disallowed:
+  - `10_relation_app/**`를 대상으로 한 모든 `git` command
+  - 상대 lane commit/push 여부 판단을 위한 `git` inspection
+  - shared/root git action 선행 실행
+- shared/root git action이 필요하면 `Main PM`으로 escalation한다.
+- 다음 `09_app PM`도 이 규칙을 기본값으로 따른다.
+
+## Metadata Note
+
+- 이 lane의 authoritative metadata는 concrete updater label을 사용한다.
+- `Last Updated By`는 generic `Codex PM` 대신 `MM_09_APP_PM`으로 유지한다.
+
 ## Current Blocker
 
 - `없음`
@@ -49,10 +79,11 @@
 ## Verification Command
 
 - app-local verify:
-  - `npm --prefix 09_app run rebuild:canonical-runtime`
-  - `npm --prefix 09_app run publish:r2-runtime`
   - `MM3_RUNTIME_BUNDLE_BASE_URL=https://mm3-runtime-gateway.nanowind.workers.dev npm --prefix 09_app run build`
-- shared prerequisite when shared data regeneration is explicitly part of the lane:
+- special manual regeneration only:
+  - `npm --prefix 09_app run repair:facets`
+  - `npm --prefix 09_app run publish:r2-runtime`
+- shared prerequisite when exceptional source regeneration is explicitly part of the lane:
   - `python3 vocab_dictionary/scripts/build_kcenter_dataset.py seed --json-dir vocab_dictionary/dict_download_json --output-dir vocab_dictionary/output/unified_live`
   - `python3 vocab_dictionary/scripts/build_kcenter_dataset.py merge --output-dir vocab_dictionary/output/unified_live --api-xml-dir vocab_dictionary/output/api_xml_live`
   - `python3 vocab_dictionary/scripts/link_vm2_topik_stats.py`
@@ -69,8 +100,18 @@
 - runtime bundle full set은 `Cloudflare R2`에서 restore한다
 - current deploy/runtime chain은 `GitHub -> Vercel -> 09_app build -> R2 restore`
 - current active local concern은 `09_app` runtime/deploy verification and maintenance lane이다
+- daily app build는 `R2 restore`만으로 닫는다.
+- `vocab_dictionary/`는 exceptional repair / regeneration 때만 수동으로 사용한다.
+- public gateway parity는 restored 상태다.
+  - `APP_READY_FACETS.json` `entry_count=53012`
+  - remote restore build `PASS`
+- remaining open item은 runtime parity가 아니라 `09_app` git boundary cleanup이다.
 
 ## Revision History
 
+- `R6` / `2026-03-31 KST` / `MM_09_APP_PM` / canonical/live facets rebuild, R2 republish, remote restore build pass 반영 후 runtime parity blocker 해제
+- `R5` / `2026-03-31 KST` / `MM_09_APP_PM` / `git` command를 자기 lane/project boundary로 제한하는 규칙과 concrete updater metadata note 추가
+- `R4` / `2026-03-31 KST` / `Codex PM` / non-owner read-only spot-check 범위와 `09_app` lane commit/push ownership 규칙 추가
+- `R3` / `2026-03-31 KST` / `Codex PM` / public gateway payload spot-check 결과 `APP_READY_FACETS.json` stale mismatch와 partial parity 상태 반영
 - `R2` / `2026-03-31 KST` / `Codex PM` / verification command를 `app-local verify`와 `shared prerequisite`로 분리
 - `R1` / `2026-03-31 KST` / `Codex PM` / initial local state surface 생성

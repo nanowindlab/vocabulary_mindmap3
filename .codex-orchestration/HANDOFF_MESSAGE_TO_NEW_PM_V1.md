@@ -23,6 +23,31 @@ Tier 3 lane-specific handoff packet when present:
 Active lane:
 - current test handoff lane: `09_app`
 
+Current blocker:
+- none for runtime parity
+- public `APP_READY_FACETS.json` restored to `entry_count=53012`
+- remote restore build passed against current R2 bundle
+- remaining open item is `09_app` git boundary cleanup
+
+Immediate next action:
+- split `09_app/package.json` commit candidate from mode-only and untracked changes
+- decide whether `09_app/scripts/rebuild-canonical-facets.mjs` stays as lane-local repair script
+- keep `10_relation_app` closed unless shared cross-app coordination actually reopens it
+
+Build policy:
+- daily app build uses `R2 restore` only
+- `vocab_dictionary/` is manual-only for exceptional regeneration / repair
+- `R2` regeneration runs as a separate manual process, not as daily build
+
+Ownership rule:
+- non-owner PM may spot-check the other lane read-only only
+- owning app PM owns authoritative app-local state and lane-level commit/push
+- `Main PM` owns shared current state and handoff root
+- shared/control-plane doc-only push is separate from app-local runtime acceptance push
+- `09_app PM` uses `git` only inside `09_app/**` and `09_app` lane docs
+- `10_relation_app PM` uses `git` only inside `10_relation_app/**` and `10_relation_app` lane docs
+- shared/root git action belongs to `Main PM`
+
 Do not read by default:
 - the non-active app local state document
 - historical review/archive material
