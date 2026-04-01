@@ -8,6 +8,9 @@ test("list view keeps rendered row count bounded while scrolling", async ({ page
 
   const virtualWindow = page.getByTestId("list-virtual-window");
   await expect(virtualWindow).toBeVisible();
+  await expect
+    .poll(async () => Number(await virtualWindow.getAttribute("data-total-count")))
+    .toBeGreaterThan(1000);
 
   const initialTotalCount = Number(await virtualWindow.getAttribute("data-total-count"));
   const initialRenderedCount = Number(await virtualWindow.getAttribute("data-rendered-count"));

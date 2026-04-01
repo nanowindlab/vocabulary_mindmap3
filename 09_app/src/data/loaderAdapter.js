@@ -22,6 +22,10 @@ const richChunkDataCache = new Map();
 const richChunkPromiseCache = new Map();
 const examplesChunkDataCache = new Map();
 const examplesChunkPromiseCache = new Map();
+let facetPayloadPromise = null;
+let facetPayloadData = undefined;
+const projectedTabPayloadDataCache = new Map();
+const projectedTabPayloadPromiseCache = new Map();
 let translationLanguageManifestPromise = null;
 const translationOverlayDataCache = new Map();
 const translationOverlayPromiseCache = new Map();
@@ -183,18 +187,35 @@ export async function loadUnifiedSearchIndex(options = {}) {
 }
 
 export async function loadFacetPayload(options = {}) {
+  if (facetPayloadData !== undefined) {
+    return facetPayloadData;
+  }
+
+  if (facetPayloadPromise) {
+    return facetPayloadPromise;
+  }
+
+  facetPayloadPromise = (async () => {
   try {
-    return await loadJsonPayload(
+      const payload = await loadJsonPayload(
       `${LIVE_DIR}APP_READY_FACETS.json`,
       "Failed to load facet payload",
       options.trace,
       { payload: "facetPayload", source: "live" },
-    );
-  } catch (error) {
-    if (!error?.response) throw error;
-    console.warn("[LIVE] Facet payload not found, falling back to null");
-    return null;
-  }
+      );
+      facetPayloadData = payload;
+      return payload;
+    } catch (error) {
+      if (!error?.response) throw error;
+      console.warn("[LIVE] Facet payload not found, falling back to null");
+      facetPayloadData = null;
+      return null;
+    } finally {
+      facetPayloadPromise = null;
+    }
+  })();
+
+  return facetPayloadPromise;
 }
 
 export async function loadTreeShellPayload(tabId, options = {}) {
@@ -227,18 +248,36 @@ export async function loadProjectedTabPayload(tabId, options = {}) {
         ? "APP_READY_SITUATION_TREE.json"
         : "APP_READY_UNCLASSIFIED_TREE.json";
 
-  try {
-    return await loadJsonPayload(
-      `${LIVE_DIR}${fileName}`,
-      `Failed to load ${tabId} payload`,
-      options.trace,
-      { payload: `${tabId}Tree`, source: "live" },
-    );
-  } catch (error) {
-    if (!error?.response) throw error;
-    console.warn(`[LIVE] ${tabId} payload not found, falling back to empty array`);
-    return [];
+  if (projectedTabPayloadDataCache.has(tabId)) {
+    return projectedTabPayloadDataCache.get(tabId);
   }
+
+  if (projectedTabPayloadPromiseCache.has(tabId)) {
+    return projectedTabPayloadPromiseCache.get(tabId);
+  }
+
+  const request = (async () => {
+    try {
+      const payload = await loadJsonPayload(
+        `${LIVE_DIR}${fileName}`,
+        `Failed to load ${tabId} payload`,
+        options.trace,
+        { payload: `${tabId}Tree`, source: "live" },
+      );
+      projectedTabPayloadDataCache.set(tabId, payload);
+      return payload;
+    } catch (error) {
+      if (!error?.response) throw error;
+      console.warn(`[LIVE] ${tabId} payload not found, falling back to empty array`);
+      projectedTabPayloadDataCache.set(tabId, []);
+      return [];
+    } finally {
+      projectedTabPayloadPromiseCache.delete(tabId);
+    }
+  })();
+
+  projectedTabPayloadPromiseCache.set(tabId, request);
+  return request;
 }
 
 export async function loadTranslationLanguageManifest(options = {}) {

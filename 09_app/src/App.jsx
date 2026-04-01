@@ -781,34 +781,56 @@ function App() {
   }, [translationLanguage, translationOverlays]);
 
   useEffect(() => {
+    if (!showFilterPanel) return;
+    if (facetPayload !== null) return;
+
+    let cancelled = false;
+
+    loadFacetPayload({
+      trace: (metric) => initialLoadPerfRef.current?.payloads.push(metric),
+    })
+      .then((facet) => {
+        if (cancelled) return;
+        setFacetPayload(facet);
+      })
+      .catch((error) => {
+        console.error("facet payload 로딩 실패", error);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [facetPayload, showFilterPanel]);
+
+  useEffect(() => {
+    if (!showFilterPanel && translationLanguage === DEFAULT_TRANSLATION_LANGUAGE) return;
+    if (translationManifest !== null) return;
+
+    let cancelled = false;
+
+    loadTranslationLanguageManifest({
+      trace: (metric) => initialLoadPerfRef.current?.payloads.push(metric),
+    })
+      .then((translationLanguageData) => {
+        if (cancelled) return;
+        setTranslationManifest(translationLanguageData);
+      })
+      .catch((error) => {
+        console.error("translation language manifest 로딩 실패", error);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [showFilterPanel, translationLanguage, translationManifest]);
+
+  useEffect(() => {
     if (isInitializing) return undefined;
 
     let cancelled = false;
 
     const runBackgroundLoad = () => {
       startTransition(() => {
-        loadFacetPayload({
-          trace: (metric) => initialLoadPerfRef.current?.payloads.push(metric),
-        })
-          .then((facet) => {
-            if (cancelled) return;
-            setFacetPayload(facet);
-          })
-          .catch((error) => {
-            console.error("facet payload 로딩 실패", error);
-          });
-
-        loadTranslationLanguageManifest({
-          trace: (metric) => initialLoadPerfRef.current?.payloads.push(metric),
-        })
-          .then((translationLanguageData) => {
-            if (cancelled) return;
-            setTranslationManifest(translationLanguageData);
-          })
-          .catch((error) => {
-            console.error("translation language manifest 로딩 실패", error);
-          });
-
         loadUnifiedSearchIndex()
           .then((idx) => {
             if (cancelled) return;
@@ -819,7 +841,7 @@ function App() {
             console.error("검색 인덱스 로딩 실패", error);
           });
 
-        ["meaning", "situation", "unclassified"].forEach((tabId) => {
+        ["meaning"].forEach((tabId) => {
           setTabLoadState((prev) =>
             prev[tabId] === "idle" || prev[tabId] === "shell-ready"
               ? { ...prev, [tabId]: "queued" }
