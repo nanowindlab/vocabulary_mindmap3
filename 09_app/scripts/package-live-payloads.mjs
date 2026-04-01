@@ -7,6 +7,8 @@ import { fileURLToPath } from "node:url";
 import { ensureCanonicalChunkMapping } from "./canonical-chunk-mapping-core.mjs";
 import { buildExampleEntry, loadTopikSentenceMap } from "./example-chunk-sources.mjs";
 import { loadCanonicalRuntimeDetailEntries } from "./runtime-detail-projection.mjs";
+import { buildRuntimeTranslationOverlays } from "./build-runtime-translation-overlays.mjs";
+import { TARGET_TRANSLATION_LANGUAGES, DEFAULT_TRANSLATION_LANGUAGE, getTranslationOverlayFileName } from "../src/utils/translationPayloads.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,10 +19,16 @@ const manifestPath = path.join(compressedDir, "MANIFEST.json");
 
 const PAYLOADS = [
   "APP_READY_SEARCH_INDEX.json",
+  "APP_READY_SEARCH_THIN_INDEX.json",
+  "APP_READY_MEANING_TREE_SHELL.json",
   "APP_READY_MEANING_TREE.json",
   "APP_READY_SITUATION_TREE.json",
   "APP_READY_UNCLASSIFIED_TREE.json",
   "APP_READY_FACETS.json",
+  "APP_READY_TRANSLATION_LANGUAGES.json",
+  ...TARGET_TRANSLATION_LANGUAGES
+    .filter((language) => language !== DEFAULT_TRANSLATION_LANGUAGE)
+    .map((language) => getTranslationOverlayFileName(language)),
   "CHUNK_MANIFEST_V1.json",
 ];
 const DETAIL_MAP_FILE = "APP_READY_DETAIL_MAP.json";
@@ -65,9 +73,12 @@ function loadJson(fileName) {
   return JSON.parse(readFileSync(path.join(liveDir, fileName), "utf-8"));
 }
 
-function writeJsonAtomic(filePath, payload) {
+function writeJsonAtomic(filePath, payload, options = {}) {
   const tempPath = `${filePath}.tmp`;
-  writeFileSync(tempPath, `${JSON.stringify(payload, null, 2)}\n`, "utf-8");
+  const serialized = options.compact
+    ? JSON.stringify(payload)
+    : `${JSON.stringify(payload, null, 2)}\n`;
+  writeFileSync(tempPath, serialized, "utf-8");
   renameSync(tempPath, filePath);
 }
 
@@ -108,6 +119,9 @@ function chunkEntries(detailEntries, chunkMappingPayload) {
 
 function applyChunkIds(payload, chunkMap) {
   const records = payload.records || payload;
+  if (!Array.isArray(records)) {
+    return payload;
+  }
   for (const item of records) {
     const id = item?.id;
     if (!id) continue;
@@ -163,17 +177,23 @@ async function main() {
   rmSync(path.join(compressedDir, `${DETAIL_MAP_FILE}.gz`), { force: true });
   const entries = [];
 
+  buildRuntimeTranslationOverlays();
+
   const canonicalDetailEntries = loadCanonicalRuntimeDetailEntries();
   const { chunkMap } = await writeChunkArtifacts(canonicalDetailEntries);
 
   for (const fileName of [
     "APP_READY_SEARCH_INDEX.json",
+    "APP_READY_SEARCH_THIN_INDEX.json",
+    "APP_READY_MEANING_TREE_SHELL.json",
     "APP_READY_MEANING_TREE.json",
     "APP_READY_SITUATION_TREE.json",
     "APP_READY_UNCLASSIFIED_TREE.json",
   ]) {
     const payload = loadJson(fileName);
-    writeJsonAtomic(path.join(liveDir, fileName), applyChunkIds(payload, chunkMap));
+    writeJsonAtomic(path.join(liveDir, fileName), applyChunkIds(payload, chunkMap), {
+      compact: fileName === "APP_READY_SEARCH_THIN_INDEX.json" || fileName === "APP_READY_MEANING_TREE_SHELL.json",
+    });
   }
 
   for (const fileName of PAYLOADS) {

@@ -35,8 +35,9 @@ const SidebarItem = ({
     if (node.type === "term") {
       onSelectTerm(node.data);
     } else {
+      const willCollapse = hasChildren && isExpanded;
       toggleExpand(node.id);
-      if (onSelectNode) onSelectNode(node);
+      if (onSelectNode) onSelectNode(node, { collapseToParent: willCollapse });
     }
   };
 
@@ -140,19 +141,19 @@ export const SidebarTree = ({
   // 선택된 단어가 바뀌면 해당 항목으로 자동 스크롤 (Auto-scroll to selected term)
   useEffect(() => {
     if (!selectedTermId || !scrollContainerRef.current) return;
-    // 150ms 딜레이: React가 확장된 노드를 렌더링할 시간을 줌
     const t = setTimeout(() => {
       const el = scrollContainerRef.current?.querySelector(
         `[data-term-id="${selectedTermId}"]`
       );
       if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     }, 150);
     return () => clearTimeout(t);
-  }, [selectedTermId]);
+  }, [expandedIds, selectedTermId, treeData]);
 
   useEffect(() => {
+    if (selectedTermId) return;
     if (!selectedTreeNode?.id || !scrollContainerRef.current) return;
     const t = setTimeout(() => {
       const el = scrollContainerRef.current?.querySelector(
@@ -163,7 +164,7 @@ export const SidebarTree = ({
       }
     }, 150);
     return () => clearTimeout(t);
-  }, [selectedTreeNode]);
+  }, [expandedIds, selectedTreeNode, treeData]);
 
   // root 레벨 숨기고 scene(중분류)부터 노출
   const sceneNodes = Object.values(treeData).flatMap((root) =>

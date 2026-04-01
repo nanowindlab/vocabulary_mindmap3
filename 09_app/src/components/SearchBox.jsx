@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { Search } from "lucide-react";
 import { normalizeHierarchyForDisplay } from "../utils/hierarchyDisplay";
 
@@ -27,7 +27,139 @@ const collapseExactSearchDuplicates = (items) => {
   return result;
 };
 
-const SEARCH_ORDER_DESCRIPTION = "정렬: 정확히 일치 -> 앞부분 일치 -> 포함 일치 -> 짧은 단어 순";
+const KOREAN_SEARCH_ORDER_DESCRIPTION = "정렬: 정확히 일치 -> 앞부분 일치 -> 포함 일치 -> 짧은 단어 순";
+const FOREIGN_SEARCH_ORDER_DESCRIPTION = "정렬: 직접 번역 정확히 일치 -> 앞부분 일치 -> 포함 일치 -> 영어 뜻 설명";
+const SEARCH_RESULT_LIMIT = 10;
+
+const hasHangul = (value) => /[가-힣]/.test(value);
+
+const normalizeText = (value) => (value || "").toLowerCase().trim();
+
+const getForeignSearchRank = (item, queryLower) => {
+  const word = normalizeText(item.word);
+  const defEn = normalizeText(item.def_en);
+  const translations = item.translation_summary || [];
+
+  const translationTexts = translations
+    .map((translation) => normalizeText(translation.word))
+    .filter(Boolean);
+  if (translationTexts.includes(queryLower)) {
+    return {
+      stage: 0,
+      tieBreaker: translationTexts.findIndex((translation) => translation === queryLower),
+      wordLength: word.length,
+    };
+  }
+
+  const translationStarts = translationTexts.some((translation) => translation.startsWith(queryLower));
+  if (translationStarts) {
+    return {
+      stage: 1,
+      tieBreaker: translationTexts.findIndex((translation) => translation.startsWith(queryLower)),
+      wordLength: word.length,
+    };
+  }
+
+  const translationIncludes = translationTexts.some((translation) => translation.includes(queryLower));
+  if (translationIncludes) {
+    return {
+      stage: 2,
+      tieBreaker: translationTexts.findIndex((translation) => translation.includes(queryLower)),
+      wordLength: word.length,
+    };
+  }
+
+  if (defEn === queryLower) {
+    return {
+      stage: 3,
+      tieBreaker: 0,
+      wordLength: word.length,
+    };
+  }
+
+  if (defEn.startsWith(queryLower)) {
+    return {
+      stage: 4,
+      tieBreaker: 0,
+      wordLength: word.length,
+    };
+  }
+
+  if (queryLower.length > 3 && defEn.includes(queryLower)) {
+    return {
+      stage: 5,
+      tieBreaker: defEn.indexOf(queryLower),
+      wordLength: word.length,
+    };
+  }
+
+  return null;
+};
+
+const getKoreanSearchRank = (item, queryLower) => {
+  const word = normalizeText(item.word);
+  const defKo = normalizeText(item.def_ko);
+  const defEn = normalizeText(item.def_en);
+
+  if (word === queryLower) {
+    return { stage: 0, wordLength: word.length };
+  }
+
+  if (word.startsWith(queryLower)) {
+    return { stage: 1, wordLength: word.length };
+  }
+
+  if (word.includes(queryLower)) {
+    return { stage: 2, wordLength: word.length };
+  }
+
+  if (defKo.includes(queryLower)) {
+    return { stage: 3, wordLength: word.length };
+  }
+
+  if (defEn.includes(queryLower)) {
+    return { stage: 4, wordLength: word.length };
+  }
+
+  return null;
+};
+
+const compareRank = (a, b) => {
+  if (a.stage !== b.stage) return a.stage - b.stage;
+
+  if ((a.tieBreaker ?? Number.MAX_SAFE_INTEGER) !== (b.tieBreaker ?? Number.MAX_SAFE_INTEGER)) {
+    return (a.tieBreaker ?? Number.MAX_SAFE_INTEGER) - (b.tieBreaker ?? Number.MAX_SAFE_INTEGER);
+  }
+
+  return a.wordLength - b.wordLength;
+};
+
+const pushTopRanked = (topRanked, candidate, limit = SEARCH_RESULT_LIMIT) => {
+  let insertAt = topRanked.findIndex((current) => compareRank(candidate.rank, current.rank) < 0);
+  if (insertAt === -1) insertAt = topRanked.length;
+  if (insertAt >= limit) return;
+  topRanked.splice(insertAt, 0, candidate);
+  if (topRanked.length > limit) topRanked.length = limit;
+};
+
+const collectTopMatches = (searchIndex, rawQuery) => {
+  const queryLower = normalizeText(rawQuery);
+  if (!queryLower) return [];
+
+  const koreanQuery = hasHangul(rawQuery);
+  const topRanked = [];
+
+  for (const item of searchIndex) {
+    const rank = koreanQuery
+      ? getKoreanSearchRank(item, queryLower)
+      : getForeignSearchRank(item, queryLower);
+
+    if (!rank) continue;
+    pushTopRanked(topRanked, { item, rank });
+  }
+
+  return collapseExactSearchDuplicates(topRanked.map(({ item }) => item));
+};
 
 export const SearchBox = ({
   searchIndex,
@@ -36,10 +168,10 @@ export const SearchBox = ({
   translationLanguage,
 }) => {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef(null);
   const isComposingRef = useRef(false);
+  const deferredQuery = useDeferredValue(query);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -51,51 +183,33 @@ export const SearchBox = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [wrapperRef]);
 
-  const handleSearch = (e) => {
-    const v = e.target.value;
-    setQuery(v);
-    if (!v.trim()) {
-      setResults([]);
+  const results = useMemo(
+    () => collectTopMatches(searchIndex, deferredQuery),
+    [deferredQuery, searchIndex],
+  );
+
+  const homonymCountByWord = useMemo(() => {
+    const counts = new Map();
+    results.forEach((item) => {
+      if (!item?.word) return;
+      counts.set(item.word, (counts.get(item.word) || 0) + 1);
+    });
+    return counts;
+  }, [results]);
+
+  useEffect(() => {
+    if (!query.trim()) {
       setIsOpen(false);
       return;
     }
 
-    // Filter and Sort
-    const queryLower = v.toLowerCase();
-    const matches = searchIndex
-      .filter(
-        (item) =>
-          item.word?.toLowerCase().includes(queryLower) ||
-          item.def_ko?.toLowerCase().includes(queryLower) ||
-          item.def_en?.toLowerCase().includes(queryLower) ||
-          item.translation_summary?.some((t) => t.word?.toLowerCase().includes(queryLower)),
-      )
-      .sort((a, b) => {
-        const aWord = a.word?.toLowerCase() || "";
-        const bWord = b.word?.toLowerCase() || "";
+    if (results.length > 0) {
+      setIsOpen(true);
+    }
+  }, [query, results]);
 
-        // 1. 정확히 일치 (Exact Match)
-        const aExact = aWord === queryLower ? 1 : 0;
-        const bExact = bWord === queryLower ? 1 : 0;
-        if (aExact !== bExact) return bExact - aExact;
-
-        // 2. 검색어로 시작 (Starts With)
-        const aStarts = aWord.startsWith(queryLower) ? 1 : 0;
-        const bStarts = bWord.startsWith(queryLower) ? 1 : 0;
-        if (aStarts !== bStarts) return bStarts - aStarts;
-
-        // 3. 단어에 포함 (Includes)
-        const aIncludes = aWord.includes(queryLower) ? 1 : 0;
-        const bIncludes = bWord.includes(queryLower) ? 1 : 0;
-        if (aIncludes !== bIncludes) return bIncludes - aIncludes;
-
-        // 4. 단어 길이가 짧은 순으로
-        return aWord.length - bWord.length;
-      })
-      .slice(0, 10);
-
-    setResults(collapseExactSearchDuplicates(matches));
-    setIsOpen(true);
+  const handleSearch = (e) => {
+    setQuery(e.target.value);
   };
 
   const handleItemClick = (item) => {
@@ -121,6 +235,10 @@ export const SearchBox = ({
     const exact = results.find((item) => item.word === query.trim());
     handleItemClick(exact || results[0]);
   };
+
+  const searchOrderDescription = hasHangul(query)
+    ? KOREAN_SEARCH_ORDER_DESCRIPTION
+    : FOREIGN_SEARCH_ORDER_DESCRIPTION;
 
   return (
     <div ref={wrapperRef} className="search-shell" style={{ position: "relative", width: 360 }}>
@@ -203,7 +321,7 @@ export const SearchBox = ({
           {results.map((res) => (
             (() => {
               const primaryTranslation = getPrimaryTranslation(res, translationLanguage);
-              const homonymCount = results.filter((item) => item.word === res.word).length;
+              const homonymCount = homonymCountByWord.get(res.word) || 0;
               return (
             <div
               key={res.id}
@@ -343,7 +461,7 @@ export const SearchBox = ({
             }}
           >
             <div style={{ fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.5 }}>
-              {SEARCH_ORDER_DESCRIPTION}
+              {searchOrderDescription}
             </div>
             <div style={{ fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.5 }}>
               `기본 항목`은 현재 상세 보기로 바로 들어가는 기본 표제어입니다.

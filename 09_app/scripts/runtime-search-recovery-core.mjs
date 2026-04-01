@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
 import { loadCanonicalChunkMap } from "./canonical-chunk-mapping-core.mjs";
+import { DEFAULT_TRANSLATION_LANGUAGE, TARGET_TRANSLATION_LANGUAGES } from "../src/utils/translationPayloads.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,20 +13,6 @@ const repoRoot = path.resolve(appRoot, "..");
 const unifiedLiveDir = path.join(repoRoot, "vocab_dictionary", "output", "unified_live");
 const linkageDir = path.join(repoRoot, "vocab_dictionary", "output", "topik_stats_linkage");
 const liveDir = path.join(appRoot, "public", "data", "live");
-
-const TARGET_LANGUAGES = [
-  "영어",
-  "몽골어",
-  "아랍어",
-  "중국어",
-  "베트남어",
-  "타이어",
-  "일본어",
-  "프랑스어",
-  "스페인어",
-  "러시아어",
-  "인도네시아어",
-];
 
 export function readJson(filePath) {
   return JSON.parse(readFileSync(filePath, "utf8"));
@@ -59,10 +46,10 @@ function buildTranslationMaps() {
         word: item.word || null,
         definition: item.definition || null,
       }))
-      .filter((item) => TARGET_LANGUAGES.includes(item.language))
-      .sort((a, b) => TARGET_LANGUAGES.indexOf(a.language) - TARGET_LANGUAGES.indexOf(b.language));
+      .filter((item) => TARGET_TRANSLATION_LANGUAGES.includes(item.language))
+      .sort((a, b) => TARGET_TRANSLATION_LANGUAGES.indexOf(a.language) - TARGET_TRANSLATION_LANGUAGES.indexOf(b.language));
     summaryBySenseId.set(record.sense_id, translations);
-    const english = translations.find((item) => item.language === "영어");
+    const english = translations.find((item) => item.language === DEFAULT_TRANSLATION_LANGUAGE);
     englishDefBySenseId.set(record.sense_id, english?.definition || null);
   }
 
@@ -169,10 +156,34 @@ export function buildRecoverableSearchRows() {
       has_subwords: Boolean(item.has_subwords),
       has_related_forms: Boolean(item.has_related_forms),
       representative_sense_id: representativeSenseId,
-      translation_summary: representativeSenseId ? (summaryBySenseId.get(representativeSenseId) || []) : [],
+      translation_summary: representativeSenseId
+        ? (() => {
+            const translations = summaryBySenseId.get(representativeSenseId) || [];
+            const english = translations.find((translation) => translation.language === DEFAULT_TRANSLATION_LANGUAGE);
+            return english ? [english] : [];
+          })()
+        : [],
       categories: entry.categories || [],
     };
   });
+}
+
+export function buildThinSearchRows(searchRows = []) {
+  return (Array.isArray(searchRows) ? searchRows : []).map((row) => ({
+    id: row.id,
+    word: row.word || null,
+    pos: row.pos || null,
+    word_grade: row.word_grade || null,
+    def_ko: row.def_ko || null,
+    def_en: row.def_en || null,
+    hierarchy: row.hierarchy || null,
+    routing: row.routing || "mindmap_core",
+    stats: row.stats || {},
+    chunk_id: row.chunk_id || null,
+    translation_summary: row.translation_summary || [],
+    categories: row.categories || [],
+    has_subwords: Boolean(row.has_subwords),
+  }));
 }
 
 function comparableRuntimeRow(runtime) {

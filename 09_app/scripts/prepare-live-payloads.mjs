@@ -1,11 +1,12 @@
-import { copyFileSync, createWriteStream, existsSync, mkdirSync, renameSync } from "node:fs";
+import { createReadStream, createWriteStream, existsSync, mkdirSync, renameSync } from "node:fs";
 import path from "node:path";
 import { pipeline } from "node:stream/promises";
 import { Readable } from "node:stream";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { createGunzip } from "node:zlib";
 import {
   clearPreparedRuntimeFiles,
-  listRuntimeBundleFiles,
+  loadLocalRuntimeManifest,
   R2_RUNTIME_MANIFEST_FILE,
 } from "./runtime-bundle-core.mjs";
 
@@ -21,13 +22,21 @@ function joinRemoteUrl(baseUrl, fileName) {
   return `${baseUrl.replace(/\/$/, "")}/${fileName}`;
 }
 
-function restoreLocalPayload(fileName) {
-  const source = path.join(runtimeBundleDir, fileName);
-  const target = path.join(liveDir, fileName);
+export async function restoreLocalPayload(entry, options = {}) {
+  const sourceDir = options.runtimeBundleDir || runtimeBundleDir;
+  const targetDir = options.liveDir || liveDir;
+  const source = path.join(sourceDir, `${entry.file}.gz`);
+  const target = path.join(targetDir, entry.file);
   if (!existsSync(source)) {
     throw new Error(`Missing local runtime payload: ${source}`);
   }
-  copyFileSync(source, target);
+  const tempTarget = `${target}.tmp`;
+  await pipeline(
+    createReadStream(source),
+    createGunzip(),
+    createWriteStream(tempTarget),
+  );
+  renameSync(tempTarget, target);
 }
 
 async function restoreRemotePayload(entry) {
@@ -41,16 +50,22 @@ async function restoreRemotePayload(entry) {
   renameSync(tempTarget, target);
 }
 
+export async function restoreLocalRuntimeBundle(options = {}) {
+  const sourceDir = options.runtimeBundleDir || runtimeBundleDir;
+  const targetDir = options.liveDir || liveDir;
+  const manifest = loadLocalRuntimeManifest(sourceDir);
+  for (const entry of manifest.entries || []) {
+    await restoreLocalPayload(entry, { runtimeBundleDir: sourceDir, liveDir: targetDir });
+    console.log(`prepared ${entry.file} from local`);
+  }
+}
+
 async function main() {
   mkdirSync(liveDir, { recursive: true });
   clearPreparedRuntimeFiles(liveDir);
 
   if (payloadSource === "local") {
-    const files = listRuntimeBundleFiles(runtimeBundleDir);
-    for (const fileName of files) {
-      restoreLocalPayload(fileName);
-      console.log(`prepared ${fileName} from local`);
-    }
+    await restoreLocalRuntimeBundle();
     return;
   }
 
@@ -69,7 +84,9 @@ async function main() {
   }
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
+}
