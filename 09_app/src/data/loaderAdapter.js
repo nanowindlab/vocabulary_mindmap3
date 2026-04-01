@@ -1,6 +1,7 @@
 // loaderAdapter.js
 // Runtime contract:
-// - eager runtime payloads: APP_READY_SEARCH_INDEX, APP_READY_FACETS
+// - eager runtime payloads: APP_READY_MEANING_TREE_SHELL
+// - background runtime payloads: APP_READY_MEANING_TREE, APP_READY_SEARCH_THIN_INDEX, APP_READY_FACETS, APP_READY_TRANSLATION_LANGUAGES
 // - on-demand runtime payloads: APP_READY_CHUNK_RICH_*, APP_READY_CHUNK_EXAMPLES_*
 // - APP_READY_DETAIL_MAP is no longer part of the normal runtime delivery contract;
 //   it remains a debug-only fallback artifact during the demotion transition.
@@ -21,6 +22,9 @@ const richChunkDataCache = new Map();
 const richChunkPromiseCache = new Map();
 const examplesChunkDataCache = new Map();
 const examplesChunkPromiseCache = new Map();
+let translationLanguageManifestPromise = null;
+const translationOverlayDataCache = new Map();
+const translationOverlayPromiseCache = new Map();
 
 const now = () =>
   typeof performance !== "undefined" && typeof performance.now === "function"
@@ -155,6 +159,17 @@ async function loadChunkPayload(kind, chunkId, trace = null) {
 export async function loadUnifiedSearchIndex(options = {}) {
   try {
     return await loadJsonPayload(
+      `${LIVE_DIR}APP_READY_SEARCH_THIN_INDEX.json`,
+      "Failed to load thin unified search index",
+      options.trace,
+      { payload: "searchThinIndex", source: "live" },
+    );
+  } catch (thinError) {
+    if (!thinError?.response) throw thinError;
+  }
+
+  try {
+    return await loadJsonPayload(
       `${LIVE_DIR}APP_READY_SEARCH_INDEX.json`,
       "Failed to load unified search index",
       options.trace,
@@ -179,6 +194,101 @@ export async function loadFacetPayload(options = {}) {
     if (!error?.response) throw error;
     console.warn("[LIVE] Facet payload not found, falling back to null");
     return null;
+  }
+}
+
+export async function loadTreeShellPayload(tabId, options = {}) {
+  const fileName =
+    tabId === "meaning"
+      ? "APP_READY_MEANING_TREE_SHELL.json"
+      : null;
+
+  if (!fileName) return null;
+
+  try {
+    return await loadJsonPayload(
+      `${LIVE_DIR}${fileName}`,
+      `Failed to load ${tabId} tree shell payload`,
+      options.trace,
+      { payload: `${tabId}TreeShell`, source: "live" },
+    );
+  } catch (error) {
+    if (!error?.response) throw error;
+    console.warn(`[LIVE] ${tabId} tree shell payload not found, falling back to null`);
+    return null;
+  }
+}
+
+export async function loadProjectedTabPayload(tabId, options = {}) {
+  const fileName =
+    tabId === "meaning"
+      ? "APP_READY_MEANING_TREE.json"
+      : tabId === "situation"
+        ? "APP_READY_SITUATION_TREE.json"
+        : "APP_READY_UNCLASSIFIED_TREE.json";
+
+  try {
+    return await loadJsonPayload(
+      `${LIVE_DIR}${fileName}`,
+      `Failed to load ${tabId} payload`,
+      options.trace,
+      { payload: `${tabId}Tree`, source: "live" },
+    );
+  } catch (error) {
+    if (!error?.response) throw error;
+    console.warn(`[LIVE] ${tabId} payload not found, falling back to empty array`);
+    return [];
+  }
+}
+
+export async function loadTranslationLanguageManifest(options = {}) {
+  if (!translationLanguageManifestPromise) {
+    translationLanguageManifestPromise = loadJsonPayload(
+      `${LIVE_DIR}APP_READY_TRANSLATION_LANGUAGES.json`,
+      "Failed to load translation language manifest",
+      options.trace,
+      { payload: "translationLanguageManifest", source: "live" },
+    );
+  }
+  return translationLanguageManifestPromise;
+}
+
+export async function loadTranslationOverlay(language, options = {}) {
+  if (!language || language === "영어") return null;
+
+  if (translationOverlayDataCache.has(language)) {
+    return translationOverlayDataCache.get(language);
+  }
+
+  if (translationOverlayPromiseCache.has(language)) {
+    return translationOverlayPromiseCache.get(language);
+  }
+
+  const request = (async () => {
+    const manifest = await loadTranslationLanguageManifest(options);
+    const entry = (manifest?.languages || []).find((candidate) => candidate.language === language);
+    if (!entry?.file) {
+      translationOverlayDataCache.set(language, null);
+      return null;
+    }
+
+    const payload = await loadJsonPayload(
+      `${LIVE_DIR}${entry.file}`,
+      `Failed to load translation overlay for ${language}`,
+      options.trace,
+      { payload: "translationOverlay", source: "live", language },
+    );
+
+    translationOverlayDataCache.set(language, payload);
+    return payload;
+  })();
+
+  translationOverlayPromiseCache.set(language, request);
+
+  try {
+    return await request;
+  } finally {
+    translationOverlayPromiseCache.delete(language);
   }
 }
 

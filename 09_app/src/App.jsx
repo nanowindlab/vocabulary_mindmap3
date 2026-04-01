@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import React, { startTransition, useDeferredValue, useState, useEffect, useMemo, useCallback, useRef } from "react";
 import {
   Network, Loader, Book,
   Map as MapIcon, LayoutList, X, Filter, ChevronDown,
@@ -12,6 +12,10 @@ import { StatusPanel } from "./components/StatusPanel";
 import {
   loadUnifiedSearchIndex,
   loadFacetPayload,
+  loadTreeShellPayload,
+  loadProjectedTabPayload,
+  loadTranslationLanguageManifest,
+  loadTranslationOverlay,
   loadEntryDetail,
   loadTermDetailChunk,
 } from "./data/loaderAdapter";
@@ -19,8 +23,7 @@ import {
   normalizeHierarchyForDisplay,
   toPosLabel,
 } from "./utils/hierarchyDisplay";
-import { buildProjectedTabPayloads } from "./utils/tabProjection";
-
+import { DEFAULT_TRANSLATION_LANGUAGE } from "./utils/translationPayloads";
 import "./index.css";
 
 // ── 3-축 탭 정의 ────────────────────────────────────────────────
@@ -226,56 +229,230 @@ function buildTreeFromList(list, surface, contextMode) {
   if (!Array.isArray(list)) return tree;
   list.forEach((rawItem) => {
     const item = isDisplayNormalized(rawItem) ? rawItem : normalizeItem(rawItem, surface);
-    const rootId    = item.hierarchy?.root_id;
-    const centerId  = item.hierarchy?.display_scene || item.hierarchy?.scene || "일반";
-    const categoryId= item.hierarchy?.display_category || item.hierarchy?.category || item.pos || "기타";
+    const rootId = item.hierarchy?.root_id;
+    const centerId = item.hierarchy?.display_scene || item.hierarchy?.scene || "일반";
+    const categoryId = item.hierarchy?.display_category || item.hierarchy?.category || item.pos || "기타";
+    const rootNodeId = `root:${rootId}`;
+    const sceneNodeId = `scene:${rootId}:${centerId}`;
+    const categoryNodeId = `category:${rootId}:${centerId}:${categoryId}`;
     const rootLabel = item.hierarchy?.display_root_label || formatTreeLabel(contextMode, "root", item.hierarchy.root_label || rootId);
     const sceneLabel = item.hierarchy?.display_scene || formatTreeLabel(contextMode, "scene", centerId);
     const categoryLabel = item.hierarchy?.display_category || formatTreeLabel(contextMode, "category", categoryId);
 
     if (!rootId) return;
-    if (!tree[rootId])
-      tree[rootId] = { id: rootId, type: "root", label: rootLabel, label_en: item.hierarchy.root_en, children: {} };
-    if (!tree[rootId].children[centerId])
-      tree[rootId].children[centerId] = { id: centerId, type: "scene", rootId, label: sceneLabel, children: {} };
-    if (!tree[rootId].children[centerId].children[categoryId])
-      tree[rootId].children[centerId].children[categoryId] = { id: categoryId, type: "category", rootId, sceneId: centerId, label: categoryLabel, children: {}, termCount: 0 };
+    if (!tree[rootNodeId])
+      tree[rootNodeId] = {
+        id: rootNodeId,
+        type: "root",
+        rootId,
+        label: rootLabel,
+        label_en: item.hierarchy.root_en,
+        children: {},
+      };
+    if (!tree[rootNodeId].children[sceneNodeId])
+      tree[rootNodeId].children[sceneNodeId] = {
+        id: sceneNodeId,
+        type: "scene",
+        rootId,
+        sceneId: centerId,
+        label: sceneLabel,
+        children: {},
+      };
+    if (!tree[rootNodeId].children[sceneNodeId].children[categoryNodeId])
+      tree[rootNodeId].children[sceneNodeId].children[categoryNodeId] = {
+        id: categoryNodeId,
+        type: "category",
+        rootId,
+        sceneId: centerId,
+        categoryId,
+        label: categoryLabel,
+        children: {},
+        termCount: 0,
+      };
     if (!item.is_center_profile) {
-      tree[rootId].children[centerId].children[categoryId].children[item.id] = { id: item.id, type: "term", label: item.word, data: item };
-      tree[rootId].children[centerId].children[categoryId].termCount += 1;
+      tree[rootNodeId].children[sceneNodeId].children[categoryNodeId].children[item.id] = {
+        id: item.id,
+        type: "term",
+        rootId,
+        sceneId: centerId,
+        categoryId,
+        label: item.word,
+        data: item,
+      };
+      tree[rootNodeId].children[sceneNodeId].children[categoryNodeId].termCount += 1;
     }
   });
   return tree;
 }
 
+function normalizePayloadItems(items, surface = "mindmap_core") {
+  return (items || []).map((item) =>
+    isDisplayNormalized(item) ? item : normalizeItem(item, surface),
+  );
+}
+
+function filterListByNavigationScope(list, navigationScope) {
+  if (!navigationScope) return list;
+
+  let scoped = list;
+
+  if (navigationScope.rootId) {
+    scoped = scoped.filter((item) => item?.hierarchy?.root_id === navigationScope.rootId);
+  }
+
+  if (navigationScope.sceneId) {
+    scoped = scoped.filter((item) => {
+      const hierarchy = item?.hierarchy || {};
+      return (hierarchy.display_scene || hierarchy.scene) === navigationScope.sceneId;
+    });
+  }
+
+  if (navigationScope.categoryId) {
+    scoped = scoped.filter((item) => {
+      const hierarchy = item?.hierarchy || {};
+      return (hierarchy.display_category || hierarchy.category) === navigationScope.categoryId;
+    });
+  }
+
+  return scoped;
+}
+
+function buildNavigationScopeFromTerm(term) {
+  return {
+    rootId: term?.hierarchy?.root_id || null,
+    sceneId: term?.hierarchy?.display_scene || term?.hierarchy?.scene || null,
+    categoryId: term?.hierarchy?.display_category || term?.hierarchy?.category || null,
+  };
+}
+
+function buildNavigationScopeFromNode(node, { collapseToParent = false } = {}) {
+  if (!node) {
+    return { rootId: null, sceneId: null, categoryId: null };
+  }
+
+  if (node.type === "root") {
+    return {
+      rootId: node.rootId || null,
+      sceneId: null,
+      categoryId: null,
+    };
+  }
+
+  if (node.type === "scene") {
+    return {
+      rootId: node.rootId || null,
+      sceneId: collapseToParent ? null : node.sceneId || null,
+      categoryId: null,
+    };
+  }
+
+  if (node.type === "category") {
+    return {
+      rootId: node.rootId || null,
+      sceneId: node.sceneId || null,
+      categoryId: collapseToParent ? null : node.categoryId || null,
+    };
+  }
+
+  return {
+    rootId: node.rootId || null,
+    sceneId: node.sceneId || null,
+    categoryId: node.categoryId || null,
+  };
+}
+
+function sortListByNavigationContext(list, selectedTermId) {
+  if (!selectedTermId) return list;
+
+  const selected = [];
+  const rest = [];
+  for (const item of list) {
+    if (item.id === selectedTermId) selected.push(item);
+    else rest.push(item);
+  }
+  return [...selected, ...rest];
+}
+
+const toRootNodeId = (rootId) => `root:${rootId}`;
+const toSceneNodeId = (rootId, sceneId) => `scene:${rootId}:${sceneId}`;
+const toCategoryNodeId = (rootId, sceneId, categoryId) => `category:${rootId}:${sceneId}:${categoryId}`;
+
+function overlayTranslationSummary(item, overlayEntry, selectedLanguage) {
+  if (!overlayEntry || selectedLanguage === DEFAULT_TRANSLATION_LANGUAGE) {
+    return item;
+  }
+
+  const englishTranslation = (item.translation_summary || []).find(
+    (translation) => translation?.language === DEFAULT_TRANSLATION_LANGUAGE,
+  ) || null;
+
+  const nextTranslations = [overlayEntry];
+  if (englishTranslation) {
+    nextTranslations.push(englishTranslation);
+  }
+
+  return {
+    ...item,
+    translation_summary: nextTranslations,
+  };
+}
+
+function applyTranslationOverlayToItems(items, overlayPayload, selectedLanguage) {
+  if (!Array.isArray(items) || selectedLanguage === DEFAULT_TRANSLATION_LANGUAGE) return items;
+  const entryTranslations = overlayPayload?.entry_translations || {};
+  return items.map((item) => overlayTranslationSummary(item, entryTranslations[item.id], selectedLanguage));
+}
+
+function filterListBySelectedTreeNode(list, selectedTreeNode) {
+  if (!selectedTreeNode?.id || !selectedTreeNode?.type) return list;
+
+  if (selectedTreeNode.type === "scene") {
+    return list.filter((item) => {
+      const hierarchy = item?.hierarchy || {};
+      return (hierarchy.display_scene || hierarchy.scene) === selectedTreeNode.id;
+    });
+  }
+
+  if (selectedTreeNode.type === "category") {
+    return list.filter((item) => {
+      const hierarchy = item?.hierarchy || {};
+      return (hierarchy.display_category || hierarchy.category) === selectedTreeNode.id;
+    });
+  }
+
+  return list;
+}
+
 // ── 필터 함수 ────────────────────────────────────────────────────
-function applyFilters(list, filters) {
-  let result = list;
+function itemMatchesFilters(item, filters) {
   if (filters.bands.length > 0) {
-    result = result.filter((t) => {
-      const b = t.stats?.band ?? null;
-      return filters.bands.includes(b);
-    });
+    const band = item.stats?.band ?? null;
+    if (!filters.bands.includes(band)) return false;
   }
+
   if (filters.poses && filters.poses.length > 0) {
-    result = result.filter((t) => {
-      const p = t.pos || t.part_of_speech || "미분류";
-      // 선택된 품사 배열 중 하나라도 항목의 품사 문자열에 포함되면 통과
-      return filters.poses.some((posFilter) => p.includes(posFilter));
-    });
+    const pos = item.pos || item.part_of_speech || "미분류";
+    if (!filters.poses.some((posFilter) => pos.includes(posFilter))) return false;
   }
+
   if (filters.grades && filters.grades.length > 0) {
-    result = result.filter((t) => filters.grades.includes(t.word_grade || "없음"));
+    if (!filters.grades.includes(item.word_grade || "없음")) return false;
   }
+
   if (filters.query) {
-    const q = filters.query.toLowerCase();
-    result = result.filter((t) =>
-      t.word?.includes(filters.query) ||
-      t.def_ko?.includes(filters.query) ||
-      t.def_en?.toLowerCase().includes(q)
-    );
+    const queryLower = filters.query.toLowerCase();
+    const matched =
+      item.word?.includes(filters.query) ||
+      item.def_ko?.includes(filters.query) ||
+      item.def_en?.toLowerCase().includes(queryLower);
+    if (!matched) return false;
   }
-  return result;
+
+  return true;
+}
+
+function applyFilters(list, filters) {
+  return list.filter((item) => itemMatchesFilters(item, filters));
 }
 
 // ── 공통 컴포넌트: 드롭다운 필터 ──────────────────────────────────
@@ -410,22 +587,39 @@ function App() {
 
   const [searchIndex, setSearchIndex] = useState([]);
   const [facetPayload, setFacetPayload] = useState(null);
+  const [tabTreeShells, setTabTreeShells] = useState({
+    meaning: null,
+    situation: null,
+    unclassified: null,
+  });
+  const [tabPayloads, setTabPayloads] = useState({
+    meaning: [],
+    situation: [],
+    unclassified: [],
+  });
+  const [translationManifest, setTranslationManifest] = useState(null);
+  const [translationOverlays, setTranslationOverlays] = useState({});
 
   const [selectedTermId, setSelectedTermId] = useState(null);
   const [selectedTermDetail, setSelectedTermDetail] = useState(null);
   const [selectedTreeNode, setSelectedTreeNode] = useState(null);
+  const [navigationScope, setNavigationScope] = useState({
+    rootId: null,
+    sceneId: null,
+    categoryId: null,
+  });
   const [isLoadingChunk, setIsLoadingChunk] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
   const [tabLoadState, setTabLoadState] = useState({
-    meaning: "loading",
-    situation: "loading",
-    unclassified: "loading",
+    meaning: "shell-loading",
+    situation: "idle",
+    unclassified: "idle",
   });
 
   const [expandedIds, setExpandedIds] = useState(new Set());
   const [focusedRootId, setFocusedRootId] = useState(null);
   const [showEnglish, setShowEnglish] = useState(true);
-  const [translationLanguage, setTranslationLanguage] = useState("영어");
+  const [translationLanguage, setTranslationLanguage] = useState(DEFAULT_TRANSLATION_LANGUAGE);
   const initialLoadPerfRef = useRef(null);
   const initialLoadPerfFlushedRef = useRef(false);
   const runtimeInteractionPerfRef = useRef({
@@ -440,7 +634,7 @@ function App() {
 
   // 필터 상태
   const [filters, setFilters] = useState({ bands: [], poses: [], grades: [], query: "" });
-  const [showFilterPanel, setShowFilterPanel] = useState(true);
+  const [showFilterPanel, setShowFilterPanel] = useState(false);
 
   // 리사이저 상태
   const [detailWidth, setDetailWidth] = useState(45); // 초기 패널 너비(%)
@@ -517,30 +711,19 @@ function App() {
 
       try {
         setIsInitializing(true);
-        const [idx, facet] = await Promise.all([
-          loadUnifiedSearchIndex({
+        const meaningTreeShell = await loadTreeShellPayload("meaning", {
             trace: (metric) => perfSnapshot.payloads.push(metric),
-          }),
-          loadFacetPayload({
-            trace: (metric) => perfSnapshot.payloads.push(metric),
-          }),
-        ]);
+          });
         perfSnapshot.milestones.payloadsReadyMs = perfNow() - perfSnapshot.startedAtMs;
 
-        const searchIndexArr = Array.isArray(idx) ? idx : [];
-        perfSnapshot.rows.searchIndex = searchIndexArr.length;
-
-        const idxMapStartedAt = perfNow();
-        const idxMap = new Map();
-        searchIndexArr.forEach((t) => { if (t.id) idxMap.set(t.id, t); });
-        perfSnapshot.normalize.searchIndexMapMs = perfNow() - idxMapStartedAt;
-        perfSnapshot.rows.searchIndexMap = idxMap.size;
-        setSearchIndex(searchIndexArr);
-        setFacetPayload(facet);
+        setTabTreeShells((prev) => ({
+          ...prev,
+          meaning: meaningTreeShell,
+        }));
         setTabLoadState({
-          meaning: "ready",
-          situation: "ready",
-          unclassified: "ready",
+          meaning: meaningTreeShell ? "shell-ready" : "idle",
+          situation: "idle",
+          unclassified: "idle",
         });
         perfSnapshot.milestones.stateQueuedMs = perfNow() - perfSnapshot.startedAtMs;
       } catch (e) {
@@ -572,96 +755,255 @@ function App() {
       window.cancelAnimationFrame(raf1);
       window.cancelAnimationFrame(raf2);
     };
-  }, [isInitializing]);
-
-  const projectedTabLists = useMemo(() => {
-    const startedAt = perfNow();
-    // T1 runtime contract:
-    // derive learner-facing tab trees from APP_READY_SEARCH_INDEX instead of
-    // fetching the large tree trio payloads at runtime.
-    const projected = buildProjectedTabPayloads(
-      searchIndex,
-      (item) => normalizeItem(item, "mindmap_core"),
-    );
-
-    const totalMs = perfNow() - startedAt;
-    if (initialLoadPerfRef.current) {
-      initialLoadPerfRef.current.deferredTabs.meaning = {
-        normalizeMs: Number(totalMs.toFixed(1)),
-        readyMs: perfNow() - initialLoadPerfRef.current.startedAtMs,
-        rows: projected.meaning.length,
-      };
-      initialLoadPerfRef.current.deferredTabs.situation = {
-        normalizeMs: 0,
-        readyMs: perfNow() - initialLoadPerfRef.current.startedAtMs,
-        rows: projected.situation.length,
-      };
-      initialLoadPerfRef.current.deferredTabs.unclassified = {
-        normalizeMs: 0,
-        readyMs: perfNow() - initialLoadPerfRef.current.startedAtMs,
-        rows: projected.unclassified.length,
-      };
-    }
-    return projected;
-  }, [searchIndex]);
+  }, [isInitializing, tabTreeShells.meaning]);
 
   useEffect(() => {
-    const listForTab = activeTab === "meaning"
-      ? projectedTabLists.meaning
-      : activeTab === "situation"
-        ? projectedTabLists.situation
-        : projectedTabLists.unclassified;
+    if (!translationLanguage || translationLanguage === DEFAULT_TRANSLATION_LANGUAGE) return;
+    if (translationOverlays[translationLanguage] !== undefined) return;
 
-    if (focusedRootId || listForTab.length === 0) return;
+    let cancelled = false;
 
-    const defaultRoot = listForTab[0].hierarchy?.root_id;
-    if (defaultRoot) {
-      setFocusedRootId(defaultRoot);
-      setExpandedIds(new Set([defaultRoot]));
+    loadTranslationOverlay(translationLanguage)
+      .then((payload) => {
+        if (cancelled) return;
+        setTranslationOverlays((prev) => ({
+          ...prev,
+          [translationLanguage]: payload,
+        }));
+      })
+      .catch((error) => {
+        console.error(`${translationLanguage} translation overlay 로딩 실패`, error);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [translationLanguage, translationOverlays]);
+
+  useEffect(() => {
+    if (isInitializing) return undefined;
+
+    let cancelled = false;
+
+    const runBackgroundLoad = () => {
+      startTransition(() => {
+        loadFacetPayload({
+          trace: (metric) => initialLoadPerfRef.current?.payloads.push(metric),
+        })
+          .then((facet) => {
+            if (cancelled) return;
+            setFacetPayload(facet);
+          })
+          .catch((error) => {
+            console.error("facet payload 로딩 실패", error);
+          });
+
+        loadTranslationLanguageManifest({
+          trace: (metric) => initialLoadPerfRef.current?.payloads.push(metric),
+        })
+          .then((translationLanguageData) => {
+            if (cancelled) return;
+            setTranslationManifest(translationLanguageData);
+          })
+          .catch((error) => {
+            console.error("translation language manifest 로딩 실패", error);
+          });
+
+        loadUnifiedSearchIndex()
+          .then((idx) => {
+            if (cancelled) return;
+            const searchIndexArr = Array.isArray(idx) ? idx : [];
+            setSearchIndex(searchIndexArr);
+          })
+          .catch((error) => {
+            console.error("검색 인덱스 로딩 실패", error);
+          });
+
+        ["meaning", "situation", "unclassified"].forEach((tabId) => {
+          setTabLoadState((prev) =>
+            prev[tabId] === "idle" || prev[tabId] === "shell-ready"
+              ? { ...prev, [tabId]: "queued" }
+              : prev,
+          );
+
+          loadProjectedTabPayload(tabId)
+            .then((payload) => {
+              if (cancelled) return;
+              const normalizedPayload = normalizePayloadItems(Array.isArray(payload) ? payload : []);
+              setTabPayloads((prev) => ({
+                ...prev,
+                [tabId]: normalizedPayload,
+              }));
+              setTabLoadState((prev) => ({ ...prev, [tabId]: "ready" }));
+              if (initialLoadPerfRef.current) {
+                initialLoadPerfRef.current.deferredTabs[tabId] = {
+                  normalizeMs: 0,
+                  readyMs: perfNow() - initialLoadPerfRef.current.startedAtMs,
+                  rows: normalizedPayload.length,
+                };
+              }
+            })
+            .catch((error) => {
+              console.error(`${tabId} payload 로딩 실패`, error);
+              setTabLoadState((prev) => ({
+                ...prev,
+                [tabId]: tabId === "meaning" && tabTreeShells.meaning ? "shell-ready" : "idle",
+              }));
+            });
+        });
+      });
+    };
+
+    if (typeof window !== "undefined" && typeof window.requestIdleCallback === "function") {
+      const idleId = window.requestIdleCallback(runBackgroundLoad, { timeout: 1200 });
+      return () => {
+        cancelled = true;
+        window.cancelIdleCallback(idleId);
+      };
     }
-  }, [activeTab, focusedRootId, projectedTabLists]);
+
+    const timerId = window.setTimeout(runBackgroundLoad, 300);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timerId);
+    };
+  }, [isInitializing]);
+
+  useEffect(() => {
+    if (tabPayloads[activeTab]?.length > 0) return;
+    if (activeTab === "meaning" && tabLoadState[activeTab] === "shell-ready") return;
+    if (tabLoadState[activeTab] === "loading" || tabLoadState[activeTab] === "queued") return;
+
+    let cancelled = false;
+    setTabLoadState((prev) => ({ ...prev, [activeTab]: "loading" }));
+
+    loadProjectedTabPayload(activeTab)
+      .then((payload) => {
+        if (cancelled) return;
+        setTabPayloads((prev) => ({
+          ...prev,
+          [activeTab]: normalizePayloadItems(Array.isArray(payload) ? payload : []),
+        }));
+        setTabLoadState((prev) => ({ ...prev, [activeTab]: "ready" }));
+      })
+      .catch((error) => {
+        console.error(`${activeTab} payload 로딩 실패`, error);
+        setTabLoadState((prev) => ({
+          ...prev,
+          [activeTab]: activeTab === "meaning" && tabTreeShells.meaning ? "shell-ready" : "idle",
+        }));
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [activeTab, tabLoadState, tabPayloads, tabTreeShells.meaning]);
+
+  useEffect(() => {
+    const listForTab = tabPayloads[activeTab] || [];
+    const shellForTab = tabTreeShells[activeTab] || null;
+
+    if (focusedRootId) return;
+
+    if (listForTab.length > 0) {
+      const defaultRoot = listForTab[0].hierarchy?.root_id;
+      if (!defaultRoot) return;
+      setFocusedRootId(defaultRoot);
+      setNavigationScope((prev) => ({
+        ...prev,
+        rootId: defaultRoot,
+        sceneId: null,
+        categoryId: null,
+      }));
+      setExpandedIds(new Set([toRootNodeId(defaultRoot)]));
+      return;
+    }
+
+    const shellRoot = shellForTab ? Object.values(shellForTab)[0] : null;
+    const defaultRoot = shellRoot?.rootId || null;
+    if (!defaultRoot) return;
+    setFocusedRootId(defaultRoot);
+    setNavigationScope((prev) => ({
+      ...prev,
+      rootId: defaultRoot,
+      sceneId: null,
+      categoryId: null,
+    }));
+    setExpandedIds(new Set([toRootNodeId(defaultRoot)]));
+  }, [activeTab, focusedRootId, tabPayloads, tabTreeShells]);
 
   // ── 현재 축 데이터 ──────────────────────────────────────────────
   const activeList = useMemo(() => {
-    if (activeTab === "meaning") return projectedTabLists.meaning;
-    if (activeTab === "situation") return projectedTabLists.situation;
-    return projectedTabLists.unclassified;
-  }, [activeTab, projectedTabLists]);
+    return tabPayloads[activeTab] || [];
+  }, [activeTab, tabPayloads]);
 
-  const filteredList = useMemo(() => applyFilters(activeList, filters), [activeList, filters]);
-  const filteredSearchIndex = useMemo(() => applyFilters(searchIndex, filters), [searchIndex, filters]);
-  const filterBaseList = activeList.length > 0 ? activeList : searchIndex;
+  const activeTranslationOverlay = translationOverlays[translationLanguage] || null;
+  const localizedSearchIndex = useMemo(
+    () => applyTranslationOverlayToItems(searchIndex, activeTranslationOverlay, translationLanguage),
+    [activeTranslationOverlay, searchIndex, translationLanguage],
+  );
+  const localizedActiveList = useMemo(
+    () => applyTranslationOverlayToItems(activeList, activeTranslationOverlay, translationLanguage),
+    [activeList, activeTranslationOverlay, translationLanguage],
+  );
+
+  const filteredByFilters = useMemo(() => {
+    return applyFilters(localizedActiveList, filters);
+  }, [filters, localizedActiveList]);
+
+  const treeScopedList = useMemo(() => {
+    return filterListByNavigationScope(filteredByFilters, {
+      ...navigationScope,
+      categoryId: null,
+    });
+  }, [filteredByFilters, navigationScope]);
+
+  const filteredList = useMemo(() => {
+    return sortListByNavigationContext(
+      filterListByNavigationScope(filteredByFilters, navigationScope),
+      selectedTermId,
+    );
+  }, [filteredByFilters, navigationScope, selectedTermId]);
+  const filteredSearchIndex = useMemo(() => applyFilters(localizedSearchIndex, filters), [localizedSearchIndex, filters]);
+  const filterBaseList = localizedActiveList.length > 0 ? localizedActiveList : localizedSearchIndex;
   const filterVisibleList = activeList.length > 0 ? filteredList : filteredSearchIndex;
   const searchIndexById = useMemo(() => {
     const map = new Map();
-    searchIndex.forEach((item) => {
+    localizedSearchIndex.forEach((item) => {
       if (item?.id !== null && item?.id !== undefined) {
         map.set(String(item.id), item);
       }
     });
     return map;
-  }, [searchIndex]);
+  }, [localizedSearchIndex]);
   const searchIndexByWord = useMemo(() => {
     const map = new Map();
-    searchIndex.forEach((item) => {
+    localizedSearchIndex.forEach((item) => {
       if (item?.word && !map.has(item.word)) {
         map.set(item.word, item);
       }
     });
     return map;
-  }, [searchIndex]);
+  }, [localizedSearchIndex]);
   const searchWordSet = useMemo(
-    () => new Set(searchIndex.map((item) => item?.word).filter(Boolean)),
-    [searchIndex],
+    () => new Set(localizedSearchIndex.map((item) => item?.word).filter(Boolean)),
+    [localizedSearchIndex],
   );
 
   const activeSurface = "mindmap_core";
+  const hasActiveFullPayload = tabLoadState[activeTab] === "ready";
   const activeTree = useMemo(() => {
-    if (viewMode !== "mindmap") return {};
-    return buildTreeFromList(filteredList, activeSurface, activeTab);
-  }, [viewMode, filteredList, activeSurface, activeTab]);
-  const isActiveTabLoading = tabLoadState[activeTab] === "loading" || tabLoadState[activeTab] === "queued";
+    if (!hasActiveFullPayload) {
+      return tabTreeShells[activeTab] || {};
+    }
+    return buildTreeFromList(treeScopedList, activeSurface, activeTab);
+  }, [hasActiveFullPayload, tabTreeShells, activeTab, treeScopedList, activeSurface]);
+  const isActiveTabLoading =
+    tabLoadState[activeTab] === "loading" ||
+    tabLoadState[activeTab] === "queued" ||
+    (viewMode === "list" && !hasActiveFullPayload);
   const isActiveTabReady = tabLoadState[activeTab] === "ready";
+  const deferredFilteredList = useDeferredValue(filteredList);
 
   // ── 단어 선택 ───────────────────────────────────────────────────
   const handleSelectTerm = useCallback(async (term) => {
@@ -675,23 +1017,34 @@ function App() {
     setSelectedTermDetail((prev) => (prev?.id === term.id ? prev : term));
 
     // ── 사이드바 & 마인드맵 루트 상시 동기화: 선택 단어의 소속 노드를 강제 활성화 ──
-    const rootId  = term.hierarchy?.root_id;
-    const sceneId = term.hierarchy?.scene;
-    const catId   = term.hierarchy?.category;
+    const rootId = term.hierarchy?.root_id;
+    const sceneId = term.hierarchy?.display_scene || term.hierarchy?.scene;
+    const catId = term.hierarchy?.display_category || term.hierarchy?.category;
     
     if (rootId) {
       setFocusedRootId(rootId);
+    }
+    setNavigationScope(buildNavigationScopeFromTerm(term));
+    if (rootId && sceneId && catId) {
+      setSelectedTreeNode({
+        id: toCategoryNodeId(rootId, sceneId, catId),
+        type: "category",
+      });
+    } else {
+      setSelectedTreeNode(null);
     }
 
     setExpandedIds((prev) => {
       let changed = false;
       const next = new Set(prev);
-      if (sceneId && !next.has(sceneId)) {
-        next.add(sceneId);
+      const sceneNodeId = sceneId ? toSceneNodeId(rootId, sceneId) : null;
+      const categoryNodeId = sceneId && catId ? toCategoryNodeId(rootId, sceneId, catId) : null;
+      if (sceneNodeId && !next.has(sceneNodeId)) {
+        next.add(sceneNodeId);
         changed = true;
       }
-      if (catId && !next.has(catId)) {
-        next.add(catId);
+      if (categoryNodeId && !next.has(categoryNodeId)) {
+        next.add(categoryNodeId);
         changed = true;
       }
       return changed ? next : prev;
@@ -788,6 +1141,7 @@ function App() {
     }
 
     const normalized = normalizeItem(target, "mindmap_core");
+    const keepsTargetVisible = itemMatchesFilters(normalized, filters);
 
     // 탭 전환 + focusedRootId 를 먼저 설정
     setActiveTab(targetTab);
@@ -798,10 +1152,15 @@ function App() {
     if (rid) {
       setFocusedRootId(rid);
       setExpandedIds((prev) => {
-        if (prev.has(rid)) return prev;
-        return new Set([...prev, rid]);
+        const rootNodeId = toRootNodeId(rid);
+        if (prev.has(rootNodeId)) return prev;
+        return new Set([...prev, rootNodeId]);
       });
     }
+    if (!keepsTargetVisible) {
+      setFilters({ bands: [], poses: [], grades: [], query: "" });
+    }
+    setNavigationScope(buildNavigationScopeFromTerm(normalized));
 
     // term 선택은 동기 경로로 호출 (chunk 로드 + detail 표시)
     handleSelectTerm(normalized);
@@ -810,7 +1169,7 @@ function App() {
     // (selectedTermId 변화 → treeData 탐색 → zoom)가 새 treeData 기준으로
     // 재실행되도록 pendingSearchTermRef를 통해 추적
     pendingSearchTermRef.current = normalized.id;
-  }, [handleSelectTerm]);
+  }, [filters, handleSelectTerm]);
 
   const resolveReferenceTarget = useCallback((ref) => {
     if (!ref) return null;
@@ -918,25 +1277,15 @@ function App() {
   const posOptions = (facetData["품사"]?.options || []).map((opt) => ({ value: opt.value, label: `${opt.value} (${opt.count})` }));
   const gradeOptions = (facetData["학습난이도"]?.options || []).map((opt) => ({ value: opt.value, label: `${opt.value} (${opt.count})` }));
   const translationLanguageOptions = useMemo(() => {
-    const counts = new Map();
-    searchIndex.forEach((item) => {
-      (item.translation_summary || []).forEach((t) => {
-        if (!t?.language) return;
-        counts.set(t.language, (counts.get(t.language) || 0) + 1);
-      });
-    });
-    if (!counts.has("영어")) counts.set("영어", 0);
-    return Array.from(counts.entries())
-      .sort((a, b) => {
-        if (a[0] === "영어") return -1;
-        if (b[0] === "영어") return 1;
-        return b[1] - a[1];
-      })
-      .map(([value, count]) => ({
-        value,
-        label: count > 0 ? `${value} (${count})` : `${value}`,
-      }));
-  }, [searchIndex]);
+    const languages = translationManifest?.languages || [];
+    return languages.map((entry) => ({
+      value: entry.language,
+      label:
+        entry.entry_count && entry.entry_count > 0
+          ? `${entry.language} (${entry.entry_count})`
+          : `${entry.language}`,
+    }));
+  }, [translationManifest]);
 
   // ── 연관 어휘 클릭 — 3대 축 횟단 점프 로직 ─────────────────────────────────
   // 자동 탭 전환 → 데이터 동기화 → 카테고리 Expand → Zoom-to-node
@@ -956,9 +1305,8 @@ function App() {
     handleSearchSelect(target);
   }, [searchIndexByWord, handleSearchSelect]);
 
-  const handleTreeNodeSelect = useCallback((node, source = "sidebar") => {
+  const handleTreeNodeSelect = useCallback((node, source = "sidebar", meta = {}) => {
     if (!node || node.type === "term") return;
-    setViewMode("mindmap");
     setSelectedTermId(null);
     setSelectedTermDetail(null);
     if (node.rootId) {
@@ -976,6 +1324,19 @@ function App() {
         }
         return next;
       });
+    }
+    const nextScope = buildNavigationScopeFromNode(node, meta);
+    setNavigationScope(nextScope);
+    if (meta?.collapseToParent && node.type === "category") {
+      setSelectedTreeNode({
+        id: `scene:${node.rootId}:${node.sceneId}`,
+        type: "scene",
+      });
+      return;
+    }
+    if (meta?.collapseToParent && node.type === "scene") {
+      setSelectedTreeNode(null);
+      return;
     }
     setSelectedTreeNode({ id: node.id, type: node.type });
   }, []);
@@ -1020,6 +1381,12 @@ function App() {
                   setActiveTab(tab.id);
                   setSelectedTermDetail(null);
                   setSelectedTermId(null);
+                  setSelectedTreeNode(null);
+                  setNavigationScope({
+                    rootId: null,
+                    sceneId: null,
+                    categoryId: null,
+                  });
                   setFocusedRootId(null);
                   if (tab.id === "unclassified") {
                     setViewMode("list");
@@ -1225,15 +1592,20 @@ function App() {
                 <MindmapCanvas
                   treeData={activeTree}
                   onSelectTerm={handleSelectTerm}
-                  onSelectTreeNode={(node) => handleTreeNodeSelect(node, "mindmap")}
+                  onSelectTreeNode={(node, meta) => handleTreeNodeSelect(node, "mindmap", meta)}
                   onCategoryExpandPerf={(entry) => recordRuntimeInteraction("categoryExpansions", entry)}
                   selectedTermId={selectedTermId}
                   focusedRootId={focusedRootId}
                   selectedTreeNode={selectedTreeNode}
+                  expandedCategoryId={
+                    navigationScope.rootId && navigationScope.sceneId && navigationScope.categoryId
+                      ? toCategoryNodeId(navigationScope.rootId, navigationScope.sceneId, navigationScope.categoryId)
+                      : null
+                  }
                 />
               ) : (
                 <ListView
-                  list={filteredList}
+                  list={deferredFilteredList}
                   selectedTermId={selectedTermId}
                   onSelectTerm={handleSelectTerm}
                   showEnglish={showEnglish}
@@ -1332,8 +1704,46 @@ const BAND_COLORS_INLINE = {
   4: { color: "#3fb950", bg: "rgba(63,185,80,0.12)",   label: "Low"       },
   5: { color: "#58a6ff", bg: "rgba(88,166,255,0.12)",  label: "Rare"      },
 };
+const LIST_VIRTUAL_ROW_HEIGHT = 146;
+const LIST_VIRTUAL_OVERSCAN = 6;
 
 function ListView({ list, selectedTermId, onSelectTerm, showEnglish, translationLanguage }) {
+  const scrollRef = useRef(null);
+  const [scrollTop, setScrollTop] = useState(0);
+  const [viewportHeight, setViewportHeight] = useState(0);
+
+  useEffect(() => {
+    const element = scrollRef.current;
+    if (!element) return undefined;
+
+    const syncSize = () => {
+      setViewportHeight(element.clientHeight);
+    };
+
+    syncSize();
+
+    if (typeof ResizeObserver === "undefined") return undefined;
+    const observer = new ResizeObserver(syncSize);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const element = scrollRef.current;
+    if (!element || !selectedTermId) return;
+
+    const selectedIndex = list.findIndex((term) => term.id === selectedTermId);
+    if (selectedIndex < 0) return;
+
+    const targetTop = selectedIndex * LIST_VIRTUAL_ROW_HEIGHT;
+    const targetBottom = targetTop + LIST_VIRTUAL_ROW_HEIGHT;
+    const viewportBottom = scrollTop + viewportHeight;
+
+    if (targetTop >= scrollTop && targetBottom <= viewportBottom) return;
+
+    element.scrollTop = Math.max(0, targetTop - Math.max(viewportHeight / 3, 0));
+  }, [list, scrollTop, selectedTermId, viewportHeight]);
+
   const getPrimaryTranslation = (term) => {
     const translations = term?.translation_summary || [];
     if (!translations.length) return null;
@@ -1341,10 +1751,38 @@ function ListView({ list, selectedTermId, onSelectTerm, showEnglish, translation
       translations.find((t) => t?.language === "영어") ||
       translations[0];
   };
+
+  const totalRows = list.length;
+  const visibleWindowCount = viewportHeight > 0
+    ? Math.ceil(viewportHeight / LIST_VIRTUAL_ROW_HEIGHT) + LIST_VIRTUAL_OVERSCAN * 2
+    : 24;
+  const startIndex = Math.max(0, Math.floor(scrollTop / LIST_VIRTUAL_ROW_HEIGHT) - LIST_VIRTUAL_OVERSCAN);
+  const endIndex = Math.min(totalRows, startIndex + visibleWindowCount);
+  const visibleItems = list.slice(startIndex, endIndex);
+  const paddingTop = startIndex * LIST_VIRTUAL_ROW_HEIGHT;
+  const paddingBottom = Math.max(0, (totalRows - endIndex) * LIST_VIRTUAL_ROW_HEIGHT);
+
   return (
-    <div className="list-shell" style={{ padding: 18, overflowY: "auto", height: "100%" }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        {list.map((term) => {
+    <div
+      ref={scrollRef}
+      data-testid="list-scroll-shell"
+      className="list-shell"
+      style={{ padding: 18, overflowY: "auto", height: "100%" }}
+      onScroll={(event) => setScrollTop(event.currentTarget.scrollTop)}
+    >
+      <div
+        data-testid="list-virtual-window"
+        data-rendered-count={visibleItems.length}
+        data-total-count={totalRows}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
+          paddingTop,
+          paddingBottom,
+        }}
+      >
+        {visibleItems.map((term) => {
           const primaryTranslation = getPrimaryTranslation(term);
           const band = term.stats?.band ?? null;
           const bandValid = band !== null && band >= 1 && band <= 5;
@@ -1366,6 +1804,8 @@ function ListView({ list, selectedTermId, onSelectTerm, showEnglish, translation
                 border: `1px solid ${isSelected ? "rgba(88,166,255,0.28)" : "rgba(255,255,255,0.06)"}`,
                 display: "flex", flexDirection: "column", gap: 10, transition: "all 0.12s",
                 boxShadow: isSelected ? "0 10px 24px rgba(0,0,0,0.18)" : "none",
+                contentVisibility: "auto",
+                containIntrinsicSize: "128px",
               }}
             >
               <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
@@ -1409,7 +1849,7 @@ function ListView({ list, selectedTermId, onSelectTerm, showEnglish, translation
             </div>
           );
         })}
-        {list.length === 0 && (
+        {totalRows === 0 && (
           <div style={{ padding: "28px 0" }}>
             <StatusPanel
               kicker="No Result"

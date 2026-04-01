@@ -11,4 +11,7 @@
 09_app/public/data/internal/runtime_payloads/
 !09_app/public/data/internal/runtime_payloads/.gitkeep
 
+09_app/test-results/
+09_app/playwright-report/
+
 tmp/

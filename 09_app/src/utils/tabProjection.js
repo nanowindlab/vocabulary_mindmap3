@@ -85,3 +85,52 @@ export function buildProjectedTabPayloads(items, transform = (item) => item) {
 
   return payloads;
 }
+
+export function buildTreeShellPayload(items = []) {
+  const tree = {};
+
+  for (const item of items) {
+    const hierarchy = item?.hierarchy || {};
+    const rootId = hierarchy.root_id;
+    const sceneId = hierarchy.display_scene || hierarchy.scene || "일반";
+    const categoryId = hierarchy.display_category || hierarchy.category || item?.pos || "기타";
+    const rootNodeId = `root:${rootId}`;
+    const sceneNodeId = `scene:${rootId}:${sceneId}`;
+    const categoryNodeId = `category:${rootId}:${sceneId}:${categoryId}`;
+
+    if (!rootId) continue;
+
+    tree[rootNodeId] ||= {
+      id: rootNodeId,
+      type: "root",
+      rootId,
+      label: hierarchy.display_root_label || hierarchy.root_label || rootId,
+      label_en: hierarchy.root_en || "",
+      children: {},
+    };
+
+    tree[rootNodeId].children[sceneNodeId] ||= {
+      id: sceneNodeId,
+      type: "scene",
+      rootId,
+      sceneId,
+      label: sceneId,
+      children: {},
+    };
+
+    tree[rootNodeId].children[sceneNodeId].children[categoryNodeId] ||= {
+      id: categoryNodeId,
+      type: "category",
+      rootId,
+      sceneId,
+      categoryId,
+      label: categoryId,
+      children: {},
+      termCount: 0,
+    };
+
+    tree[rootNodeId].children[sceneNodeId].children[categoryNodeId].termCount += 1;
+  }
+
+  return tree;
+}

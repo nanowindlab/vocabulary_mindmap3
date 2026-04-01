@@ -2,11 +2,11 @@
 
 ## Current Revision
 
-- `R5`
+- `R12`
 
 ## Last Updated
 
-- `2026-03-31 KST`
+- `2026-04-01 KST`
 
 ## Last Updated By
 
@@ -32,102 +32,86 @@
 - current runtime bundle source는 `Cloudflare R2` bucket `vocabulary-mindmap3-runtime`
 - current runtime restore gateway는 `https://mm3-runtime-gateway.nanowind.workers.dev`
 - current build command는 `MM3_RUNTIME_BUNDLE_BASE_URL=https://mm3-runtime-gateway.nanowind.workers.dev npm --prefix 09_app run build`
+- local search runtime path는 `APP_READY_SEARCH_THIN_INDEX.json` 우선, full live search payload fallback 기준이다
+- first-screen eager runtime path는 `APP_READY_MEANING_TREE_SHELL.json` 기준이다
+- deploy-target canonical restore path는 stable manifest -> hashed `remote_path` indirection 기준이다
+- shared workspace를 쓰지만 current handoff package는 `09_app-only` continuation 기준으로 닫는다
 
 ## What Changed This Turn
 
-- `dict_download_json` + `api_xml_live` 입력이 workspace에 복구됐다.
-- `build_kcenter_dataset.py seed`와 `merge`를 다시 실행했다.
-- `link_vm2_topik_stats.py`를 다시 실행했다.
-- `apply_subject_none_policy.py`를 다시 실행했다.
-- `09_app` canonical runtime payload를 다시 생성했다.
-- `09_app` full runtime bundle `220` files를 `Cloudflare R2`에 다시 업로드했다.
-- `09_app` actual app source / runtime restore flow를 현재 workspace 기준으로 복원했다.
-- public gateway `runtime-bundle-manifest.json` / `app-runtime.json` / selected payload를 spot-check했다.
-- selected core payload parity는 확인됐지만 `APP_READY_FACETS.json` stale mismatch가 확인됐다.
-- current `09_app` local change set의 commit/push boundary를 audited 했다.
-- `09_app/scripts/rebuild-canonical-facets.mjs`를 추가해 canonical/live facets를 current `53012` baseline 기준으로 재생성했다.
-- `npm --prefix 09_app run publish:r2-runtime`로 full runtime bundle `220` files를 다시 publish했다.
-- `MM3_RUNTIME_BUNDLE_BASE_URL=https://mm3-runtime-gateway.nanowind.workers.dev npm --prefix 09_app run build`가 `PASS`했다.
+- `T5` scope로 list virtualization을 도입했다.
+- list view는 전체 row 대신 bounded window만 렌더한다.
+- selected term이 viewport 밖에 있으면 list scroll이 해당 row 근처로 이동하도록 맞췄다.
+- virtualization regression을 Playwright에 추가했다.
+- performance optimization tasklist `P0`~`P5`를 모두 닫았다.
 
 ## Verified Evidence
 
-- local seed rebuild:
-  - `python3 vocab_dictionary/scripts/build_kcenter_dataset.py seed --json-dir vocab_dictionary/dict_download_json --output-dir vocab_dictionary/output/unified_live`
-- local merge rebuild:
-  - `python3 vocab_dictionary/scripts/build_kcenter_dataset.py merge --output-dir vocab_dictionary/output/unified_live --api-xml-dir vocab_dictionary/output/api_xml_live`
-- local topik linkage:
-  - `python3 vocab_dictionary/scripts/link_vm2_topik_stats.py`
-- subject-none policy:
-  - `python3 vocab_dictionary/scripts/apply_subject_none_policy.py`
-- runtime payload rebuild:
-  - `npm --prefix 09_app run rebuild:canonical-runtime`
-- runtime bundle verification:
-  - `npm --prefix 09_app run verify:live`
-- `R2` restore build verification:
-  - `MM3_RUNTIME_BUNDLE_BASE_URL=https://mm3-runtime-gateway.nanowind.workers.dev npm --prefix 09_app run build`
-- public manifest:
-  - `curl -sS https://mm3-runtime-gateway.nanowind.workers.dev/runtime-bundle-manifest.json`
-- public runtime metadata:
-  - `curl -sS https://mm3-runtime-gateway.nanowind.workers.dev/app-runtime.json`
-- public facets payload:
-  - `curl -sS https://mm3-runtime-gateway.nanowind.workers.dev/APP_READY_FACETS.json`
-- local selected payload hash/byte check:
-  - `shasum -a 256 09_app/dist/data/live/APP_READY_SEARCH_INDEX.json 09_app/dist/data/live/APP_READY_MEANING_TREE.json 09_app/dist/data/live/APP_READY_FACETS.json 09_app/dist/data/live/CHUNK_MANIFEST_V1.json`
-  - `shasum -a 256 09_app/dist/data/live/APP_READY_SITUATION_TREE.json 09_app/dist/data/live/APP_READY_UNCLASSIFIED_TREE.json`
-  - `wc -c 09_app/dist/data/live/APP_READY_SEARCH_INDEX.json 09_app/dist/data/live/APP_READY_MEANING_TREE.json 09_app/dist/data/live/APP_READY_FACETS.json 09_app/dist/data/live/CHUNK_MANIFEST_V1.json`
-- local change boundary audit:
-  - `git diff --summary`
-  - `git diff -- 09_app/package.json README.md`
-  - `git status --short 09_app README.md .codex-orchestration`
-- canonical/live facet rebuild:
-  - `node 09_app/scripts/rebuild-canonical-facets.mjs`
-- post-fix runtime validation:
-  - `node 09_app/scripts/validate-runtime-source-alignment.mjs`
-  - `node 09_app/scripts/audit-authoritative-promotion-readiness.mjs`
-- R2 republish:
-  - `npm --prefix 09_app run publish:r2-runtime`
-- remote restore build:
-  - `MM3_RUNTIME_BUNDLE_BASE_URL=https://mm3-runtime-gateway.nanowind.workers.dev npm --prefix 09_app run build`
+- local contract:
+  - `npm --prefix 09_app run test:contracts`
+- local build:
+  - `./node_modules/.bin/vite build`
+- Playwright regression:
+  - `npx playwright test tests/first-screen-shell.spec.js tests/mindmap-navigation.spec.js tests/list-virtualization.spec.js --reporter=line`
 
 ## Current Output Snapshot
 
-- rebuilt runtime rows:
-  - `search_rows`: `53012`
-  - `meaning_rows`: `44410`
-  - `situation_rows`: `6399`
-  - `unclassified_rows`: `8506`
-  - `facet_entry_count`: `53012`
-- runtime bundle count:
-  - `220 files`
-- current public manifest endpoint:
-  - `https://mm3-runtime-gateway.nanowind.workers.dev/runtime-bundle-manifest.json`
-- current public runtime metadata:
-  - `entryCount`: `53012`
-  - `payloadCount`: `220`
-- current public facets payload:
-  - `entry_count`: `53012`
-  - rebuilt baseline과 일치
-- current public manifest metadata:
-  - `generated_at`: `2026-03-31T12:05:19.921Z`
+- local runtime bundle verify:
+  - `fileCount=233`
+  - `PASS`
+- list virtualization snapshot:
+  - total rows: `44,410`
+  - rendered rows before scroll: `16`
+  - rendered rows after scroll: `16`
+  - first row id before: `9471`
+  - first row id after: `13983`
+- Playwright regression:
+  - `5 passed`
 
 ## Current Commit/Push Boundary
 
-- minimal `09_app` commit candidate:
-  - `09_app/package.json`
-- separate pending mode-only changes:
-  - `09_app/scripts/**` `22` files `100644 -> 100755`
-  - `09_app/vite.config.js` `100644 -> 100755`
-- current untracked candidate requiring explicit decision:
-  - `09_app/scripts/prune-dist-runtime-files.mjs`
-  - `09_app/scripts/rebuild-canonical-facets.mjs`
-- exclude from current `09_app` commit boundary:
-  - `README.md`
+- boundary A `09_app runtime/perf core`
+  - `09_app/scripts/package-live-payloads.mjs`
+  - `09_app/scripts/prepare-live-payloads.mjs`
+  - `09_app/scripts/publish-r2-runtime-bundle.mjs`
+  - `09_app/scripts/rebuild-canonical-runtime.mjs`
+  - `09_app/scripts/runtime-bundle-core.mjs`
+  - `09_app/scripts/runtime-search-recovery-core.mjs`
+  - `09_app/scripts/build-runtime-translation-overlays.mjs`
+  - `09_app/scripts/measure-search-thin-payload.mjs`
+  - `09_app/scripts/measure-first-screen-payload.mjs`
+  - `09_app/src/App.jsx`
+  - `09_app/src/data/loaderAdapter.js`
+  - `09_app/src/utils/tabProjection.js`
+  - `09_app/src/utils/translationPayloads.js`
+- boundary B `mindmap bugfix + regression tests`
+  - `09_app/src/components/MindmapCanvas.jsx`
+  - `09_app/playwright.config.mjs`
+  - `09_app/tests/**`
+  - `09_app/test-contracts/**`
+- boundary C `carry-forward app UI changes already in worktree`
+  - `09_app/src/components/SearchBox.jsx`
+  - `09_app/src/components/SidebarTree.jsx`
+- boundary D `control-plane docs`
   - `.codex-orchestration/**`
-  - non-active app lane files
-  - bulk untracked project dirs such as `03_PRD/`, `05_sources/`, `06_data/`, `07_runtime/`, `08_planning/`, `docs/`, `tmp_reports/`, `vocab_dictionary/`
-- push boundary:
-  - runtime acceptance gate는 cleared
-  - remaining decision은 git commit/push boundary 분리다
+- generated/no-commit
+  - `09_app/test-results/`
+
+## Shared Vs 09_App Scope
+
+- `shared-only`
+  - `SHARED_CURRENT_STATE_V1.md`
+  - `HANDOFF_MESSAGE_TO_NEW_PM_V1.md`
+  - deploy truth, parent coordination id, cross-app boundary only
+- `09_app-only`
+  - this packet
+  - `09_APP_ACTIVE_LOCAL_STATE_V1.md`
+  - `09_app/**`
+  - performance optimization tasklist / tranche packet / risk note
+- default no-go for this handoff
+  - `10_relation_app/**`
+  - `10_RELATION_APP_ACTIVE_LOCAL_STATE_V1.md`
+  - other workspace project surfaces under `03_PRD/`, `05_sources/`, `06_data/`, `07_runtime/`, `08_planning/`, `docs/`, `tmp_reports/`, `vocab_dictionary/`
 
 ## Ownership And Attribution
 
@@ -141,7 +125,11 @@
 
 ## Build And Regeneration Policy
 
+- local 개발/테스트 기본은 local build / local server 기준으로 진행한다.
 - daily app build는 `R2 restore`만으로 닫는다.
+- deploy-target build는 `R2 restore` 기준으로 닫는다.
+- base runtime payload translation은 `영어`만 기본 포함한다.
+- 비영어 translation은 언어별 overlay payload를 lazy load한다.
 - `vocab_dictionary/`는 exceptional regeneration / repair 때만 수동으로 사용한다.
 - `R2` regeneration은 app daily build와 분리된 별도 manual process다.
 
@@ -151,25 +139,38 @@
 
 ## Next Unlock Condition
 
-- `09_app/package.json` content change와 mode-only / untracked change를 분리해 actual commit candidate를 고정
+- performance optimization package closeout과 commit grouping 결정을 고정
 
 ## Immediate Next Action
 
-1. `09_app/package.json` content change를 mode-only / untracked change와 분리해 commit boundary를 고정한다.
-2. `09_app/scripts/rebuild-canonical-facets.mjs`를 lane-local repair script로 유지할지 결정한다.
-3. `10_relation_app` reopen lane은 현 시점에서는 열지 않고, cross-app shared 영향이 생길 때만 shared surface에서 재개한다.
+1. `09_app` continuation은 아래 4개 문서를 먼저 읽고 commit boundary A/B/C/D 중 어떤 단위로 commit할지 결정한다.
+2. shared boundary 이슈가 없는 한 `10_relation_app`과 other workspace project surface는 읽지 않는다.
+3. performance optimization package는 closeout 상태로 취급한다.
+4. 필요하면 runtime/perf core와 bugfix/tests를 분리 commit 한다.
 
 ## Read Tier
 
 - `Tier 1`
   - `/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/SHARED_CURRENT_STATE_V1.md`
-- `Tier 2`
   - `/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/09_APP_ACTIVE_LOCAL_STATE_V1.md`
+- `Tier 2`
+  - this packet
+  - `/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/reports/20260401_MM3_09_APP_PERFORMANCE_OPTIMIZATION_TASKLIST_V1.md`
+  - `/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/reports/20260401_MM3_09_APP_PERFORMANCE_TRANCHE5_EXECUTION_PACKET_V1.md`
+  - `/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/reports/20260401_MM3_09_APP_PERFORMANCE_RISK_AND_ROLLBACK_NOTE_V1.md`
 - `Tier 3`
   - `/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/reports/20260331_DOC_SYSTEM_COMMON_APP_SPLIT_PLAN_V1.md`
+  - `/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/10_RELATION_APP_ACTIVE_LOCAL_STATE_V1.md` only when boundary verification이 필요할 때
 
 ## Revision History
 
+- `R12` / `2026-04-01 KST` / `MM_09_APP_PM` / `T5` list virtualization closeout, optimization package complete, next active package를 `git boundary cleanup`으로 갱신
+- `R11` / `2026-04-01 KST` / `MM_09_APP_PM` / `T4` hashed manifest contract closeout, public manifest `v2`, next unlock을 `P5` 기준으로 갱신
+- `R10` / `2026-04-01 KST` / `MM_09_APP_PM` / `T3` first-screen shell closeout, `R2` republish+remote build pass, current commit boundary 재정리
+- `R9` / `2026-04-01 KST` / `MM_09_APP_PM` / `T2` thin search payload closeout, local/public runtime truth 분리, next unlock을 `P3` 기준으로 갱신
+- `R8` / `2026-04-01 KST` / `MM_09_APP_PM` / shared-only vs 09_app-only scope distinction, handoff read priority, default no-go workspace scope 반영
+- `R7` / `2026-04-01 KST` / `MM_09_APP_PM` / performance optimization tasklist / tranche packet / risk note 포인터와 next action 반영
+- `R6` / `2026-04-01 KST` / `MM_09_APP_PM` / 영어 기본 + 언어별 lazy translation overlay 구조와 payload split 반영
 - `R5` / `2026-03-31 KST` / `MM_09_APP_PM` / canonical/live facets rebuild, R2 full republish, remote restore build pass로 runtime parity blocker 해제
 - `R4` / `2026-03-31 KST` / `MM_09_APP_PM` / concrete updater label 정규화와 `09_app` lane git boundary 규칙 추가
 - `R3` / `2026-03-31 KST` / `Codex PM` / cross-lane advisory status와 shared doc-only push 분리 규칙 추가

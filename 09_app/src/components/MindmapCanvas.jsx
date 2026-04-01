@@ -135,21 +135,39 @@ function flattenTree(treeData, focusedRootId, expandedCategoryId, selectedTermId
   const links = [];
 
   let roots = focusedRootId
-    ? Object.values(treeData).filter((r) => r.id === focusedRootId)
+    ? Object.values(treeData).filter((r) => r.id === focusedRootId || r.rootId === focusedRootId)
     : Object.values(treeData);
   if (roots.length === 0) {
     roots = Object.values(treeData);
   }
 
   roots.forEach((root) => {
-    nodes.push({ id: root.id, label: root.label, type: "root", data: null });
+    const rawRootId = root.rootId || root.id;
+    nodes.push({ id: root.id, rootId: rawRootId, label: root.label, type: "root", data: null });
 
     Object.values(root.children || {}).forEach((scene) => {
-      nodes.push({ id: scene.id, rootId: root.id, label: scene.label, type: "scene", data: null });
+      const rawSceneId = scene.sceneId || scene.id;
+      nodes.push({
+        id: scene.id,
+        rootId: rawRootId,
+        sceneId: rawSceneId,
+        label: scene.label,
+        type: "scene",
+        data: null,
+      });
       links.push({ source: root.id, target: scene.id });
 
       Object.values(scene.children || {}).forEach((cat) => {
-        nodes.push({ id: cat.id, rootId: root.id, label: cat.label, type: "category", data: null, sceneId: scene.id });
+        const rawCategoryId = cat.categoryId || cat.id;
+        nodes.push({
+          id: cat.id,
+          rootId: rawRootId,
+          sceneId: rawSceneId,
+          categoryId: rawCategoryId,
+          label: cat.label,
+          type: "category",
+          data: null,
+        });
         links.push({ source: scene.id, target: cat.id });
 
         // 배타적 단계별 렌더링: expandedCategoryId와 일치하는 중분류만 단어 노출
@@ -264,6 +282,7 @@ export const MindmapCanvas = ({
   selectedTermId,
   focusedRootId,
   selectedTreeNode,
+  expandedCategoryId,
 }) => {
   const svgRef = useRef(null);
   const simulationRef = useRef(null);
@@ -272,9 +291,6 @@ export const MindmapCanvas = ({
   const nodeSelRef = useRef(null);
   const selectedTermIdRef = useRef(selectedTermId);
   const [tooltip, setTooltip] = useState(null);
-
-  // 현재 확장된(클릭된) 카테고리
-  const [expandedCategoryId, setExpandedCategoryId] = useState(null);
 
   // draw() 내부의 centerOnNode를 외부에서 호출하기 위한 ref
   const centerOnNodeRef = useRef(null);
@@ -290,8 +306,21 @@ export const MindmapCanvas = ({
     const svgEl = svgRef.current;
     if (!svgEl) return;
 
+    const svg = d3.select(svgEl);
+    svg.selectAll("*").remove();
+    svg.on(".zoom", null);
+    svg.on("click", null);
+
     const { nodes: rawNodes, links: rawLinks } = flattenTree(treeData, focusedRootId, expandedCategoryId, selectedTermIdRef.current);
-    if (rawNodes.length === 0) return;
+    if (rawNodes.length === 0) {
+      simulationRef.current?.stop();
+      nodeSelRef.current = null;
+      zoomGroupRef.current = null;
+      zoomBehaviorRef.current = null;
+      centerOnNodeRef.current = null;
+      nodePositionsRef.current = new Map();
+      return;
+    }
 
     const width = svgEl.clientWidth || 900;
     const height = svgEl.clientHeight || 700;
@@ -325,9 +354,6 @@ export const MindmapCanvas = ({
         }
       }
     });
-
-    const svg = d3.select(svgEl);
-    svg.selectAll("*").remove();
 
     const g = svg.append("g");
     zoomGroupRef.current = g;
@@ -413,19 +439,9 @@ export const MindmapCanvas = ({
           onSelectTreeNode(n);
           centerOnNode(n.x, n.y, 1.05);
         } else if (n.type === "category") {
-          const hasActiveTermSelection = Boolean(selectedTermIdRef.current);
-          if (hasActiveTermSelection) {
-            pendingCategoryPerfRef.current = null;
-            setExpandedCategoryId(n.id);
-            if (onSelectTreeNode) onSelectTreeNode(n);
-            centerOnNode(n.x, n.y, 1.1);
-            return;
-          }
-
-          // Category 배타적 전개 토글
           if (expandedCategoryId === n.id) {
             pendingCategoryPerfRef.current = null;
-            setExpandedCategoryId(null); // Collapse
+            if (onSelectTreeNode) onSelectTreeNode(n, { collapseToParent: true });
           } else {
             pendingCategoryPerfRef.current = {
               categoryId: n.id,
@@ -434,7 +450,6 @@ export const MindmapCanvas = ({
                   ? performance.now()
                   : Date.now(),
             };
-            setExpandedCategoryId(n.id); // Expand
             if (onSelectTreeNode) onSelectTreeNode(n);
             centerOnNode(n.x, n.y, 1.1);
           }
@@ -569,7 +584,10 @@ export const MindmapCanvas = ({
     // 배경 클릭 시 Collapse
     svg.on("click", () => {
       setTooltip(null);
-      setExpandedCategoryId(null);
+      if (expandedCategoryId && onSelectTreeNode) {
+        const categoryNode = nodes.find((node) => node.id === expandedCategoryId);
+        if (categoryNode) onSelectTreeNode(categoryNode, { collapseToParent: true });
+      }
     });
 
     simulation.on("end", () => {
@@ -607,7 +625,7 @@ export const MindmapCanvas = ({
     });
 
     applySelectionStyles(nodeSel, selectedTermIdRef.current);
-  }, [treeData, focusedRootId, expandedCategoryId, onCategoryExpandPerf, onSelectTerm]);
+  }, [expandedCategoryId, focusedRootId, onCategoryExpandPerf, onSelectTerm, onSelectTreeNode, selectedTreeNode, treeData]);
 
   useEffect(() => {
     draw();
@@ -638,30 +656,18 @@ export const MindmapCanvas = ({
     }
 
     // treeData에서 해당 단어의 카테고리를 탐색
-    let foundCatId = null;
+    let foundCategoryNode = null;
     outer: for (const root of Object.values(treeData)) {
       for (const scene of Object.values(root.children || {})) {
         for (const cat of Object.values(scene.children || {})) {
           const found = Object.values(cat.children || {}).some(
             (t) => t.id === selectedTermId || t.data?.id === selectedTermId
           );
-          if (found) { foundCatId = cat.id; break outer; }
+          if (found) { foundCategoryNode = cat; break outer; }
         }
       }
     }
-    if (!foundCatId) return;
-
-    // 필요하면 카테고리 자동 확장 (draw 재실행 → 단어 노드 생성)
-    if (expandedCategoryId !== foundCatId) {
-      setExpandedCategoryId(foundCatId);
-    } else {
-      const hasVisibleSelectedNode = nodeSelRef.current?.data()?.some(
-        (node) => node.id === selectedTermId || node.data?.id === selectedTermId,
-      );
-      if (!hasVisibleSelectedNode) {
-        draw();
-      }
-    }
+    if (!foundCategoryNode) return;
 
     // draw 완료 + 시뮬레이션 안정화 후 줌 (1.0s 대기)
     pendingZoomTermRef.current = selectedTermId;
@@ -674,20 +680,10 @@ export const MindmapCanvas = ({
       pendingZoomTermRef.current = null;
     }, 1000);
     return () => clearTimeout(t);
-  // expandedCategoryId를 의존성에 넣지 않음 → setExpandedCategoryId가 effect를 재실행시키지 않도록
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTermId, treeData]);
 
   useEffect(() => {
     if (!selectedTreeNode?.id) return;
-
-    if (selectedTreeNode.type === "category") {
-      if (expandedCategoryId !== selectedTreeNode.id) {
-        setExpandedCategoryId(selectedTreeNode.id);
-      }
-    } else if (selectedTreeNode.type === "scene" && expandedCategoryId) {
-      setExpandedCategoryId(null);
-    }
 
     pendingFocusNodeRef.current = selectedTreeNode.id;
     const t = setTimeout(() => {
@@ -709,7 +705,6 @@ export const MindmapCanvas = ({
   const handleReset = () => {
     const svgEl = svgRef.current;
     if (!svgEl) return;
-    setExpandedCategoryId(null); // 시점 리셋 시 트리도 접기
     d3.select(svgEl).transition().duration(400).call(
       d3.zoom().transform,
       d3.zoomIdentity.translate(svgEl.clientWidth / 2, svgEl.clientHeight / 2).scale(0.5)

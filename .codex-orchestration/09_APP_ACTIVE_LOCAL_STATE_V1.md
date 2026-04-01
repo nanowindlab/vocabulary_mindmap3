@@ -2,11 +2,11 @@
 
 ## Current Revision
 
-- `R6`
+- `R14`
 
 ## Last Updated
 
-- `2026-03-31 KST`
+- `2026-04-01 KST`
 
 ## Last Updated By
 
@@ -80,6 +80,16 @@
 
 - app-local verify:
   - `MM3_RUNTIME_BUNDLE_BASE_URL=https://mm3-runtime-gateway.nanowind.workers.dev npm --prefix 09_app run build`
+- local compile smoke:
+  - `cd 09_app && ./node_modules/.bin/vite build`
+- local search payload measure:
+  - `node 09_app/scripts/measure-search-thin-payload.mjs`
+- first-screen payload measure:
+  - `node 09_app/scripts/measure-first-screen-payload.mjs`
+- Playwright regression:
+  - `npx playwright test tests/first-screen-shell.spec.js tests/mindmap-navigation.spec.js --reporter=line`
+- list virtualization regression:
+  - `npx playwright test tests/list-virtualization.spec.js --reporter=line`
 - special manual regeneration only:
   - `npm --prefix 09_app run repair:facets`
   - `npm --prefix 09_app run publish:r2-runtime`
@@ -100,15 +110,60 @@
 - runtime bundle full set은 `Cloudflare R2`에서 restore한다
 - current deploy/runtime chain은 `GitHub -> Vercel -> 09_app build -> R2 restore`
 - current active local concern은 `09_app` runtime/deploy verification and maintenance lane이다
+- current active package는 `09_app git boundary cleanup`과 commit grouping decision이다
 - daily app build는 `R2 restore`만으로 닫는다.
+- local 개발/테스트 기본은 local build / local server 기준으로 진행한다.
+- `Vercel` 배포 기준 build는 `R2 restore` 기준으로 닫는다.
+- base runtime payload의 번역은 `영어`만 기본 포함한다.
+- 비영어 번역은 언어별 overlay payload를 lazy load한다.
+- local search runtime path는 `APP_READY_SEARCH_THIN_INDEX.json` 우선, full live search payload fallback 기준이다.
+- first-screen eager runtime path는 `APP_READY_MEANING_TREE_SHELL.json` 기준이다.
+- deploy-target canonical restore path는 stable manifest -> hashed `remote_path` indirection 기준이다.
+- performance optimization control-plane docs:
+  - tasklist: `/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/reports/20260401_MM3_09_APP_PERFORMANCE_OPTIMIZATION_TASKLIST_V1.md`
+  - tranche packet: `/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/reports/20260401_MM3_09_APP_PERFORMANCE_TRANCHE4_EXECUTION_PACKET_V1.md`
+  - risk note: `/Users/nanowind/Library/CloudStorage/SynologyDrive-Work/Project/AI/antigravity/vocabulary_mindmap3/.codex-orchestration/reports/20260401_MM3_09_APP_PERFORMANCE_RISK_AND_ROLLBACK_NOTE_V1.md`
 - `vocab_dictionary/`는 exceptional repair / regeneration 때만 수동으로 사용한다.
-- public gateway parity는 restored 상태다.
-  - `APP_READY_FACETS.json` `entry_count=53012`
+- local live runtime bundle verify는 `PASS` 상태다.
+  - `fileCount=233`
+- public gateway `R2` runtime bundle은 `T2 + T3 + T4`까지 반영된 상태다.
+  - performance optimization runtime payload contract는 complete 상태다.
+  - manifest `version=v2`
+  - manifest `generated_at=2026-04-01T01:03:51.183Z`
   - remote restore build `PASS`
-- remaining open item은 runtime parity가 아니라 `09_app` git boundary cleanup이다.
+- remaining open items are:
+  - `09_app` git boundary cleanup
+
+## Handoff Priority
+
+- `Tier 1 09_app authoritative`
+  - this document
+  - `20260331_MM3_09_APP_HANDOFF_PACKET_V1.md`
+- `Tier 2 09_app optimization active docs`
+  - `20260401_MM3_09_APP_PERFORMANCE_OPTIMIZATION_TASKLIST_V1.md`
+  - `20260401_MM3_09_APP_PERFORMANCE_TRANCHE5_EXECUTION_PACKET_V1.md`
+  - `20260401_MM3_09_APP_PERFORMANCE_RISK_AND_ROLLBACK_NOTE_V1.md`
+- `Tier 3 boundary reference only`
+  - `SHARED_CURRENT_STATE_V1.md`
+  - split baseline
+
+## Do Not Read Or Touch By Default During 09_App Handoff
+
+- `10_relation_app/**`
+- `10_RELATION_APP_ACTIVE_LOCAL_STATE_V1.md`
+- other workspace project surfaces under `03_PRD/`, `05_sources/`, `06_data/`, `07_runtime/`, `08_planning/`, `docs/`, `tmp_reports/`, `vocab_dictionary/`
+- shared docs other than `SHARED_CURRENT_STATE_V1.md` when no boundary issue exists
 
 ## Revision History
 
+- `R14` / `2026-04-01 KST` / `MM_09_APP_PM` / `P5` list virtualization closeout 후 next active package를 `git boundary cleanup`으로 전환
+- `R13` / `2026-04-01 KST` / `MM_09_APP_PM` / `P4` hashed remote path contract closeout, public manifest `v2`, next active package를 `P5` 기준으로 갱신
+- `R12` / `2026-04-01 KST` / `MM_09_APP_PM` / `P3` shell eager path closeout, `R2` republish+remote build pass, next active package를 `P4` 기준으로 갱신
+- `R11` / `2026-04-01 KST` / `MM_09_APP_PM` / `T2` thin search payload closeout, `P3` next tranche 준비, local/public runtime truth 분리 반영
+- `R10` / `2026-04-01 KST` / `MM_09_APP_PM` / current active package를 performance optimization next tranche 기준으로 갱신하고 09_app-only handoff priority / no-go scope 추가
+- `R9` / `2026-04-01 KST` / `MM_09_APP_PM` / performance optimization tasklist, tranche packet, risk note 포인터 추가
+- `R8` / `2026-04-01 KST` / `MM_09_APP_PM` / 영어 기본 + 언어별 lazy translation overlay 구조 반영
+- `R7` / `2026-04-01 KST` / `MM_09_APP_PM` / local 개발/테스트는 local build, 배포 기준 build는 `R2 restore` 원칙 추가
 - `R6` / `2026-03-31 KST` / `MM_09_APP_PM` / canonical/live facets rebuild, R2 republish, remote restore build pass 반영 후 runtime parity blocker 해제
 - `R5` / `2026-03-31 KST` / `MM_09_APP_PM` / `git` command를 자기 lane/project boundary로 제한하는 규칙과 concrete updater metadata note 추가
 - `R4` / `2026-03-31 KST` / `Codex PM` / non-owner read-only spot-check 범위와 `09_app` lane commit/push ownership 규칙 추가
