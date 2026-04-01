@@ -586,6 +586,7 @@ function App() {
   const [viewMode, setViewMode] = useState("mindmap");
 
   const [searchIndex, setSearchIndex] = useState([]);
+  const [searchIndexLoadState, setSearchIndexLoadState] = useState("idle");
   const [facetPayload, setFacetPayload] = useState(null);
   const [tabTreeShells, setTabTreeShells] = useState({
     meaning: null,
@@ -631,6 +632,7 @@ function App() {
   const lastDetailSelectionRef = useRef(null);
   const selectedTermDetailRef = useRef(null);
   const activeDetailRequestRef = useRef(0);
+  const searchIndexRequestRef = useRef(null);
 
   // 필터 상태
   const [filters, setFilters] = useState({ bands: [], poses: [], grades: [], query: "" });
@@ -657,6 +659,32 @@ function App() {
     };
     publishRuntimeInteractionPerfSnapshot(runtimeInteractionPerfRef.current);
   }, []);
+
+  const ensureSearchIndexLoaded = useCallback(() => {
+    if (searchIndexRequestRef.current) return searchIndexRequestRef.current;
+    if (searchIndexLoadState === "ready") return Promise.resolve(searchIndex);
+
+    setSearchIndexLoadState((prev) => (prev === "ready" ? prev : "loading"));
+
+    const request = loadUnifiedSearchIndex()
+      .then((idx) => {
+        const searchIndexArr = Array.isArray(idx) ? idx : [];
+        setSearchIndex(searchIndexArr);
+        setSearchIndexLoadState("ready");
+        return searchIndexArr;
+      })
+      .catch((error) => {
+        console.error("검색 인덱스 로딩 실패", error);
+        setSearchIndexLoadState("idle");
+        throw error;
+      })
+      .finally(() => {
+        searchIndexRequestRef.current = null;
+      });
+
+    searchIndexRequestRef.current = request;
+    return request;
+  }, [searchIndex, searchIndexLoadState]);
 
   useEffect(() => {
     selectedTermDetailRef.current = selectedTermDetail;
@@ -831,16 +859,6 @@ function App() {
 
     const runBackgroundLoad = () => {
       startTransition(() => {
-        loadUnifiedSearchIndex()
-          .then((idx) => {
-            if (cancelled) return;
-            const searchIndexArr = Array.isArray(idx) ? idx : [];
-            setSearchIndex(searchIndexArr);
-          })
-          .catch((error) => {
-            console.error("검색 인덱스 로딩 실패", error);
-          });
-
         ["meaning"].forEach((tabId) => {
           setTabLoadState((prev) =>
             prev[tabId] === "idle" || prev[tabId] === "shell-ready"
@@ -1037,6 +1055,7 @@ function App() {
     setSelectedTreeNode(null);
     setSelectedTermId((prev) => (prev === term.id ? prev : term.id));
     setSelectedTermDetail((prev) => (prev?.id === term.id ? prev : term));
+    ensureSearchIndexLoaded().catch(() => {});
 
     // ── 사이드바 & 마인드맵 루트 상시 동기화: 선택 단어의 소속 노드를 강제 활성화 ──
     const rootId = term.hierarchy?.root_id;
@@ -1146,7 +1165,7 @@ function App() {
         setIsLoadingChunk(false);
       }
     }
-  }, [recordRuntimeInteraction]);
+  }, [ensureSearchIndexLoaded, recordRuntimeInteraction]);
 
 
   // ── 검색 선택 ───────────────────────────────────────────────────
@@ -1479,6 +1498,8 @@ function App() {
           <SearchBox
             searchIndex={filteredSearchIndex}
             onSelect={handleSearchSelect}
+            onActivateSearch={ensureSearchIndexLoaded}
+            isSearchLoading={searchIndexLoadState === "loading"}
             showEnglish={showEnglish}
             translationLanguage={translationLanguage}
           />

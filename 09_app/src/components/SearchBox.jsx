@@ -164,6 +164,8 @@ const collectTopMatches = (searchIndex, rawQuery) => {
 export const SearchBox = ({
   searchIndex,
   onSelect,
+  onActivateSearch,
+  isSearchLoading = false,
   showEnglish,
   translationLanguage,
 }) => {
@@ -203,12 +205,13 @@ export const SearchBox = ({
       return;
     }
 
-    if (results.length > 0) {
+    if (results.length > 0 || isSearchLoading) {
       setIsOpen(true);
     }
-  }, [query, results]);
+  }, [isSearchLoading, query, results]);
 
   const handleSearch = (e) => {
+    onActivateSearch?.();
     setQuery(e.target.value);
   };
 
@@ -258,6 +261,7 @@ export const SearchBox = ({
             isComposingRef.current = false;
           }}
           onFocus={() => {
+            onActivateSearch?.();
             if (query.trim()) setIsOpen(true);
           }}
           style={{
@@ -279,7 +283,7 @@ export const SearchBox = ({
         />
       </div>
 
-      {isOpen && results.length > 0 && (
+      {isOpen && (results.length > 0 || (query.trim() && isSearchLoading)) && (
         <div
           className="search-dropdown-shell"
           style={{
@@ -318,6 +322,18 @@ export const SearchBox = ({
               </div>
             </div>
           </div>
+          {isSearchLoading && results.length === 0 && (
+            <div
+              style={{
+                padding: "14px",
+                color: "var(--text-secondary)",
+                fontSize: 12,
+                borderBottom: "1px solid rgba(255,255,255,0.05)",
+              }}
+            >
+              검색 인덱스를 불러오는 중입니다.
+            </div>
+          )}
           {results.map((res) => (
             (() => {
               const primaryTranslation = getPrimaryTranslation(res, translationLanguage);

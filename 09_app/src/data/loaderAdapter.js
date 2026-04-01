@@ -22,6 +22,8 @@ const richChunkDataCache = new Map();
 const richChunkPromiseCache = new Map();
 const examplesChunkDataCache = new Map();
 const examplesChunkPromiseCache = new Map();
+let unifiedSearchIndexPromise = null;
+let unifiedSearchIndexData = undefined;
 let facetPayloadPromise = null;
 let facetPayloadData = undefined;
 const projectedTabPayloadDataCache = new Map();
@@ -161,29 +163,49 @@ async function loadChunkPayload(kind, chunkId, trace = null) {
 }
 
 export async function loadUnifiedSearchIndex(options = {}) {
+  if (unifiedSearchIndexData !== undefined) {
+    return unifiedSearchIndexData;
+  }
+
+  if (unifiedSearchIndexPromise) {
+    return unifiedSearchIndexPromise;
+  }
+
+  unifiedSearchIndexPromise = (async () => {
   try {
-    return await loadJsonPayload(
+      const payload = await loadJsonPayload(
       `${LIVE_DIR}APP_READY_SEARCH_THIN_INDEX.json`,
       "Failed to load thin unified search index",
       options.trace,
       { payload: "searchThinIndex", source: "live" },
-    );
-  } catch (thinError) {
-    if (!thinError?.response) throw thinError;
-  }
+      );
+      unifiedSearchIndexData = payload;
+      return payload;
+    } catch (thinError) {
+      if (!thinError?.response) throw thinError;
+    }
 
-  try {
-    return await loadJsonPayload(
-      `${LIVE_DIR}APP_READY_SEARCH_INDEX.json`,
-      "Failed to load unified search index",
-      options.trace,
-      { payload: "searchIndex", source: "live" },
-    );
-  } catch (error) {
-    if (!error?.response) throw error;
-    console.warn("[LIVE] Unified search index not found, falling back to legacy V1");
-    return loadSearchIndex(options);
-  }
+    try {
+      const payload = await loadJsonPayload(
+        `${LIVE_DIR}APP_READY_SEARCH_INDEX.json`,
+        "Failed to load unified search index",
+        options.trace,
+        { payload: "searchIndex", source: "live" },
+      );
+      unifiedSearchIndexData = payload;
+      return payload;
+    } catch (error) {
+      if (!error?.response) throw error;
+      console.warn("[LIVE] Unified search index not found, falling back to legacy V1");
+      const payload = await loadSearchIndex(options);
+      unifiedSearchIndexData = payload;
+      return payload;
+    } finally {
+      unifiedSearchIndexPromise = null;
+    }
+  })();
+
+  return unifiedSearchIndexPromise;
 }
 
 export async function loadFacetPayload(options = {}) {
