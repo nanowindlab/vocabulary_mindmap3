@@ -937,7 +937,7 @@ function App() {
     return () => {
       cancelled = true;
     };
-  }, [activeTab, tabLoadState, tabPayloads, tabTreeShells.meaning]);
+  }, [activeTab, tabPayloads, tabTreeShells.meaning]);
 
   useEffect(() => {
     const listForTab = tabPayloads[activeTab] || [];
