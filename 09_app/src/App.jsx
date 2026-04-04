@@ -991,13 +991,6 @@ function App() {
     return applyFilters(localizedActiveList, filters);
   }, [filters, localizedActiveList]);
 
-  const treeScopedList = useMemo(() => {
-    return filterListByNavigationScope(filteredByFilters, {
-      ...navigationScope,
-      categoryId: null,
-    });
-  }, [filteredByFilters, navigationScope]);
-
   const filteredList = useMemo(() => {
     return sortListByNavigationContext(
       filterListByNavigationScope(filteredByFilters, navigationScope),
@@ -1032,12 +1025,16 @@ function App() {
 
   const activeSurface = "mindmap_core";
   const hasActiveFullPayload = tabLoadState[activeTab] === "ready";
+  const fullTreeList = useMemo(
+    () => filteredByFilters,
+    [filteredByFilters],
+  );
   const activeTree = useMemo(() => {
     if (!hasActiveFullPayload) {
       return tabTreeShells[activeTab] || {};
     }
-    return buildTreeFromList(treeScopedList, activeSurface, activeTab);
-  }, [hasActiveFullPayload, tabTreeShells, activeTab, treeScopedList, activeSurface]);
+    return buildTreeFromList(fullTreeList, activeSurface, activeTab);
+  }, [hasActiveFullPayload, tabTreeShells, activeTab, fullTreeList, activeSurface]);
   const isActiveTabLoading =
     tabLoadState[activeTab] === "loading" ||
     tabLoadState[activeTab] === "queued" ||
