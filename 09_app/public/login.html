@@ -37,7 +37,7 @@
       <div class="mark" aria-hidden="true">◎</div>
       <h1>어휘 마인드맵</h1>
       <p class="purpose">의미 범주와 주제·상황을 따라 한국어 어휘를 탐색하는 학습 도구입니다.</p>
-      <p class="privacy">Gmail 주소(@gmail.com)만 사용할 수 있습니다. 계정 정보는 로그인 확인과 계정 표시에만 사용하며 메일은 읽지 않습니다.</p>
+      <p class="privacy">Google 계정에 연결된 확인된 이메일 주소로 로그인할 수 있습니다. 계정 정보는 로그인 확인과 계정 표시에만 사용하며 메일은 읽지 않습니다.</p>
       <a id="login" href="/api/auth/start" aria-disabled="true"><span class="google-mark"><img src="https://developers.google.com/static/identity/images/g-logo.png" alt="" /></span>Google 계정으로 로그인</a>
       <nav class="links" aria-label="서비스 정보"><a href="/about.html">앱 소개</a><a href="/privacy.html">개인정보처리방침</a><a href="/terms.html">이용약관</a></nav>
       <p id="message" role="status" aria-live="polite"></p>
@@ -48,7 +48,6 @@
       const authResult = new URLSearchParams(location.search).get("auth");
       if (authResult === "cancelled") message.textContent = "로그인이 취소되었습니다.";
       if (authResult === "failed") message.textContent = "로그인을 완료하지 못했습니다. 다시 시도해 주세요.";
-      if (authResult === "forbidden") message.textContent = "이 계정에는 앱 접근 권한이 없습니다.";
       fetch("/api/auth/session", { credentials: "same-origin", cache: "no-store" })
         .then((response) => {
           if (!response.ok) throw new Error("session_unavailable");

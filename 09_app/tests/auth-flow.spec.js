@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 const signedIn = { configured: true, user: {
-  id: "google-account-123", email: "learner@gmail.com",
+  id: "google-account-123", email: "teacher@school.example",
 } };
 
 test("signed-out visitor is sent to the Google login page before the app loads", async ({ page }) => {
@@ -9,7 +9,7 @@ test("signed-out visitor is sent to the Google login page before the app loads",
   await page.goto("/");
   await expect(page).toHaveURL(/\/login\.html$/);
   await expect(page.getByRole("link", { name: "Google 계정으로 로그인" })).toBeVisible();
-  await expect(page.getByText(/Gmail 주소\(@gmail\.com\)만 사용할 수 있습니다/)).toBeVisible();
+  await expect(page.getByText(/Google 계정에 연결된 확인된 이메일 주소로 로그인할 수 있습니다/)).toBeVisible();
   await expect(page.getByRole("textbox", { name: "어휘 / 뜻 / 번역 검색" })).toHaveCount(0);
   await page.getByRole("link", { name: "앱 소개" }).click();
   await expect(page).toHaveURL(/\/about\.html$/);
@@ -29,7 +29,7 @@ test("signed-in visitor sees their account and can log out", async ({ page }) =>
     return route.fulfill({ json: { user: null } });
   });
   await page.goto("/");
-  await expect(page.getByText("learner@gmail.com", { exact: true })).toBeVisible();
+  await expect(page.getByText("teacher@school.example", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "로그아웃" }).click();
   await expect(page).toHaveURL(/\/login\.html$/);
   await expect(page.getByRole("link", { name: "Google 계정으로 로그인" })).toBeVisible();

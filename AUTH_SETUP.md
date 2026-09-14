@@ -1,8 +1,12 @@
 # Google 계정 로그인 설정
 
-[확정] 2026-09-14 사용자 선택: 이 앱 전용 Google Cloud 프로젝트 `Vocabulary Mindmap 3`(ID `vocabulary-mindmap3-nanowind`)를 사용하고, Google이 확인한 `@gmail.com` 주소만 허용하며, Cloudflare 원본 JSON 경로도 보호한다. 사용자는 Vercel Production과 Worker 릴리스를 승인했고, Google OAuth 앱의 공개 게시만 보류했다.
+[확정] 2026-09-14 사용자 선택: 이 앱 전용 Google Cloud 프로젝트 `Vocabulary Mindmap 3`(ID `vocabulary-mindmap3-nanowind`)를 사용하고, 앱 전체에 Google 계정 로그인을 요구하며 Cloudflare 원본 JSON 경로도 보호한다.
 
-`09_app`은 Google 계정 로그인 후에만 열린다. **Google이 확인한 `@gmail.com` 주소만 허용**하며, 회사·학교 주소나 `@googlemail.com`은 허용하지 않는다. 로그인 요청에는 `openid email`만 사용하고 Gmail 메일 접근 권한은 요청하지 않는다. Vercel Routing Middleware가 로그인 화면과 인증 API를 제외한 앱 HTML, JS/CSS, `/data/live/*` 요청을 세션 쿠키로 검사한다.
+[폐기] 초기의 `@gmail.com` 주소만 허용하는 조건과 Google OAuth 게시 보류는 같은 날 사용자의 “모든 이메일로 확장” 및 “앱 게시 승인” 결정으로 대체됐다.
+
+[확정] Google이 확인한 이메일 주소라면 도메인과 관계없이 허용한다. Google OAuth 앱의 공개 게시를 사용자가 승인했다. 새 Vercel 배포와 정책 페이지를 확인한 뒤 게시 상태를 전환한다.
+
+`09_app`은 Google 계정 로그인 후에만 열린다. **Google이 확인한 모든 이메일 주소를 허용**하며, 회사·학교 주소와 `@googlemail.com`도 포함한다. 로그인 요청에는 `openid email`만 사용하고 Gmail 메일 접근 권한은 요청하지 않는다. Vercel Routing Middleware가 로그인 화면과 인증 API를 제외한 앱 HTML, JS/CSS, `/data/live/*` 요청을 세션 쿠키로 검사한다.
 
 앱 화면은 Vercel의 `/data/live/*` 정적 JSON을 읽는다. Cloudflare runtime gateway는 Vercel **빌드가** R2 원본을 복원할 때만 사용하므로 브라우저로 Gateway 토큰을 보내지 않는다. Worker는 manifest와 `immutable/*`에 서버 전용 Bearer 토큰을 요구하고 응답을 `no-store`로 지정한다.
 
@@ -18,7 +22,7 @@
 
 원본 Gateway는 [기존 Vercel·Cloudflare 운영 기준](VERCEL_CLOUDFLARE_OPERATIONS.md)에 따라 Vercel Production에 토큰을 먼저 설정하고 앱을 배포한 다음, Cloudflare Worker secret과 인증 코드를 별도로 배포했다. Worker의 manifest 및 immutable 경로는 무인증 요청에 401을 반환하고, 같은 토큰을 담은 요청에는 실제 R2 객체를 반환한다. Cloudflare R2 버킷 자체의 `r2.dev` 공개 URL과 커스텀 도메인은 대시보드에서 비활성 상태임을 확인했다([R2 설명](https://developers.cloudflare.com/r2/buckets/public-buckets/)).
 
-## 2026-09-14 운영 확인
+## 2026-09-14 도메인 제한 해제 전 운영 확인
 
 - Vercel Production은 `main`의 인증 범위 수정 커밋 `fc5b0374`를 11:08:40 KST에 Ready로 배포했다. 운영 로그인·소개·개인정보처리방침·이용약관 URL은 열리고, 무인증 앱 정적 JSON과 JS 자산 요청은 401을 반환한다.
 - Google OAuth는 `테스트 중` 상태를 유지하며 테스트 사용자는 `nanowind@gmail.com` 한 명이다. Google 동의 화면에는 이메일 주소만 표시됐고, 실제 Google 왕복 로그인 후 앱의 어휘 검색 `사랑` 결과 10개와 로그아웃 후 로그인 화면 복귀를 확인했다. 공개 게시 작업은 보류 중이다.

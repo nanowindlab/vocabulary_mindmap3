@@ -211,8 +211,8 @@ test("callback rejects a signed token with a different nonce", async () => {
   assert.equal(typeof callback.getHeader("Set-Cookie"), "string");
 });
 
-test("only verified @gmail.com addresses can create a session", async () => {
-  for (const email of ["teacher@school.example", "other@googlemail.com", "other@gmail.com.evil"]) {
+test("Google-verified addresses from any email domain can create a session", async () => {
+  for (const email of ["teacher@school.example", "other@googlemail.com"]) {
     const flow = startFlow();
     const seconds = Math.floor(NOW / 1000);
     const token = googleToken({ iss: "https://accounts.google.com", aud: ENV.GOOGLE_CLIENT_ID, iat: seconds,
@@ -224,9 +224,36 @@ test("only verified @gmail.com addresses can create a session", async () => {
       fetchImpl: async (url) => ({ ok: true, json: async () =>
         url.includes("/token") ? { id_token: token.idToken } : token.jwks }),
     });
-    assert.equal(callback.getHeader("Location"), `${ORIGIN}/login.html?auth=forbidden`, email);
-    assert.equal(typeof callback.getHeader("Set-Cookie"), "string", email);
+    assert.equal(callback.getHeader("Location"), ORIGIN, email);
+    const sessionCookie = cookiePair(callback.getHeader("Set-Cookie")[1]);
+    const session = response();
+    handleSession(request("/api/auth/session", { cookie: sessionCookie }), session, { env: ENV, now: NOW });
+    assert.equal(JSON.parse(session.body).user.email, email);
+    assert.equal(await authorizeRequest(new Request(`${ORIGIN}/data/live/file.json`,
+      { headers: { cookie: sessionCookie } }), ENV, NOW), undefined);
   }
+});
+
+test("Google accounts without a verified email cannot create a session", async () => {
+  const flow = startFlow();
+  const seconds = Math.floor(NOW / 1000);
+  const token = googleToken({ iss: "https://accounts.google.com", aud: ENV.GOOGLE_CLIENT_ID, iat: seconds,
+    exp: seconds + 3600, nonce: flow.redirect.searchParams.get("nonce"),
+    sub: "unverified", email: "teacher@school.example", email_verified: false });
+  const callback = response();
+  const oldError = console.error;
+  console.error = () => {};
+  try {
+    await handleCallback(request(callbackUrl(flow), { cookie: flow.cookie }), callback, {
+      env: ENV, now: NOW,
+      fetchImpl: async (url) => ({ ok: true, json: async () =>
+        url.includes("/token") ? { id_token: token.idToken } : token.jwks }),
+    });
+  } finally {
+    console.error = oldError;
+  }
+  assert.equal(callback.getHeader("Location"), `${ORIGIN}/login.html?auth=failed`);
+  assert.equal(typeof callback.getHeader("Set-Cookie"), "string");
 });
 
 test("logout requires same-origin POST and clears the session", () => {

@@ -202,10 +202,6 @@ async function verifyGoogleIdToken(idToken, config, nonce, fetchImpl, now) {
   };
 }
 
-function isAuthorized(identity) {
-  return /^[^@\s]+@gmail\.com$/i.test(identity?.user?.email || "");
-}
-
 export async function handleCallback(req, res, { env = process.env, now = Date.now(), fetchImpl = fetch } = {}) {
   if (req.method !== "GET") return methodNotAllowed(res, "GET");
   const config = readConfig(env);
@@ -248,9 +244,6 @@ export async function handleCallback(req, res, { env = process.env, now = Date.n
     if (!tokenResponse.ok) throw new Error("token_exchange_failed");
     const tokenData = await tokenResponse.json();
     const identity = await verifyGoogleIdToken(tokenData.id_token, config, flow.nonce, fetchImpl, now);
-    if (!isAuthorized(identity)) {
-      return redirect(res, `${config.origin}/login.html?auth=forbidden`);
-    }
     const issuedAt = Math.floor(now / 1000);
     const session = sign({ type: "session", aud: config.origin, iat: issuedAt,
       exp: issuedAt + SESSION_SECONDS, ...identity }, config.sessionSecret);
@@ -270,8 +263,8 @@ export function getSessionFromCookie(cookieHeader, env = process.env, now = Date
   if (!config) return null;
   const session = unsign(readCookie({ headers: { cookie: cookieHeader } }, config.sessionCookie), config.sessionSecret);
   const valid = isValidTimedValue(session, "session", config, Math.floor(now / 1000)) &&
-    typeof session.user?.id === "string" && typeof session.user?.email === "string" &&
-    isAuthorized(session);
+    typeof session.user?.id === "string" && session.user.id.length > 0 &&
+    typeof session.user?.email === "string" && session.user.email.length > 0;
   return valid ? session.user : null;
 }
 
