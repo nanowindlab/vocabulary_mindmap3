@@ -23,7 +23,7 @@
 - Vercel Production은 `main`의 인증 범위 수정 커밋 `fc5b0374`를 11:08:40 KST에 Ready로 배포했다. 운영 로그인·소개·개인정보처리방침·이용약관 URL은 열리고, 무인증 앱 정적 JSON과 JS 자산 요청은 401을 반환한다.
 - Google OAuth는 `테스트 중` 상태를 유지하며 테스트 사용자는 `nanowind@gmail.com` 한 명이다. Google 동의 화면에는 이메일 주소만 표시됐고, 실제 Google 왕복 로그인 후 앱의 어휘 검색 `사랑` 결과 10개와 로그아웃 후 로그인 화면 복귀를 확인했다. 공개 게시 작업은 보류 중이다.
 - Cloudflare Worker `mm3-runtime-gateway`의 인증 코드 배포 버전은 `3be781ad-cc0d-4387-a83b-a1f1967c05f9`다. 같은 이름의 secret이 설정됐고 R2 바인딩 `MM3_BUCKET`은 `vocabulary-mindmap3-runtime`을 가리킨다. 배포 후 무인증 manifest 및 immutable 요청은 401, 토큰 인증 manifest 및 실제 immutable 객체 요청은 200이었다. 토큰 값은 저장소에 기록하지 않았다.
-- Worker 잠금 이후 Vercel의 새 빌드에서 R2 복원이 성공하는지 확인하는 것이 마지막 릴리스 검증 항목이다.
+- Worker 잠금 이후 `main`의 운영 기록 커밋 `5be4d5c8`로 실행한 Vercel Production 빌드가 11:36:27 KST에 Ready로 끝났다. 빌드 화면에 R2 객체 복원 로그가 표시됐고, 새 배포의 로그인 후 어휘 검색 `사랑` 결과 10개를 다시 확인했다. 같은 배포에서 무인증 앱 루트는 로그인 화면으로 302 이동하고, 앱 JSON과 Worker 원본 manifest는 401을 반환했다.
 
 Preview 도메인에서 로그인하려면 그 도메인에 맞는 `AUTH_BASE_URL`과 Google 승인 리디렉션 URI가 별도로 필요하다. 값이 없거나 요청 도메인이 다르면 앱은 로그인 화면으로 보내고 인증을 시작하지 않는다. 로컬에서 실제 OAuth를 시험할 때는 `09_app/.env.local`에 같은 이름의 값을 두고 `AUTH_BASE_URL=http://127.0.0.1:4173` 및 해당 로컬 리디렉션 URI를 등록한 뒤 `npm --prefix 09_app run dev -- --host 127.0.0.1 --port 4173 --strictPort`를 실행한다.
 
