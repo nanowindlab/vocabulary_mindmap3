@@ -17,9 +17,31 @@ const runtimeBundleDir = path.join(appRoot, "public", "data", "internal", "runti
 const liveDir = path.join(appRoot, "public", "data", "live");
 const payloadSource = process.env.MM3_RUNTIME_PAYLOAD_SOURCE || "r2";
 const r2BaseUrl = process.env.MM3_RUNTIME_BUNDLE_BASE_URL || "";
+const gatewayToken = process.env.MM3_RUNTIME_GATEWAY_TOKEN || "";
 
 function joinRemoteUrl(baseUrl, fileName) {
   return `${baseUrl.replace(/\/$/, "")}/${fileName}`;
+}
+
+function validGatewayToken(token) {
+  return typeof token === "string" && /^[A-Za-z0-9_-]{32,256}$/.test(token);
+}
+
+export async function fetchGatewayObject(fileName, options = {}) {
+  const baseUrl = options.baseUrl || r2BaseUrl;
+  const token = options.token || gatewayToken;
+  const fetchImpl = options.fetchImpl || fetch;
+  if (!validGatewayToken(token)) {
+    throw new Error("MM3_RUNTIME_GATEWAY_TOKEN is required for R2 restore");
+  }
+  const url = new URL(joinRemoteUrl(baseUrl, fileName));
+  if (url.protocol !== "https:") {
+    throw new Error("R2 gateway URL must use HTTPS");
+  }
+  return fetchImpl(url, {
+    headers: { Authorization: `Bearer ${token}` },
+    redirect: "error",
+  });
 }
 
 export async function restoreLocalPayload(entry, options = {}) {
@@ -42,7 +64,7 @@ export async function restoreLocalPayload(entry, options = {}) {
 async function restoreRemotePayload(entry) {
   const target = path.join(liveDir, entry.file);
   const tempTarget = `${target}.tmp`;
-  const response = await fetch(joinRemoteUrl(r2BaseUrl, entry.remote_path || entry.file));
+  const response = await fetchGatewayObject(entry.remote_path || entry.file);
   if (!response.ok) {
     throw new Error(`Failed to fetch ${entry.file}: ${response.status}`);
   }
@@ -61,6 +83,28 @@ export async function restoreLocalRuntimeBundle(options = {}) {
 }
 
 async function main() {
+  if (payloadSource !== "local" && !r2BaseUrl) {
+    throw new Error("MM3_RUNTIME_BUNDLE_BASE_URL is required for R2 restore");
+  }
+  if (payloadSource !== "local" && !validGatewayToken(gatewayToken)) {
+    throw new Error("MM3_RUNTIME_GATEWAY_TOKEN is required for R2 restore");
+  }
+  let remoteManifest = null;
+  if (payloadSource === "local") {
+    const manifest = loadLocalRuntimeManifest(runtimeBundleDir);
+    for (const entry of manifest.entries || []) {
+      if (!existsSync(path.join(runtimeBundleDir, `${entry.file}.gz`))) {
+        throw new Error(`Missing local runtime payload: ${entry.file}`);
+      }
+    }
+  } else {
+    const manifestResponse = await fetchGatewayObject(R2_RUNTIME_MANIFEST_FILE);
+    if (!manifestResponse.ok) {
+      throw new Error(`Failed to fetch runtime manifest: ${manifestResponse.status}`);
+    }
+    remoteManifest = await manifestResponse.json();
+  }
+
   mkdirSync(liveDir, { recursive: true });
   clearPreparedRuntimeFiles(liveDir);
 
@@ -69,16 +113,7 @@ async function main() {
     return;
   }
 
-  if (!r2BaseUrl) {
-    throw new Error("MM3_RUNTIME_BUNDLE_BASE_URL is required for R2 restore");
-  }
-
-  const manifestResponse = await fetch(joinRemoteUrl(r2BaseUrl, R2_RUNTIME_MANIFEST_FILE));
-  if (!manifestResponse.ok) {
-    throw new Error(`Failed to fetch runtime manifest: ${manifestResponse.status}`);
-  }
-  const manifest = await manifestResponse.json();
-  for (const entry of manifest.entries || []) {
+  for (const entry of remoteManifest.entries || []) {
     await restoreRemotePayload(entry);
     console.log(`prepared ${entry.file} from r2`);
   }

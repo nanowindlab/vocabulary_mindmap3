@@ -211,6 +211,39 @@ button {
   gap: 10px;
 }
 
+.account-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.account-name {
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.account-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  color: var(--text-primary);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.account-logout:hover { background: var(--surface-strong); }
+.account-logout:disabled { opacity: .55; cursor: wait; }
+.account-error { color: var(--accent-red); font-size: 11px; }
+
 .logo {
   display: flex;
   align-items: center;
@@ -863,6 +896,8 @@ h6 {
   .nav-right {
     flex-wrap: wrap;
   }
+
+  .account-controls { width: 100%; justify-content: flex-end; }
 
   .nav-tabs {
     margin-left: 0;

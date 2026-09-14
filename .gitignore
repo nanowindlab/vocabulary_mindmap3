@@ -1,6 +1,9 @@
 .DS_Store
 .vercel
 .wrangler
+/node_modules/
+.env*
+!.env.example
 
 09_app/node_modules/
 09_app/dist/

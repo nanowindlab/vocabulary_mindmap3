@@ -1,0 +1,12 @@
+{
+  "name": "vocabulary-mindmap3-deployment",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:auth": "node --test api/auth/auth.test.mjs",
+    "test:gateway": "node --test cf_runtime_gateway/src/index.test.mjs 09_app/scripts/prepare-live-payloads.test.mjs"
+  },
+  "dependencies": {
+    "@vercel/functions": "^3.9.7"
+  }
+}

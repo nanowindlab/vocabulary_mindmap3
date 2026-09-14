@@ -1,6 +1,6 @@
 import React, { startTransition, useDeferredValue, useState, useEffect, useMemo, useCallback, useRef } from "react";
 import {
-  Network, Loader, Book,
+  Network, Loader, Book, LogOut,
   Map as MapIcon, LayoutList, X, Filter, ChevronDown,
 } from "lucide-react";
 
@@ -581,7 +581,7 @@ const DropdownFilter = ({ label, options, selectedValues, onToggle, onClear }) =
   );
 };
 // ── 메인 앱 ─────────────────────────────────────────────────────
-function App() {
+function App({ authUser, onLogout, loggingOut, authError }) {
   const [activeTab, setActiveTab] = useState("meaning");
   const [viewMode, setViewMode] = useState("mindmap");
 
@@ -1500,6 +1500,14 @@ function App() {
             showEnglish={showEnglish}
             translationLanguage={translationLanguage}
           />
+          <div className="account-controls">
+            <span className="account-name" title={authUser.email}>{authUser.name}</span>
+            <button type="button" className="account-logout" onClick={onLogout} disabled={loggingOut}>
+              <LogOut size={14} aria-hidden="true" />
+              {loggingOut ? "로그아웃 중" : "로그아웃"}
+            </button>
+            {authError && <span className="account-error" role="alert">{authError}</span>}
+          </div>
         </div>
       </div>
 

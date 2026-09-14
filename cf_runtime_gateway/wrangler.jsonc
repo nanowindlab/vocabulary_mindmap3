@@ -3,6 +3,9 @@
   "name": "mm3-runtime-gateway",
   "main": "src/index.js",
   "compatibility_date": "2026-03-30",
+  "secrets": {
+    "required": ["MM3_RUNTIME_GATEWAY_TOKEN"]
+  },
   "r2_buckets": [
     {
       "binding": "MM3_BUCKET",
