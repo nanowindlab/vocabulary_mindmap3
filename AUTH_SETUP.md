@@ -4,7 +4,7 @@
 
 [폐기] 초기의 `@gmail.com` 주소만 허용하는 조건과 Google OAuth 게시 보류는 같은 날 사용자의 “모든 이메일로 확장” 및 “앱 게시 승인” 결정으로 대체됐다.
 
-[확정] Google이 확인한 이메일 주소라면 도메인과 관계없이 허용한다. Google OAuth 앱의 공개 게시를 사용자가 승인했다. 새 Vercel 배포와 정책 페이지를 확인한 뒤 게시 상태를 전환한다.
+[확정] Google이 확인한 이메일 주소라면 도메인과 관계없이 허용한다. Google OAuth 앱의 공개 게시를 사용자가 승인했고, 운영 배포와 정책 페이지를 확인한 뒤 게시했다.
 
 `09_app`은 Google 계정 로그인 후에만 열린다. **Google이 확인한 모든 이메일 주소를 허용**하며, 회사·학교 주소와 `@googlemail.com`도 포함한다. 로그인 요청에는 `openid email`만 사용하고 Gmail 메일 접근 권한은 요청하지 않는다. Vercel Routing Middleware가 로그인 화면과 인증 API를 제외한 앱 HTML, JS/CSS, `/data/live/*` 요청을 세션 쿠키로 검사한다.
 
@@ -12,7 +12,7 @@
 
 2026-09-14에 확인한 Vercel 프로젝트 설정에서는 Vercel Authentication의 Standard Protection이 켜져 있어 Preview와 생성된 배포 URL은 보호되지만 운영 도메인은 공개 범위다([Vercel 설명](https://vercel.com/docs/deployment-protection)). 운영 도메인은 이 앱의 Google 로그인으로 보호한다.
 
-전용 Google Cloud 프로젝트에서 `Vercel Production Web` 웹 OAuth 클라이언트를 만들고 승인된 리디렉션 URI에 `https://vocabulary-mindmap3.vercel.app/api/auth/callback`을 등록했다. Google 동의 화면의 앱 이름은 `어휘 마인드맵`이며, 데이터 액세스의 최종 필요 범위는 `openid`, `userinfo.email`이다. 공개 앱 소개(`/about.html`), 개인정보처리방침(`/privacy.html`), 이용약관(`/terms.html`)의 운영 URL도 저장했다. Google OAuth 앱은 아직 `테스트 중`이며 게시하지 않았다. 공개 정책 문구를 사용자가 검토하고 운영 배포를 승인했다. Vercel Production 환경에는 아래 값을 **서버 환경변수**로 설정했다. 비밀값은 Git이나 `VITE_` 변수에 저장하지 않았다.
+전용 Google Cloud 프로젝트에서 `Vercel Production Web` 웹 OAuth 클라이언트를 만들고 승인된 리디렉션 URI에 `https://vocabulary-mindmap3.vercel.app/api/auth/callback`을 등록했다. Google 동의 화면의 앱 이름은 `어휘 마인드맵`이며, 데이터 액세스의 최종 필요 범위는 `openid`, `userinfo.email`이다. 공개 앱 소개(`/about.html`), 개인정보처리방침(`/privacy.html`), 이용약관(`/terms.html`)의 운영 URL도 저장했다. Google OAuth 앱은 `프로덕션 단계`로 게시됐다. 공개 정책 문구를 사용자가 검토하고 운영 배포를 승인했다. Vercel Production 환경에는 아래 값을 **서버 환경변수**로 설정했다. 비밀값은 Git이나 `VITE_` 변수에 저장하지 않았다.
 
 - `GOOGLE_CLIENT_ID`: Google OAuth 웹 클라이언트 ID
 - `GOOGLE_CLIENT_SECRET`: 해당 클라이언트 보안 비밀
@@ -21,6 +21,12 @@
 - `MM3_RUNTIME_GATEWAY_TOKEN`: 32바이트 이상의 무작위 base64url 또는 hex 토큰. Cloudflare Worker secret에도 **같은 값**을 지정한다.
 
 원본 Gateway는 [기존 Vercel·Cloudflare 운영 기준](VERCEL_CLOUDFLARE_OPERATIONS.md)에 따라 Vercel Production에 토큰을 먼저 설정하고 앱을 배포한 다음, Cloudflare Worker secret과 인증 코드를 별도로 배포했다. Worker의 manifest 및 immutable 경로는 무인증 요청에 401을 반환하고, 같은 토큰을 담은 요청에는 실제 R2 객체를 반환한다. Cloudflare R2 버킷 자체의 `r2.dev` 공개 URL과 커스텀 도메인은 대시보드에서 비활성 상태임을 확인했다([R2 설명](https://developers.cloudflare.com/r2/buckets/public-buckets/)).
+
+## 2026-09-14 전체 Google 계정 공개 확인
+
+- 13:36 KST 확인: `main` 커밋 `f2b19f22`의 Vercel Production 배포가 Ready였다. 운영 로그인·소개·개인정보처리방침·이용약관 화면에 도메인 제한 해제 문구가 표시됐다. 쿠키 없는 `Accept: text/html` 앱 루트 요청은 로그인 화면으로 302 이동했고 `/data/live/manifest.json` 요청은 401이었다.
+- 같은 시점에 Google 인증 플랫폼의 대상은 외부, 게시 상태는 `프로덕션 단계`였다. 데이터 액세스에는 민감하지 않은 `openid`와 `userinfo.email`만 있고 민감·제한 범위는 비어 있었다. 로그아웃 후 `nanowind@gmail.com`으로 Google 왕복 로그인을 다시 완료했고 운영 검색 `사랑` 결과 10개를 확인했다. 회사·학교 주소의 실제 Google 계정 왕복 로그인은 계정이 없어 NOT_RUN이다.
+- 변경 상태 `f2b19f22`: 로컬 인증 테스트 11/11, Gateway 테스트 7/7, Playwright 화면 스모크 9/9, Vite 직접 빌드, `git diff --check`, `sh scripts/vercel-preflight.sh production` 모두 PASS였다. Vite 직접 빌드는 실제 R2 복원을 포함하지 않으며, 실제 복원 결과는 위 운영 검색으로 확인했다.
 
 ## 2026-09-14 도메인 제한 해제 전 운영 확인
 
