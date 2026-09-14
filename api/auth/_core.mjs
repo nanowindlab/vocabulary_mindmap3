@@ -147,7 +147,7 @@ export function handleStart(req, res, { env = process.env, now = Date.now() } = 
   url.searchParams.set("client_id", config.clientId);
   url.searchParams.set("redirect_uri", config.callbackUrl);
   url.searchParams.set("response_type", "code");
-  url.searchParams.set("scope", "openid email profile");
+  url.searchParams.set("scope", "openid email");
   url.searchParams.set("state", state);
   url.searchParams.set("nonce", nonce);
   url.searchParams.set("code_challenge", challenge);
@@ -198,7 +198,6 @@ async function verifyGoogleIdToken(idToken, config, nonce, fetchImpl, now) {
     user: {
       id: claims.sub,
       email: claims.email,
-      name: typeof claims.name === "string" ? claims.name.slice(0, 160) : claims.email,
     },
   };
 }
@@ -218,12 +217,14 @@ export async function handleCallback(req, res, { env = process.env, now = Date.n
   const params = getQuery(req, config);
   if (!isValidTimedValue(flow, "flow", config, Math.floor(now / 1000)) ||
       !sameRandomValue(params.get("state"), flow.state) ||
-      params.getAll("state").length !== 1 ||
-      params.get("iss") !== "https://accounts.google.com") {
+      params.getAll("state").length !== 1) {
     return redirect(res, `${config.origin}/login.html?auth=failed`);
   }
   if (params.get("error")) {
     return redirect(res, `${config.origin}/login.html?auth=${params.get("error") === "access_denied" ? "cancelled" : "failed"}`);
+  }
+  if (params.get("iss") !== "https://accounts.google.com") {
+    return redirect(res, `${config.origin}/login.html?auth=failed`);
   }
   const code = params.get("code");
   if (typeof code !== "string" || !code || code.length > 2048 || params.getAll("code").length !== 1) {

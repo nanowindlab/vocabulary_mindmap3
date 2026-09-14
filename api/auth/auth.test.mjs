@@ -73,7 +73,7 @@ test("start requests only identity scopes and binds state, nonce and PKCE to a s
   const flow = startFlow();
   assert.equal(flow.redirect.origin, "https://accounts.google.com");
   assert.equal(flow.redirect.searchParams.get("redirect_uri"), `${ORIGIN}/api/auth/callback`);
-  assert.equal(flow.redirect.searchParams.get("scope"), "openid email profile");
+  assert.equal(flow.redirect.searchParams.get("scope"), "openid email");
   assert.equal(flow.redirect.searchParams.get("code_challenge_method"), "S256");
   assert.match(flow.setCookie, /^__Host-mm3_oauth=/);
   assert.match(flow.setCookie, /HttpOnly; SameSite=Lax; Secure/);
@@ -125,7 +125,7 @@ test("verified Google callback creates a signed session; middleware protects app
   const session = response();
   handleSession(request("/api/auth/session", { cookie: sessionCookie }), session, { env: ENV, now: NOW });
   assert.deepEqual(JSON.parse(session.body), { configured: true,
-    user: { id: "google-account-123", email: "user@gmail.com", name: "학습자" } });
+    user: { id: "google-account-123", email: "user@gmail.com" } });
 
   const protectedPaths = ["/", "/index.html", "/assets/app.js", "/data/live/APP_READY_SEARCH_INDEX.json", "/api/private"];
   for (const path of protectedPaths) {
@@ -155,6 +155,16 @@ test("callback rejects CSRF state mismatch before token exchange", async () => {
   await handleCallback(request(callbackUrl(flow, { state: "wrong-state" }), { cookie: flow.cookie }), callback,
     { env: ENV, now: NOW, fetchImpl: async () => { throw new Error("must not fetch"); } });
   assert.equal(callback.getHeader("Location"), `${ORIGIN}/login.html?auth=failed`);
+  assert.match(callback.getHeader("Set-Cookie"), /Max-Age=0/);
+});
+
+test("cancelled Google consent returns to login without exchanging a token", async () => {
+  const flow = startFlow();
+  const callback = response();
+  await handleCallback(request(callbackUrl(flow, { iss: "", error: "access_denied" }),
+    { cookie: flow.cookie }), callback,
+    { env: ENV, now: NOW, fetchImpl: async () => { throw new Error("must not fetch"); } });
+  assert.equal(callback.getHeader("Location"), `${ORIGIN}/login.html?auth=cancelled`);
   assert.match(callback.getHeader("Set-Cookie"), /Max-Age=0/);
 });
 

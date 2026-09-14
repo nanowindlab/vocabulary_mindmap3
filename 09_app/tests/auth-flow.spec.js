@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 const signedIn = { configured: true, user: {
-  id: "google-account-123", email: "learner@gmail.com", name: "학습자",
+  id: "google-account-123", email: "learner@gmail.com",
 } };
 
 test("signed-out visitor is sent to the Google login page before the app loads", async ({ page }) => {
@@ -29,7 +29,7 @@ test("signed-in visitor sees their account and can log out", async ({ page }) =>
     return route.fulfill({ json: { user: null } });
   });
   await page.goto("/");
-  await expect(page.getByText("학습자", { exact: true })).toBeVisible();
+  await expect(page.getByText("learner@gmail.com", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "로그아웃" }).click();
   await expect(page).toHaveURL(/\/login\.html$/);
   await expect(page.getByRole("link", { name: "Google 계정으로 로그인" })).toBeVisible();

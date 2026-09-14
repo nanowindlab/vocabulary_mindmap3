@@ -1,14 +1,14 @@
 # Google 계정 로그인 설정
 
-[확정] 2026-09-14 사용자 선택: 이 앱 전용 새 Google Cloud 프로젝트를 사용하고, Google이 확인한 `@gmail.com` 주소만 허용하며, Cloudflare 원본 JSON 경로도 보호한다. 사용자가 생성에 명시적으로 동의한 뒤 Google Cloud 프로젝트 `Vocabulary Mindmap 3`(ID `vocabulary-mindmap3-nanowind`)를 만들고 콘솔에서 선택 상태를 확인했다. OAuth 클라이언트와 운영 배포는 아직 완료되지 않았다.
+[확정] 2026-09-14 사용자 선택: 이 앱 전용 Google Cloud 프로젝트 `Vocabulary Mindmap 3`(ID `vocabulary-mindmap3-nanowind`)를 사용하고, Google이 확인한 `@gmail.com` 주소만 허용하며, Cloudflare 원본 JSON 경로도 보호한다. 사용자는 Vercel Production과 Worker 릴리스를 승인했고, Google OAuth 앱의 공개 게시만 보류했다.
 
-현재 로컬 코드에서는 `09_app`을 Google 계정 로그인 후에만 열리도록 구성했다. **Google이 확인한 `@gmail.com` 주소만 허용**하며, 회사·학교 주소나 `@googlemail.com`은 허용하지 않는다. 로그인 요청에는 `openid email profile`만 사용하고 Gmail 메일 접근 권한은 요청하지 않는다. 배포되면 Vercel Routing Middleware가 로그인 화면과 인증 API를 제외한 앱 HTML, JS/CSS, `/data/live/*` 요청을 세션 쿠키로 검사한다.
+`09_app`은 Google 계정 로그인 후에만 열린다. **Google이 확인한 `@gmail.com` 주소만 허용**하며, 회사·학교 주소나 `@googlemail.com`은 허용하지 않는다. 로그인 요청에는 `openid email`만 사용하고 Gmail 메일 접근 권한은 요청하지 않는다. Vercel Routing Middleware가 로그인 화면과 인증 API를 제외한 앱 HTML, JS/CSS, `/data/live/*` 요청을 세션 쿠키로 검사한다.
 
-앱 화면은 Vercel의 `/data/live/*` 정적 JSON을 읽는다. Cloudflare runtime gateway는 Vercel **빌드가** R2 원본을 복원할 때만 사용하므로 브라우저로 Gateway 토큰을 보내지 않는다. 배포할 Worker 코드는 manifest와 `immutable/*`에 서버 전용 Bearer 토큰을 요구하고 응답을 `no-store`로 지정한다. 현재 운영 Worker에는 이 코드가 배포되지 않아 원본 JSON이 공개 상태다.
+앱 화면은 Vercel의 `/data/live/*` 정적 JSON을 읽는다. Cloudflare runtime gateway는 Vercel **빌드가** R2 원본을 복원할 때만 사용하므로 브라우저로 Gateway 토큰을 보내지 않는다. Worker 코드는 manifest와 `immutable/*`에 서버 전용 Bearer 토큰을 요구하고 응답을 `no-store`로 지정한다. 2026-09-14 11:07 KST 현재 Worker 릴리스는 아직 진행 중이므로 원본 게이트웨이는 공개 상태다.
 
 2026-09-14에 확인한 Vercel 프로젝트 설정에서는 Vercel Authentication의 Standard Protection이 켜져 있어 Preview와 생성된 배포 URL은 보호되지만 운영 도메인은 공개 범위다([Vercel 설명](https://vercel.com/docs/deployment-protection)). 운영 도메인은 이 앱의 Google 로그인으로 보호한다.
 
-전용 Google Cloud 프로젝트에서 `Vercel Production Web` 웹 OAuth 클라이언트를 만들고 승인된 리디렉션 URI에 `https://vocabulary-mindmap3.vercel.app/api/auth/callback`을 등록했다. Google 동의 화면의 앱 이름은 `어휘 마인드맵`이며, 데이터 액세스에는 민감하지 않은 `openid`, `userinfo.email`, `userinfo.profile` 범위만 저장했다. 공개 앱 소개(`/about.html`), 개인정보처리방침(`/privacy.html`), 이용약관(`/terms.html`)의 운영 URL도 저장했다. 이 세 페이지는 현재 로컬 소스에만 있어 운영 배포 후 접근성을 확인해야 한다. Google OAuth 앱은 아직 `테스트 중`이며 게시하지 않았다. 공개 정책 문구는 운영 배포 전에 사용자 검토가 필요하다. Vercel Production 환경에는 아래 값을 **서버 환경변수**로 설정했다. 비밀값은 Git이나 `VITE_` 변수에 저장하지 않았다. Vercel 안내에 따라 새 배포 전까지 현 운영 배포에는 적용되지 않는다.
+전용 Google Cloud 프로젝트에서 `Vercel Production Web` 웹 OAuth 클라이언트를 만들고 승인된 리디렉션 URI에 `https://vocabulary-mindmap3.vercel.app/api/auth/callback`을 등록했다. Google 동의 화면의 앱 이름은 `어휘 마인드맵`이며, 데이터 액세스의 최종 필요 범위는 `openid`, `userinfo.email`이다. 공개 앱 소개(`/about.html`), 개인정보처리방침(`/privacy.html`), 이용약관(`/terms.html`)의 운영 URL도 저장했다. Google OAuth 앱은 아직 `테스트 중`이며 게시하지 않았다. 공개 정책 문구를 사용자가 검토하고 운영 배포를 승인했다. Vercel Production 환경에는 아래 값을 **서버 환경변수**로 설정했다. 비밀값은 Git이나 `VITE_` 변수에 저장하지 않았다.
 
 - `GOOGLE_CLIENT_ID`: Google OAuth 웹 클라이언트 ID
 - `GOOGLE_CLIENT_SECRET`: 해당 클라이언트 보안 비밀

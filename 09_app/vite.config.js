@@ -24,7 +24,7 @@ function localAuthApi() {
           response.setHeader('Content-Type', 'application/json; charset=utf-8')
           response.setHeader('Cache-Control', 'no-store')
           response.end(JSON.stringify({ configured: true, user: {
-            id: 'test-user', email: 'test@gmail.com', name: '테스트 사용자',
+            id: 'test-user', email: 'test@gmail.com',
           } }))
           return
         }

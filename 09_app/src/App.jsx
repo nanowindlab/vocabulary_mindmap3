@@ -1501,7 +1501,7 @@ function App({ authUser, onLogout, loggingOut, authError }) {
             translationLanguage={translationLanguage}
           />
           <div className="account-controls">
-            <span className="account-name" title={authUser.email}>{authUser.name}</span>
+            <span className="account-name" title={authUser.email}>{authUser.email}</span>
             <button type="button" className="account-logout" onClick={onLogout} disabled={loggingOut}>
               <LogOut size={14} aria-hidden="true" />
               {loggingOut ? "로그아웃 중" : "로그아웃"}
